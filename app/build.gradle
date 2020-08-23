@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.s95ammar.budgetplanner"
+        minSdkVersion appMinSdk
+        targetSdkVersion appTargetSdk
+        versionCode appVersionCode
+        versionName appVersionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${depVersions.kotlin}"
+    implementation "androidx.core:core-ktx:${depVersions.coreKtx}"
+    implementation "androidx.appcompat:appcompat:${depVersions.appcompat}"
+    implementation "androidx.constraintlayout:constraintlayout:${depVersions.constraintlayout}"
+    implementation "com.google.android.material:material:${depVersions.material}"
+    implementation "androidx.navigation:navigation-fragment:${depVersions.navigation}"
+    implementation "androidx.navigation:navigation-ui:${depVersions.navigation}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${depVersions.lifecycle}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${depVersions.navigation}"
+    implementation "androidx.navigation:navigation-ui-ktx:${depVersions.navigation}"
+    testImplementation "junit:junit:${depVersions.junit}"
+    androidTestImplementation "androidx.test.ext:junit:1.1.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
+
+}
