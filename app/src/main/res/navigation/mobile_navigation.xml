@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_current_budget">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.s95ammar.budgetplanner.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_current_budget"
+        android:name="com.s95ammar.budgetplanner.ui.currentbudget.CurrentBudgetFragment"
+        android:label="@string/title_current_budget"
+        tools:layout="@layout/fragment_current_budget" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.s95ammar.budgetplanner.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_budgets_list"
+        android:name="com.s95ammar.budgetplanner.ui.budgetslist.BudgetsListFragment"
+        android:label="@string/title_budgets_list"
+        tools:layout="@layout/fragment_budgets_list" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.s95ammar.budgetplanner.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_categories"
+        android:name="com.s95ammar.budgetplanner.ui.categories.CategoriesFragment"
+        android:label="@string/categories"
+        tools:layout="@layout/fragment_categories" />
 </navigation>

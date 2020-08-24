@@ -38,13 +38,23 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${depVersions.appcompat}"
     implementation "androidx.constraintlayout:constraintlayout:${depVersions.constraintlayout}"
     implementation "com.google.android.material:material:${depVersions.material}"
-    implementation "androidx.navigation:navigation-fragment:${depVersions.navigation}"
-    implementation "androidx.navigation:navigation-ui:${depVersions.navigation}"
-    implementation "androidx.lifecycle:lifecycle-extensions:${depVersions.lifecycle}"
-    implementation "androidx.navigation:navigation-fragment-ktx:${depVersions.navigation}"
-    implementation "androidx.navigation:navigation-ui-ktx:${depVersions.navigation}"
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     testImplementation "junit:junit:${depVersions.junit}"
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
 
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment:${depVersions.navigation}"
+    implementation "androidx.navigation:navigation-ui:${depVersions.navigation}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${depVersions.navigation}"
+    implementation "androidx.navigation:navigation-ui-ktx:${depVersions.navigation}"
+
+    // lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:${depVersions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${depVersions.lifecycle}"
+
+    // ViewPager2
+    implementation "androidx.viewpager2:viewpager2:${depVersions.viewPager2}"
 }

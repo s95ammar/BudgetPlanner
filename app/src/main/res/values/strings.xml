@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Budget Planner</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_current_budget">Current Budget</string>
+    <string name="title_budgets_list">Budgets List</string>
+    <string name="categories">Categories</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="expenses">Expenses</string>
+
 </resources>
