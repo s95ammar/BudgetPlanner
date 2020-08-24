@@ -1,13 +1,8 @@
 package com.s95ammar.budgetplanner.ui.currentbudget
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 
-class CurrentBudgetViewModel : ViewModel() {
+class CurrentBudgetViewModel @ViewModelInject constructor() : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is current budget fragment"
-    }
-    val text: LiveData<String> = _text
 }

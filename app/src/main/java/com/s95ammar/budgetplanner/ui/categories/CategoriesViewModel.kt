@@ -1,13 +1,8 @@
 package com.s95ammar.budgetplanner.ui.categories
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 
-class CategoriesViewModel : ViewModel() {
+class CategoriesViewModel @ViewModelInject constructor() : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is categories Fragment"
-    }
-    val text: LiveData<String> = _text
 }
