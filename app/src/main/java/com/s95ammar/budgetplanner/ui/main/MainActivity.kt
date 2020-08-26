@@ -1,9 +1,10 @@
-package com.s95ammar.budgetplanner
+package com.s95ammar.budgetplanner.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.s95ammar.budgetplanner.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 

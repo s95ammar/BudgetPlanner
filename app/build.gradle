@@ -67,4 +67,10 @@ dependencies {
 
     // ViewPager2
     implementation "androidx.viewpager2:viewpager2:${depVersions.viewPager2}"
+
+    // Persistence
+    implementation "androidx.room:room-runtime:${depVersions.room}"
+    kapt "androidx.room:room-compiler:${depVersions.room}"
+    implementation "androidx.room:room-ktx:${depVersions.room}"
+
 }
