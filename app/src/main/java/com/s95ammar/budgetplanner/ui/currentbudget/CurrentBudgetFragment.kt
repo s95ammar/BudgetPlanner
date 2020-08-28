@@ -14,7 +14,6 @@ import com.s95ammar.budgetplanner.ui.budget.expenses.ExpensesFragment
 import com.s95ammar.budgetplanner.ui.fragmentProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_current_budget.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CurrentBudgetFragment : BaseFragment() {

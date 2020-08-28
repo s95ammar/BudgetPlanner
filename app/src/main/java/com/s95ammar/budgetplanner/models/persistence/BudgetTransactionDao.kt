@@ -7,7 +7,7 @@ import com.s95ammar.budgetplanner.models.data.BudgetTransaction
 @Dao
 interface BudgetTransactionDao {
 	@Insert
-	suspend fun insert(budgetTransactions: BudgetTransaction)
+	suspend fun insert(budgetTransaction: BudgetTransaction)
 
 	@Update
 	suspend fun update(budgetTransaction: BudgetTransaction)

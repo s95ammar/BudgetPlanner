@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey
 @Entity
 data class BudgetTransaction(
     val name: String,
+    @IntBudgetTransactionType val type: Int,
+    val amount: Int,
     @ColumnInfo(name = "budget_id", index = true) val budgetId: Int,
     @ColumnInfo(name = "category_id", index = true) val categoryId: Int
 ) {
