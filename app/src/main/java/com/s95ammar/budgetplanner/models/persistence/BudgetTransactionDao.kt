@@ -21,10 +21,7 @@ interface BudgetTransactionDao {
 	@Query("SELECT * FROM budget_transaction WHERE id=:id")
 	fun getBudgetTransaction(id: Int): LiveData<BudgetTransaction>
 
-	@Query("SELECT * FROM budget_transaction WHERE budget_id=:budgetId")
-	fun getBudgetTransactions(budgetId: Int): LiveData<List<BudgetTransaction>>
-
-	@Query("SELECT * FROM budget_transaction WHERE budget_id=:budgetId AND category_Id=:categoryId")
-	fun getBudgetTransactions(categoryId: Int, budgetId: Int): LiveData<List<BudgetTransaction>>
+	@Query("SELECT * FROM budget_transaction WHERE category_status_id=:categoryStatusId")
+	fun getBudgetTransactions(categoryStatusId: Int): LiveData<List<BudgetTransaction>>
 
 }

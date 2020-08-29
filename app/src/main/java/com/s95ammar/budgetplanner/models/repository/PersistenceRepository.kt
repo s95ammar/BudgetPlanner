@@ -40,7 +40,6 @@ class PersistenceRepository @Inject constructor(
     override suspend fun update(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) { budgetTransactionDao.update(budgetTransaction) }
     override suspend fun delete(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) { budgetTransactionDao.delete(budgetTransaction) }
     override fun getBudgetTransactionById(id: Int) = budgetTransactionDao.getBudgetTransaction(id)
-    override fun getBudgetTransactionsBy(budgetId: Int) = budgetTransactionDao.getBudgetTransactions(budgetId)
-    override fun getBudgetTransactionsBy(categoryId: Int, budgetId: Int) = budgetTransactionDao.getBudgetTransactions(categoryId, budgetId)
+    override fun getBudgetTransactionsBy(categoryStatusId: Int) = budgetTransactionDao.getBudgetTransactions(categoryStatusId)
 
 }

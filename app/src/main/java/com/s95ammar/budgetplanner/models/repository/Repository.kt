@@ -29,6 +29,5 @@ interface Repository {
     suspend fun update(budgetTransaction: BudgetTransaction)
     suspend fun delete(budgetTransaction: BudgetTransaction)
     fun getBudgetTransactionById(id: Int): LiveData<BudgetTransaction>
-    fun getBudgetTransactionsBy(budgetId: Int): LiveData<List<BudgetTransaction>>
-    fun getBudgetTransactionsBy(categoryId: Int, budgetId: Int): LiveData<List<BudgetTransaction>>
+    fun getBudgetTransactionsBy(categoryStatusId: Int): LiveData<List<BudgetTransaction>>
 }

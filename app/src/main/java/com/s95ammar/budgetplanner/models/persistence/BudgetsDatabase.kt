@@ -5,9 +5,10 @@ import androidx.room.RoomDatabase
 import com.s95ammar.budgetplanner.models.data.Budget
 import com.s95ammar.budgetplanner.models.data.BudgetTransaction
 import com.s95ammar.budgetplanner.models.data.Category
+import com.s95ammar.budgetplanner.models.data.CategoryStatus
 
 @Database(
-    entities = [Budget::class, Category::class, BudgetTransaction::class],
+    entities = [Budget::class, Category::class, CategoryStatus::class, BudgetTransaction::class],
     version = 1
 )
 abstract class BudgetsDatabase : RoomDatabase() {
