@@ -15,16 +15,16 @@ interface BudgetTransactionDao {
 	@Delete
 	suspend fun delete(budgetTransaction: BudgetTransaction)
 
-	@Query("DELETE FROM budgetTransaction")
+	@Query("DELETE FROM budget_transaction")
 	suspend fun deleteAllBudgetTransactions()
 
-	@Query("SELECT * FROM budgetTransaction WHERE id=:id")
+	@Query("SELECT * FROM budget_transaction WHERE id=:id")
 	fun getBudgetTransaction(id: Int): LiveData<BudgetTransaction>
 
-	@Query("SELECT * FROM budgetTransaction WHERE budget_id=:budgetId")
+	@Query("SELECT * FROM budget_transaction WHERE budget_id=:budgetId")
 	fun getBudgetTransactions(budgetId: Int): LiveData<List<BudgetTransaction>>
 
-	@Query("SELECT * FROM budgetTransaction WHERE budget_id=:budgetId AND category_Id=:categoryId")
+	@Query("SELECT * FROM budget_transaction WHERE budget_id=:budgetId AND category_Id=:categoryId")
 	fun getBudgetTransactions(categoryId: Int, budgetId: Int): LiveData<List<BudgetTransaction>>
 
 }

@@ -9,7 +9,9 @@ import com.s95ammar.budgetplanner.models.persistence.CategoryDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class PersistenceRepository @Inject constructor(
     private val budgetDao: BudgetDao,
     private val categoryDao: CategoryDao,

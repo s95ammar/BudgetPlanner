@@ -18,4 +18,5 @@ abstract class BudgetsDatabase : RoomDatabase() {
     abstract fun getBudgetDao(): BudgetDao
     abstract fun getCategoryDao(): CategoryDao
     abstract fun getBudgetTransactionDao(): BudgetTransactionDao
+    abstract fun getCategoryStatusDao(): CategoryStatusDao
 }
