@@ -11,7 +11,7 @@ ext {
             "kotlin"          : "1.3.72",
             "coreKtx"         : "1.3.1",
             "appcompat"       : "1.2.0",
-            "constraintlayout": "2.0.0",
+            "constraintlayout": "2.0.1",
             "material"        : "1.2.0",
 
             // app
@@ -21,6 +21,7 @@ ext {
             "lifecycle"       : "2.2.0",
             "viewPager2"      : "1.0.0",
             "room"            : "2.2.5",
+            "dimen"            : "1.0.6",
 
             // testing
             "junit"           : "4.13"

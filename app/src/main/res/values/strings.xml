@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Budget Planner</string>
+
     <string name="title_current_budget">Current Budget</string>
     <string name="title_budgets_list">Budgets List</string>
-    <string name="categories">Categories</string>
-    <string name="dashboard">Dashboard</string>
-    <string name="expenses">Expenses</string>
+    <string name="title_categories">Categories</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_expenses">Expenses</string>
+
+    <string name="label_total_estimate">Total estimate:</string>
+    <string name="label_total_spent">Total spent:</string>
 
 </resources>

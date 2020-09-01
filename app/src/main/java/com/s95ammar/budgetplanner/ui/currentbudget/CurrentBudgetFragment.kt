@@ -32,7 +32,7 @@ class CurrentBudgetFragment : BaseFragment() {
                 fragmentProvider { ExpensesFragment.newInstance() }
             )
         )
-        val titles = listOf(getString(R.string.dashboard), getString(R.string.expenses))
+        val titles = listOf(getString(R.string.title_dashboard), getString(R.string.title_expenses))
         TabLayoutMediator(tab_layout, pager) { tab, position ->
             tab.text = titles[position]
         }.attach()

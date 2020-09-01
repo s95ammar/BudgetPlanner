@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/_4sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_8sdp">
+
+        <TextView
+            android:id="@+id/text_view_budget_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:textAppearance="@style/text_title_black_bold_16sdp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="My active budget with some very long name xD" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:background="@drawable/ic_more"
+            android:backgroundTint="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_budget_item_total_estimate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:text="@string/label_total_estimate"
+            android:textAppearance="@style/text_desc_black_14sdp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintStart_toStartOf="@+id/text_view_budget_item_title"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_budget_item_title" />
+
+        <TextView
+            android:id="@+id/text_view_budget_item_total_estimate_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:textAppearance="@style/text_desc_black_14sdp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_budget_item_total_estimate"
+            app:layout_constraintStart_toEndOf="@+id/barrier_total_estimate_key_text_views"
+            app:layout_constraintTop_toTopOf="@+id/text_view_budget_item_total_estimate"
+            tools:text="19,500" />
+
+        <ProgressBar
+            android:id="@+id/progress_budget_item_total_estimate_value"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:indeterminateTint="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_budget_item_total_estimate_value"
+            app:layout_constraintEnd_toEndOf="@+id/text_view_budget_item_total_estimate_value"
+            app:layout_constraintStart_toStartOf="@+id/text_view_budget_item_total_estimate_value"
+            app:layout_constraintTop_toTopOf="@+id/text_view_budget_item_total_estimate_value" />
+
+        <TextView
+            android:id="@+id/text_view_budget_item_total_spent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="@string/label_total_spent"
+            android:textAppearance="@style/text_desc_black_14sdp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintStart_toStartOf="@+id/text_view_budget_item_title"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_budget_item_total_estimate" />
+
+        <TextView
+            android:id="@+id/text_view_budget_item_total_spent_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:textAppearance="@style/text_desc_black_14sdp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_budget_item_total_spent"
+            app:layout_constraintStart_toEndOf="@+id/barrier_total_estimate_key_text_views"
+            app:layout_constraintTop_toTopOf="@+id/text_view_budget_item_total_spent"
+            tools:text="15,500" />
+
+        <ProgressBar
+            android:id="@+id/progress_budget_item_total_spent_value"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:indeterminateTint="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/text_view_budget_item_total_spent_value"
+            app:layout_constraintEnd_toEndOf="@+id/text_view_budget_item_total_spent_value"
+            app:layout_constraintStart_toStartOf="@+id/text_view_budget_item_total_spent_value"
+            app:layout_constraintTop_toTopOf="@+id/text_view_budget_item_total_spent_value" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_item_total_estimate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="text_view_budget_item_total_estimate_value,text_view_budget_item_total_estimate,progress_budget_item_total_estimate_value" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_item_total_spent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="text_view_budget_item_total_spent_value,text_view_budget_item_total_spent,progress_budget_item_total_spent_value" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_total_estimate_key_text_views"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="text_view_budget_item_total_spent,text_view_budget_item_total_estimate" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
