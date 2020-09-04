@@ -10,6 +10,7 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.ViewPagerFragmentAdapter
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.budget.dashboard.DashboardFragment
+import com.s95ammar.budgetplanner.ui.budget.dashboard.savings.SavingsFragment
 import com.s95ammar.budgetplanner.ui.budget.expenses.ExpensesFragment
 import com.s95ammar.budgetplanner.ui.fragmentProvider
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,10 +30,15 @@ class CurrentBudgetFragment : BaseFragment() {
             this,
             listOf(
                 fragmentProvider { DashboardFragment.newInstance() },
-                fragmentProvider { ExpensesFragment.newInstance() }
+                fragmentProvider { ExpensesFragment.newInstance() },
+                fragmentProvider { SavingsFragment.newInstance() }
             )
         )
-        val titles = listOf(getString(R.string.title_dashboard), getString(R.string.title_expenses))
+        val titles = listOf(
+            getString(R.string.title_dashboard),
+            getString(R.string.title_expenses),
+            getString(R.string.title_savings)
+        )
         TabLayoutMediator(tab_layout, pager) { tab, position ->
             tab.text = titles[position]
         }.attach()

@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_categories"
         android:title="@string/title_categories" />
 
+    <item
+        android:id="@+id/navigation_saving_jars"
+        android:icon="@drawable/ic_saving_jars"
+        android:title="@string/title_saving_jars" />
+
 </menu>

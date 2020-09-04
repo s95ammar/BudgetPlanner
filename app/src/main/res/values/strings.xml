@@ -6,6 +6,8 @@
     <string name="title_categories">Categories</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_expenses">Expenses</string>
+    <string name="title_saving_jars">Saving Jars</string>
+    <string name="title_savings">Savings</string>
 
     <string name="label_total_estimate">Total estimate:</string>
     <string name="label_total_spent">Total spent:</string>

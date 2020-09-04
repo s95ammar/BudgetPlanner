@@ -7,16 +7,20 @@
     tools:context=".ui.budgetslist.BudgetsListFragment">
 
     <com.google.android.material.appbar.AppBarLayout
+        style="@style/BudgetPlannerAppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar_budgets_list"
+            style="@style/BudgetPlannerMaterialToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
             app:title="@string/title_budgets_list"
             app:titleTextColor="@color/colorWhite" />
+
+        <include layout="@layout/layout_view_toolbar_shadow" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -24,8 +28,8 @@
         android:id="@+id/recycler_view_budgets_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_budget"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_budget" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_budgets_list"

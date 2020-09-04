@@ -7,16 +7,17 @@
     tools:context=".ui.currentbudget.CurrentBudgetFragment">
 
     <com.google.android.material.appbar.AppBarLayout
+        style="@style/BudgetPlannerAppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
+            style="@style/BudgetPlannerMaterialToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/title_current_budget"
-            app:titleTextColor="@color/colorWhite" />
+            app:title="@string/title_current_budget" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
@@ -28,10 +29,7 @@
             app:tabMaxWidth="0dp"
             app:tabTextColor="@color/colorWhite" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray" />
+        <include layout="@layout/layout_view_toolbar_shadow" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
