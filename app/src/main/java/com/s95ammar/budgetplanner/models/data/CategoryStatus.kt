@@ -25,8 +25,8 @@ import androidx.room.PrimaryKey
 data class CategoryStatus(
     @ColumnInfo(name = "budget_id", index = true) val budgetId: Int,
     @ColumnInfo(name = "category_id", index = true) val categoryId: Int,
-    val estimate: Long,
-    val balance: Long
+    val max: Long,
+    val current: Long
 ) {
     @PrimaryKey(autoGenerate = true)
     var id = 0

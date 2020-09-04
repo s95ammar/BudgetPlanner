@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.models.persistence
+package com.s95ammar.budgetplanner.models.persistence.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

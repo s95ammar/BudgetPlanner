@@ -37,4 +37,12 @@ object RoomModule {
     @Provides
     fun provideCategoryStatusDao(db: BudgetsDatabase) = db.getCategoryStatusDao()
 
+    @Singleton
+    @Provides
+    fun provideSavingJarDao(db: BudgetsDatabase) = db.getSavingJarDao()
+
+    @Singleton
+    @Provides
+    fun provideSavingDao(db: BudgetsDatabase) = db.getSavingDao()
+
 }
