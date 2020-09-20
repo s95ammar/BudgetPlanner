@@ -27,7 +27,7 @@ class BudgetCreateEditFragment : BaseFragment() {
     override fun setUpViews() {
         super.setUpViews()
         toolbar_budgets_create_edit.setNavigationOnClickListener { onBackPressed() }
-        viewModel.modeLiveData.observe(viewLifecycleOwner) { setViewsToMode(it) }
+        viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
     }
 
     private fun setViewsToMode(mode: CreateEditMode) {

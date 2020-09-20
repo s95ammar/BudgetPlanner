@@ -15,12 +15,11 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
     private val repository: Repository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val budgetId = savedStateHandle.get<Int>(BundleKey.KEY_BUDGET_ID)
-    private val mode = if (budgetId == Constants.NO_ITEM) CreateEditMode.CREATE else CreateEditMode.EDIT
-    private val isEditMode = mode == CreateEditMode.EDIT
+    private val budgetId = savedStateHandle.get<Int>(BundleKey.KEY_BUDGET_ID) ?: Constants.NO_ITEM
 
-    private val _modeLiveData = MutableLiveData(mode)
 
-    val modeLiveData = _modeLiveData.asLiveData()
+    private val _mode = MutableLiveData(CreateEditMode.getById(budgetId))
+
+    val mode = _mode.asLiveData()
 
 }

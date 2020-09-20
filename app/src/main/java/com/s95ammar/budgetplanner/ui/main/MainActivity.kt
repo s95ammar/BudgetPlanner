@@ -36,12 +36,12 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ -> onDestinationChanged(destination) }
     }
 
-    private fun onDestinationChanged(destination: NavDestination) {
-        bottom_nav_view.isVisible = bottomNavItems.contains(destination.id)
-    }
-
     private fun onNavigationItemSelected(item: MenuItem): Boolean {
         if (item.itemId in bottomNavItems) navController.popBackStack()
         return NavigationUI.onNavDestinationSelected(item, navController)
+    }
+
+    private fun onDestinationChanged(destination: NavDestination) {
+        bottom_nav_view.isVisible = bottomNavItems.contains(destination.id)
     }
 }
