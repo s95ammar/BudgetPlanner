@@ -36,9 +36,9 @@ class CurrentBudgetFragment : BaseFragment() {
             )
         )
         val titles = listOf(
-            getString(R.string.title_dashboard),
-            getString(R.string.title_expenses),
-            getString(R.string.title_savings)
+            getString(R.string.dashboard),
+            getString(R.string.expenses),
+            getString(R.string.savings)
         )
         TabLayoutMediator(tab_layout, pager) { tab, position ->
             tab.text = titles[position]

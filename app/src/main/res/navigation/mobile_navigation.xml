@@ -8,13 +8,13 @@
     <fragment
         android:id="@+id/navigation_current_budget"
         android:name="com.s95ammar.budgetplanner.ui.currentbudget.CurrentBudgetFragment"
-        android:label="@string/title_current_budget"
+        android:label="@string/current_budget"
         tools:layout="@layout/fragment_current_budget" />
 
     <fragment
         android:id="@+id/navigation_budgets_list"
         android:name="com.s95ammar.budgetplanner.ui.budgetslist.BudgetsListFragment"
-        android:label="@string/title_budgets_list"
+        android:label="@string/budgets_list"
         tools:layout="@layout/fragment_budgets_list" >
         <action
             android:id="@+id/action_navigation_budgets_list_to_budgetCreateEditFragment"
@@ -24,13 +24,13 @@
     <fragment
         android:id="@+id/navigation_categories"
         android:name="com.s95ammar.budgetplanner.ui.categories.CategoriesFragment"
-        android:label="@string/title_categories"
+        android:label="@string/categories"
         tools:layout="@layout/fragment_categories" />
 
     <fragment
         android:id="@+id/navigation_saving_jars"
         android:name="com.s95ammar.budgetplanner.ui.savingjars.SavingJarsFragment"
-        android:label="@string/title_saving_jars"
+        android:label="@string/saving_jars"
         tools:layout="@layout/fragment_saving_jars" />
     <fragment
         android:id="@+id/budgetCreateEditFragment"

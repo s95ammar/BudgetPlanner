@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/title_saving_jars"
+            app:title="@string/saving_jars"
             app:titleTextColor="@color/colorWhite" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />

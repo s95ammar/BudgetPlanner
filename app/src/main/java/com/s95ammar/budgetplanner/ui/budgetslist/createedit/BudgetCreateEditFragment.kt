@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
+import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.budget_create_edit_fragment.*
 
@@ -26,5 +27,19 @@ class BudgetCreateEditFragment : BaseFragment() {
     override fun setUpViews() {
         super.setUpViews()
         toolbar_budgets_create_edit.setNavigationOnClickListener { onBackPressed() }
+        viewModel.modeLiveData.observe(viewLifecycleOwner) { setViewsToMode(it) }
+    }
+
+    private fun setViewsToMode(mode: CreateEditMode) {
+        when (mode) {
+            CreateEditMode.CREATE -> {
+                toolbar_budgets_create_edit.title = getString(R.string.create_budget)
+                button_budget_create_edit.text = getString(R.string.create)
+            }
+            CreateEditMode.EDIT -> {
+                toolbar_budgets_create_edit.title = getString(R.string.edit_budget)
+                button_budget_create_edit.text = getString(R.string.save)
+            }
+        }
     }
 }

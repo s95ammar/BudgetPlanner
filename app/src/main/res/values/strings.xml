@@ -1,20 +1,23 @@
 <resources>
     <string name="app_name">Budget Planner</string>
 
-    <string name="title_current_budget">Current Budget</string>
-    <string name="title_budgets_list">Budgets List</string>
-    <string name="title_categories">Categories</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_expenses">Expenses</string>
-    <string name="title_saving_jars">Saving Jars</string>
-    <string name="title_savings">Savings</string>
-    <string name="title_create_budget">Create budget</string>
-    <string name="title_edit_budget">Edit budget</string>
+    <string name="current_budget">Current Budget</string>
+    <string name="budgets_list">Budgets List</string>
+    <string name="categories">Categories</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="expenses">Expenses</string>
+    <string name="saving_jars">Saving Jars</string>
+    <string name="savings">Savings</string>
+    <string name="create_budget">Create budget</string>
+    <string name="edit_budget">Edit budget</string>
 
-    <string name="label_key_total_balance">Total balance:</string>
-    <string name="label_key_total_spending_estimate">Total spending estimate:</string>
-    <string name="label_key_total_savings">Total savings:</string>
+    <string name="key_total_balance">Total balance:</string>
+    <string name="key_total_spending_estimate">Total spending estimate:</string>
+    <string name="key_total_savings">Total savings:</string>
 
-    <string name="label_budget_title">Budget title</string>
+    <string name="title">Title</string>
+    <string name="create">create</string>
+    <string name="save">Save</string>
+    <string name="total_balance">Total balance</string>
 
 </resources>

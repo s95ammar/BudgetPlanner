@@ -5,7 +5,7 @@ import kotlin.reflect.KClass
 
 object Logger {
 
-    private const val LOG_TAG = "Tag_Budget_Planner"
+    private const val LOG_TAG = "Budget_Planner"
 
     fun logDebug(logSource: KClass<out Any>, message: String) {
         Log.d(LOG_TAG, "${logSource.simpleName}: $message")
