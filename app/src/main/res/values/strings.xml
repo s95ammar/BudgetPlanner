@@ -8,8 +8,13 @@
     <string name="title_expenses">Expenses</string>
     <string name="title_saving_jars">Saving Jars</string>
     <string name="title_savings">Savings</string>
+    <string name="title_create_budget">Create budget</string>
+    <string name="title_edit_budget">Edit budget</string>
 
-    <string name="label_total_estimate">Total estimate:</string>
-    <string name="label_total_spent">Total spent:</string>
+    <string name="label_key_total_balance">Total balance:</string>
+    <string name="label_key_total_spending_estimate">Total spending estimate:</string>
+    <string name="label_key_total_savings">Total savings:</string>
+
+    <string name="label_budget_title">Budget title</string>
 
 </resources>

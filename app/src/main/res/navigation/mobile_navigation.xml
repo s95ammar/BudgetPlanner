@@ -15,7 +15,11 @@
         android:id="@+id/navigation_budgets_list"
         android:name="com.s95ammar.budgetplanner.ui.budgetslist.BudgetsListFragment"
         android:label="@string/title_budgets_list"
-        tools:layout="@layout/fragment_budgets_list" />
+        tools:layout="@layout/fragment_budgets_list" >
+        <action
+            android:id="@+id/action_navigation_budgets_list_to_budgetCreateEditFragment"
+            app:destination="@id/budgetCreateEditFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_categories"
@@ -28,4 +32,9 @@
         android:name="com.s95ammar.budgetplanner.ui.savingjars.SavingJarsFragment"
         android:label="@string/title_saving_jars"
         tools:layout="@layout/fragment_saving_jars" />
+    <fragment
+        android:id="@+id/budgetCreateEditFragment"
+        android:name="com.s95ammar.budgetplanner.ui.budgetslist.createedit.BudgetCreateEditFragment"
+        android:label="budget_create_edit_fragment"
+        tools:layout="@layout/budget_create_edit_fragment" />
 </navigation>

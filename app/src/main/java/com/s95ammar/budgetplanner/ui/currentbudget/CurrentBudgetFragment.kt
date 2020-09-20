@@ -26,6 +26,7 @@ class CurrentBudgetFragment : BaseFragment() {
     }
 
     override fun setUpViews() {
+        super.setUpViews()
         pager.adapter = ViewPagerFragmentAdapter(
             this,
             listOf(
