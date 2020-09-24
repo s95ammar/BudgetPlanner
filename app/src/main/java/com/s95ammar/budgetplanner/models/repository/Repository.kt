@@ -8,7 +8,7 @@ interface Repository {
     // Budget CRUD
 
     suspend fun insert(budget: Budget)
-    suspend fun update(budgets: List<Budget>)
+    suspend fun update(budget: Budget)
     suspend fun delete(budget: Budget)
     fun getBudgetById(id: Int): LiveData<Budget>
     fun getAllBudgets(): LiveData<List<Budget>>
