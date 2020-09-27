@@ -3,17 +3,10 @@ package com.s95ammar.budgetplanner.models.persistence.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.s95ammar.budgetplanner.models.data.Category
+import com.s95ammar.budgetplanner.models.persistence.dao.base.BaseDao
 
 @Dao
-interface CategoryDao {
-	@Insert
-	suspend fun insert(category: Category)
-
-	@Update
-	suspend fun update(category: Category)
-
-	@Delete
-	suspend fun delete(category: Category)
+interface CategoryDao: BaseDao<Category> {
 
 	@Query("SELECT * FROM category WHERE id=:id")
 	fun getCategoryById(id: Int): LiveData<Category>

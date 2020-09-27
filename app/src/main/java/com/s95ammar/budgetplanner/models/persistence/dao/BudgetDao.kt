@@ -3,20 +3,10 @@ package com.s95ammar.budgetplanner.models.persistence.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.s95ammar.budgetplanner.models.data.Budget
+import com.s95ammar.budgetplanner.models.persistence.dao.base.BaseDao
 
 @Dao
-interface BudgetDao {
-	@Insert
-	suspend fun insert(budget: Budget)
-
-	@Update
-	suspend fun update(budgets: List<Budget>)
-
-	@Update
-	suspend fun update(budget: Budget)
-
-	@Delete
-	suspend fun delete(budget: Budget)
+interface BudgetDao: BaseDao<Budget> {
 
 	@Query("SELECT * FROM budget WHERE id=:id")
 	fun getBudgetById(id: Int): LiveData<Budget>

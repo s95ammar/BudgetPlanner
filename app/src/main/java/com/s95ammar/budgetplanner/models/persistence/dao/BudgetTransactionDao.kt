@@ -3,17 +3,10 @@ package com.s95ammar.budgetplanner.models.persistence.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.s95ammar.budgetplanner.models.data.BudgetTransaction
+import com.s95ammar.budgetplanner.models.persistence.dao.base.BaseDao
 
 @Dao
-interface BudgetTransactionDao {
-	@Insert
-	suspend fun insert(budgetTransaction: BudgetTransaction)
-
-	@Update
-	suspend fun update(budgetTransaction: BudgetTransaction)
-
-	@Delete
-	suspend fun delete(budgetTransaction: BudgetTransaction)
+interface BudgetTransactionDao: BaseDao<BudgetTransaction> {
 
 	@Query("DELETE FROM budget_transaction")
 	suspend fun deleteAllBudgetTransactions()
