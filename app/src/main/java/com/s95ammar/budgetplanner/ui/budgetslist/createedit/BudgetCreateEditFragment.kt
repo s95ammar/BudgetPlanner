@@ -32,7 +32,7 @@ class BudgetCreateEditFragment : BaseFragment() {
 
     override fun setUpViews() {
         super.setUpViews()
-        toolbar_budgets_create_edit.setNavigationOnClickListener { onBackPressed() }
+        toolbar_budgets_create_edit.setNavigationOnClickListener { navController.navigateUp() }
         button_budget_create_edit.setOnClickListener { onApply() }
     }
 
@@ -40,7 +40,7 @@ class BudgetCreateEditFragment : BaseFragment() {
         super.initObservers()
         viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
         viewModel.onViewValidationError.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
-        viewModel.onApplySuccess.observeEvent(viewLifecycleOwner) { /*TODO*/ }
+        viewModel.onApplySuccess.observeEvent(viewLifecycleOwner) { navController.navigateUp() }
     }
 
     private fun handleValidationErrors(validationErrors: ValidationErrors) {

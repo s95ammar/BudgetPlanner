@@ -33,7 +33,7 @@ abstract class Validator<InputEntity, OutputEntity>(private val inputEntity: Inp
 
 data class ViewValidation(val viewKey: Int, val validationCases: List<ValidationCase>)
 
-data class ValidationCase(private val errorCaseCallback: () -> Boolean, private val errorIdIfProduced: Int) {
+class ValidationCase(errorCaseCallback: () -> Boolean, errorIdIfProduced: Int) {
     val isValid = !errorCaseCallback()
     val errorId = if (isValid) ValidationErrors.ERROR_NONE else errorIdIfProduced
 }

@@ -1,15 +1,15 @@
 package com.s95ammar.budgetplanner.ui.base
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 
 
 abstract class BaseFragment: Fragment() {
+
+    val navController by lazy { findNavController() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -20,23 +20,6 @@ abstract class BaseFragment: Fragment() {
     open fun setUpViews() {}
 
     open fun initObservers() {}
-
-    @CallSuper
-    protected fun onBackPressed() {
-        hideKeyboard()
-        requireActivity().onBackPressed()
-    }
-
-    protected fun hideKeyboard() {
-        val view: View = requireActivity().currentFocus ?: return
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        imm?.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    protected fun showKeyboard() {
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-    }
 
     fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
