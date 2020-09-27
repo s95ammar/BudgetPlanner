@@ -16,6 +16,7 @@ import com.s95ammar.budgetplanner.ui.common.Constants
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.validation.*
 import com.s95ammar.budgetplanner.util.EventMutableLiveData
+import com.s95ammar.budgetplanner.util.EventMutableLiveDataVoid
 import com.s95ammar.budgetplanner.util.asLiveData
 import kotlinx.coroutines.launch
 
@@ -28,18 +29,21 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
 
     private val _mode = MutableLiveData(CreateEditMode.getById(budgetId))
     private val _onViewValidationError = EventMutableLiveData<ValidationErrors>()
+    private val _onApplySuccess = EventMutableLiveDataVoid()
 
     val mode = _mode.asLiveData()
     val onViewValidationError = _onViewValidationError.asEventLiveData()
+    val onApplySuccess = _onApplySuccess.asEventLiveData()
 
     fun onApply(budgetValidationEntity: BudgetValidationEntity) {
         val validator = createValidator(budgetValidationEntity)
 
         when (val result = validator.getValidationResult()) {
             is ValidationResult.Success -> {
+                val budget = result.outputData
                 when (_mode.value) {
-                    CreateEditMode.CREATE -> insert(result.outputData)
-                    CreateEditMode.EDIT -> update(result.outputData)
+                    CreateEditMode.CREATE -> insert(budget) { _onApplySuccess.call() }
+                    CreateEditMode.EDIT -> update(budget) { _onApplySuccess.call() }
                 }
             }
             is ValidationResult.Error -> _onViewValidationError.call(result.throwable)
@@ -85,8 +89,14 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun insert(budget: Budget)  = viewModelScope.launch { repository.insert(budget) }
+    private fun insert(budget: Budget, onComplete: () -> Unit)  = viewModelScope.launch {
+        repository.insert(budget)
+        onComplete()
+    }
 
-    private fun update(budget: Budget) = viewModelScope.launch { repository.update(budget) }
+    private fun update(budget: Budget, onComplete: () -> Unit) = viewModelScope.launch {
+        repository.update(budget)
+        onComplete()
+    }
 
 }

@@ -1,28 +1,22 @@
 package com.s95ammar.budgetplanner.ui.common.validation
 
+import com.s95ammar.budgetplanner.ui.common.Constants
+
 abstract class Validator<InputEntity, OutputEntity>(private val inputEntity: InputEntity) {
 
-    private val viewValidationList by lazy { provideViewValidationList() }
+    private val viewsValidation by lazy { provideViewValidationList() }
 
     private fun isAllValid(): Boolean {
-        return viewValidationList.all { viewValidation -> viewValidation.validationCases.all { it.isValid() } }
+        return viewsValidation.all { singleViewValidation -> singleViewValidation.validationCases.all { it.isValid } }
     }
 
     private fun getViewsErrors(): List<ViewErrors> {
-        
-        val viewsErrors = mutableListOf<ViewErrors>()
-
-        for (viewValidation in viewValidationList) {
-            val errorsIds = mutableListOf<Int>()
-            for (validationCase in viewValidation.validationCases) {
-                if (!validationCase.isValid())
-                    errorsIds.add(validationCase.errorId)
-            }
-            if (errorsIds.isNotEmpty())
-                viewsErrors.add(ViewErrors(viewValidation.viewKey, errorsIds))
+        return viewsValidation.map { singleViewValidation ->
+            ViewErrors(
+                viewKey = singleViewValidation.viewKey,
+                errorsIds = singleViewValidation.validationCases.map { it.errorId }
+            )
         }
-
-        return viewsErrors
     }
 
     fun getValidationResult(): ValidationResult<OutputEntity> {
@@ -38,9 +32,17 @@ abstract class Validator<InputEntity, OutputEntity>(private val inputEntity: Inp
 }
 
 data class ViewValidation(val viewKey: Int, val validationCases: List<ValidationCase>)
-data class ValidationCase(val isValid: () -> Boolean, val errorId: Int)
 
-data class ValidationErrors(val viewsErrors: List<ViewErrors>) : Throwable()
+data class ValidationCase(private val errorCaseCallback: () -> Boolean, private val errorIdIfProduced: Int) {
+    val isValid = !errorCaseCallback()
+    val errorId = if (isValid) ValidationErrors.ERROR_NONE else errorIdIfProduced
+}
+
+data class ValidationErrors(val viewsErrors: List<ViewErrors>) : Throwable() {
+    companion object {
+        const val ERROR_NONE = Constants.NO_ITEM
+    }
+}
 data class ViewErrors(val viewKey: Int, val errorsIds: List<Int>)
 
 sealed class ValidationResult<OutputEntity> {

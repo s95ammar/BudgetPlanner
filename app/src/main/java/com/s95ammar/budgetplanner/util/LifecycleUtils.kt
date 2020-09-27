@@ -1,9 +1,6 @@
 package com.s95ammar.budgetplanner.util
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 
 fun <T> MutableLiveData<T>.asLiveData(): LiveData<T> = this
 
@@ -56,4 +53,8 @@ class EventObserver<T>(val action: (T) -> Unit) : Observer<Event<T>> {
     override fun onChanged(event: Event<T>) {
         event.getContentIfNotHandled()?.let { action(it) }
     }
+}
+
+fun <T> LiveData<Event<T>>.observeEvent(lifecycleOwner: LifecycleOwner, action: (T) -> Unit) {
+    observe(lifecycleOwner, EventObserver(action))
 }

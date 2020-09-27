@@ -4,12 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/_4sdp"
     app:cardCornerRadius="@dimen/_8sdp"
-    android:layout_marginVertical="@dimen/_4sdp">
+    app:cardElevation="@dimen/_4sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:padding="@dimen/_8sdp">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -20,6 +24,7 @@
             android:textAppearance="@style/TextTitleBlackBold16sdp"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@+id/imageButton"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="My active budget with some very long name xD" />
@@ -130,28 +135,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/text_view_budget_item_total_savings_key"
             app:layout_constraintStart_toEndOf="@+id/barrier_key_text_views"
             app:layout_constraintTop_toTopOf="@+id/text_view_budget_item_total_savings_key" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_item_total_estimate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="text_view_budget_item_total_balance_key,text_view_budget_item_total_balance_value" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_item_total_spent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="text_view_budget_item_total_spending_estimate_key,
-                text_view_budget_item_total_spending_estimate_value,
-                progress_budget_item_total_spending_estimate" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_item_total_savings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="text_view_budget_item_total_savings_key,
-                text_view_budget_item_total_savings_value,
-                progress_budget_item_total_savings" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_key_text_views"

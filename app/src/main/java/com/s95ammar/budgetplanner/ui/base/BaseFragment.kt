@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 
@@ -35,6 +36,14 @@ abstract class BaseFragment: Fragment() {
     protected fun showKeyboard() {
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun showToast(throwable: Throwable) {
+        Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_SHORT).show()
     }
 
 }

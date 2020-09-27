@@ -3,12 +3,14 @@ package com.s95ammar.budgetplanner.ui.budgetslist.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.ui.budgetslist.entity.BudgetViewEntity
+import kotlinx.android.synthetic.main.item_budget.view.*
 
-class BudgetsListAdapter: BaseListAdapter<BudgetViewEntity, BudgetsListAdapter.BudgetsListViewHolder>(BudgetItemCallback()) {
+class BudgetsListAdapter(val onItemClick: (Int) -> Unit): BaseListAdapter<BudgetViewEntity, BudgetsListAdapter.BudgetsListViewHolder>(BudgetItemCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BudgetsListViewHolder {
@@ -19,6 +21,21 @@ class BudgetsListAdapter: BaseListAdapter<BudgetViewEntity, BudgetsListAdapter.B
 
         override fun bind(item: BudgetViewEntity, payloads: PayloadsHolder<BudgetViewEntity>) {
 
+            if (payloads.shouldUpdate(PayloadsType.NAME))
+                itemView.text_view_budget_item_title.text = item.name
+
+            if (payloads.shouldUpdate(PayloadsType.TOTAL_BALANCE))
+                itemView.text_view_budget_item_total_balance_value.text = item.totalBalance.toString()
+
+            if (payloads.shouldUpdate(PayloadsType.TOTAL_SPENDING_ESTIMATE)) {
+                itemView.text_view_budget_item_total_spending_estimate_value.text = item.totalSpendingEstimate?.toString()
+                itemView.progress_budget_item_total_spending_estimate?.isVisible = item.totalSpendingEstimate == null
+            }
+
+            if (payloads.shouldUpdate(PayloadsType.TOTAL_SAVINGS)) {
+                itemView.text_view_budget_item_total_savings_value.text = item.totalSavings?.toString()
+                itemView.progress_budget_item_total_savings?.isVisible = item.totalSavings == null
+            }
         }
     }
 

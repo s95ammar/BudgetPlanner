@@ -4,6 +4,6 @@ data class BudgetViewEntity(
     val id: Int,
     val name: String,
     val totalBalance: Long,
-    val totalSpendingEstimate: Long,
-    val totalSavings: Long
+    val totalSpendingEstimate: Long?,
+    val totalSavings: Long?
 )
