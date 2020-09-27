@@ -26,7 +26,6 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
 ) : ViewModel() {
     private val budgetId = savedStateHandle.get<Int>(BundleKey.KEY_BUDGET_ID) ?: Constants.NO_ITEM
 
-
     private val _mode = MutableLiveData(CreateEditMode.getById(budgetId))
     private val _onViewValidationError = EventMutableLiveData<ValidationErrors>()
     private val _onApplySuccess = EventMutableLiveDataVoid()
@@ -39,13 +38,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
         val validator = createValidator(budgetValidationEntity)
 
         when (val result = validator.getValidationResult()) {
-            is ValidationResult.Success -> {
-                val budget = result.outputData
-                when (_mode.value) {
-                    CreateEditMode.CREATE -> insert(budget) { _onApplySuccess.call() }
-                    CreateEditMode.EDIT -> update(budget) { _onApplySuccess.call() }
-                }
-            }
+            is ValidationResult.Success -> insertOrReplace(result.outputData) { _onApplySuccess.call() }
             is ValidationResult.Error -> _onViewValidationError.call(result.throwable)
         }
 
@@ -89,13 +82,8 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun insert(budget: Budget, onComplete: () -> Unit)  = viewModelScope.launch {
-        repository.insert(budget)
-        onComplete()
-    }
-
-    private fun update(budget: Budget, onComplete: () -> Unit) = viewModelScope.launch {
-        repository.update(budget)
+    private fun insertOrReplace(budget: Budget, onComplete: () -> Unit)  = viewModelScope.launch {
+        repository.insertOrReplace(budget)
         onComplete()
     }
 
