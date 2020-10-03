@@ -24,7 +24,8 @@
     <string name="error_empty_total_balance">Please enter the total balance</string>
     <string name="error_invalid_total_balance">Invalid total balance</string>
     <string name="error_something_went_wrong_title">Oops</string>
-    <string name="error_format_something_went_wrong_desc">Something went wrong\n\n%s</string>
+    <string name="format_error_something_went_wrong_desc">Something went wrong\n\n%s</string>
+    <string name="loading">Loading…</string>
 
 
 </resources>

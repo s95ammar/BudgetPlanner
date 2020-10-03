@@ -4,12 +4,16 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.s95ammar.budgetplanner.ui.common.LoadingManager
 
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment : Fragment {
+
+    constructor() : super()
+    constructor(@LayoutRes layoutResId: Int) : super(layoutResId)
 
     val navController by lazy { findNavController() }
 

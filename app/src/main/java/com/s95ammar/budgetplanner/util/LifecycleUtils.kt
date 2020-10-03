@@ -46,6 +46,7 @@ class EventMutableLiveDataVoid : EventLiveDataVoid() {
     public override fun call() {
         super.call()
     }
+
     fun asEventLiveData() = this as EventLiveDataVoid
 }
 

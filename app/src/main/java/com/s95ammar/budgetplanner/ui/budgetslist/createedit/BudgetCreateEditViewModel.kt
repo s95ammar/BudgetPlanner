@@ -12,7 +12,7 @@ import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCre
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCreateEditViewKeys
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetValidationEntity
 import com.s95ammar.budgetplanner.ui.common.BundleKey
-import com.s95ammar.budgetplanner.ui.common.Constants
+import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.validation.*
 import com.s95ammar.budgetplanner.util.EventMutableLiveData
@@ -24,7 +24,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
     private val repository: Repository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val budgetId = savedStateHandle.get<Int>(BundleKey.KEY_BUDGET_ID) ?: Constants.NO_ITEM
+    private val budgetId = savedStateHandle.get<Int>(BundleKey.KEY_BUDGET_ID) ?: Int.NO_ITEM
 
     private val _mode = MutableLiveData(CreateEditMode.getById(budgetId))
     private val _onViewValidationError = EventMutableLiveData<ValidationErrors>()
@@ -35,7 +35,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
     val createEditResult = _createEditResult.asEventLiveData()
 
     val editedBudget = liveData<Resource<Budget>?> {
-        if (budgetId != Constants.NO_ITEM) {
+        if (budgetId != Int.NO_ITEM) {
             emit(Resource.Loading())
             try {
                 emitSource(repository.getBudgetById(budgetId).map { Resource.Success(it) })
@@ -67,7 +67,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
 
             override fun provideOutputEntity(inputEntity: BudgetValidationEntity): Budget {
                 return Budget(budgetValidationEntity.budgetTitle, budgetValidationEntity.budgetTotalBalance.toLongOrNull() ?: 0)
-                    .apply { if (budgetId != Constants.NO_ITEM) id = budgetId }
+                    .apply { if (budgetId != Int.NO_ITEM) id = budgetId }
             }
 
             override fun provideViewValidationList(): List<ViewValidation> {

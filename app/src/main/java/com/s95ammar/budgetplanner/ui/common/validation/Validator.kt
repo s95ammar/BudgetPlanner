@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.ui.common.validation
 
-import com.s95ammar.budgetplanner.ui.common.Constants
+import com.s95ammar.budgetplanner.util.NO_ITEM
 
 abstract class Validator<InputEntity, OutputEntity>(private val inputEntity: InputEntity) {
 
@@ -40,7 +40,7 @@ class ValidationCase(errorCaseCallback: () -> Boolean, errorIdIfProduced: Int) {
 
 data class ValidationErrors(val viewsErrors: List<ViewErrors>) : Throwable() {
     companion object {
-        const val ERROR_NONE = Constants.NO_ITEM
+        val ERROR_NONE = Int.NO_ITEM
     }
 }
 data class ViewErrors(val viewKey: Int, val errorsIds: List<Int>)

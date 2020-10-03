@@ -1,9 +1,5 @@
 package com.s95ammar.budgetplanner.ui.budgetslist.createedit
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.Logger
@@ -23,13 +19,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.budget_create_edit_fragment.*
 
 @AndroidEntryPoint
-class BudgetCreateEditFragment : BaseFragment() {
+class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragment) {
 
     private val viewModel: BudgetCreateEditViewModel by viewModels()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.budget_create_edit_fragment, container, false)
-    }
 
     override fun setUpViews() {
         super.setUpViews()
@@ -119,7 +111,7 @@ class BudgetCreateEditFragment : BaseFragment() {
     private fun displayError(throwable: Throwable) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.error_something_went_wrong_title)
-            .setMessage(getString(R.string.error_format_something_went_wrong_desc, throwable.message))
+            .setMessage(getString(R.string.format_error_something_went_wrong_desc, throwable.message))
             .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss()}
             .show()
     }
