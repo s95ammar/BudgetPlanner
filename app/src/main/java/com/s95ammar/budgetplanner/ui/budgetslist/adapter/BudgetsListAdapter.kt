@@ -10,14 +10,21 @@ import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.ui.budgetslist.entity.BudgetViewEntity
 import kotlinx.android.synthetic.main.item_budget.view.*
 
-class BudgetsListAdapter(val onItemClick: (Int) -> Unit): BaseListAdapter<BudgetViewEntity, BudgetsListAdapter.BudgetsListViewHolder>(BudgetItemCallback()) {
+class BudgetsListAdapter(private val onItemClick: (Int) -> Unit): BaseListAdapter<BudgetViewEntity, BudgetsListAdapter.BudgetsListViewHolder>(BudgetItemCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BudgetsListViewHolder {
-        return BudgetsListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_budget, parent, false))
+        return BudgetsListViewHolder(
+            onItemClick,
+            LayoutInflater.from(parent.context).inflate(R.layout.item_budget, parent, false)
+        )
     }
 
-    class BudgetsListViewHolder(itemView: View): BaseViewHolder<BudgetViewEntity>(itemView) {
+    class BudgetsListViewHolder(val onItemClick: (Int) -> Unit, itemView: View): BaseViewHolder<BudgetViewEntity>(itemView) {
+
+        init {
+            itemView.setOnClickListener { onItemClick(adapterPosition) }
+        }
 
         override fun bind(item: BudgetViewEntity, payloads: PayloadsHolder<BudgetViewEntity>) {
 

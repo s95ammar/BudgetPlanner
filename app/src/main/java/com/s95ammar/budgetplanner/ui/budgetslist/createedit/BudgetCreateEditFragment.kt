@@ -5,7 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.s95ammar.budgetplanner.Logger
 import com.s95ammar.budgetplanner.R
+import com.s95ammar.budgetplanner.models.Resource
+import com.s95ammar.budgetplanner.models.Result
+import com.s95ammar.budgetplanner.models.data.Budget
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCreateEditErrors
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCreateEditViewKeys
@@ -19,10 +24,6 @@ import kotlinx.android.synthetic.main.budget_create_edit_fragment.*
 
 @AndroidEntryPoint
 class BudgetCreateEditFragment : BaseFragment() {
-
-    companion object {
-        fun newInstance() = BudgetCreateEditFragment()
-    }
 
     private val viewModel: BudgetCreateEditViewModel by viewModels()
 
@@ -39,14 +40,53 @@ class BudgetCreateEditFragment : BaseFragment() {
     override fun initObservers() {
         super.initObservers()
         viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
+        viewModel.editedBudget.observe(viewLifecycleOwner) { handleBudgetResource(it) }
         viewModel.onViewValidationError.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
-        viewModel.onApplySuccess.observeEvent(viewLifecycleOwner) { navController.navigateUp() }
+        viewModel.createEditResult.observeEvent(viewLifecycleOwner) { handleCreateEditResult(it) }
+    }
+
+    private fun setViewsToMode(mode: CreateEditMode) {
+        when (mode) {
+            CreateEditMode.CREATE -> {
+                toolbar_budgets_create_edit.title = getString(R.string.create_budget)
+                button_budget_create_edit.text = getString(R.string.create)
+            }
+            CreateEditMode.EDIT -> {
+                toolbar_budgets_create_edit.title = getString(R.string.edit_budget)
+                button_budget_create_edit.text = getString(R.string.save)
+            }
+        }
+    }
+
+    private fun handleBudgetResource(budgetResource: Resource<Budget>?) {
+        when (budgetResource) {
+            is Resource.Loading -> loadingManager?.showLoading()
+            is Resource.Error -> displayError(budgetResource.throwable)
+            is Resource.Success -> {
+                loadingManager?.hideLoading()
+                Logger.logDebug(this::class,"Success")
+                input_layout_budget_create_edit_title.editText?.setText(budgetResource.data.name)
+                input_layout_budget_create_edit_total_balance.editText?.setText(budgetResource.data.totalBalance.toString())
+            }
+        }
+
     }
 
     private fun handleValidationErrors(validationErrors: ValidationErrors) {
         for (viewErrors in validationErrors.viewsErrors) {
             if (viewErrors.errorsIds.isNotEmpty())
                 displayError(viewErrors.viewKey, viewErrors.errorsIds.first())
+        }
+    }
+
+    private fun handleCreateEditResult(result: Result) {
+        when (result) {
+            is Result.Loading -> loadingManager?.showLoading()
+            is Result.Error -> displayError(result.throwable)
+            is Result.Success -> {
+                loadingManager?.hideLoading()
+                navController.navigateUp()
+            }
         }
     }
 
@@ -66,19 +106,6 @@ class BudgetCreateEditFragment : BaseFragment() {
         else -> null
     }
 
-    private fun setViewsToMode(mode: CreateEditMode) {
-        when (mode) {
-            CreateEditMode.CREATE -> {
-                toolbar_budgets_create_edit.title = getString(R.string.create_budget)
-                button_budget_create_edit.text = getString(R.string.create)
-            }
-            CreateEditMode.EDIT -> {
-                toolbar_budgets_create_edit.title = getString(R.string.edit_budget)
-                button_budget_create_edit.text = getString(R.string.save)
-            }
-        }
-    }
-
     private fun onApply() {
         clearViewsValidation()
         viewModel.onApply(
@@ -87,6 +114,14 @@ class BudgetCreateEditFragment : BaseFragment() {
                 budgetTotalBalance = input_layout_budget_create_edit_total_balance.inputText.trim()
             )
         )
+    }
+
+    private fun displayError(throwable: Throwable) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.error_something_went_wrong_title)
+            .setMessage(getString(R.string.error_format_something_went_wrong_desc, throwable.message))
+            .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss()}
+            .show()
     }
 
     private fun clearViewsValidation() {

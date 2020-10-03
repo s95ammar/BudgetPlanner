@@ -12,13 +12,20 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
+import com.s95ammar.budgetplanner.ui.common.LoadingDialog
+import com.s95ammar.budgetplanner.ui.common.LoadingManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), KeyboardManager {
+class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
+
+    companion object {
+        const val TAG_LOADING_DIALOG = "TAG_LOADING_DIALOG"
+    }
 
     private val bottomNavItems = listOf(
         R.id.navigation_current_budget,
@@ -61,4 +68,11 @@ class MainActivity : AppCompatActivity(), KeyboardManager {
         imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
+    override fun showLoading() {
+        LoadingDialog().show(supportFragmentManager, TAG_LOADING_DIALOG)
+    }
+
+    override fun hideLoading() {
+        (supportFragmentManager.findFragmentByTag(TAG_LOADING_DIALOG) as? LoadingDialog)?.dismiss()
+    }
 }
