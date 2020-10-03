@@ -2,7 +2,6 @@ package com.s95ammar.budgetplanner.ui.budgetslist.createedit
 
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.s95ammar.budgetplanner.Logger
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.models.Resource
 import com.s95ammar.budgetplanner.models.Result
@@ -32,7 +31,7 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
     override fun initObservers() {
         super.initObservers()
         viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
-        viewModel.editedBudget.observe(viewLifecycleOwner) { handleBudgetResource(it) }
+        viewModel.editedBudget.observe(viewLifecycleOwner) { handleEditedBudgetLoading(it) }
         viewModel.onViewValidationError.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
         viewModel.createEditResult.observeEvent(viewLifecycleOwner) { handleCreateEditResult(it) }
     }
@@ -50,18 +49,24 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
         }
     }
 
-    private fun handleBudgetResource(budgetResource: Resource<Budget>?) {
+    private fun handleEditedBudgetLoading(budgetResource: Resource<Budget>?) {
         when (budgetResource) {
             is Resource.Loading -> loadingManager?.showLoading()
-            is Resource.Error -> displayError(budgetResource.throwable)
+            is Resource.Error -> {
+                loadingManager?.hideLoading()
+                displayError(budgetResource.throwable)
+            }
             is Resource.Success -> {
                 loadingManager?.hideLoading()
-                Logger.logDebug(this::class,"Success")
-                input_layout_budget_create_edit_title.editText?.setText(budgetResource.data.name)
-                input_layout_budget_create_edit_total_balance.editText?.setText(budgetResource.data.totalBalance.toString())
+                setViewsToEditedBudget(budgetResource.data)
             }
         }
 
+    }
+
+    private fun setViewsToEditedBudget(budget: Budget) {
+        input_layout_budget_create_edit_title.editText?.setText(budget.name)
+        input_layout_budget_create_edit_total_balance.editText?.setText(budget.totalBalance.toString())
     }
 
     private fun handleValidationErrors(validationErrors: ValidationErrors) {
@@ -74,7 +79,10 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
     private fun handleCreateEditResult(result: Result) {
         when (result) {
             is Result.Loading -> loadingManager?.showLoading()
-            is Result.Error -> displayError(result.throwable)
+            is Result.Error -> {
+                loadingManager?.hideLoading()
+                displayError(result.throwable)
+            }
             is Result.Success -> {
                 loadingManager?.hideLoading()
                 navController.navigateUp()

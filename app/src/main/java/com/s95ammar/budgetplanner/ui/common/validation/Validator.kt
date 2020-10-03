@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.ui.common.validation
 
-import com.s95ammar.budgetplanner.util.NO_ITEM
+import androidx.annotation.IntRange
 
 abstract class Validator<InputEntity, OutputEntity>(private val inputEntity: InputEntity) {
 
@@ -33,14 +33,14 @@ abstract class Validator<InputEntity, OutputEntity>(private val inputEntity: Inp
 
 data class ViewValidation(val viewKey: Int, val validationCases: List<ValidationCase>)
 
-class ValidationCase(errorCaseCallback: () -> Boolean, errorIdIfProduced: Int) {
+class ValidationCase(errorCaseCallback: () -> Boolean, @IntRange(from = 1) errorIdIfProduced: Int) {
     val isValid = !errorCaseCallback()
     val errorId = if (isValid) ValidationErrors.ERROR_NONE else errorIdIfProduced
 }
 
 data class ValidationErrors(val viewsErrors: List<ViewErrors>) : Throwable() {
     companion object {
-        val ERROR_NONE = Int.NO_ITEM
+        const val ERROR_NONE = 0
     }
 }
 data class ViewErrors(val viewKey: Int, val errorsIds: List<Int>)
