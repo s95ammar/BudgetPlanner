@@ -66,7 +66,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
         return object: Validator<BudgetValidationEntity, Budget>(budgetValidationEntity) {
 
             override fun provideOutputEntity(inputEntity: BudgetValidationEntity): Budget {
-                return Budget(budgetValidationEntity.budgetTitle, budgetValidationEntity.budgetTotalBalance.toLongOrNull() ?: 0)
+                return Budget(inputEntity.title, inputEntity.totalBalance.toLongOrNull() ?: 0)
                     .apply { if (budgetId != Int.NO_ITEM) id = budgetId }
             }
 
@@ -75,8 +75,8 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
                 val titleValidation = ViewValidation(
                     BudgetCreateEditViewKeys.VIEW_TITLE,
                     listOf(
-                        ValidationCase(
-                            { budgetValidationEntity.budgetTitle.isEmpty() },
+                        ViewValidation.Case(
+                            { budgetValidationEntity.title.isEmpty() },
                             BudgetCreateEditErrors.EMPTY_TITLE
                         )
                     )
@@ -85,12 +85,12 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
                 val totalBalanceValidation = ViewValidation(
                     BudgetCreateEditViewKeys.VIEW_TOTAL_BALANCE,
                     listOf(
-                        ValidationCase(
-                            { budgetValidationEntity.budgetTotalBalance.isEmpty() },
+                        ViewValidation.Case(
+                            { budgetValidationEntity.totalBalance.isEmpty() },
                             BudgetCreateEditErrors.EMPTY_TOTAL_BALANCE
                         ),
-                        ValidationCase(
-                            { budgetValidationEntity.budgetTotalBalance.toLongOrNull() == null },
+                        ViewValidation.Case(
+                            { budgetValidationEntity.totalBalance.toLongOrNull() == null },
                             BudgetCreateEditErrors.INVALID_TOTAL_BALANCE
                         )
                     )

@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.common
+package com.s95ammar.budgetplanner.ui.common.loading
 
 interface LoadingManager {
     fun showLoading()

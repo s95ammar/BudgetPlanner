@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.ui.common.LoadingManager
+import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
 
 
 abstract class BaseFragment : Fragment {

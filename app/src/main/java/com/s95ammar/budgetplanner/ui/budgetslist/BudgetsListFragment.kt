@@ -2,7 +2,6 @@ package com.s95ammar.budgetplanner.ui.budgetslist
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.models.Resource
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -50,9 +49,7 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
     private fun navigateToCreateEditBudget(budgetId: Int) {
         navController.navigate(
             R.id.action_navigation_budgets_list_to_budgetCreateEditFragment,
-            bundleOf(
-                BundleKey.KEY_BUDGET_ID to budgetId
-            )
+            bundleOf(BundleKey.KEY_BUDGET_ID to budgetId)
         )
     }
 }

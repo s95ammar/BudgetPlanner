@@ -1,7 +1,6 @@
 package com.s95ammar.budgetplanner.ui.budgetslist.createedit
 
 import androidx.fragment.app.viewModels
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.models.Resource
 import com.s95ammar.budgetplanner.models.Result
@@ -110,8 +109,8 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
         clearViewsValidation()
         viewModel.onApply(
             BudgetValidationEntity(
-                budgetTitle = input_layout_budget_create_edit_title.inputText.trim(),
-                budgetTotalBalance = input_layout_budget_create_edit_total_balance.inputText.trim()
+                title = input_layout_budget_create_edit_title.inputText.trim(),
+                totalBalance = input_layout_budget_create_edit_total_balance.inputText.trim()
             )
         )
     }

@@ -14,8 +14,8 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
-import com.s95ammar.budgetplanner.ui.common.LoadingDialog
-import com.s95ammar.budgetplanner.ui.common.LoadingManager
+import com.s95ammar.budgetplanner.ui.common.loading.LoadingDialog
+import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 

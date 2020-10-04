@@ -1,7 +1,5 @@
 package com.s95ammar.budgetplanner.ui.common.validation
 
-import androidx.annotation.IntRange
-
 abstract class Validator<InputEntity, OutputEntity>(private val inputEntity: InputEntity) {
 
     private val viewsValidation by lazy { provideViewValidationList() }
@@ -10,43 +8,25 @@ abstract class Validator<InputEntity, OutputEntity>(private val inputEntity: Inp
         return viewsValidation.all { singleViewValidation -> singleViewValidation.validationCases.all { it.isValid } }
     }
 
-    private fun getViewsErrors(): List<ViewErrors> {
-        return viewsValidation.map { singleViewValidation ->
-            ViewErrors(
-                viewKey = singleViewValidation.viewKey,
-                errorsIds = singleViewValidation.validationCases.map { it.errorId }
-            )
-        }
+    private fun getValidationErrors(): ValidationErrors {
+        return ValidationErrors(
+            viewsValidation.map { singleViewValidation ->
+                ValidationErrors.ViewErrors(
+                    viewKey = singleViewValidation.viewKey,
+                    errorsIds = singleViewValidation.validationCases.map { it.errorId }
+                )
+            }
+        )
     }
 
     fun getValidationResult(): ValidationResult<OutputEntity> {
         return if (isAllValid())
             ValidationResult.Success(provideOutputEntity(inputEntity))
         else
-            ValidationResult.Error(ValidationErrors(getViewsErrors()))
+            ValidationResult.Error(getValidationErrors())
     }
 
     protected abstract fun provideOutputEntity(inputEntity: InputEntity): OutputEntity
 
     protected abstract fun provideViewValidationList(): List<ViewValidation>
-}
-
-data class ViewValidation(val viewKey: Int, val validationCases: List<ValidationCase>)
-
-class ValidationCase(errorCaseCallback: () -> Boolean, @IntRange(from = 1) errorIdIfProduced: Int) {
-    val isValid = !errorCaseCallback()
-    val errorId = if (isValid) ValidationErrors.ERROR_NONE else errorIdIfProduced
-}
-
-data class ValidationErrors(val viewsErrors: List<ViewErrors>) : Throwable() {
-    companion object {
-        const val ERROR_NONE = 0
-    }
-}
-data class ViewErrors(val viewKey: Int, val errorsIds: List<Int>)
-
-sealed class ValidationResult<OutputEntity> {
-
-    class Success<T>(val outputData: T) : ValidationResult<T>()
-    class Error<T>(val throwable: ValidationErrors) : ValidationResult<T>()
 }
