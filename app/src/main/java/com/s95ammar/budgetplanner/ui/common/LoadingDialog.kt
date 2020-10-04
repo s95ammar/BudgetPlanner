@@ -12,6 +12,11 @@ import com.s95ammar.budgetplanner.R
 
 class LoadingDialog : DialogFragment() {
 
+    companion object {
+        const val TAG = "TAG_LOADING_DIALOG"
+
+        fun newInstance() = LoadingDialog()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_loading, container, false)

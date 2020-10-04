@@ -12,7 +12,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
 import com.s95ammar.budgetplanner.ui.common.LoadingDialog
@@ -22,10 +21,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
-
-    companion object {
-        const val TAG_LOADING_DIALOG = "TAG_LOADING_DIALOG"
-    }
 
     private val bottomNavItems = listOf(
         R.id.navigation_current_budget,
@@ -37,6 +32,8 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
     private val navController: NavController by lazy {
         (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
     }
+
+    private val loadingDialog by lazy { LoadingDialog.newInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +66,10 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
     }
 
     override fun showLoading() {
-        LoadingDialog().show(supportFragmentManager, TAG_LOADING_DIALOG)
+        loadingDialog.show(supportFragmentManager, LoadingDialog.TAG)
     }
 
     override fun hideLoading() {
-        (supportFragmentManager.findFragmentByTag(TAG_LOADING_DIALOG) as? LoadingDialog)?.dismiss()
+        loadingDialog.dismiss()
     }
 }
