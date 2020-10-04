@@ -116,14 +116,6 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
         )
     }
 
-    private fun displayError(throwable: Throwable) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.error_something_went_wrong_title)
-            .setMessage(getString(R.string.format_error_something_went_wrong_desc, throwable.message))
-            .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss()}
-            .show()
-    }
-
     private fun clearViewsValidation() {
         BudgetCreateEditViewKeys.values().forEach { displayError(it, ValidationErrors.ERROR_NONE) }
     }

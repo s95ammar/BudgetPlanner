@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.common.LoadingManager
 
 
@@ -40,6 +42,14 @@ abstract class BaseFragment : Fragment {
 
     fun showToast(throwable: Throwable) {
         Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_SHORT).show()
+    }
+
+    protected fun displayError(throwable: Throwable) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.error_something_went_wrong_title)
+            .setMessage(getString(R.string.format_error_something_went_wrong_desc, throwable.message))
+            .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss()}
+            .show()
     }
 
 }

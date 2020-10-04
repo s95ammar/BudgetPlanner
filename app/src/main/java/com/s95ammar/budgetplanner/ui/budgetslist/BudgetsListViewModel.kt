@@ -1,17 +1,12 @@
 package com.s95ammar.budgetplanner.ui.budgetslist
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
-import com.s95ammar.budgetplanner.Logger
+import androidx.lifecycle.*
+import com.s95ammar.budgetplanner.models.Resource
 import com.s95ammar.budgetplanner.models.data.Budget
 import com.s95ammar.budgetplanner.models.repository.Repository
 import com.s95ammar.budgetplanner.ui.budgetslist.entity.BudgetViewEntity
 import com.s95ammar.budgetplanner.util.EventMutableLiveData
-import kotlinx.coroutines.launch
-import kotlin.system.measureNanoTime
-import kotlin.system.measureTimeMillis
 
 class BudgetsListViewModel @ViewModelInject constructor(
     private val repository: Repository
@@ -22,20 +17,27 @@ class BudgetsListViewModel @ViewModelInject constructor(
     val allBudgets by lazy { getAllBudgetsViewEntities() }
     val navigateToEditBudget = _navigateToEditBudget.asEventLiveData()
 
-    private fun getAllBudgetsViewEntities() = repository.getAllBudgets().map { budgetList ->
-        budgetList.map {
-            BudgetViewEntity(
-                id = it.id,
-                name = it.name,
-                totalBalance = it.totalBalance,
-                totalSpendingEstimate = 0, // TODO
-                totalSavings = 0 // TODO
-            )
+    private fun getAllBudgetsViewEntities() = liveData {
+        emit(Resource.Loading())
+        try {
+            emitSource(repository.getAllBudgets().map { Resource.Success(it.toViewEntitiesList()) })
+        } catch (e: Exception) {
+            emit(Resource.Error<List<BudgetViewEntity>>(e))
         }
     }
 
+    private fun List<Budget>.toViewEntitiesList() = map { budget ->
+        BudgetViewEntity(
+            id = budget.id,
+            name = budget.name,
+            totalBalance = budget.totalBalance,
+            totalSpendingEstimate = 0, // TODO
+            totalSavings = 0 // TODO
+        )
+    }
+
     fun onBudgetItemClick(position: Int) {
-        allBudgets.value?.getOrNull(position)?.let { budget ->
+        (allBudgets.value as? Resource.Success)?.data?.getOrNull(position)?.let { budget ->
             _navigateToEditBudget.call(budget.id)
         }
     }

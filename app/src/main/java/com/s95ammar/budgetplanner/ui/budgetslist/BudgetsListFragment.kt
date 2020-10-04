@@ -4,8 +4,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.s95ammar.budgetplanner.R
+import com.s95ammar.budgetplanner.models.Resource
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.budgetslist.adapter.BudgetsListAdapter
+import com.s95ammar.budgetplanner.ui.budgetslist.entity.BudgetViewEntity
 import com.s95ammar.budgetplanner.ui.common.BundleKey
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.observeEvent
@@ -27,12 +29,26 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.allBudgets.observe(viewLifecycleOwner) { adapter.submitList(it) }
+        viewModel.allBudgets.observe(viewLifecycleOwner) { handleAllBudgetsLoading(it) }
         viewModel.navigateToEditBudget.observeEvent(viewLifecycleOwner) { navigateToCreateEditBudget(it) }
     }
 
+    private fun handleAllBudgetsLoading(allBudgetsResource: Resource<List<BudgetViewEntity>>?) {
+        when (allBudgetsResource) {
+            is Resource.Loading -> loadingManager?.showLoading()
+            is Resource.Error -> {
+                loadingManager?.hideLoading()
+                displayError(allBudgetsResource.throwable)
+            }
+            is Resource.Success -> {
+                loadingManager?.hideLoading()
+                adapter.submitList(allBudgetsResource.data)
+            }
+        }
+    }
+
     private fun navigateToCreateEditBudget(budgetId: Int) {
-        findNavController().navigate(
+        navController.navigate(
             R.id.action_navigation_budgets_list_to_budgetCreateEditFragment,
             bundleOf(
                 BundleKey.KEY_BUDGET_ID to budgetId
