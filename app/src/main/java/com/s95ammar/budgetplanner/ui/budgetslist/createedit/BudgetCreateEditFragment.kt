@@ -1,5 +1,6 @@
 package com.s95ammar.budgetplanner.ui.budgetslist.createedit
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.models.Resource
@@ -8,7 +9,7 @@ import com.s95ammar.budgetplanner.models.data.Budget
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCreateEditErrors
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCreateEditViewKeys
-import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetValidationEntity
+import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetInputEntity
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.util.inputText
@@ -25,11 +26,14 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
         super.setUpViews()
         toolbar_budgets_create_edit.setNavigationOnClickListener { navController.navigateUp() }
         button_budget_create_edit.setOnClickListener { onApply() }
+        checkbox_active_budget_create_edit.setOnCheckedChangeListener { _, isChecked -> viewModel.onIsActiveStateChanged(isChecked) }
     }
 
     override fun initObservers() {
         super.initObservers()
         viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
+        viewModel.activeCheckboxCheckedState.observe(viewLifecycleOwner) { setActiveCheckboxIsChecked(it) }
+        viewModel.activeWarningVisibility.observe(viewLifecycleOwner) { setActiveWarningVisibility(it) }
         viewModel.editedBudget.observe(viewLifecycleOwner) { handleEditedBudgetLoading(it) }
         viewModel.onViewValidationError.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
         viewModel.createEditResult.observeEvent(viewLifecycleOwner) { handleCreateEditResult(it) }
@@ -46,6 +50,14 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
                 button_budget_create_edit.text = getString(R.string.save)
             }
         }
+    }
+
+    private fun setActiveCheckboxIsChecked(isChecked: Boolean) {
+        checkbox_active_budget_create_edit.isChecked = isChecked
+    }
+
+    private fun setActiveWarningVisibility(isVisible: Boolean) {
+        text_view_active_warning_budget_create_edit.isVisible = isVisible
     }
 
     private fun handleEditedBudgetLoading(budgetResource: Resource<Budget>?) {
@@ -108,9 +120,10 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
     private fun onApply() {
         clearViewsValidation()
         viewModel.onApply(
-            BudgetValidationEntity(
+            BudgetInputEntity(
                 title = input_layout_budget_create_edit_title.inputText.trim(),
-                totalBalance = input_layout_budget_create_edit_total_balance.inputText.trim()
+                totalBalance = input_layout_budget_create_edit_total_balance.inputText.trim(),
+                isActive = checkbox_active_budget_create_edit.isChecked
             )
         )
     }

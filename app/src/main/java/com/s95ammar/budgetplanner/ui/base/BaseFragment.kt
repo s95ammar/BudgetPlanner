@@ -48,7 +48,7 @@ abstract class BaseFragment : Fragment {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.error_something_went_wrong_title)
             .setMessage(getString(R.string.format_error_something_went_wrong_desc, throwable.message))
-            .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss()}
+            .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
             .show()
     }
 

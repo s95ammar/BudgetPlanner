@@ -22,9 +22,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextDescBlackBold14sdp">
+    <style name="TextDescBlack14sdp">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/_14sdp</item>
+    </style>
+
+    <style name="TextDescGray12sdp">
+        <item name="android:textColor">@color/colorGray</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
     </style>
 
 </resources>

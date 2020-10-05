@@ -54,8 +54,8 @@
             android:id="@+id/input_layout_budget_create_edit_total_balance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/total_balance"
             android:layout_marginTop="@dimen/_16sdp"
+            android:hint="@string/total_balance"
             app:boxBackgroundColor="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,6 +67,31 @@
                 android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox_active_budget_create_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:buttonTint="@color/colorPrimary"
+            android:text="@string/make_this_budget_active"
+            android:textAppearance="@style/TextDescBlack14sdp"
+            app:layout_constraintTop_toBottomOf="@+id/input_layout_budget_create_edit_total_balance"
+            tools:checked="true"
+            tools:layout_editor_absoluteX="21dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_active_warning_budget_create_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_info"
+            android:drawablePadding="@dimen/_3sdp"
+            android:paddingHorizontal="@dimen/_3sdp"
+            android:text="@string/active_budget_warning"
+            android:textAppearance="@style/TextDescGray12sdp"
+            app:drawableTint="@color/colorGray"
+            app:layout_constraintStart_toStartOf="@+id/checkbox_active_budget_create_edit"
+            app:layout_constraintTop_toBottomOf="@+id/checkbox_active_budget_create_edit" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_budget_create_edit"
