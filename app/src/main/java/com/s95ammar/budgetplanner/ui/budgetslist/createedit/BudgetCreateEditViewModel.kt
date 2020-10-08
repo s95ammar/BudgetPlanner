@@ -9,16 +9,17 @@ import com.s95ammar.budgetplanner.models.Result
 import com.s95ammar.budgetplanner.models.ResultStateListener
 import com.s95ammar.budgetplanner.models.data.Budget
 import com.s95ammar.budgetplanner.models.repository.Repository
-import com.s95ammar.budgetplanner.ui.base.SharedPreferencesViewModel
+import com.s95ammar.budgetplanner.ui.base.StorageViewModel
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCreateEditErrors
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCreateEditViewKeys
-import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetInputEntity
-import com.s95ammar.budgetplanner.ui.common.BundleKey
+import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetValidationBundle
+import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.validation.*
-import com.s95ammar.budgetplanner.util.EventMutableLiveData
-import com.s95ammar.budgetplanner.util.asLiveData
+import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
+import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveDataVoid
+import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -27,20 +28,26 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
     @ApplicationContext context: Context,
     private val repository: Repository,
     @Assisted private val savedStateHandle: SavedStateHandle
-) : SharedPreferencesViewModel(context) {
-    private val budgetId = savedStateHandle.get<Int>(BundleKey.KEY_BUDGET_ID) ?: Int.NO_ITEM
+) : StorageViewModel(context) {
+
+    // TODO: implement injecting storage source as interface type & move implementation functions out of view model
+
+    private val budgetId = savedStateHandle.get<Int>(Keys.KEY_BUDGET_ID) ?: Int.NO_ITEM
+    private val activeBudgetId = loadActiveBudgetId()
 
     private val _mode = MutableLiveData(CreateEditMode.getById(budgetId))
-    private val _activeCheckboxCheckedState = MutableLiveData(budgetId == activeBudgetId)
+    private val _activeCheckboxCheckedState = MutableLiveData(budgetId == loadActiveBudgetId())
     private val _activeWarningVisibility = MutableLiveData(false)
     private val _onViewValidationError = EventMutableLiveData<ValidationErrors>()
-    private val _createEditResult = EventMutableLiveData<Result>()
+    private val _onCreateEditApply = EventMutableLiveData<Result>()
+    private val _onActiveBudgetChanged = EventMutableLiveData<Int>()
 
     val mode = _mode.asLiveData()
     val activeCheckboxCheckedState = _activeCheckboxCheckedState.asLiveData()
     val activeWarningVisibility = _activeWarningVisibility.asLiveData()
     val onViewValidationError = _onViewValidationError.asEventLiveData()
-    val createEditResult = _createEditResult.asEventLiveData()
+    val onCreateEditApply = _onCreateEditApply.asEventLiveData()
+    val onActiveBudgetChanged = _onActiveBudgetChanged.asEventLiveData()
 
     val editedBudget = liveData<Resource<Budget>?> {
         if (budgetId != Int.NO_ITEM) {
@@ -53,8 +60,8 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
         }
     }
 
-    fun onApply(budgetInputEntity: BudgetInputEntity) {
-        val validator = createValidator(budgetInputEntity)
+    fun onApply(budgetValidationBundle: BudgetValidationBundle) {
+        val validator = createValidator(budgetValidationBundle)
 
         when (val validationResult = validator.getValidationResult()) {
             is ValidationResult.Success -> {
@@ -63,11 +70,11 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
                     budget = budget,
                     listener = object : ResultStateListener {
                         override fun onSuccess() {
-                            handleActiveBudget(budget.id, budgetInputEntity.isActive)
-                            _createEditResult.call(Result.Success)
+                            handleActiveBudget(budget.id, budgetValidationBundle.isActive)
+                            _onCreateEditApply.call(Result.Success)
                         }
-                        override fun onLoading() { _createEditResult.call(Result.Loading) }
-                        override fun onError(throwable: Throwable) { _createEditResult.call(Result.Error(throwable)) }
+                        override fun onLoading() { _onCreateEditApply.call(Result.Loading) }
+                        override fun onError(throwable: Throwable) { _onCreateEditApply.call(Result.Error(throwable)) }
                     }
                 )
             }
@@ -77,22 +84,26 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
     }
 
     private fun handleActiveBudget(id: Int, isActiveInput: Boolean) {
-        val wasThisBudgetInitiallyActive = (id == activeBudgetId)
+        val wasBudgetInitiallyActive = (id == loadActiveBudgetId())
 
         if (isActiveInput) {
-            if (!wasThisBudgetInitiallyActive)
+            if (!wasBudgetInitiallyActive) {
                 saveActiveBudgetId(id)
+                _onActiveBudgetChanged.call(id)
+            }
         } else {
-            if (wasThisBudgetInitiallyActive)
+            if (wasBudgetInitiallyActive) {
                 saveActiveBudgetId(Int.NO_ITEM)
+                _onActiveBudgetChanged.call(Int.NO_ITEM)
+            }
         }
 
     }
 
-    private fun createValidator(budgetInputEntity: BudgetInputEntity): Validator<BudgetInputEntity, Budget> {
-        return object: Validator<BudgetInputEntity, Budget>(budgetInputEntity) {
+    private fun createValidator(budgetValidationBundle: BudgetValidationBundle): Validator<BudgetValidationBundle, Budget> {
+        return object: Validator<BudgetValidationBundle, Budget>(budgetValidationBundle) {
 
-            override fun provideOutputEntity(inputEntity: BudgetInputEntity): Budget {
+            override fun provideOutputEntity(inputEntity: BudgetValidationBundle): Budget {
                 return Budget(inputEntity.title, inputEntity.totalBalance.toLongOrNull() ?: 0)
                     .apply { if (budgetId != Int.NO_ITEM) id = budgetId }
             }
@@ -103,7 +114,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
                     BudgetCreateEditViewKeys.VIEW_TITLE,
                     listOf(
                         ViewValidation.Case(
-                            { budgetInputEntity.title.isEmpty() },
+                            { budgetValidationBundle.title.isEmpty() },
                             BudgetCreateEditErrors.EMPTY_TITLE
                         )
                     )
@@ -113,11 +124,11 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
                     BudgetCreateEditViewKeys.VIEW_TOTAL_BALANCE,
                     listOf(
                         ViewValidation.Case(
-                            { budgetInputEntity.totalBalance.isEmpty() },
+                            { budgetValidationBundle.totalBalance.isEmpty() },
                             BudgetCreateEditErrors.EMPTY_TOTAL_BALANCE
                         ),
                         ViewValidation.Case(
-                            { budgetInputEntity.totalBalance.toLongOrNull() == null },
+                            { budgetValidationBundle.totalBalance.toLongOrNull() == null },
                             BudgetCreateEditErrors.INVALID_TOTAL_BALANCE
                         )
                     )

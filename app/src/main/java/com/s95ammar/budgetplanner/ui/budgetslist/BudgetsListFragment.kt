@@ -7,9 +7,9 @@ import com.s95ammar.budgetplanner.models.Resource
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.budgetslist.adapter.BudgetsListAdapter
 import com.s95ammar.budgetplanner.ui.budgetslist.entity.BudgetViewEntity
-import com.s95ammar.budgetplanner.ui.common.BundleKey
+import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.util.NO_ITEM
-import com.s95ammar.budgetplanner.util.observeEvent
+import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_budgets_list.*
 
@@ -30,6 +30,8 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
         super.initObservers()
         viewModel.allBudgets.observe(viewLifecycleOwner) { handleAllBudgetsLoading(it) }
         viewModel.navigateToEditBudget.observeEvent(viewLifecycleOwner) { navigateToCreateEditBudget(it) }
+
+        observeResult<Int>(Keys.KEY_RESULT_ACTIVE_BUDGET_CHANGED) { id -> viewModel.onActiveBudgetChanged(id) }
     }
 
     private fun handleAllBudgetsLoading(allBudgetsResource: Resource<List<BudgetViewEntity>>?) {
@@ -49,7 +51,7 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
     private fun navigateToCreateEditBudget(budgetId: Int) {
         navController.navigate(
             R.id.action_navigation_budgets_list_to_budgetCreateEditFragment,
-            bundleOf(BundleKey.KEY_BUDGET_ID to budgetId)
+            bundleOf(Keys.KEY_BUDGET_ID to budgetId)
         )
     }
 }

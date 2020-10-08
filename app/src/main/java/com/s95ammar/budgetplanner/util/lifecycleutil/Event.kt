@@ -1,10 +1,6 @@
-package com.s95ammar.budgetplanner.util
+package com.s95ammar.budgetplanner.util.lifecycleutil
 
 import androidx.lifecycle.*
-
-fun <T> MutableLiveData<T>.asLiveData(): LiveData<T> = this
-
-fun <T> MediatorLiveData<T>.asLiveData(): LiveData<T> = this
 
 open class Event<out T>(private val content: T) {
     var hasBeenHandled = false

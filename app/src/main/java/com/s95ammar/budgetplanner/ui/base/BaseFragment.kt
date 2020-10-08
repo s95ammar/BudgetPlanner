@@ -44,6 +44,16 @@ abstract class BaseFragment : Fragment {
         Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_SHORT).show()
     }
 
+    protected fun <T> sendResult(key: String, result: T) {
+        navController.previousBackStackEntry?.savedStateHandle?.set(key, result)
+    }
+
+    protected fun <T> observeResult(key: String, onResultReceived: (T) -> Unit) {
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)?.observe(viewLifecycleOwner) { result ->
+            onResultReceived(result)
+        }
+    }
+
     protected fun displayError(throwable: Throwable) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.error_something_went_wrong_title)

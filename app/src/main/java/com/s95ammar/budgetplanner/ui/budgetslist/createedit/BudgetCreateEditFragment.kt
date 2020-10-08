@@ -9,11 +9,12 @@ import com.s95ammar.budgetplanner.models.data.Budget
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCreateEditErrors
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCreateEditViewKeys
-import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetInputEntity
+import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetValidationBundle
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
+import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.util.inputText
-import com.s95ammar.budgetplanner.util.observeEvent
+import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.budget_create_edit_fragment.*
 
@@ -36,7 +37,12 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
         viewModel.activeWarningVisibility.observe(viewLifecycleOwner) { setActiveWarningVisibility(it) }
         viewModel.editedBudget.observe(viewLifecycleOwner) { handleEditedBudgetLoading(it) }
         viewModel.onViewValidationError.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
-        viewModel.createEditResult.observeEvent(viewLifecycleOwner) { handleCreateEditResult(it) }
+        viewModel.onCreateEditApply.observeEvent(viewLifecycleOwner) { handleCreateEditResult(it) }
+        viewModel.onActiveBudgetChanged.observeEvent(viewLifecycleOwner) { sendOnActiveBudgetChangedResult(it) }
+    }
+
+    private fun sendOnActiveBudgetChangedResult(id: Int) {
+        sendResult(Keys.KEY_RESULT_ACTIVE_BUDGET_CHANGED, id)
     }
 
     private fun setViewsToMode(mode: CreateEditMode) {
@@ -120,7 +126,7 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
     private fun onApply() {
         clearViewsValidation()
         viewModel.onApply(
-            BudgetInputEntity(
+            BudgetValidationBundle(
                 title = input_layout_budget_create_edit_title.inputText.trim(),
                 totalBalance = input_layout_budget_create_edit_total_balance.inputText.trim(),
                 isActive = checkbox_active_budget_create_edit.isChecked

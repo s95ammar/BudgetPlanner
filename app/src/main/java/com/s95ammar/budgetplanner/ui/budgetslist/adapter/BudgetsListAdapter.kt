@@ -10,7 +10,9 @@ import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.ui.budgetslist.entity.BudgetViewEntity
 import kotlinx.android.synthetic.main.item_budget.view.*
 
-class BudgetsListAdapter(private val onItemClick: (Int) -> Unit): BaseListAdapter<BudgetViewEntity, BudgetsListAdapter.BudgetsListViewHolder>(BudgetItemCallback()) {
+class BudgetsListAdapter(
+    private val onItemClick: (Int) -> Unit
+): BaseListAdapter<BudgetViewEntity, BudgetsListAdapter.BudgetsListViewHolder>(BudgetItemCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BudgetsListViewHolder {
@@ -31,6 +33,9 @@ class BudgetsListAdapter(private val onItemClick: (Int) -> Unit): BaseListAdapte
             if (payloads.shouldUpdate(PayloadsType.NAME))
                 itemView.text_view_budget_item_title.text = item.name
 
+            if (payloads.shouldUpdate(PayloadsType.IS_ACTIVE))
+                itemView.image_view_budgetItem_active.isVisible = item.isActive
+
             if (payloads.shouldUpdate(PayloadsType.TOTAL_BALANCE))
                 itemView.text_view_budget_item_total_balance_value.text = item.totalBalance.toString()
 
@@ -48,37 +53,22 @@ class BudgetsListAdapter(private val onItemClick: (Int) -> Unit): BaseListAdapte
 
     class BudgetItemCallback : DiffUtil.ItemCallback<BudgetViewEntity>() {
         override fun areItemsTheSame(oldItem: BudgetViewEntity, newItem: BudgetViewEntity): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: BudgetViewEntity, newItem: BudgetViewEntity): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
         override fun getChangePayload(oldItem: BudgetViewEntity, newItem: BudgetViewEntity): Any? {
             return PayloadsHolder<BudgetViewEntity>().apply {
-
                 val itemPair = oldItem to newItem
 
                 addPayloadIfNotEqual(itemPair, BudgetViewEntity::name, PayloadsType.NAME)
+                addPayloadIfNotEqual(itemPair, BudgetViewEntity::isActive, PayloadsType.IS_ACTIVE)
                 addPayloadIfNotEqual(itemPair, BudgetViewEntity::totalBalance, PayloadsType.TOTAL_BALANCE)
                 addPayloadIfNotEqual(itemPair, BudgetViewEntity::totalSpendingEstimate, PayloadsType.TOTAL_SPENDING_ESTIMATE)
                 addPayloadIfNotEqual(itemPair, BudgetViewEntity::totalSavings, PayloadsType.TOTAL_SAVINGS)
-
-
-/*
-                if (oldItem.name != newItem.name)
-                    add(PayloadsType.NAME)
-
-                if (oldItem.totalBalance != newItem.totalBalance)
-                    add(PayloadsType.TOTAL_BALANCE)
-
-                if (oldItem.totalSpendingEstimate != newItem.totalSpendingEstimate)
-                    add(PayloadsType.TOTAL_SPENDING_ESTIMATE)
-
-                if (oldItem.totalSavings != newItem.totalSavings)
-                    add(PayloadsType.TOTAL_SAVINGS)
-*/
 
             }
         }
@@ -86,9 +76,10 @@ class BudgetsListAdapter(private val onItemClick: (Int) -> Unit): BaseListAdapte
 
     object PayloadsType {
         const val NAME = 0
-        const val TOTAL_BALANCE = 1
-        const val TOTAL_SPENDING_ESTIMATE = 2
-        const val TOTAL_SAVINGS = 3
+        const val IS_ACTIVE = 1
+        const val TOTAL_BALANCE = 2
+        const val TOTAL_SPENDING_ESTIMATE = 3
+        const val TOTAL_SAVINGS = 4
     }
 
 }
