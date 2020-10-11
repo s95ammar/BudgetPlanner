@@ -4,9 +4,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.models.Resource
-import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.appscreens.budgetslist.adapter.BudgetsListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.budgetslist.bottomsheet.BudgetListItemBottomSheetDialogFragment
 import com.s95ammar.budgetplanner.ui.appscreens.budgetslist.data.BudgetViewEntity
+import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_budgets_list.*
 class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
 
     private val viewModel: BudgetsListViewModel by viewModels()
-    private val adapter by lazy { BudgetsListAdapter(viewModel::onBudgetItemClick) }
+    private val adapter by lazy { BudgetsListAdapter(viewModel::onBudgetItemClick, viewModel::onBudgetItemLongClick) }
 
     override fun setUpViews() {
         super.setUpViews()
@@ -30,6 +31,7 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
         super.initObservers()
         viewModel.allBudgets.observe(viewLifecycleOwner) { handleAllBudgetsLoading(it) }
         viewModel.navigateToEditBudget.observeEvent(viewLifecycleOwner) { navigateToCreateEditBudget(it) }
+        viewModel.showBottomSheet.observeEvent(viewLifecycleOwner) { showBottomSheet(it) }
 
         observeResultLiveData<Int>(Keys.KEY_RESULT_ACTIVE_BUDGET_CHANGED) { id -> viewModel.onActiveBudgetChanged(id) }
     }
@@ -43,7 +45,7 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
             }
             is Resource.Success -> {
                 loadingManager?.hideLoading()
-                adapter.submitList(allBudgetsResource.data)
+                adapter.submitList(allBudgetsResource.data) { recycler_view_budgets_list?.scrollToPosition(0) }
             }
         }
     }
@@ -53,5 +55,23 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
             R.id.action_navigation_budgets_list_to_budgetCreateEditFragment,
             bundleOf(Keys.KEY_BUDGET_ID to budgetId)
         )
+    }
+
+    private fun showBottomSheet(budget: BudgetViewEntity) {
+        BudgetListItemBottomSheetDialogFragment.newInstance(budget.id, budget.name, budget.isActive).apply {
+            listener = object : BudgetListItemBottomSheetDialogFragment.Listener {
+                override fun onMakeActive(budgetId: Int) {
+                    viewModel.saveAndDisplayNewActiveBudget(budgetId)
+                }
+
+                override fun onEdit(budgetId: Int) {
+                    navigateToCreateEditBudget(budgetId)
+                }
+
+                override fun onDelete(budgetId: Int) {
+                    viewModel.deleteBudget(budgetId)
+                }
+            }
+        }.show(childFragmentManager, BudgetListItemBottomSheetDialogFragment.TAG)
     }
 }

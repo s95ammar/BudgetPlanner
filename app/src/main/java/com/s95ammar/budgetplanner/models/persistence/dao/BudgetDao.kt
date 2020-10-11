@@ -14,7 +14,10 @@ interface BudgetDao {
 	suspend fun delete(budget: Budget)
 
 	@Query("SELECT * FROM budget WHERE id=:id")
-	fun getBudgetById(id: Int): LiveData<Budget>
+	suspend fun getBudgetById(id: Int): Budget
+
+	@Query("SELECT * FROM budget WHERE id=:id")
+	fun getBudgetByIdLiveData(id: Int): LiveData<Budget>
 
 	@Query("SELECT * FROM budget")
 	fun getAllBudgets(): LiveData<List<Budget>>

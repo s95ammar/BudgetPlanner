@@ -47,7 +47,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
         if (budgetId != Int.NO_ITEM) {
             emit(Resource.Loading())
             try {
-                emitSource(localRepository.getBudgetById(budgetId).map { Resource.Success(it) })
+                emitSource(localRepository.getBudgetByIdLiveData(budgetId).map { Resource.Success(it) })
             } catch (e: Exception) {
                 emit(Resource.Error(e))
             }
@@ -89,15 +89,15 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
 
     private fun handleActiveBudget(budget: BudgetInputBundle, id: Int) {
         if (_mode.value == CreateEditMode.CREATE && budget.isActive)
-            handleActiveBudgetChanged(id)
+            saveNewActiveBudget(id)
         else
             if (budget.wasInactiveNowActive(id))
-                handleActiveBudgetChanged(id)
+                saveNewActiveBudget(id)
             else if (budget.wasActiveNowInactive(id))
-                handleActiveBudgetChanged(Int.NO_ITEM)
+                saveNewActiveBudget(Int.NO_ITEM)
         }
 
-    private fun handleActiveBudgetChanged(id: Int) {
+    private fun saveNewActiveBudget(id: Int) {
         localRepository.saveActiveBudgetId(id)
         _onActiveBudgetChanged.call(id)
     }

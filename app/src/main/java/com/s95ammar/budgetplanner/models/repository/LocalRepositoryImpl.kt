@@ -28,7 +28,8 @@ class LocalRepositoryImpl @Inject constructor(
 
     override suspend fun insertOrReplace(budget: Budget) = withContext(Dispatchers.IO) { budgetDao.insertOrReplace(budget) }
     override suspend fun delete(budget: Budget) = withContext(Dispatchers.IO) { budgetDao.delete(budget) }
-    override fun getBudgetById(id: Int) = budgetDao.getBudgetById(id)
+    override suspend fun getBudgetById(id: Int) = withContext(Dispatchers.IO) { budgetDao.getBudgetById(id) }
+    override fun getBudgetByIdLiveData(id: Int) = budgetDao.getBudgetByIdLiveData(id)
     override fun getAllBudgets() = budgetDao.getAllBudgets()
 
     // Category CRUD

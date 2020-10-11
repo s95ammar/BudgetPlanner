@@ -29,5 +29,7 @@
     <string name="make_this_budget_active">Make this budget active</string>
     <string name="active_budget_warning">Looks like you already have an active budget. Making this budget active will deactivate the current active budget.</string>
 
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
 </resources>

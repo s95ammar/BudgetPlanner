@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/_8sdp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:src="@drawable/ic_current_budget"
+            android:tint="@color/colorPrimary" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_title_budget_bottom_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:textAppearance="@style/TextTitleBlackBold16sdp"
+            tools:text="Budget Title" />
+
+    </LinearLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_view_make_active_budget_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_check_circle"
+        android:drawablePadding="@dimen/_8sdp"
+        android:focusable="true"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/make_this_budget_active"
+        android:textAppearance="@style/TextDescBlack14sdp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_view_edit_budget_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_edit"
+        android:drawablePadding="@dimen/_8sdp"
+        android:focusable="true"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/edit"
+        android:textAppearance="@style/TextDescBlack14sdp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_view_delete_budget_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_delete"
+        android:drawablePadding="@dimen/_8sdp"
+        android:focusable="true"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/delete"
+        android:textAppearance="@style/TextDescBlack14sdp" />
+
+</LinearLayout>
