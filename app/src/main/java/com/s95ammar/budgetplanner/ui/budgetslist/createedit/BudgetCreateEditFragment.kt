@@ -9,7 +9,7 @@ import com.s95ammar.budgetplanner.models.data.Budget
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCreateEditErrors
 import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetCreateEditViewKeys
-import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetValidationBundle
+import com.s95ammar.budgetplanner.ui.budgetslist.createedit.validation.BudgetInputBundle
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
@@ -27,7 +27,7 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
         super.setUpViews()
         toolbar_budgets_create_edit.setNavigationOnClickListener { navController.navigateUp() }
         button_budget_create_edit.setOnClickListener { onApply() }
-        checkbox_active_budget_create_edit.setOnCheckedChangeListener { _, isChecked -> viewModel.onIsActiveStateChanged(isChecked) }
+        checkbox_active_budget_create_edit.setOnCheckedChangeListener { _, isChecked -> viewModel.onInputIsActiveStateChanged(isChecked) }
     }
 
     override fun initObservers() {
@@ -126,7 +126,7 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
     private fun onApply() {
         clearViewsValidation()
         viewModel.onApply(
-            BudgetValidationBundle(
+            BudgetInputBundle(
                 title = input_layout_budget_create_edit_title.inputText.trim(),
                 totalBalance = input_layout_budget_create_edit_total_balance.inputText.trim(),
                 isActive = checkbox_active_budget_create_edit.isChecked

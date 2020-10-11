@@ -48,7 +48,7 @@ abstract class BaseFragment : Fragment {
         navController.previousBackStackEntry?.savedStateHandle?.set(key, result)
     }
 
-    protected fun <T> observeResult(key: String, onResultReceived: (T) -> Unit) {
+    protected fun <T> observeResultLiveData(key: String, onResultReceived: (T) -> Unit) {
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)?.observe(viewLifecycleOwner) { result ->
             onResultReceived(result)
         }

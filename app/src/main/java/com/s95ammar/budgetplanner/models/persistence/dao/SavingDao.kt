@@ -3,13 +3,15 @@ package com.s95ammar.budgetplanner.models.persistence.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.s95ammar.budgetplanner.models.data.Saving
-import com.s95ammar.budgetplanner.models.persistence.dao.base.BaseDao
 
 @Dao
-interface SavingDao: BaseDao<Saving> {
+interface SavingDao {
 
-	@Query("DELETE FROM saving")
-	suspend fun deleteAllSavings()
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	suspend fun insertOrReplace(saving: Saving)
+
+	@Delete
+	suspend fun delete(saving: Saving)
 
 	@Query("SELECT * FROM saving WHERE id=:id")
 	fun getSavingById(id: Int): LiveData<Saving>

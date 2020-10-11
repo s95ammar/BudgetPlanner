@@ -1,8 +1,8 @@
 package com.s95ammar.budgetplanner.models
 
-interface ResultStateListener {
+interface ResultStateListener<T> {
 
-    fun onSuccess()
+    fun onSuccess(data: T? = null)
 
     fun onLoading()
 

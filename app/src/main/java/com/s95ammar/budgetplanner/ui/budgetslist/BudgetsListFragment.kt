@@ -31,7 +31,7 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
         viewModel.allBudgets.observe(viewLifecycleOwner) { handleAllBudgetsLoading(it) }
         viewModel.navigateToEditBudget.observeEvent(viewLifecycleOwner) { navigateToCreateEditBudget(it) }
 
-        observeResult<Int>(Keys.KEY_RESULT_ACTIVE_BUDGET_CHANGED) { id -> viewModel.onActiveBudgetChanged(id) }
+        observeResultLiveData<Int>(Keys.KEY_RESULT_ACTIVE_BUDGET_CHANGED) { id -> viewModel.onActiveBudgetChanged(id) }
     }
 
     private fun handleAllBudgetsLoading(allBudgetsResource: Resource<List<BudgetViewEntity>>?) {

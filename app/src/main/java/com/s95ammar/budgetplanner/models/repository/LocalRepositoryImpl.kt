@@ -2,19 +2,27 @@ package com.s95ammar.budgetplanner.models.repository
 
 import com.s95ammar.budgetplanner.models.data.*
 import com.s95ammar.budgetplanner.models.persistence.dao.*
+import com.s95ammar.budgetplanner.models.sharedprefs.SharedPrefsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PersistenceRepository @Inject constructor(
+class LocalRepositoryImpl @Inject constructor(
+    private val sharedPrefs: SharedPrefsManager,
     private val budgetDao: BudgetDao,
     private val categoryDao: CategoryDao,
     private val budgetTransactionDao: BudgetTransactionDao,
     private val savingsJarDao: SavingJarDao,
     private val savingDao: SavingDao
-) : Repository {
+) : LocalRepository {
+
+    // SharedPreferences
+
+    override fun doesActiveBudgetExist() = sharedPrefs.doesActiveBudgetExist()
+    override fun loadActiveBudgetId() = sharedPrefs.loadActiveBudgetId()
+    override fun saveActiveBudgetId(id: Int) = sharedPrefs.saveActiveBudgetId(id)
 
     // Budget CRUD
 
@@ -32,10 +40,14 @@ class PersistenceRepository @Inject constructor(
 
     // BudgetTransaction CRUD
 
-    override suspend fun insertOrReplace(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) { budgetTransactionDao.insertOrReplace(budgetTransaction) }
-    override suspend fun delete(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) { budgetTransactionDao.delete(budgetTransaction) }
-    override fun getBudgetTransactionById(id: Int) = budgetTransactionDao.getBudgetTransaction(id)
-    override fun getBudgetTransactionsBy(categoryStatusId: Int) = budgetTransactionDao.getBudgetTransactions(categoryStatusId)
+    override suspend fun insertOrReplace(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) {
+        budgetTransactionDao.insertOrReplace(budgetTransaction)
+    }
+    override suspend fun delete(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) {
+        budgetTransactionDao.delete(budgetTransaction)
+    }
+    override fun getBudgetTransaction(id: Int) = budgetTransactionDao.getBudgetTransaction(id)
+    override fun getBudgetTransactions(categoryStatusId: Int) = budgetTransactionDao.getBudgetTransactions(categoryStatusId)
 
     // SavingJar CRUD
 
@@ -49,8 +61,6 @@ class PersistenceRepository @Inject constructor(
     override suspend fun insertOrReplace(saving: Saving) = withContext(Dispatchers.IO) { savingDao.insertOrReplace(saving) }
     override suspend fun delete(saving: Saving) = withContext(Dispatchers.IO) { savingDao.delete(saving) }
     override fun getSavingById(id: Int) = savingDao.getSavingById(id)
-    override fun getSavingsBy(savingsJarId: Int) = savingDao.getSavingsBy(savingsJarId)
-
-
+    override fun getSavingsBy(categoryStatusId: Int) = savingDao.getSavingsBy(categoryStatusId)
 
 }
