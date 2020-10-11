@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.savingjars.SavingJarsFragment">
+    tools:context=".ui.appscreens.savingjars.SavingJarsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         style="@style/BudgetPlannerAppBarLayout"

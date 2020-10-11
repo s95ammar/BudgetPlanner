@@ -40,18 +40,6 @@ abstract class BaseListAdapter<T, VH : BaseListAdapter.BaseViewHolder<T>>(diffCa
             }
         }
 
-        fun add(payloadType: Int) {
-            payloadTypes.add(payloadType)
-        }
-
-        fun remove(payloadType: Int) {
-            payloadTypes.remove(payloadType)
-        }
-
-        fun clear() {
-            payloadTypes.clear()
-        }
-
         fun shouldUpdate(payloadType: Int): Boolean {
             return payloadTypes.isEmpty() || payloadTypes.contains(payloadType)
         }
