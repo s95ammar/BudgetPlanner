@@ -51,13 +51,13 @@ class BudgetsListViewModel @ViewModelInject constructor(private val localReposit
         // TODO: handle active budget deletion
         // TODO: handle loading & error
         val budget = localRepository.getBudgetById(id)
-        localRepository.delete(budget)
+        localRepository.deleteBudget(budget)
     }
 
     private fun getAllBudgetsViewEntities() = liveData {
         emit(Resource.Loading())
         try {
-            emitSource(localRepository.getAllBudgets().map { Resource.Success(it.toSortedViewEntitiesList()) })
+            emitSource(localRepository.getAllBudgetsLiveData().map { Resource.Success(it.toSortedViewEntitiesList()) })
         } catch (e: Exception) {
             emit(Resource.Error<List<BudgetViewEntity>>(e))
         }

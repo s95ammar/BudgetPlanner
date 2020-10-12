@@ -8,14 +8,17 @@ import com.s95ammar.budgetplanner.models.data.Category
 interface CategoryDao {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	suspend fun insertOrReplace(category: Category)
+	suspend fun insertOrReplaceCategory(category: Category)
 
 	@Delete
-	suspend fun delete(category: Category)
+	suspend fun deleteCategory(category: Category)
 
 	@Query("SELECT * FROM category WHERE id=:id")
-	fun getCategoryById(id: Int): LiveData<Category>
+	suspend fun getCategoryById(id: Int): Category
+
+	@Query("SELECT * FROM category WHERE id=:id")
+	fun getCategoryByIdLiveData(id: Int): LiveData<Category>
 
 	@Query("SELECT * FROM category")
-	fun getAllCategories(): LiveData<List<Category>>
+	fun getAllCategoriesLiveData(): LiveData<List<Category>>
 }

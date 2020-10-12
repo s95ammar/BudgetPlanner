@@ -8,10 +8,10 @@ import com.s95ammar.budgetplanner.models.data.Budget
 interface BudgetDao {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	suspend fun insertOrReplace(budget: Budget): Long
+	suspend fun insertOrReplaceBudget(budget: Budget): Long
 
 	@Delete
-	suspend fun delete(budget: Budget)
+	suspend fun deleteBudget(budget: Budget)
 
 	@Query("SELECT * FROM budget WHERE id=:id")
 	suspend fun getBudgetById(id: Int): Budget
@@ -20,5 +20,5 @@ interface BudgetDao {
 	fun getBudgetByIdLiveData(id: Int): LiveData<Budget>
 
 	@Query("SELECT * FROM budget")
-	fun getAllBudgets(): LiveData<List<Budget>>
+	fun getAllBudgetsLiveData(): LiveData<List<Budget>>
 }

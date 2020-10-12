@@ -8,15 +8,18 @@ import com.s95ammar.budgetplanner.models.data.Saving
 interface SavingDao {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	suspend fun insertOrReplace(saving: Saving)
+	suspend fun insertOrReplaceSaving(saving: Saving)
 
 	@Delete
-	suspend fun delete(saving: Saving)
+	suspend fun deleteSaving(saving: Saving)
 
 	@Query("SELECT * FROM saving WHERE id=:id")
-	fun getSavingById(id: Int): LiveData<Saving>
+	suspend fun getSavingById(id: Int): Saving
+
+	@Query("SELECT * FROM saving WHERE id=:id")
+	fun getSavingByIdLiveData(id: Int): LiveData<Saving>
 
 	@Query("SELECT * FROM saving WHERE savings_jar_id=:categoryStatusId")
-	fun getSavingsBy(categoryStatusId: Int): LiveData<List<Saving>>
+	fun getSavingsByLiveData(categoryStatusId: Int): LiveData<List<Saving>>
 
 }

@@ -25,12 +25,12 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val budgetId = savedStateHandle.get<Int>(Keys.KEY_BUDGET_ID) ?: Int.NO_ITEM
+    private val editedBudgetId = savedStateHandle.get<Int>(Keys.KEY_BUDGET_ID) ?: Int.NO_ITEM
     private val activeBudgetId = localRepository.loadActiveBudgetId()
     private val activeBudgetExist = localRepository.doesActiveBudgetExist()
 
-    private val _mode = MutableLiveData(CreateEditMode.getById(budgetId))
-    private val _activeCheckboxCheckedState = MutableLiveData(budgetId == localRepository.loadActiveBudgetId())
+    private val _mode = MutableLiveData(CreateEditMode.getById(editedBudgetId))
+    private val _activeCheckboxCheckedState = MutableLiveData(editedBudgetId == localRepository.loadActiveBudgetId())
     private val _activeWarningVisibility = MutableLiveData(false)
     private val _onViewValidationError = EventMutableLiveData<ValidationErrors>()
     private val _onCreateEditApply = EventMutableLiveData<Result>()
@@ -44,10 +44,10 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
     val onActiveBudgetChanged = _onActiveBudgetChanged.asEventLiveData()
 
     val editedBudget = liveData<Resource<Budget>?> {
-        if (budgetId != Int.NO_ITEM) {
+        if (editedBudgetId != Int.NO_ITEM) {
             emit(Resource.Loading())
             try {
-                emitSource(localRepository.getBudgetByIdLiveData(budgetId).map { Resource.Success(it) })
+                emitSource(localRepository.getBudgetByIdLiveData(editedBudgetId).map { Resource.Success(it) })
             } catch (e: Exception) {
                 emit(Resource.Error(e))
             }
@@ -55,7 +55,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
     }
 
     fun onInputIsActiveStateChanged(isChecked: Boolean) {
-        _activeWarningVisibility.value = isChecked && activeBudgetExist && (budgetId != activeBudgetId)
+        _activeWarningVisibility.value = isChecked && activeBudgetExist && (editedBudgetId != activeBudgetId)
     }
 
     fun onApply(budgetInputBundle: BudgetInputBundle) {
@@ -111,7 +111,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
 
             override fun provideOutputEntity(inputEntity: BudgetInputBundle): Budget {
                 return Budget(inputEntity.title, inputEntity.totalBalance.toLongOrNull() ?: 0)
-                    .apply { if (budgetId != Int.NO_ITEM) id = budgetId }
+                    .apply { if (editedBudgetId != Int.NO_ITEM) id = editedBudgetId }
             }
 
             override fun provideViewValidationList(): List<ViewValidation> {
@@ -135,7 +135,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
     private fun insertOrReplace(budget: Budget, listener: ResultStateListener<Long>)  = viewModelScope.launch {
         try {
             listener.onLoading()
-            val id = localRepository.insertOrReplace(budget)
+            val id = localRepository.insertOrReplaceBudget(budget)
             listener.onSuccess(id)
         } catch (e: Exception) {
             listener.onError(e)

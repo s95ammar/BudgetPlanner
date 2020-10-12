@@ -26,42 +26,46 @@ class LocalRepositoryImpl @Inject constructor(
 
     // Budget CRUD
 
-    override suspend fun insertOrReplace(budget: Budget) = withContext(Dispatchers.IO) { budgetDao.insertOrReplace(budget) }
-    override suspend fun delete(budget: Budget) = withContext(Dispatchers.IO) { budgetDao.delete(budget) }
+    override suspend fun insertOrReplaceBudget(budget: Budget) = withContext(Dispatchers.IO) { budgetDao.insertOrReplaceBudget(budget) }
+    override suspend fun deleteBudget(budget: Budget) = withContext(Dispatchers.IO) { budgetDao.deleteBudget(budget) }
     override suspend fun getBudgetById(id: Int) = withContext(Dispatchers.IO) { budgetDao.getBudgetById(id) }
     override fun getBudgetByIdLiveData(id: Int) = budgetDao.getBudgetByIdLiveData(id)
-    override fun getAllBudgets() = budgetDao.getAllBudgets()
+    override fun getAllBudgetsLiveData() = budgetDao.getAllBudgetsLiveData()
 
     // Category CRUD
 
-    override suspend fun insertOrReplace(category: Category) = withContext(Dispatchers.IO) { categoryDao.insertOrReplace(category) }
-    override suspend fun delete(category: Category) = withContext(Dispatchers.IO) { categoryDao.delete(category) }
-    override fun getCategoryById(id: Int) = categoryDao.getCategoryById(id)
-    override fun getAllCategories() = categoryDao.getAllCategories()
+    override suspend fun insertOrReplaceCategory(category: Category) = withContext(Dispatchers.IO) { categoryDao.insertOrReplaceCategory(category) }
+    override suspend fun deleteCategory(category: Category) = withContext(Dispatchers.IO) { categoryDao.deleteCategory(category) }
+    override suspend fun getCategoryById(id: Int) = withContext(Dispatchers.IO) { categoryDao.getCategoryById(id) }
+    override fun getCategoryByIdLiveData(id: Int) = categoryDao.getCategoryByIdLiveData(id)
+    override fun getAllCategoriesLiveData() = categoryDao.getAllCategoriesLiveData()
 
     // BudgetTransaction CRUD
 
-    override suspend fun insertOrReplace(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) {
-        budgetTransactionDao.insertOrReplace(budgetTransaction)
+    override suspend fun insertOrReplaceBudgetTransaction(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) {
+        budgetTransactionDao.insertOrReplaceBudgetTransaction(budgetTransaction)
     }
     override suspend fun delete(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) {
         budgetTransactionDao.delete(budgetTransaction)
     }
-    override fun getBudgetTransaction(id: Int) = budgetTransactionDao.getBudgetTransaction(id)
-    override fun getBudgetTransactions(categoryStatusId: Int) = budgetTransactionDao.getBudgetTransactions(categoryStatusId)
+    override suspend fun getBudgetTransaction(id: Int) = withContext(Dispatchers.IO) { budgetTransactionDao.getBudgetTransaction(id) }
+    override fun getBudgetTransactionLiveData(id: Int) = budgetTransactionDao.getBudgetTransactionLiveData(id)
+    override fun getBudgetTransactionsLiveData(categoryStatusId: Int) = budgetTransactionDao.getBudgetTransactionsLiveData(categoryStatusId)
 
     // SavingJar CRUD
 
-    override suspend fun insertOrReplace(savingsJar: SavingJar) = withContext(Dispatchers.IO) { savingsJarDao.insertOrReplace(savingsJar) }
-    override suspend fun delete(savingsJar: SavingJar) = withContext(Dispatchers.IO) { savingsJarDao.delete(savingsJar) }
-    override fun getSavingJarById(id: Int) = savingsJarDao.getSavingJarById(id)
-    override fun getAllSavingJars() = savingsJarDao.getAllSavingJars()
+    override suspend fun insertOrReplaceSavingJar(savingsJar: SavingJar) = withContext(Dispatchers.IO) { savingsJarDao.insertOrReplaceSavingJar(savingsJar) }
+    override suspend fun deleteSavingJar(savingsJar: SavingJar) = withContext(Dispatchers.IO) { savingsJarDao.deleteSavingJar(savingsJar) }
+    override suspend fun getSavingJarById(id: Int) = withContext(Dispatchers.IO) { savingsJarDao.getSavingJarById(id) }
+    override fun getSavingJarByIdLiveData(id: Int) = savingsJarDao.getSavingJarByIdLiveData(id)
+    override fun getAllSavingJarsLiveData() = savingsJarDao.getAllSavingJarsLiveData()
 
     // Savings CRUD
 
-    override suspend fun insertOrReplace(saving: Saving) = withContext(Dispatchers.IO) { savingDao.insertOrReplace(saving) }
-    override suspend fun delete(saving: Saving) = withContext(Dispatchers.IO) { savingDao.delete(saving) }
-    override fun getSavingById(id: Int) = savingDao.getSavingById(id)
-    override fun getSavingsBy(categoryStatusId: Int) = savingDao.getSavingsBy(categoryStatusId)
+    override suspend fun insertOrReplaceSaving(saving: Saving) = withContext(Dispatchers.IO) { savingDao.insertOrReplaceSaving(saving) }
+    override suspend fun deleteSaving(saving: Saving) = withContext(Dispatchers.IO) { savingDao.deleteSaving(saving) }
+    override suspend fun getSavingById(id: Int) = withContext(Dispatchers.IO) { savingDao.getSavingById(id) }
+    override fun getSavingByIdLiveData(id: Int) = savingDao.getSavingByIdLiveData(id)
+    override fun getSavingsByLiveData(categoryStatusId: Int) = savingDao.getSavingsByLiveData(categoryStatusId)
 
 }
