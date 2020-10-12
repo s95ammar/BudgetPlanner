@@ -31,5 +31,9 @@
 
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="format_delete_confirmation">Please confirm if you really want to delete %s</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>

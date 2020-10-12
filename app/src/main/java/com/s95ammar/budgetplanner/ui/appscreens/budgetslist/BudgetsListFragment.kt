@@ -4,6 +4,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.models.Resource
+import com.s95ammar.budgetplanner.models.Result
 import com.s95ammar.budgetplanner.ui.appscreens.budgetslist.adapter.BudgetsListAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.budgetslist.bottomsheet.BudgetListItemBottomSheetDialogFragment
 import com.s95ammar.budgetplanner.ui.appscreens.budgetslist.data.BudgetViewEntity
@@ -32,6 +33,7 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
         viewModel.allBudgets.observe(viewLifecycleOwner) { handleAllBudgetsLoading(it) }
         viewModel.navigateToEditBudget.observeEvent(viewLifecycleOwner) { navigateToCreateEditBudget(it) }
         viewModel.showBottomSheet.observeEvent(viewLifecycleOwner) { showBottomSheet(it) }
+        viewModel.displayDeleteResultState.observeEvent(viewLifecycleOwner) { displayDeleteResultState(it) }
 
         observeResultLiveData<Int>(Keys.KEY_RESULT_ACTIVE_BUDGET_CHANGED) { id -> viewModel.onActiveBudgetChanged(id) }
     }
@@ -41,12 +43,23 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
             is Resource.Loading -> loadingManager?.showLoading()
             is Resource.Error -> {
                 loadingManager?.hideLoading()
-                displayError(allBudgetsResource.throwable)
+                displayErrorDialog(allBudgetsResource.throwable)
             }
             is Resource.Success -> {
                 loadingManager?.hideLoading()
                 adapter.submitList(allBudgetsResource.data) { recycler_view_budgets_list?.scrollToPosition(0) }
             }
+        }
+    }
+
+    private fun displayDeleteResultState(result: Result) {
+        when (result) {
+            is Result.Loading -> loadingManager?.showLoading()
+            is Result.Error -> {
+                loadingManager?.hideLoading()
+                displayErrorDialog(result.throwable)
+            }
+            is Result.Success -> loadingManager?.hideLoading()
         }
     }
 
@@ -69,7 +82,9 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
                 }
 
                 override fun onDelete(budgetId: Int) {
-                    viewModel.deleteBudget(budgetId)
+                    displayDeleteConfirmationDialog(budget.name) {
+                        viewModel.onDeleteBudget(budgetId)
+                    }
                 }
             }
         }.show(childFragmentManager, BudgetListItemBottomSheetDialogFragment.TAG)

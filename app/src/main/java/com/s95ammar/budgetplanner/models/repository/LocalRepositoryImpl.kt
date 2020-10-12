@@ -45,8 +45,8 @@ class LocalRepositoryImpl @Inject constructor(
     override suspend fun insertOrReplaceBudgetTransaction(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) {
         budgetTransactionDao.insertOrReplaceBudgetTransaction(budgetTransaction)
     }
-    override suspend fun delete(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) {
-        budgetTransactionDao.delete(budgetTransaction)
+    override suspend fun deleteBudgetTransaction(budgetTransaction: BudgetTransaction) = withContext(Dispatchers.IO) {
+        budgetTransactionDao.deleteBudgetTransaction(budgetTransaction)
     }
     override suspend fun getBudgetTransaction(id: Int) = withContext(Dispatchers.IO) { budgetTransactionDao.getBudgetTransaction(id) }
     override fun getBudgetTransactionLiveData(id: Int) = budgetTransactionDao.getBudgetTransactionLiveData(id)

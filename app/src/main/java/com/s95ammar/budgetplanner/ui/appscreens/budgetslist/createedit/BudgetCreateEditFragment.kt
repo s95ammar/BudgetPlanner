@@ -71,7 +71,7 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
             is Resource.Loading -> loadingManager?.showLoading()
             is Resource.Error -> {
                 loadingManager?.hideLoading()
-                displayError(budgetResource.throwable)
+                displayErrorDialog(budgetResource.throwable)
             }
             is Resource.Success -> {
                 loadingManager?.hideLoading()
@@ -98,7 +98,7 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
             is Result.Loading -> loadingManager?.showLoading()
             is Result.Error -> {
                 loadingManager?.hideLoading()
-                displayError(result.throwable)
+                displayErrorDialog(result.throwable)
             }
             is Result.Success -> {
                 loadingManager?.hideLoading()

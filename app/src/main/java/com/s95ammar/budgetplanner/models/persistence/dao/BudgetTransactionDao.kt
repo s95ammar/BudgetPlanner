@@ -11,7 +11,7 @@ interface BudgetTransactionDao {
 	suspend fun insertOrReplaceBudgetTransaction(budgetTransaction: BudgetTransaction)
 
 	@Delete
-	suspend fun delete(budgetTransaction: BudgetTransaction)
+	suspend fun deleteBudgetTransaction(budgetTransaction: BudgetTransaction)
 
 	@Query("SELECT * FROM budget_transaction WHERE id=:id")
 	suspend fun getBudgetTransaction(id: Int): BudgetTransaction

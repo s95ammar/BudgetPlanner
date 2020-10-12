@@ -68,19 +68,19 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
     }
 
     private fun onValidationSuccessful(budget: Budget, budgetInputBundle: BudgetInputBundle) {
-        insertOrReplace(
-            budget = budget,
-            listener = object : ResultStateListener<Long> {
-                override fun onSuccess(data: Long?) {
-                    val id = data?.toInt() ?: return
-                    handleActiveBudget(budgetInputBundle, id)
-                    _onCreateEditApply.call(Result.Success)
-                }
+        insertOrReplaceBudget(budget = budget, listener = object : ResultStateListener<Long> {
 
-                override fun onLoading() = _onCreateEditApply.call(Result.Loading)
-                override fun onError(throwable: Throwable) = _onCreateEditApply.call(Result.Error(throwable))
+            override fun onLoading() = _onCreateEditApply.call(Result.Loading)
+
+            override fun onSuccess(data: Long?) {
+                val id = data?.toInt() ?: return
+                handleActiveBudget(budgetInputBundle, id)
+                _onCreateEditApply.call(Result.Success)
             }
-        )
+
+            override fun onError(throwable: Throwable) = _onCreateEditApply.call(Result.Error(throwable))
+
+        })
     }
 
     private fun onValidationError(validationErrors: ValidationErrors) {
@@ -132,7 +132,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun insertOrReplace(budget: Budget, listener: ResultStateListener<Long>)  = viewModelScope.launch {
+    private fun insertOrReplaceBudget(budget: Budget, listener: ResultStateListener<Long>)  = viewModelScope.launch {
         try {
             listener.onLoading()
             val id = localRepository.insertOrReplaceBudget(budget)

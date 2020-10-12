@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_current_budget"
-        android:icon="@drawable/ic_current_budget"
+        android:icon="@drawable/ic_budget"
         android:title="@string/current_budget" />
 
     <item
