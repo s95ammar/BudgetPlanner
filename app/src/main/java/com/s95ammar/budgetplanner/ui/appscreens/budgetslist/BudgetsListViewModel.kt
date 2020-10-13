@@ -56,7 +56,11 @@ class BudgetsListViewModel @ViewModelInject constructor(private val localReposit
 
             override fun onLoading() = _displayDeleteResultState.call(Result.Loading)
 
-            override fun onSuccess(data: Unit?) = _displayDeleteResultState.call(Result.Success)
+            override fun onSuccess(data: Unit?) {
+                if (id == localRepository.loadActiveBudgetId())
+                    localRepository.saveActiveBudgetId(Int.NO_ITEM)
+                _displayDeleteResultState.call(Result.Success)
+            }
 
             override fun onError(throwable: Throwable) = _displayDeleteResultState.call(Result.Error(throwable))
 
