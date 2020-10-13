@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_title_edit_delete_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/_8sdp"
+        android:padding="@dimen/_8sdp"
+        android:textAppearance="@style/TextTitleBlackBold16sdp"
+        app:drawableTint="@color/colorPrimary"
+        tools:drawableStart="@drawable/ic_saving_jar"
+        tools:text="Item Title" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_view_edit_edit_delete_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_edit"
+        android:drawablePadding="@dimen/_8sdp"
+        android:focusable="true"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/edit"
+        android:textAppearance="@style/TextDescBlack14sdp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_view_delete_edit_delete_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_delete"
+        android:drawablePadding="@dimen/_8sdp"
+        android:focusable="true"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/delete"
+        android:textAppearance="@style/TextDescBlack14sdp" />
+
+</LinearLayout>

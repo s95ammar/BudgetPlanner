@@ -36,4 +36,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
+    <string name="create_category">Create category</string>
+    <string name="edit_category">Edit category</string>
+
 </resources>

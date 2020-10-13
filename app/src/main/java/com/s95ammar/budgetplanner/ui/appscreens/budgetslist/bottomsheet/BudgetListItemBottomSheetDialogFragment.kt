@@ -16,9 +16,8 @@ class BudgetListItemBottomSheetDialogFragment : BottomSheetDialogFragment() {
     companion object {
         const val TAG = "TAG_BUDGET_LIST_ITEM_BOTTOM_SHEET"
 
-        fun newInstance(budgetId: Int, budgetTitle: String, isActive: Boolean) = BudgetListItemBottomSheetDialogFragment().apply {
+        fun newInstance(budgetTitle: String, isActive: Boolean) = BudgetListItemBottomSheetDialogFragment().apply {
             arguments = bundleOf(
-                Keys.KEY_BUDGET_ID to budgetId,
                 Keys.KEY_BUDGET_TITLE to budgetTitle,
                 Keys.KEY_BUDGET_IS_ACTIVE to isActive
             )
@@ -26,15 +25,13 @@ class BudgetListItemBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     interface Listener {
-        fun onMakeActive(budgetId: Int)
-        fun onEdit(budgetId: Int)
-        fun onDelete(budgetId: Int)
+        fun onMakeActive()
+        fun onEdit()
+        fun onDelete()
     }
 
     var listener: Listener? = null
 
-    private val argBudgetId
-        get() = requireArguments().getInt(Keys.KEY_BUDGET_ID)
     private val argBudgetTitle
         get() = requireArguments().getString(Keys.KEY_BUDGET_TITLE)
     private val argBudgetIsActive
@@ -52,9 +49,9 @@ class BudgetListItemBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private fun setUpViews() {
         text_view_title_budget_bottom_sheet.text = argBudgetTitle
         text_view_make_active_budget_bottom_sheet.isVisible = !argBudgetIsActive
-        text_view_make_active_budget_bottom_sheet.setOnClickListener { listener?.onMakeActive(argBudgetId); dismiss() }
-        text_view_edit_budget_bottom_sheet.setOnClickListener { listener?.onEdit(argBudgetId); dismiss() }
-        text_view_delete_budget_bottom_sheet.setOnClickListener { listener?.onDelete(argBudgetId); dismiss() }
+        text_view_make_active_budget_bottom_sheet.setOnClickListener { listener?.onMakeActive(); dismiss() }
+        text_view_edit_budget_bottom_sheet.setOnClickListener { listener?.onEdit(); dismiss() }
+        text_view_delete_budget_bottom_sheet.setOnClickListener { listener?.onDelete(); dismiss() }
     }
 
 }

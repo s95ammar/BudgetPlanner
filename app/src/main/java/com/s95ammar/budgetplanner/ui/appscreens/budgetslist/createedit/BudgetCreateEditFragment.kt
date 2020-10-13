@@ -16,16 +16,16 @@ import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.util.inputText
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.budget_create_edit_fragment.*
+import kotlinx.android.synthetic.main.fragment_budget_create_edit.*
 
 @AndroidEntryPoint
-class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragment) {
+class BudgetCreateEditFragment : BaseFragment(R.layout.fragment_budget_create_edit) {
 
     private val viewModel: BudgetCreateEditViewModel by viewModels()
 
     override fun setUpViews() {
         super.setUpViews()
-        toolbar_budgets_create_edit.setNavigationOnClickListener { navController.navigateUp() }
+        toolbar_budget_create_edit.setNavigationOnClickListener { navController.navigateUp() }
         button_budget_create_edit.setOnClickListener { onApply() }
         checkbox_active_budget_create_edit.setOnCheckedChangeListener { _, isChecked -> viewModel.onInputIsActiveStateChanged(isChecked) }
     }
@@ -48,11 +48,11 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
     private fun setViewsToMode(mode: CreateEditMode) {
         when (mode) {
             CreateEditMode.CREATE -> {
-                toolbar_budgets_create_edit.title = getString(R.string.create_budget)
+                toolbar_budget_create_edit.title = getString(R.string.create_budget)
                 button_budget_create_edit.text = getString(R.string.create)
             }
             CreateEditMode.EDIT -> {
-                toolbar_budgets_create_edit.title = getString(R.string.edit_budget)
+                toolbar_budget_create_edit.title = getString(R.string.edit_budget)
                 button_budget_create_edit.text = getString(R.string.save)
             }
         }
@@ -109,10 +109,8 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.budget_create_edit_fragme
 
     private fun displayError(viewKey: Int, errorId: Int) {
         when (viewKey) {
-            BudgetCreateEditViewKeys.VIEW_TITLE ->
-                input_layout_budget_create_edit_title.error = getErrorStringById(errorId)
-            BudgetCreateEditViewKeys.VIEW_TOTAL_BALANCE ->
-                input_layout_budget_create_edit_total_balance.error = getErrorStringById(errorId)
+            BudgetCreateEditViewKeys.VIEW_TITLE -> input_layout_budget_create_edit_title.error = getErrorStringById(errorId)
+            BudgetCreateEditViewKeys.VIEW_TOTAL_BALANCE -> input_layout_budget_create_edit_total_balance.error = getErrorStringById(errorId)
         }
     }
 

@@ -73,7 +73,7 @@ class BudgetsListViewModel @ViewModelInject constructor(private val localReposit
             val budget = localRepository.getBudgetById(budgetId)
             localRepository.deleteBudget(budget)
             listener.onSuccess()
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             listener.onError(e)
         }
     }

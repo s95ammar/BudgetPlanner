@@ -132,7 +132,7 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun insertOrReplaceBudget(budget: Budget, listener: ResultStateListener<Long>)  = viewModelScope.launch {
+    private fun insertOrReplaceBudget(budget: Budget, listener: ResultStateListener<Long>) = viewModelScope.launch {
         try {
             listener.onLoading()
             val id = localRepository.insertOrReplaceBudget(budget)

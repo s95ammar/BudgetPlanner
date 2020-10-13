@@ -71,19 +71,19 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
     }
 
     private fun showBottomSheet(budget: BudgetViewEntity) {
-        BudgetListItemBottomSheetDialogFragment.newInstance(budget.id, budget.name, budget.isActive).apply {
+        BudgetListItemBottomSheetDialogFragment.newInstance(budget.name, budget.isActive).apply {
             listener = object : BudgetListItemBottomSheetDialogFragment.Listener {
-                override fun onMakeActive(budgetId: Int) {
-                    viewModel.saveAndDisplayNewActiveBudget(budgetId)
+                override fun onMakeActive() {
+                    viewModel.saveAndDisplayNewActiveBudget(budget.id)
                 }
 
-                override fun onEdit(budgetId: Int) {
-                    navigateToCreateEditBudget(budgetId)
+                override fun onEdit() {
+                    navigateToCreateEditBudget(budget.id)
                 }
 
-                override fun onDelete(budgetId: Int) {
+                override fun onDelete() {
                     displayDeleteConfirmationDialog(budget.name) {
-                        viewModel.onDeleteBudget(budgetId)
+                        viewModel.onDeleteBudget(budget.id)
                     }
                 }
             }
