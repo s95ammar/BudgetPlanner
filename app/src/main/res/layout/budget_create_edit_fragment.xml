@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:titleTextColor="@color/colorWhite"
+            app:titleTextAppearance="@style/TextTitleWhiteBold16sdp"
             tools:title="@string/create_budget" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
@@ -38,6 +38,7 @@
             android:layout_marginTop="@dimen/_16sdp"
             android:hint="@string/title"
             app:boxBackgroundColor="@null"
+            app:errorTextAppearance="@style/TextAppearanceCairo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -46,7 +47,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textAppearance="@style/TextAppearanceCairo" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -57,6 +59,7 @@
             android:layout_marginTop="@dimen/_16sdp"
             android:hint="@string/total_balance"
             app:boxBackgroundColor="@null"
+            app:errorTextAppearance="@style/TextAppearanceCairo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_budget_create_edit_title">
@@ -64,7 +67,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textAppearance="@style/TextAppearanceCairo" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,6 +102,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_8sdp"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextTitleWhiteBold14sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

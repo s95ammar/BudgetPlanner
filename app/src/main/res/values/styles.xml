@@ -16,6 +16,26 @@
         <item name="titleTextColor">@color/colorWhite</item>
     </style>
 
+    <style name="TextTitleWhiteBold16sdp">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/_16sdp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextTitleWhiteBold14sdp">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/_14sdp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextTitleWhite14sdp">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/_14sdp</item>
+    </style>
+
     <style name="TextTitleBlackBold16sdp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@android:color/black</item>
@@ -40,5 +60,15 @@
         <item name="android:textColor">@color/colorGray</item>
         <item name="android:textSize">@dimen/_12sdp</item>
     </style>
+
+    <style name="TextAppearanceCairo" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+
+    <style name="TextAppearanceCairo10sdp" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+
 
 </resources>
