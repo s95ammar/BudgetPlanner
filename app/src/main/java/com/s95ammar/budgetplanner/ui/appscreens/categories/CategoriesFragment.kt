@@ -25,9 +25,13 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories) {
     override fun setUpViews() {
         super.setUpViews()
         fab_categories.setOnClickListener { navigateToCreateEditCategory(Int.NO_ITEM) }
+        setUpRecyclerView()
+    }
+
+    private fun setUpRecyclerView() {
         recycler_view_categories_list.adapter = adapter
         recycler_view_categories_list.setHasFixedSize(true)
-        recycler_view_categories_list.addItemDecoration(DividerItemDecoration(recycler_view_categories_list.context, DividerItemDecoration.VERTICAL))
+        recycler_view_categories_list.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
     override fun initObservers() {
@@ -73,16 +77,8 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories) {
     private fun showBottomSheet(category: Category) {
         EditDeleteBottomSheetDialogFragment.newInstance(category.name, R.drawable.ic_category).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
-
-                override fun onEdit() {
-                    navigateToCreateEditCategory(category.id)
-                }
-
-                override fun onDelete() {
-                    displayDeleteConfirmationDialog(category.name) {
-                        viewModel.onDeleteCategory(category.id)
-                    }
-                }
+                override fun onEdit() = navigateToCreateEditCategory(category.id)
+                override fun onDelete() = displayDeleteConfirmationDialog(category.name) { viewModel.onDeleteCategory(category.id) }
             }
         }.show(childFragmentManager, EditDeleteBottomSheetDialogFragment.TAG)
     }

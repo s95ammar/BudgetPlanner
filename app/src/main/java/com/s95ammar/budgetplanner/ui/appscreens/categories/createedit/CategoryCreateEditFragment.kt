@@ -102,9 +102,7 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
     private fun onApply() {
         clearViewsValidation()
         viewModel.onApply(
-            CategoryInputBundle(
-                title = input_layout_category_create_edit_title.inputText.trim()
-            )
+            CategoryInputBundle(title = input_layout_category_create_edit_title.inputText.trim())
         )
     }
 
