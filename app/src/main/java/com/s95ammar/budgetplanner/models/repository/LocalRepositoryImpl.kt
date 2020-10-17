@@ -54,8 +54,8 @@ class LocalRepositoryImpl @Inject constructor(
 
     // SavingJar CRUD
 
-    override suspend fun insertOrReplaceSavingJar(savingsJar: SavingJar) = withContext(Dispatchers.IO) { savingsJarDao.insertOrReplaceSavingJar(savingsJar) }
-    override suspend fun deleteSavingJar(savingsJar: SavingJar) = withContext(Dispatchers.IO) { savingsJarDao.deleteSavingJar(savingsJar) }
+    override suspend fun insertOrReplaceSavingJar(savingsJar: SavingsJar) = withContext(Dispatchers.IO) { savingsJarDao.insertOrReplaceSavingJar(savingsJar) }
+    override suspend fun deleteSavingJar(savingsJar: SavingsJar) = withContext(Dispatchers.IO) { savingsJarDao.deleteSavingJar(savingsJar) }
     override suspend fun getSavingJarById(id: Int) = withContext(Dispatchers.IO) { savingsJarDao.getSavingJarById(id) }
     override fun getSavingJarByIdLiveData(id: Int) = savingsJarDao.getSavingJarByIdLiveData(id)
     override fun getAllSavingJarsLiveData() = savingsJarDao.getAllSavingJarsLiveData()

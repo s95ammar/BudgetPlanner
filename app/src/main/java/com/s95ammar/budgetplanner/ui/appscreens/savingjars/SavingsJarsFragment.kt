@@ -6,8 +6,8 @@ import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SavingJarsFragment : BaseFragment(R.layout.fragment_saving_jars) {
+class SavingsJarsFragment : BaseFragment(R.layout.fragment_savings_jars) {
 
-    private val viewModel: SavingJarsViewModel by viewModels()
+    private val viewModel: SavingsJarsViewModel by viewModels()
 
 }
