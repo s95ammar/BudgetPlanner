@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_current_budget">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/navigation_current_budget"
@@ -15,7 +15,7 @@
         android:id="@+id/navigation_budgets_list"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.budgetslist.BudgetsListFragment"
         android:label="@string/budgets_list"
-        tools:layout="@layout/fragment_budgets_list" >
+        tools:layout="@layout/fragment_budgets_list">
         <action
             android:id="@+id/action_navigation_budgets_list_to_budgetCreateEditFragment"
             app:destination="@id/budgetCreateEditFragment" />
@@ -25,7 +25,7 @@
         android:id="@+id/navigation_categories"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.categories.CategoriesFragment"
         android:label="@string/categories"
-        tools:layout="@layout/fragment_categories" >
+        tools:layout="@layout/fragment_categories">
         <action
             android:id="@+id/action_navigation_categories_to_categoryCreateEditFragment"
             app:destination="@id/categoryCreateEditFragment" />
@@ -46,4 +46,20 @@
         android:name="com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.CategoryCreateEditFragment"
         android:label="fragment_category_create_edit"
         tools:layout="@layout/fragment_category_create_edit" />
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.auth.login.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.auth.register.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register" />
+
 </navigation>

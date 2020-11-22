@@ -9,19 +9,21 @@ ext {
             // core
             "gradle"          : '4.1.0',
             "kotlin"          : "1.4.0",
-            "coreKtx"         : "1.3.1",
+            "coreKtx"         : "1.3.2",
             "appcompat"       : "1.2.0",
-            "constraintlayout": "2.0.1",
+            "constraintlayout": "2.0.4",
             "material"        : "1.2.1",
 
             // app
             "hilt"            : "2.28-alpha",
             "hiltLifecycle"   : "1.0.0-alpha02",
-            "navigation"      : "2.3.0-alpha02",
+            "navigation"      : "2.3.1",
             "lifecycle"       : "2.2.0",
             "viewPager2"      : "1.0.0",
             "room"            : "2.2.5",
-            "dimen"            : "1.0.6",
+            "retrofit"        : "2.9.0",
+            "okhttp"          : "4.7.2",
+            "dimen"           : "1.0.6",
 
             // testing
             "junit"           : "4.13"

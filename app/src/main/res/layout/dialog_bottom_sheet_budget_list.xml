@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_title_budget_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_8sdp">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:src="@drawable/ic_budget"
-            android:tint="@color/colorPrimary" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_title_budget_bottom_sheet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:textAppearance="@style/TextTitleBlackBold16sdp"
-            tools:text="Budget Title" />
-
-    </LinearLayout>
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:drawableStart="@drawable/ic_budget"
+        android:drawablePadding="@dimen/_8sdp"
+        android:padding="@dimen/_8sdp"
+        android:textAppearance="@style/TextTitleBlackBold16sdp"
+        app:drawableTint="@color/colorPrimary"
+        tools:text="Budget Title" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_view_make_active_budget_bottom_sheet"

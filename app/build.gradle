@@ -44,8 +44,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     testImplementation "junit:junit:${depVersions.junit}"
-    androidTestImplementation "androidx.test.ext:junit:1.1.1"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
+    androidTestImplementation "androidx.test.ext:junit:1.1.2"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.2.1"
 
     // Hilt
     implementation "com.google.dagger:hilt-android:${depVersions.hilt}"
@@ -56,8 +56,6 @@ dependencies {
 
 
     // Navigation
-    implementation "androidx.navigation:navigation-fragment:${depVersions.navigation}"
-    implementation "androidx.navigation:navigation-ui:${depVersions.navigation}"
     implementation "androidx.navigation:navigation-fragment-ktx:${depVersions.navigation}"
     implementation "androidx.navigation:navigation-ui-ktx:${depVersions.navigation}"
 
@@ -72,6 +70,11 @@ dependencies {
     implementation "androidx.room:room-runtime:${depVersions.room}"
     kapt "androidx.room:room-compiler:${depVersions.room}"
     implementation "androidx.room:room-ktx:${depVersions.room}"
+
+    // retrofit
+    implementation "com.squareup.retrofit2:retrofit:${depVersions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${depVersions.retrofit}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${depVersions.okhttp}"
 
     // dimen
     implementation "com.intuit.sdp:sdp-android:${depVersions.dimen}"

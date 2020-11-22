@@ -43,6 +43,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="TextTitlePrimaryBold16sdp">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/_16sdp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextDescBlack14sdp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@android:color/black</item>
@@ -52,6 +59,12 @@
     <style name="TextDescPrimary14sdp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/_14sdp</item>
+    </style>
+
+    <style name="TextInputWhite14sdp">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textSize">@dimen/_14sdp</item>
     </style>
 

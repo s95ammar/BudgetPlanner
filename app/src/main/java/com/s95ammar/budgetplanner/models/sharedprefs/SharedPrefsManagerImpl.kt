@@ -19,4 +19,9 @@ class SharedPrefsManagerImpl @Inject constructor(private val sharedPreferences: 
         sharedPreferences.edit().putInt(Keys.KEY_ACTIVE_BUDGET_ID, id).apply()
     }
 
+    override fun loadAuthToken() = sharedPreferences.getString(Keys.KEY_AUTH_TOKEN, null)
+
+    override fun saveAuthToken(token: String) {
+        sharedPreferences.edit().putString(Keys.KEY_AUTH_TOKEN, token).apply()
+    }
 }

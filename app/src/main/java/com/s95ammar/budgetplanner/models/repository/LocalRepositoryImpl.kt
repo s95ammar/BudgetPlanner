@@ -23,6 +23,8 @@ class LocalRepositoryImpl @Inject constructor(
     override fun doesActiveBudgetExist() = sharedPrefs.doesActiveBudgetExist()
     override fun loadActiveBudgetId() = sharedPrefs.loadActiveBudgetId()
     override fun saveActiveBudgetId(id: Int) = sharedPrefs.saveActiveBudgetId(id)
+    override fun loadAuthToken(): String? = sharedPrefs.loadAuthToken()
+    override fun saveAuthToken(token: String) = sharedPrefs.saveAuthToken(token)
 
     // Budget CRUD
 

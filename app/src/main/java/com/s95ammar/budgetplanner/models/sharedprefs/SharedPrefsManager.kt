@@ -4,4 +4,6 @@ interface SharedPrefsManager {
     fun doesActiveBudgetExist(): Boolean
     fun loadActiveBudgetId(): Int
     fun saveActiveBudgetId(id: Int)
+    fun loadAuthToken(): String?
+    fun saveAuthToken(token: String)
 }

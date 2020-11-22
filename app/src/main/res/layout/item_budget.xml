@@ -16,29 +16,22 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_8sdp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/image_view_budget_item_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:src="@drawable/ic_budget"
-            android:tint="@color/colorPrimary"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_view_budget_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
+            android:drawablePadding="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_8sdp"
+            android:drawableStart="@drawable/ic_budget"
+            app:drawableTint="@color/colorPrimary"
+            
             android:textAppearance="@style/TextTitleBlackBold16sdp"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@+id/image_view_budgetItem_active"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/image_view_budget_item_title"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="My active budget with some very long name xD" />
+            tools:text="My active budget title" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_view_budgetItem_active"
@@ -60,7 +53,7 @@
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@+id/text_view_budget_item_total_balance_value"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/image_view_budget_item_title"
+            app:layout_constraintStart_toStartOf="@+id/text_view_budget_item_title"
             app:layout_constraintTop_toBottomOf="@+id/text_view_budget_item_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -86,7 +79,7 @@
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@+id/text_view_budget_item_total_spending_estimate_value"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/image_view_budget_item_title"
+            app:layout_constraintStart_toStartOf="@+id/text_view_budget_item_title"
             app:layout_constraintTop_toBottomOf="@+id/text_view_budget_item_total_balance_key" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -122,7 +115,7 @@
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@+id/text_view_budget_item_total_savings_value"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/image_view_budget_item_title"
+            app:layout_constraintStart_toStartOf="@+id/text_view_budget_item_title"
             app:layout_constraintTop_toBottomOf="@+id/text_view_budget_item_total_spending_estimate_key" />
 
         <androidx.appcompat.widget.AppCompatTextView
