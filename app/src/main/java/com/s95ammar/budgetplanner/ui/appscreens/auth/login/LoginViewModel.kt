@@ -19,7 +19,7 @@ class LoginViewModel @ViewModelInject constructor(
     // TODO: clean
 
     fun login(email: String, password: String) = viewModelScope.launch {
-        remoteRepository.login(UserCredentials(email, password)).body()?.let { tokenResponse ->
+        remoteRepository.login(email, password).body()?.let { tokenResponse ->
             localRepository.saveAuthToken(tokenResponse.token)
         }
     }
