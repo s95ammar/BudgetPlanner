@@ -8,8 +8,10 @@ import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.R
+import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBindingException
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
 
 
@@ -19,6 +21,7 @@ abstract class BaseFragment : Fragment {
     constructor(@LayoutRes layoutResId: Int) : super(layoutResId)
 
     val navController by lazy { findNavController() }
+    private var _binding: ViewBinding? = null
 
     protected var loadingManager: LoadingManager? = null
 
@@ -27,8 +30,22 @@ abstract class BaseFragment : Fragment {
         loadingManager = context as? LoadingManager
     }
 
+    internal inline fun <reified VB: ViewBinding> getBinding(): VB {
+        _binding?.let { binding ->
+            return binding as VB
+        }
+        throw ViewBindingException("binding is not initialized or is accessed from outside of the fragment's view lifecycle")
+    }
+
+    internal fun setBinding(binding: ViewBinding) {
+        _binding = binding
+    }
+
+    protected open fun initBinding(view: View) {} // TODO: change to abstract after full migration to view binding
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initBinding(view)
         setUpViews()
         initObservers()
     }
@@ -72,5 +89,10 @@ abstract class BaseFragment : Fragment {
             .setCancelable(false)
             .setNegativeButton(R.string.no, null)
             .show()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

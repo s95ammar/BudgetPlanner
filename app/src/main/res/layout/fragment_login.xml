@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_login"
+            android:id="@+id/toolbar"
             style="@style/BudgetPlannerMaterialToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -31,7 +31,7 @@
         android:paddingHorizontal="@dimen/_16sdp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_login_email"
+            android:id="@+id/input_layout_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
@@ -52,7 +52,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_login_password"
+            android:id="@+id/input_layout_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
@@ -61,7 +61,7 @@
             app:errorTextAppearance="@style/TextAppearanceCairo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_layout_login_email"
+            app:layout_constraintTop_toBottomOf="@+id/input_layout_email"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -74,7 +74,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text_view_login_register"
+            android:id="@+id/text_view_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"

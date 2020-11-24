@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_register"
+            android:id="@+id/toolbar"
             style="@style/BudgetPlannerMaterialToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -31,7 +31,7 @@
         android:paddingHorizontal="@dimen/_16sdp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_register_email"
+            android:id="@+id/input_layout_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
@@ -52,7 +52,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_register_password"
+            android:id="@+id/input_layout_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
@@ -61,7 +61,7 @@
             app:errorTextAppearance="@style/TextAppearanceCairo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_layout_register_email"
+            app:layout_constraintTop_toBottomOf="@+id/input_layout_email"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -74,7 +74,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_register_password_confirmation"
+            android:id="@+id/input_layout_password_confirmation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
@@ -83,7 +83,7 @@
             app:errorTextAppearance="@style/TextAppearanceCairo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_layout_register_password"
+            app:layout_constraintTop_toBottomOf="@+id/input_layout_password"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -94,6 +94,18 @@
                 android:textAppearance="@style/TextAppearanceCairo" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:text="@string/login"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:textAppearance="@style/TextTitlePrimaryBold16sdp"
+            app:layout_constraintBottom_toTopOf="@+id/button_register"
+            app:layout_constraintEnd_toEndOf="@+id/button_register"
+            app:layout_constraintStart_toStartOf="@+id/button_register" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_register"
