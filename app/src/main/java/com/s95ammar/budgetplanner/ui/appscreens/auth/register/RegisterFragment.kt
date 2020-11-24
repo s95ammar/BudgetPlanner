@@ -5,6 +5,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentRegisterBinding
+import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputData
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.util.inputText
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,9 +38,12 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register) {
     }
 
     private fun onRegister() {
-        viewModel.register(
-            binding.inputLayoutEmail.inputText.trim(),
-            binding.inputLayoutPassword.inputText.trim()
+        viewModel.onRegister(
+            UserRegisterInputData(
+                binding.inputLayoutEmail.inputText.trim(),
+                binding.inputLayoutPassword.inputText.trim(),
+                binding.inputLayoutPasswordConfirmation.inputText.trim(),
+            )
         )
     }
 

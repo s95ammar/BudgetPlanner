@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.ui.common.validation
 
-abstract class Validator<InputEntity, OutputEntity>(private val inputEntity: InputEntity) {
+abstract class Validator<InputEntity, OutputEntity>(protected val inputEntity: InputEntity) {
 
     private val viewsValidation by lazy { provideViewValidationList() }
 

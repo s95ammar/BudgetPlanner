@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.models.api.requests
+package com.s95ammar.budgetplanner.models.api.responses
 
 import com.google.gson.annotations.SerializedName
 

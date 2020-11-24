@@ -8,6 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.api.requests.UserCredentials
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
+import com.s95ammar.budgetplanner.ui.appscreens.auth.common.AuthUtil
+import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputData
+import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidationErrors
+import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidationViewKeys
+import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidator
+import com.s95ammar.budgetplanner.ui.common.validation.Validator
+import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
 import kotlinx.coroutines.launch
 
 class RegisterViewModel @ViewModelInject constructor(
@@ -18,8 +25,17 @@ class RegisterViewModel @ViewModelInject constructor(
 
     // TODO: clean
 
-    fun register(email: String, password: String) = viewModelScope.launch {
-        remoteRepository.register(UserCredentials(email, password)).body()?.let { tokenResponse ->
+    fun onRegister(userRegisterInputData: UserRegisterInputData) {
+        val validator = RegisterValidator(userRegisterInputData)
+
+        validator.getValidationResult()
+            .onSuccess { userCredentials -> register(userCredentials) }
+            .onError { validationErrors ->  /*TODO*/ }
+
+    }
+
+    fun register(userCredentials: UserCredentials) = viewModelScope.launch {
+        remoteRepository.register(userCredentials).body()?.let { tokenResponse ->
             localRepository.saveAuthToken(tokenResponse.token)
         }
     }

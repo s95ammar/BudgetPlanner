@@ -26,6 +26,7 @@
     <string name="save">Save</string>
     <string name="total_balance">Total balance</string>
 
+    <string name="error_empty_field">Please fill in the field</string>
     <string name="error_empty_title">Please fill in the title field</string>
     <string name="error_empty_total_balance">Please enter the total balance</string>
     <string name="error_invalid_total_balance">Invalid total balance</string>

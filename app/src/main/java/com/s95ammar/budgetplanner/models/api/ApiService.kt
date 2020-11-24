@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.models.api
 
-import com.s95ammar.budgetplanner.models.api.requests.TokenResponse
+import com.s95ammar.budgetplanner.models.api.responses.TokenResponse
 import com.s95ammar.budgetplanner.models.api.requests.UserCredentials
 import retrofit2.Response
 import retrofit2.http.Body

@@ -61,10 +61,9 @@ class BudgetCreateEditViewModel @ViewModelInject constructor(
     fun onApply(budgetInputBundle: BudgetInputBundle) {
         val validator = createValidator(budgetInputBundle)
 
-        when (val validationResult = validator.getValidationResult()) {
-            is ValidationResult.Success -> onValidationSuccessful(validationResult.outputData, budgetInputBundle)
-            is ValidationResult.Error -> onValidationError(validationResult.throwable)
-        }
+        validator.getValidationResult()
+            .onSuccess { outputData -> onValidationSuccessful(outputData, budgetInputBundle) }
+            .onError { throwable -> onValidationError(throwable) }
     }
 
     private fun onValidationSuccessful(budget: Budget, budgetInputBundle: BudgetInputBundle) {

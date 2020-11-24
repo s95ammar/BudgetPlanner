@@ -1,11 +1,9 @@
 package com.s95ammar.budgetplanner.models.repository
 
 import com.s95ammar.budgetplanner.models.api.ApiService
-import com.s95ammar.budgetplanner.models.api.requests.TokenResponse
 import com.s95ammar.budgetplanner.models.api.requests.UserCredentials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
