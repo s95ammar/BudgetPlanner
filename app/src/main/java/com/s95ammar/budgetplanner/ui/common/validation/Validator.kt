@@ -19,6 +19,17 @@ abstract class Validator<InputEntity, OutputEntity>(protected val inputEntity: I
         )
     }
 
+    fun getBlankValidationErrors(): ValidationErrors {
+        return ValidationErrors(
+            viewsValidation.map { singleViewValidation ->
+                ValidationErrors.ViewErrors(
+                    viewKey = singleViewValidation.viewKey,
+                    errorsIds = singleViewValidation.validationCases.map { ValidationErrors.ERROR_NONE }
+                )
+            }
+        )
+    }
+
     fun getValidationResult(): ValidationResult<OutputEntity> {
         return if (isAllValid())
             ValidationResult.Success(provideOutputEntity(inputEntity))

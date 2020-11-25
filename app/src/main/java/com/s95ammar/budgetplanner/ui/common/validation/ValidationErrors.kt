@@ -6,5 +6,9 @@ data class ValidationErrors(val viewsErrors: List<ViewErrors>) : Throwable() {
         const val ERROR_NONE = 0
     }
 
-    data class ViewErrors(val viewKey: Int, val errorsIds: List<Int>)
+    data class ViewErrors(val viewKey: Int, val errorsIds: List<Int>) {
+
+        val highestPriorityOrNone: Int
+            get() = errorsIds.filterNot { it == ERROR_NONE }.minOrNull() ?: ERROR_NONE
+    }
 }

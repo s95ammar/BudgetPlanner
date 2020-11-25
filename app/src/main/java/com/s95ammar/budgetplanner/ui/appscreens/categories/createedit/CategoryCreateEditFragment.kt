@@ -95,7 +95,7 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
     }
 
     private fun getErrorStringById(errorId: Int) = when (errorId) {
-        CategoryCreateEditErrors.EMPTY_TITLE -> getString(R.string.error_empty_title)
+        CategoryCreateEditErrors.EMPTY_TITLE -> getString(R.string.error_empty_field)
         else -> null
     }
 

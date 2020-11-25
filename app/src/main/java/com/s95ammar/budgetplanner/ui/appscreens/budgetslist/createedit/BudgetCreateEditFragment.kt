@@ -115,8 +115,8 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.fragment_budget_create_ed
     }
 
     private fun getErrorStringById(errorId: Int) = when (errorId) {
-        BudgetCreateEditErrors.EMPTY_TITLE -> getString(R.string.error_empty_title)
-        BudgetCreateEditErrors.EMPTY_TOTAL_BALANCE -> getString(R.string.error_empty_total_balance)
+        BudgetCreateEditErrors.EMPTY_TITLE -> getString(R.string.error_empty_field)
+        BudgetCreateEditErrors.EMPTY_TOTAL_BALANCE -> getString(R.string.error_empty_field)
         BudgetCreateEditErrors.INVALID_TOTAL_BALANCE -> getString(R.string.error_invalid_total_balance)
         else -> null
     }
