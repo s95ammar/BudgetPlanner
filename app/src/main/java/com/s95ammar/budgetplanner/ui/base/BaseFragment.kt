@@ -13,6 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBindingException
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
+import com.s95ammar.budgetplanner.ui.common.viewbinding.UsesViewBinding
 
 
 abstract class BaseFragment : Fragment {
@@ -41,11 +42,11 @@ abstract class BaseFragment : Fragment {
         _binding = binding
     }
 
-    protected open fun initBinding(view: View) {} // TODO: change to abstract after full migration to view binding
+//    protected open fun initBinding(view: View) {} // TODO: change to abstract after full migration to view binding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBinding(view)
+        if (this is UsesViewBinding<*>) _binding = initViewBinding(view)
         setUpViews()
         initObservers()
     }

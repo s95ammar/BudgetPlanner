@@ -7,20 +7,21 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentRegisterBinding
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputData
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
+import com.s95ammar.budgetplanner.ui.common.viewbinding.UsesViewBinding
 import com.s95ammar.budgetplanner.util.inputText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterFragment : BaseFragment(R.layout.fragment_register) {
+class RegisterFragment : BaseFragment(R.layout.fragment_register), UsesViewBinding<FragmentRegisterBinding> {
 
-    private var binding: FragmentRegisterBinding
+    override var binding: FragmentRegisterBinding
         get() = getBinding()
         set(value) = setBinding(value)
 
     private val viewModel: RegisterViewModel by viewModels()
 
-    override fun initBinding(view: View) {
-        binding = FragmentRegisterBinding.bind(view)
+    override fun initViewBinding(view: View): FragmentRegisterBinding {
+        return FragmentRegisterBinding.bind(view)
     }
 
     override fun setUpViews() {

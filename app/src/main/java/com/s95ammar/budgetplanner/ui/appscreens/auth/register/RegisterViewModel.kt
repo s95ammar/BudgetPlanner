@@ -8,13 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.api.requests.UserCredentials
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.AuthUtil
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputData
-import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidationErrors
-import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidationViewKeys
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidator
-import com.s95ammar.budgetplanner.ui.common.validation.Validator
-import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
 import kotlinx.coroutines.launch
 
 class RegisterViewModel @ViewModelInject constructor(

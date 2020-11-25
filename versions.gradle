@@ -22,7 +22,7 @@ ext {
             "viewPager2"      : "1.0.0",
             "room"            : "2.2.5",
             "retrofit"        : "2.9.0",
-            "okhttp"          : "4.7.2",
+            "okhttp"          : "4.9.0",
             "dimen"           : "1.0.6",
 
             // testing

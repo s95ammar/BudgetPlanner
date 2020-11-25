@@ -8,36 +8,51 @@ import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
 
 class RegisterValidator(inputEntity: UserRegisterInputData) : Validator<UserRegisterInputData, UserCredentials>(inputEntity) {
 
+    object Errors {
+        const val ERROR_EMPTY_EMAIL = 1
+        const val ERROR_INVALID_EMAIL = 2
+        const val ERROR_EMPTY_PASSWORD = 3
+        const val ERROR_INVALID_PASSWORD = 4
+        const val ERROR_EMPTY_PASSWORD_CONFIRMATION = 5
+        const val ERROR_PASSWORDS_DO_NOT_MATCH = 6
+    }
+
+    object ViewKeys {
+        const val VIEW_EMAIL = 1
+        const val VIEW_PASSWORD = 2
+        const val VIEW_PASSWORD_CONFIRMATION = 3
+    }
+
     override fun provideOutputEntity(inputEntity: UserRegisterInputData): UserCredentials {
         return UserCredentials(inputEntity.email, inputEntity.password)
     }
 
     override fun provideViewValidationList(): List<ViewValidation> {
-        val caseEmptyEmail = ViewValidation.Case(RegisterValidationErrors.ERROR_EMPTY_EMAIL) { inputEntity.email.isEmpty() }
+        val caseEmptyEmail = ViewValidation.Case(Errors.ERROR_EMPTY_EMAIL) { inputEntity.email.isEmpty() }
 
-        val caseEmptyInvalid = ViewValidation.Case(RegisterValidationErrors.ERROR_INVALID_EMAIL) {
+        val caseEmptyInvalid = ViewValidation.Case(Errors.ERROR_INVALID_EMAIL) {
             !AuthUtil.isEmailValid(inputEntity.email)
         }
 
-        val casePasswordEmpty = ViewValidation.Case(RegisterValidationErrors.ERROR_EMPTY_PASSWORD) { inputEntity.password.isEmpty() }
+        val casePasswordEmpty = ViewValidation.Case(Errors.ERROR_EMPTY_PASSWORD) { inputEntity.password.isEmpty() }
 
-        val casePasswordInvalid = ViewValidation.Case(RegisterValidationErrors.ERROR_INVALID_PASSWORD) {
+        val casePasswordInvalid = ViewValidation.Case(Errors.ERROR_INVALID_PASSWORD) {
             !AuthUtil.isPasswordValid(inputEntity.password)
         }
 
-        val casePasswordConfirmationEmpty = ViewValidation.Case(RegisterValidationErrors.ERROR_EMPTY_PASSWORD_CONFIRMATION) {
+        val casePasswordConfirmationEmpty = ViewValidation.Case(Errors.ERROR_EMPTY_PASSWORD_CONFIRMATION) {
             inputEntity.passwordConfirmation.isEmpty()
         }
 
-        val casePasswordsDoNotMatch = ViewValidation.Case(RegisterValidationErrors.ERROR_PASSWORDS_DO_NOT_MATCH) {
+        val casePasswordsDoNotMatch = ViewValidation.Case(Errors.ERROR_PASSWORDS_DO_NOT_MATCH) {
             casePasswordInvalid.isValid && inputEntity.password != inputEntity.passwordConfirmation
         }
 
         return listOf(
-            ViewValidation(RegisterValidationViewKeys.VIEW_EMAIL, listOf(caseEmptyEmail, caseEmptyInvalid)),
-            ViewValidation(RegisterValidationViewKeys.VIEW_PASSWORD, listOf(casePasswordEmpty, casePasswordInvalid)),
+            ViewValidation(ViewKeys.VIEW_EMAIL, listOf(caseEmptyEmail, caseEmptyInvalid)),
+            ViewValidation(ViewKeys.VIEW_PASSWORD, listOf(casePasswordEmpty, casePasswordInvalid)),
             ViewValidation(
-                RegisterValidationViewKeys.VIEW_PASSWORD_CONFIRMATION, listOf(casePasswordConfirmationEmpty, casePasswordsDoNotMatch)
+                ViewKeys.VIEW_PASSWORD_CONFIRMATION, listOf(casePasswordConfirmationEmpty, casePasswordsDoNotMatch)
             )
         )
 
