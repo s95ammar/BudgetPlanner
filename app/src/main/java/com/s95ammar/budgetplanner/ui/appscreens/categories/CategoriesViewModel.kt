@@ -5,7 +5,6 @@ import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.Resource
 import com.s95ammar.budgetplanner.models.Result
 import com.s95ammar.budgetplanner.models.ResultStateListener
-import com.s95ammar.budgetplanner.models.data.Category
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import kotlinx.coroutines.launch
@@ -14,6 +13,7 @@ class CategoriesViewModel @ViewModelInject constructor(
     private val localRepository: LocalRepository
 ) : ViewModel() {
 
+/*
     private val _navigateToEditCategory = EventMutableLiveData<Int>()
     private val _showBottomSheet = EventMutableLiveData<Category>()
     private val _displayDeleteResultState = EventMutableLiveData<Result>()
@@ -64,5 +64,6 @@ class CategoriesViewModel @ViewModelInject constructor(
 
     private val LiveData<Resource<List<Category>>>.list: List<Category>?
         get() = (allCategories.value as? Resource.Success)?.data
+*/
 
 }

@@ -4,7 +4,6 @@ import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.models.Resource
 import com.s95ammar.budgetplanner.models.Result
-import com.s95ammar.budgetplanner.models.data.Category
 import com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.validation.CategoryCreateEditErrors
 import com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.validation.CategoryCreateEditViewKeys
@@ -19,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_category_create_edit.*
 @AndroidEntryPoint
 class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_create_edit) {
 
+/*
     private val viewModel: CategoryCreateEditViewModel by viewModels()
 
     override fun setUpViews() {
@@ -109,5 +109,6 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
     private fun clearViewsValidation() {
         CategoryCreateEditViewKeys.values().forEach { displayError(it, ValidationErrors.ERROR_NONE) }
     }
+*/
 
 }

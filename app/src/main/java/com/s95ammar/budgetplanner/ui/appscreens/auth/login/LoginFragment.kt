@@ -12,13 +12,13 @@ import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputDa
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.validation.LoginValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
-import com.s95ammar.budgetplanner.ui.common.viewbinding.UsesViewBinding
+import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.util.inputText
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment(R.layout.fragment_login), UsesViewBinding<FragmentLoginBinding> {
+class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<FragmentLoginBinding> {
 
     override val binding: FragmentLoginBinding
         get() = getBinding()
@@ -90,7 +90,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), UsesViewBinding<Fra
 
     private fun navigateToCurrentBudget() {
         navController.navigate(
-            R.id.action_loginFragment_to_navigation_current_budget,
+            R.id.action_loginFragment_to_navigation_dashboard,
             null,
             NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build()
         )

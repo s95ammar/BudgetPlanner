@@ -6,7 +6,6 @@ import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.Resource
 import com.s95ammar.budgetplanner.models.Result
 import com.s95ammar.budgetplanner.models.ResultStateListener
-import com.s95ammar.budgetplanner.models.data.Category
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.validation.CategoryCreateEditErrors
@@ -27,6 +26,7 @@ class CategoryCreateEditViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+/*
     private val editedCategoryId = savedStateHandle.get<Int>(Keys.KEY_CATEGORY_ID) ?: Int.NO_ITEM
     private val _mode = MutableLiveData(CreateEditMode.getById(editedCategoryId))
     private val _onCreateEditApply = EventMutableLiveData<Result>()
@@ -98,5 +98,6 @@ class CategoryCreateEditViewModel @ViewModelInject constructor(
             listener.onError(e)
         }
     }
+*/
 
 }

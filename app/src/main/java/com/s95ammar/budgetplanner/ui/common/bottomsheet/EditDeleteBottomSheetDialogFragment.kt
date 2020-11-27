@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.common.Keys
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_budget_list.*
 import kotlinx.android.synthetic.main.dialog_edit_delete_bottom_sheet.*
 
 class EditDeleteBottomSheetDialogFragment : BottomSheetDialogFragment() {

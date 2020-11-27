@@ -2,14 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_current_budget"
-        android:icon="@drawable/ic_budget"
-        android:title="@string/current_budget" />
-
-    <item
-        android:id="@+id/navigation_budgets_list"
-        android:icon="@drawable/ic_budgets_list"
-        android:title="@string/budgets_list" />
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/dashboard" />
 
     <item
         android:id="@+id/navigation_categories"
@@ -20,5 +15,10 @@
         android:id="@+id/navigation_saving_jars"
         android:icon="@drawable/ic_saving_jar"
         android:title="@string/saving_jars" />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings" />
 
 </menu>

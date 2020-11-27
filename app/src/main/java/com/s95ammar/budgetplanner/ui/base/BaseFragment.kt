@@ -14,7 +14,7 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBindingException
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
-import com.s95ammar.budgetplanner.ui.common.viewbinding.UsesViewBinding
+import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 
 
 abstract class BaseFragment : Fragment {
@@ -43,7 +43,7 @@ abstract class BaseFragment : Fragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (this is UsesViewBinding<*>) _binding = initViewBinding(view)
+        if (this is ViewBinder<*>) _binding = initViewBinding(view)
         setUpViews()
         initObservers()
     }

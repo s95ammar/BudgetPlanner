@@ -6,20 +6,10 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/navigation_current_budget"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.currentbudget.CurrentBudgetFragment"
-        android:label="@string/current_budget"
-        tools:layout="@layout/fragment_current_budget" />
-
-    <fragment
-        android:id="@+id/navigation_budgets_list"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.budgetslist.BudgetsListFragment"
-        android:label="@string/budgets_list"
-        tools:layout="@layout/fragment_budgets_list">
-        <action
-            android:id="@+id/action_navigation_budgets_list_to_budgetCreateEditFragment"
-            app:destination="@id/budgetCreateEditFragment" />
-    </fragment>
+        android:id="@+id/navigation_dashboard"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardFragment"
+        android:label="@string/dashboard"
+        tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_categories"
@@ -37,15 +27,15 @@
         android:label="@string/saving_jars"
         tools:layout="@layout/fragment_savings_jars" />
     <fragment
-        android:id="@+id/budgetCreateEditFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.budgetslist.createedit.BudgetCreateEditFragment"
-        android:label="budget_create_edit_fragment"
-        tools:layout="@layout/fragment_budget_create_edit" />
-    <fragment
         android:id="@+id/categoryCreateEditFragment"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.CategoryCreateEditFragment"
         android:label="fragment_category_create_edit"
         tools:layout="@layout/fragment_category_create_edit" />
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/loginFragment"
@@ -56,8 +46,8 @@
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_navigation_current_budget"
-            app:destination="@id/navigation_current_budget" />
+            android:id="@+id/action_loginFragment_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -68,8 +58,7 @@
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
-            android:id="@+id/action_registerFragment_to_navigation_current_budget"
-            app:destination="@id/navigation_current_budget" />
+            android:id="@+id/action_registerFragment_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
     </fragment>
-
 </navigation>

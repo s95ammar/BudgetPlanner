@@ -23,10 +23,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
 
     private val bottomNavItems = listOf(
-        R.id.navigation_current_budget,
-        R.id.navigation_budgets_list,
+        R.id.navigation_dashboard,
         R.id.navigation_categories,
-        R.id.navigation_saving_jars
+        R.id.navigation_saving_jars,
+        R.id.navigation_settings
     )
 
     private val navController: NavController by lazy {

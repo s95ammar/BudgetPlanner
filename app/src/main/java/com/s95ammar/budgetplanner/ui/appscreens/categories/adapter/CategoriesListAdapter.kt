@@ -7,13 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.models.data.Category
 import kotlinx.android.synthetic.main.item_category.view.*
 
 class CategoriesListAdapter(
     private val onItemClick: (Int) -> Unit,
     private val onItemLongClick: (Int) -> Unit
-) : ListAdapter<Category, CategoriesListAdapter.CategoriesViewHolder>(CALLBACK) {
+)/* : ListAdapter<Category, CategoriesListAdapter.CategoriesViewHolder>(CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
         return CategoriesViewHolder(
@@ -51,4 +50,4 @@ class CategoriesListAdapter(
         }
 
     }
-}
+}*/

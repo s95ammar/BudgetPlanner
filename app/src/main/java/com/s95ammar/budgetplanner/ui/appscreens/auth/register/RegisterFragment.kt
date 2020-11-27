@@ -11,13 +11,13 @@ import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterI
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
-import com.s95ammar.budgetplanner.ui.common.viewbinding.UsesViewBinding
+import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.util.inputText
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterFragment : BaseFragment(R.layout.fragment_register), UsesViewBinding<FragmentRegisterBinding> {
+class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<FragmentRegisterBinding> {
 
     override val binding: FragmentRegisterBinding
         get() = getBinding()
@@ -90,7 +90,7 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), UsesViewBindi
 
     private fun navigateToCurrentBudget() {
         navController.navigate(
-            R.id.action_registerFragment_to_navigation_current_budget,
+            R.id.action_registerFragment_to_navigation_dashboard,
             null,
             NavOptions.Builder().setPopUpTo(R.id.registerFragment, true).build()
         )
