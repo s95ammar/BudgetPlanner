@@ -84,6 +84,7 @@
                 android:id="@+id/text_view_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:text="@string/register"
                 android:textAppearance="@style/TextTitlePrimaryBold16sdp"

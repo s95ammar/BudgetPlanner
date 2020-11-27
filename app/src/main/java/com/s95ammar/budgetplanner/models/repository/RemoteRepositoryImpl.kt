@@ -15,17 +15,23 @@ import javax.inject.Singleton
 class RemoteRepositoryImpl @Inject constructor(private val apiService: ApiService) : RemoteRepository {
 
     override suspend fun register(userCredentials: UserCredentials): ApiResult<TokenResponse> = withContext(Dispatchers.IO) {
-        try {
-            apiService.register(userCredentials).mapToApiResult()
-        } catch (e: Exception) {
-            return@withContext ApiResult.Error(e)
-        }
+        tryPerform { apiService.register(userCredentials).mapToApiResult() }
     }
+
     override suspend fun login(email: String, password: String) = withContext(Dispatchers.IO) {
-        apiService.login(email, password).mapToApiResult()
+        tryPerform { apiService.login(email, password).mapToApiResult() }
     }
+
     override suspend fun authenticate() = withContext(Dispatchers.IO) {
-        apiService.authenticate().mapToApiResult()
+        tryPerform { apiService.authenticate().mapToApiResult() }
+    }
+
+    private inline fun <T> tryPerform(request: () -> ApiResult<T>): ApiResult<T> {
+        return try {
+            request()
+        } catch (e: Exception) {
+            ApiResult.Error(e)
+        }
     }
 
 }

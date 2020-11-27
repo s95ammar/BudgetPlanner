@@ -56,13 +56,13 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), UsesViewBindi
     }
 
     private fun getErrorStringById(errorId: Int) = when (errorId) {
-        RegisterValidator.Errors.ERROR_EMPTY_EMAIL -> getString(R.string.error_empty_field)
-        RegisterValidator.Errors.ERROR_INVALID_EMAIL -> getString(R.string.error_invalid_email)
+        RegisterValidator.Errors.ERROR_EMAIL_EMPTY -> getString(R.string.error_empty_field)
+        RegisterValidator.Errors.ERROR_EMAIL_INVALID -> getString(R.string.error_invalid_email)
         RegisterValidator.Errors.ERROR_EMAIL_TAKEN -> getString(R.string.error_email_taken)
-        RegisterValidator.Errors.ERROR_EMPTY_PASSWORD -> getString(R.string.error_empty_field)
-        RegisterValidator.Errors.ERROR_PASSWORD_LENGTH -> getString(R.string.error_password_length)
-        RegisterValidator.Errors.ERROR_INVALID_PASSWORD -> getString(R.string.error_invalid_password)
-        RegisterValidator.Errors.ERROR_EMPTY_PASSWORD_CONFIRMATION -> getString(R.string.error_empty_field)
+        RegisterValidator.Errors.ERROR_PASSWORD_EMPTY -> getString(R.string.error_empty_field)
+        RegisterValidator.Errors.ERROR_PASSWORD_LENGTH -> getString(R.string.error_registration_password_length)
+        RegisterValidator.Errors.ERROR_PASSWORD_INVALID -> getString(R.string.error_invalid_password)
+        RegisterValidator.Errors.ERROR_PASSWORD_CONFIRMATION_EMPTY -> getString(R.string.error_empty_field)
         RegisterValidator.Errors.ERROR_PASSWORDS_DO_NOT_MATCH -> getString(R.string.error_passwords_do_not_match)
         else -> null
     }

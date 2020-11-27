@@ -10,8 +10,11 @@
     <string name="error_empty_field">Please fill in the field</string>
     <string name="error_invalid_email">Invalid email</string>
     <string name="error_email_taken">This email is already registered</string>
-    <string name="error_password_length">Password must me at least 8 characters</string>
+    <string name="error_email_not_registered">This email is not registered</string>
+    <string name="error_login_password_length">Password is at least 8 characters</string>
+    <string name="error_registration_password_length">Password must be at least 8 characters</string>
     <string name="error_invalid_password">Password contains invalid characters</string>
+    <string name="error_incorrect_password">Incorrect password</string>
     <string name="error_passwords_do_not_match">Passwords do not match</string>
 
     <string name="current_budget">Current Budget</string>
