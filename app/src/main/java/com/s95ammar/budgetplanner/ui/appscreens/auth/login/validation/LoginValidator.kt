@@ -23,7 +23,7 @@ class LoginValidator(inputEntity: UserLoginInputData) : Validator<UserLoginInput
     }
 
     override fun provideOutputEntity(inputEntity: UserLoginInputData): UserLoginInputData {
-        return UserLoginInputData(inputEntity.email, inputEntity.password)
+        return inputEntity
     }
 
     override fun provideViewValidationList(): List<ViewValidation> {

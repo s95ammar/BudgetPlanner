@@ -68,13 +68,13 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.fragment_budget_create_ed
 
     private fun handleEditedBudgetLoading(budgetResource: Resource<Budget>?) {
         when (budgetResource) {
-            is Resource.Loading -> loadingManager?.showLoading()
+            is Resource.Loading -> showLoading()
             is Resource.Error -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 displayErrorDialog(budgetResource.throwable)
             }
             is Resource.Success -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 setViewsToEditedBudget(budgetResource.data)
             }
         }
@@ -95,13 +95,13 @@ class BudgetCreateEditFragment : BaseFragment(R.layout.fragment_budget_create_ed
 
     private fun handleCreateEditResult(result: Result) {
         when (result) {
-            is Result.Loading -> loadingManager?.showLoading()
+            is Result.Loading -> showLoading()
             is Result.Error -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 displayErrorDialog(result.throwable)
             }
             is Result.Success -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 navController.navigateUp()
             }
         }

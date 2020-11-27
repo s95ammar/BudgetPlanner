@@ -40,13 +40,13 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
 
     private fun handleAllBudgetsLoading(allBudgetsResource: Resource<List<BudgetViewEntity>>?) {
         when (allBudgetsResource) {
-            is Resource.Loading -> loadingManager?.showLoading()
+            is Resource.Loading -> showLoading()
             is Resource.Error -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 displayErrorDialog(allBudgetsResource.throwable)
             }
             is Resource.Success -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 adapter.submitList(allBudgetsResource.data) { recycler_view_budgets_list?.scrollToPosition(0) }
             }
         }
@@ -54,12 +54,12 @@ class BudgetsListFragment : BaseFragment(R.layout.fragment_budgets_list) {
 
     private fun displayDeleteResultState(result: Result) {
         when (result) {
-            is Result.Loading -> loadingManager?.showLoading()
+            is Result.Loading -> showLoading()
             is Result.Error -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 displayErrorDialog(result.throwable)
             }
-            is Result.Success -> loadingManager?.hideLoading()
+            is Result.Success -> hideLoading()
         }
     }
 

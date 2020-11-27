@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.R
+import com.s95ammar.budgetplanner.ui.common.KeyboardManager
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBindingException
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
 import com.s95ammar.budgetplanner.ui.common.viewbinding.UsesViewBinding
@@ -24,11 +25,13 @@ abstract class BaseFragment : Fragment {
     val navController by lazy { findNavController() }
     private var _binding: ViewBinding? = null
 
-    protected var loadingManager: LoadingManager? = null
+    private var loadingManager: LoadingManager? = null
+    private var keyboardManager: KeyboardManager? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         loadingManager = context as? LoadingManager
+        keyboardManager = context as? KeyboardManager
     }
 
     internal inline fun <reified VB: ViewBinding> getBinding(): VB {
@@ -48,6 +51,14 @@ abstract class BaseFragment : Fragment {
     open fun setUpViews() {}
 
     open fun initObservers() {}
+
+    fun showLoading() = loadingManager?.showLoading()
+
+    fun hideLoading() = loadingManager?.hideLoading()
+
+    fun showKeyboard() = keyboardManager?.showKeyboard()
+
+    fun hideKeyboard() = keyboardManager?.hideKeyboard()
 
     fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

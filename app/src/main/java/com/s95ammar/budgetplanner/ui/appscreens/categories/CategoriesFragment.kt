@@ -44,13 +44,13 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories) {
 
     private fun handleAllCategoriesLoading(allCategoriesResource: Resource<List<Category>>?) {
         when (allCategoriesResource) {
-            is Resource.Loading -> loadingManager?.showLoading()
+            is Resource.Loading -> showLoading()
             is Resource.Error -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 displayErrorDialog(allCategoriesResource.throwable)
             }
             is Resource.Success -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 adapter.submitList(allCategoriesResource.data) { recycler_view_categories_list?.scrollToPosition(0) }
             }
         }
@@ -58,12 +58,12 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories) {
 
     private fun displayDeleteResultState(result: Result) {
         when (result) {
-            is Result.Loading -> loadingManager?.showLoading()
+            is Result.Loading -> showLoading()
             is Result.Error -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 displayErrorDialog(result.throwable)
             }
-            is Result.Success -> loadingManager?.hideLoading()
+            is Result.Success -> hideLoading()
         }
     }
 

@@ -21,6 +21,8 @@ class RegisterViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    // TODO: handle layout config changes & process death
+
     private val _displayValidationResult = EventMutableLiveData<ValidationErrors>()
     private val _onRegisterResult = EventMutableLiveData<Result>()
 

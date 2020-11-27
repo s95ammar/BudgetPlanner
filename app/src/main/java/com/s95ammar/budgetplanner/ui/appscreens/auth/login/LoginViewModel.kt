@@ -12,6 +12,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputDa
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.validation.LoginValidator
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
+import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderEventMutableLiveData
 import kotlinx.coroutines.launch
 
 class LoginViewModel @ViewModelInject constructor(
@@ -20,8 +21,10 @@ class LoginViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    // TODO: handle layout config changes & process death
+
     private val _displayValidationResult = EventMutableLiveData<ValidationErrors>()
-    private val _onLoginResult = EventMutableLiveData<Result>()
+    private val _onLoginResult = LoaderEventMutableLiveData<Result> { checkCachedToken() }
 
     val displayValidationResult = _displayValidationResult.asEventLiveData()
     val onLoginResult = _onLoginResult.asEventLiveData()
@@ -33,6 +36,12 @@ class LoginViewModel @ViewModelInject constructor(
         validator.getValidationResult()
             .onSuccess { login(it.email, it.password) }
             .onError { validationErrors -> _displayValidationResult.call(validationErrors) }
+    }
+
+    private fun checkCachedToken() {
+        val cachedToken = localRepository.loadAuthToken()
+        if (!cachedToken.isNullOrEmpty())
+            _onLoginResult.call(Result.Success)
     }
 
     private fun login(email: String, password: String) = viewModelScope.launch {

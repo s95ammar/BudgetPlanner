@@ -68,13 +68,13 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), UsesViewBinding<Fra
 
     private fun onLoginResult(result: Result) {
         when (result) {
-            is Result.Loading -> loadingManager?.showLoading()
+            is Result.Loading -> showLoading()
             is Result.Error -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 handleLoginError(result.throwable)
             }
             is Result.Success -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 navigateToCurrentBudget()
             }
         }
@@ -92,7 +92,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), UsesViewBinding<Fra
         navController.navigate(
             R.id.action_loginFragment_to_navigation_current_budget,
             null,
-            NavOptions.Builder().setPopUpTo(R.id.registerFragment, true).build()
+            NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build()
         )
     }
     
@@ -105,6 +105,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), UsesViewBinding<Fra
     }
 
     private fun onLogin() {
+
         viewModel.onLogin(
             UserLoginInputData(
                 binding.inputLayoutEmail.inputText.trim(),

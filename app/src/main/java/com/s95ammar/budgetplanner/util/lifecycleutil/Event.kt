@@ -30,7 +30,7 @@ open class EventLiveDataVoid : LiveData<Event<Unit>>() {
     }
 }
 
-class EventMutableLiveData<T> : EventLiveData<T>() {
+open class EventMutableLiveData<T> : EventLiveData<T>() {
     public override fun call(arg: T) {
         super.call(arg)
     }

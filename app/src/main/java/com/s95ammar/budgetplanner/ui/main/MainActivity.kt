@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
     }
 
     override fun hideLoading() {
-        loadingDialog.dismiss()
+        if (loadingDialog.isAdded)
+            loadingDialog.dismiss()
     }
 }

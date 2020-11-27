@@ -69,13 +69,13 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), UsesViewBindi
 
     private fun onRegisterResult(result: Result) {
         when (result) {
-            is Result.Loading -> loadingManager?.showLoading()
+            is Result.Loading -> showLoading()
             is Result.Error -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 handleRegistrationError(result.throwable)
             }
             is Result.Success -> {
-                loadingManager?.hideLoading()
+                hideLoading()
                 navigateToCurrentBudget()
             }
         }
