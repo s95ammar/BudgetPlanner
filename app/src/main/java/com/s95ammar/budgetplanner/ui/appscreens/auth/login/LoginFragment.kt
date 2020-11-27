@@ -89,19 +89,11 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
     }
 
     private fun navigateToCurrentBudget() {
-        navController.navigate(
-            R.id.action_loginFragment_to_navigation_dashboard,
-            null,
-            NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build()
-        )
+        navController.navigate(LoginFragmentDirections.actionLoginFragmentToNavigationDashboard())
     }
     
     private fun navigateToRegister() {
-        navController.navigate(
-            R.id.action_loginFragment_to_registerFragment,
-            null,
-            NavOptions.Builder().setPopUpTo(R.id.loginFragment, true).build()
-        )
+        navController.navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
     }
 
     private fun onLogin() {

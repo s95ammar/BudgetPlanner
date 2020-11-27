@@ -47,6 +47,7 @@
     <string name="delete">Delete</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="format_delete_confirmation">Please confirm if you really want to delete %s</string>
+    <string name="logout_confirmation">Please confirm that you would like to log out</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -55,4 +56,5 @@
 
     <string name="add">Add</string>
 
+    <string name="log_out">Log out</string>
 </resources>

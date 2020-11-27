@@ -2,7 +2,6 @@ package com.s95ammar.budgetplanner.ui.appscreens.auth.register
 
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavOptions
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentRegisterBinding
 import com.s95ammar.budgetplanner.models.Result
@@ -89,19 +88,11 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
     }
 
     private fun navigateToCurrentBudget() {
-        navController.navigate(
-            R.id.action_registerFragment_to_navigation_dashboard,
-            null,
-            NavOptions.Builder().setPopUpTo(R.id.registerFragment, true).build()
-        )
+        navController.navigate(RegisterFragmentDirections.actionRegisterFragmentToNavigationDashboard())
     }
 
     private fun navigateToLogin() {
-        navController.navigate(
-            R.id.action_registerFragment_to_loginFragment,
-            null,
-            NavOptions.Builder().setPopUpTo(R.id.registerFragment, true).build()
-        )
+        navController.navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
     }
 
     private fun onRegister() {
