@@ -29,29 +29,25 @@ class RegisterViewModel @ViewModelInject constructor(
 
     fun onRegister(userRegisterInputData: UserRegisterInputData) {
         val validator = RegisterValidator(userRegisterInputData)
-        _displayValidationResult.call(validator.getBlankValidationErrors())
+        _displayValidationResult.call(validator.getValidationErrors(allBlank = true))
 
         validator.getValidationResult()
             .onSuccess { userCredentials -> register(userCredentials) }
-            .onError { validationErrors ->  _displayValidationResult.call(validationErrors) }
-
+            .onError { validationErrors -> _displayValidationResult.call(validationErrors) }
     }
 
     fun register(userCredentials: UserCredentials) = viewModelScope.launch {
         _onRegisterResult.call(Result.Loading)
-        try {
-            remoteRepository.register(userCredentials)
-                .onSuccess { tokenResponse ->
-                    tokenResponse?.let {
-                        localRepository.saveAuthToken(tokenResponse.token)
-                        _onRegisterResult.call(Result.Success)
-                    }
+
+        remoteRepository.register(userCredentials)
+            .onSuccess { tokenResponse ->
+                tokenResponse?.let {
+                    localRepository.saveAuthToken(tokenResponse.token)
+                    _onRegisterResult.call(Result.Success)
                 }
-                .onError { throwable ->
-                    _onRegisterResult.call(Result.Error(throwable))
-                }
-        } catch (e: Exception) {
-            _onRegisterResult.call(Result.Error(e))
-        }
+            }
+            .onError { throwable ->
+                _onRegisterResult.call(Result.Error(throwable))
+            }
     }
 }

@@ -13,9 +13,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LoginFragment : BaseFragment(R.layout.fragment_login), UsesViewBinding<FragmentLoginBinding> {
 
-    override var binding: FragmentLoginBinding
+    override val binding: FragmentLoginBinding
         get() = getBinding()
-        set(value) = setBinding(value)
 
     private val viewModel: LoginViewModel by viewModels()
 

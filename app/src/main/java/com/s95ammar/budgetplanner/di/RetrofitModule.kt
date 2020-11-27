@@ -8,13 +8,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -26,14 +24,11 @@ object RetrofitModule {
     fun provideOkHttpClient(sharedPreferences: SharedPrefsManager): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
-                val token = sharedPreferences.loadAuthToken()
-                val requestBuilder: Request.Builder = chain.request().newBuilder()
-                if (!token.isNullOrEmpty())
-                    requestBuilder.addHeader(
-                        BudgetPlannerApiConfig.TOKEN_HEADER_NAME,
-                        "${BudgetPlannerApiConfig.TOKEN_HEADER_VALUE_PREFIX}$token"
-                    )
-                chain.proceed(requestBuilder.build())
+                val request = chain.request()
+                if (request.url.encodedPath in BudgetPlannerApiConfig.NO_TOKEN_PATHS)
+                    chain.proceed(request)
+                else
+                    chain.proceed(request.addTokenHeader(sharedPreferences))
             }
             .apply {
                 if (BuildConfig.DEBUG) addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
@@ -42,6 +37,16 @@ object RetrofitModule {
             .writeTimeout(BudgetPlannerApiConfig.TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .readTimeout(BudgetPlannerApiConfig.TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .build()
+    }
+
+    private fun Request.addTokenHeader(sharedPreferences: SharedPrefsManager): Request {
+        val requestBuilder: Request.Builder = newBuilder()
+        val token = sharedPreferences.loadAuthToken()
+
+        if (!token.isNullOrEmpty())
+            requestBuilder.addHeader(BudgetPlannerApiConfig.TOKEN_HEADER_KEY, "${BudgetPlannerApiConfig.TOKEN_HEADER_VALUE_PREFIX}$token")
+
+        return requestBuilder.build()
     }
 
     @Singleton
@@ -54,3 +59,4 @@ object RetrofitModule {
             .create(ApiService::class.java)
     }
 }
+

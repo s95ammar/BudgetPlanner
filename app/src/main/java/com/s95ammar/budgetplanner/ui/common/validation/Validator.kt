@@ -8,23 +8,12 @@ abstract class Validator<InputEntity, OutputEntity>(protected val inputEntity: I
         return viewsValidation.all { singleViewValidation -> singleViewValidation.validationCases.all { it.isValid } }
     }
 
-    private fun getValidationErrors(): ValidationErrors {
+    fun getValidationErrors(allBlank: Boolean = false): ValidationErrors {
         return ValidationErrors(
             viewsValidation.map { singleViewValidation ->
                 ValidationErrors.ViewErrors(
                     viewKey = singleViewValidation.viewKey,
-                    errorsIds = singleViewValidation.validationCases.map { it.errorId }
-                )
-            }
-        )
-    }
-
-    fun getBlankValidationErrors(): ValidationErrors {
-        return ValidationErrors(
-            viewsValidation.map { singleViewValidation ->
-                ValidationErrors.ViewErrors(
-                    viewKey = singleViewValidation.viewKey,
-                    errorsIds = singleViewValidation.validationCases.map { ValidationErrors.ERROR_NONE }
+                    errorsIds = singleViewValidation.validationCases.map { if (allBlank) ValidationErrors.ERROR_NONE else it.errorId }
                 )
             }
         )

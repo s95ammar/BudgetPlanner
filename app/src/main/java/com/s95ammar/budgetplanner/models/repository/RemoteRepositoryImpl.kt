@@ -1,6 +1,7 @@
 package com.s95ammar.budgetplanner.models.repository
 
 import com.s95ammar.budgetplanner.models.ApiResponseMapper.mapToApiResult
+import com.s95ammar.budgetplanner.models.Result
 import com.s95ammar.budgetplanner.models.api.ApiService
 import com.s95ammar.budgetplanner.models.api.requests.UserCredentials
 import com.s95ammar.budgetplanner.models.api.responses.ApiResult
@@ -14,7 +15,11 @@ import javax.inject.Singleton
 class RemoteRepositoryImpl @Inject constructor(private val apiService: ApiService) : RemoteRepository {
 
     override suspend fun register(userCredentials: UserCredentials): ApiResult<TokenResponse> = withContext(Dispatchers.IO) {
-        apiService.register(userCredentials).mapToApiResult()
+        try {
+            apiService.register(userCredentials).mapToApiResult()
+        } catch (e: Exception) {
+            return@withContext ApiResult.Error(e)
+        }
     }
     override suspend fun login(email: String, password: String) = withContext(Dispatchers.IO) {
         apiService.login(email, password).mapToApiResult()
