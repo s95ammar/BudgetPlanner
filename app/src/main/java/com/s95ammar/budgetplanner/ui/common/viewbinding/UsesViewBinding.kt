@@ -5,6 +5,6 @@ import androidx.viewbinding.ViewBinding
 
 interface UsesViewBinding<VB : ViewBinding> {
 
-    var binding: VB
+    val binding: VB
     fun initViewBinding(view: View): VB
 }

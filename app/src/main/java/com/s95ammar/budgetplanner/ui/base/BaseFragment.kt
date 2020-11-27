@@ -38,12 +38,6 @@ abstract class BaseFragment : Fragment {
         throw ViewBindingException("binding is not initialized or is accessed from outside of the fragment's view lifecycle")
     }
 
-    internal fun setBinding(binding: ViewBinding) {
-        _binding = binding
-    }
-
-//    protected open fun initBinding(view: View) {} // TODO: change to abstract after full migration to view binding
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (this is UsesViewBinding<*>) _binding = initViewBinding(view)

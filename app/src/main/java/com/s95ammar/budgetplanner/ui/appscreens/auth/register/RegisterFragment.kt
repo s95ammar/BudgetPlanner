@@ -19,9 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RegisterFragment : BaseFragment(R.layout.fragment_register), UsesViewBinding<FragmentRegisterBinding> {
 
-    override var binding: FragmentRegisterBinding
+    override val binding: FragmentRegisterBinding
         get() = getBinding()
-        set(value) = setBinding(value)
 
     private val viewModel: RegisterViewModel by viewModels()
 
