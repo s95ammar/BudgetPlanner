@@ -6,7 +6,7 @@ import androidx.navigation.NavOptions
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentRegisterBinding
 import com.s95ammar.budgetplanner.models.Result
-import com.s95ammar.budgetplanner.models.api.responses.UserAlreadyExistsError
+import com.s95ammar.budgetplanner.models.api.responses.errors.UserAlreadyExistsError
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputData
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment

@@ -6,8 +6,8 @@ import androidx.navigation.NavOptions
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentLoginBinding
 import com.s95ammar.budgetplanner.models.Result
-import com.s95ammar.budgetplanner.models.api.responses.IncorrectPasswordError
-import com.s95ammar.budgetplanner.models.api.responses.UserDoesNotExistError
+import com.s95ammar.budgetplanner.models.api.responses.errors.IncorrectPasswordError
+import com.s95ammar.budgetplanner.models.api.responses.errors.UserDoesNotExistError
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputData
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.validation.LoginValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
