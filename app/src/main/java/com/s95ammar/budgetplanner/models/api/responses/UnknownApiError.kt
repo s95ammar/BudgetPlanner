@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.models.api.responses
 
-object UnknownApiError: ApiErrorResponse(
-    code = IntErrorCode.UNKNOWN,
-    description = "Unknown server error"
+object UnknownApiError: ApiError(
+    code = IntApiErrorCode.UNKNOWN,
+    description = "Unknown api error"
 )

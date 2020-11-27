@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.models.repository
 
-import com.s95ammar.budgetplanner.models.ApiResponseHandler.mapToApiResult
+import com.s95ammar.budgetplanner.models.ApiResponseMapper.mapToApiResult
 import com.s95ammar.budgetplanner.models.api.ApiService
 import com.s95ammar.budgetplanner.models.api.requests.UserCredentials
 import com.s95ammar.budgetplanner.models.api.responses.ApiResult

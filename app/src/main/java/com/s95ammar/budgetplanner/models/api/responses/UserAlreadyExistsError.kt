@@ -1,5 +1,5 @@
 package com.s95ammar.budgetplanner.models.api.responses
 
-class UserAlreadyExistsError : ApiErrorResponse(
-    code = IntErrorCode.REGISTER_EMAIL_TAKEN
+class UserAlreadyExistsError : ApiError(
+    code = IntApiErrorCode.REGISTER_EMAIL_TAKEN
 )

@@ -1,7 +1,7 @@
 package com.s95ammar.budgetplanner.models.api.responses
 
 @Retention(AnnotationRetention.SOURCE)
-annotation class IntErrorCode {
+annotation class IntApiErrorCode {
     companion object {
 
         const val UNKNOWN = 0
