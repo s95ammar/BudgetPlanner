@@ -70,7 +70,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
             is Result.Loading -> showLoading()
             is Result.Error -> {
                 hideLoading()
-                handleLoginError(result.throwable)
+                handleError(result.throwable)
             }
             is Result.Success -> {
                 hideLoading()
@@ -79,7 +79,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
         }
     }
 
-    private fun handleLoginError(throwable: Throwable) {
+    private fun handleError(throwable: Throwable) {
         when (throwable) {
             is ForbiddenError -> displayError(LoginValidator.ViewKeys.VIEW_PASSWORD, LoginValidator.Errors.ERROR_PASSWORD_INCORRECT)
             is NotFoundError -> displayError(LoginValidator.ViewKeys.VIEW_EMAIL, LoginValidator.Errors.ERROR_EMAIL_NOT_REGISTERED)

@@ -10,6 +10,7 @@ import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
+import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.util.NO_ITEM
@@ -32,7 +33,7 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
     override fun setUpViews() {
         super.setUpViews()
         binding.fabCategories.setOnClickListener { navigateToCreateEditCategory(Int.NO_ITEM) }
-        binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.onRefresh() }
+        binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.refresh() }
         setUpRecyclerView()
     }
 
@@ -48,7 +49,7 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
         viewModel.navigateToEditCategory.observeEvent(viewLifecycleOwner) { navigateToCreateEditCategory(it) }
         viewModel.showBottomSheet.observeEvent(viewLifecycleOwner) { showBottomSheet(it) }
-        viewModel.displayDeleteResultState.observeEvent(viewLifecycleOwner) { displayDeleteResultState(it) }
+        observeResultLiveData<Boolean>(Keys.KEY_ON_CATEGORY_CREATE_EDIT) { viewModel.refresh() }
     }
 
     override fun showLoading() {
@@ -75,17 +76,6 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
         }
     }
 
-    private fun displayDeleteResultState(result: Result) {
-        when (result) {
-            is Result.Loading -> showLoading()
-            is Result.Error -> {
-                hideLoading()
-                displayErrorDialog(result.throwable)
-            }
-            is Result.Success -> hideLoading()
-        }
-    }
-
     private fun navigateToCreateEditCategory(categoryId: Int) {
         navController.navigate(
             CategoriesFragmentDirections.actionNavigationCategoriesToCategoryCreateEditFragment(categoryId)
@@ -96,7 +86,7 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
         EditDeleteBottomSheetDialogFragment.newInstance(category.name, R.drawable.ic_category).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
                 override fun onEdit() = navigateToCreateEditCategory(category.id)
-                override fun onDelete() = displayDeleteConfirmationDialog(category.name) { /*viewModel.onDeleteCategory(category.id)*/ }
+                override fun onDelete() = displayDeleteConfirmationDialog(category.name) { viewModel.onDeleteCategory(category.id) }
             }
         }.show(childFragmentManager, EditDeleteBottomSheetDialogFragment.TAG)
     }

@@ -8,6 +8,7 @@
     <string name="confirm_password">Confirm password</string>
 
     <string name="error_empty_field">Please fill in the field</string>
+
     <string name="error_invalid_email">Invalid email</string>
     <string name="error_email_taken">This email is already registered</string>
     <string name="error_email_not_registered">This email is not registered</string>
@@ -16,7 +17,11 @@
     <string name="error_invalid_password">Password contains invalid characters</string>
     <string name="error_incorrect_password">Incorrect password</string>
     <string name="error_passwords_do_not_match">Passwords do not match</string>
+
+    <string name="error_category_name_taken">A category with this name already exists</string>
+
     <string name="error_internal_server">Internal server error</string>
+    <string name="error_unauthorized">Unauthorized</string>
     <string name="error_occurred">An error has occurred</string>
 
     <string name="settings">Settings</string>

@@ -2,8 +2,6 @@ package com.s95ammar.budgetplanner.ui.appscreens.categories
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.s95ammar.budgetplanner.models.Resource
-import com.s95ammar.budgetplanner.models.Result
 import com.s95ammar.budgetplanner.models.mappers.CategoryApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
@@ -21,15 +19,13 @@ class CategoriesViewModel @ViewModelInject constructor(
     private val _displayLoadingState = EventMutableLiveData<LoadingState>(LoadingState.Cold)
     private val _navigateToEditCategory = EventMutableLiveData<Int>()
     private val _showBottomSheet = EventMutableLiveData<CategoryViewEntity>()
-    private val _displayDeleteResultState = EventMutableLiveData<Result>()
 
     val allCategories = _allCategories.asLiveData()
     val displayLoadingState = _displayLoadingState.asEventLiveData()
     val navigateToEditCategory = _navigateToEditCategory.asEventLiveData()
     val showBottomSheet = _showBottomSheet.asEventLiveData()
-    val displayDeleteResultState = _displayDeleteResultState.asEventLiveData()
 
-    fun onRefresh() {
+    fun refresh() {
         loadAllCategories()
     }
 
@@ -45,6 +41,13 @@ class CategoriesViewModel @ViewModelInject constructor(
         }
     }
 
+    fun onDeleteCategory(id: Int) = viewModelScope.launch {
+        _displayLoadingState.call(LoadingState.Loading)
+        remoteRepository.deleteCategory(id)
+            .onSuccess { refresh() }
+            .onError { _displayLoadingState.call(LoadingState.Error(it)) }
+    }
+
     private fun loadAllCategories() {
         viewModelScope.launch {
             _displayLoadingState.call(LoadingState.Loading)
@@ -55,7 +58,6 @@ class CategoriesViewModel @ViewModelInject constructor(
                     _displayLoadingState.call(LoadingState.Success)
                 }
                 .onError { _displayLoadingState.call(LoadingState.Error(it)) }
-
         }
     }
 

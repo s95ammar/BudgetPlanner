@@ -71,7 +71,7 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
             is Result.Loading -> showLoading()
             is Result.Error -> {
                 hideLoading()
-                handleRegistrationError(result.throwable)
+                handleError(result.throwable)
             }
             is Result.Success -> {
                 hideLoading()
@@ -80,7 +80,7 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
         }
     }
 
-    private fun handleRegistrationError(throwable: Throwable) {
+    private fun handleError(throwable: Throwable) {
         when (throwable) {
             is ConflictError -> displayError(RegisterValidator.ViewKeys.VIEW_EMAIL, RegisterValidator.Errors.ERROR_EMAIL_TAKEN)
             else -> showErrorToast(throwable)

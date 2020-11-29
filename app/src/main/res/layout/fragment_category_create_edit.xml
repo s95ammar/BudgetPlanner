@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_category_create_edit"
+            android:id="@+id/toolbar"
             style="@style/BudgetPlannerMaterialToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -32,12 +32,13 @@
         android:paddingHorizontal="@dimen/_16sdp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_category_create_edit_title"
+            android:id="@+id/input_layout_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
             android:hint="@string/title"
             app:boxBackgroundColor="@null"
+            app:errorIconDrawable="@null"
             app:errorTextAppearance="@style/TextAppearanceCairo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +55,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_category_create_edit"
+            android:id="@+id/button_apply"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_8sdp"

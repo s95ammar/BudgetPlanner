@@ -1,5 +1,6 @@
 package com.s95ammar.budgetplanner.di
 
+import com.google.gson.GsonBuilder
 import com.s95ammar.budgetplanner.BuildConfig
 import com.s95ammar.budgetplanner.models.api.ApiService
 import com.s95ammar.budgetplanner.models.api.BudgetPlannerApiConfig
@@ -53,7 +54,7 @@ object RetrofitModule {
     @Provides
     fun provideApiService(okHttpClient: OkHttpClient): ApiService {
         return Retrofit.Builder().baseUrl(BudgetPlannerApiConfig.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setPrettyPrinting().create()))
             .client(okHttpClient)
             .build()
             .create(ApiService::class.java)
