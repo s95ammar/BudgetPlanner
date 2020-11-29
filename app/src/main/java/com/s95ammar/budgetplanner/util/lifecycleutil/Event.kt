@@ -44,7 +44,7 @@ open class EventMutableLiveData<T> : EventLiveData<T> {
     fun asEventLiveData() = this as EventLiveData<T>
 }
 
-class EventMutableLiveDataVoid : EventLiveDataVoid() {
+open class EventMutableLiveDataVoid : EventLiveDataVoid() {
     public override fun call() {
         super.call()
     }

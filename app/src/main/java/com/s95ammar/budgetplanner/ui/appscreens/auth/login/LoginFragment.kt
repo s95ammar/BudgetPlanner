@@ -4,9 +4,9 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentLoginBinding
-import com.s95ammar.budgetplanner.models.Result
 import com.s95ammar.budgetplanner.models.api.responses.errors.ForbiddenError
 import com.s95ammar.budgetplanner.models.api.responses.errors.NotFoundError
+import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputData
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.validation.LoginValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -37,7 +37,8 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
     override fun initObservers() {
         super.initObservers()
         viewModel.displayValidationResult.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
-        viewModel.onLoginResult.observeEvent(viewLifecycleOwner) { onLoginResult(it) }
+        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
+        viewModel.onLoginSuccessful.observeEvent(viewLifecycleOwner) { onLoginSuccessful() }
     }
     
     private fun handleValidationErrors(validationErrors: ValidationErrors) {
@@ -65,16 +66,14 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
         else -> null
     }
 
-    private fun onLoginResult(result: Result) {
-        when (result) {
-            is Result.Loading -> showLoading()
-            is Result.Error -> {
+    private fun handleLoadingState(loadingState: LoadingState) {
+        when (loadingState) {
+            is LoadingState.Cold,
+            is LoadingState.Success -> hideLoading()
+            is LoadingState.Loading -> showLoading()
+            is LoadingState.Error -> {
                 hideLoading()
-                handleError(result.throwable)
-            }
-            is Result.Success -> {
-                hideLoading()
-                navigateToCurrentBudget()
+                handleError(loadingState.throwable)
             }
         }
     }
@@ -87,7 +86,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
         }
     }
 
-    private fun navigateToCurrentBudget() {
+    private fun onLoginSuccessful() {
         navController.navigate(LoginFragmentDirections.actionLoginFragmentToNavigationDashboard())
     }
     

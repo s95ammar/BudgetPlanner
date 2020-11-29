@@ -5,7 +5,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoriesBinding
-import com.s95ammar.budgetplanner.models.Result
 import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter

@@ -4,8 +4,8 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentRegisterBinding
-import com.s95ammar.budgetplanner.models.Result
 import com.s95ammar.budgetplanner.models.api.responses.errors.ConflictError
+import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputData
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -36,7 +36,8 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
     override fun initObservers() {
         super.initObservers()
         viewModel.displayValidationResult.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
-        viewModel.onRegisterResult.observeEvent(viewLifecycleOwner) { onRegisterResult(it) }
+        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
+        viewModel.onRegisterSuccessful.observeEvent(viewLifecycleOwner) { onRegisterSuccessful() }
     }
 
     private fun handleValidationErrors(validationErrors: ValidationErrors) {
@@ -66,16 +67,14 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
         else -> null
     }
 
-    private fun onRegisterResult(result: Result) {
-        when (result) {
-            is Result.Loading -> showLoading()
-            is Result.Error -> {
+    private fun handleLoadingState(loadingState: LoadingState) {
+        when (loadingState) {
+            is LoadingState.Cold,
+            is LoadingState.Success -> hideLoading()
+            is LoadingState.Loading -> showLoading()
+            is LoadingState.Error -> {
                 hideLoading()
-                handleError(result.throwable)
-            }
-            is Result.Success -> {
-                hideLoading()
-                navigateToCurrentBudget()
+                handleError(loadingState.throwable)
             }
         }
     }
@@ -87,7 +86,7 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
         }
     }
 
-    private fun navigateToCurrentBudget() {
+    private fun onRegisterSuccessful() {
         navController.navigate(RegisterFragmentDirections.actionRegisterFragmentToNavigationDashboard())
     }
 
