@@ -18,7 +18,10 @@ open class Event<out T>(private val content: T) {
     fun peekContent(): T? = content
 }
 
-open class EventLiveData<T> : LiveData<Event<T>>() {
+open class EventLiveData<T> : LiveData<Event<T>> {
+    constructor(initialValue: T): super(Event(initialValue))
+    constructor(): super()
+
     protected open fun call(arg: T) {
         value = Event(arg)
     }
@@ -30,7 +33,10 @@ open class EventLiveDataVoid : LiveData<Event<Unit>>() {
     }
 }
 
-open class EventMutableLiveData<T> : EventLiveData<T>() {
+open class EventMutableLiveData<T> : EventLiveData<T> {
+    constructor(initialValue: T): super(initialValue)
+    constructor(): super()
+
     public override fun call(arg: T) {
         super.call(arg)
     }

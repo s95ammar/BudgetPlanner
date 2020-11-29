@@ -30,7 +30,11 @@
         android:id="@+id/categoryCreateEditFragment"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.CategoryCreateEditFragment"
         android:label="fragment_category_create_edit"
-        tools:layout="@layout/fragment_category_create_edit" />
+        tools:layout="@layout/fragment_category_create_edit" >
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.settings.SettingsFragment"

@@ -53,9 +53,9 @@ abstract class BaseFragment : Fragment {
 
     open fun initObservers() {}
 
-    fun showLoading() = loadingManager?.showLoading()
+    open fun showLoading() = loadingManager?.showLoading()
 
-    fun hideLoading() = loadingManager?.hideLoading()
+    open fun hideLoading() = loadingManager?.hideLoading()
 
     fun showKeyboard() = keyboardManager?.showKeyboard()
 

@@ -26,6 +26,14 @@ class RemoteRepositoryImpl @Inject constructor(private val apiService: ApiServic
         tryPerform { apiService.authenticate().mapToApiResult() }
     }
 
+    override suspend fun getAllUserCategories() = withContext(Dispatchers.IO) {
+        tryPerform { apiService.getCategory(null).mapToApiResult() }
+    }
+
+    override suspend fun getCategory(id: Int) = withContext(Dispatchers.IO) {
+        tryPerform { apiService.getCategory(id).mapToApiResult() }
+    }
+
     private inline fun <T> tryPerform(request: () -> ApiResult<T>): ApiResult<T> {
         return try {
             request()

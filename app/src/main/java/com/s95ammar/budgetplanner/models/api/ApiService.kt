@@ -1,7 +1,9 @@
 package com.s95ammar.budgetplanner.models.api
 
+import androidx.annotation.Nullable
 import com.s95ammar.budgetplanner.models.api.responses.TokenResponse
 import com.s95ammar.budgetplanner.models.api.requests.UserCredentials
+import com.s95ammar.budgetplanner.models.api.responses.CategoryApiEntity
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -17,4 +19,7 @@ interface ApiService {
 
     @GET("/auth/authenticate")
     suspend fun authenticate(): Response<String>
+
+    @GET("/category/get")
+    suspend fun getCategory(@Nullable @Query("id") id: Int?): Response<List<CategoryApiEntity>>
 }

@@ -1,58 +1,76 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories
 
-import androidx.core.os.bundleOf
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.models.Resource
+import com.s95ammar.budgetplanner.databinding.FragmentCategoriesBinding
 import com.s95ammar.budgetplanner.models.Result
+import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
-import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment
+import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_categories.*
 
 @AndroidEntryPoint
-class CategoriesFragment : BaseFragment(R.layout.fragment_categories) {
-/*
+class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinder<FragmentCategoriesBinding> {
+
+    override val binding: FragmentCategoriesBinding
+        get() = getBinding()
+
     private val viewModel: CategoriesViewModel by viewModels()
     private val adapter by lazy { CategoriesListAdapter(viewModel::onCategoryItemClick, viewModel::onCategoryItemLongClick) }
 
+    override fun initViewBinding(view: View): FragmentCategoriesBinding {
+        return FragmentCategoriesBinding.bind(view)
+    }
 
     override fun setUpViews() {
         super.setUpViews()
-        fab_categories.setOnClickListener { navigateToCreateEditCategory(Int.NO_ITEM) }
+        binding.fabCategories.setOnClickListener { navigateToCreateEditCategory(Int.NO_ITEM) }
+        binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.onRefresh() }
         setUpRecyclerView()
     }
 
     private fun setUpRecyclerView() {
-        recycler_view_categories_list.adapter = adapter
-        recycler_view_categories_list.setHasFixedSize(true)
-        recycler_view_categories_list.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        binding.recyclerViewCategoriesList.adapter = adapter
+        binding.recyclerViewCategoriesList.setHasFixedSize(true)
+        binding.recyclerViewCategoriesList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
-
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.allCategories.observe(viewLifecycleOwner) { handleAllCategoriesLoading(it) }
+        viewModel.allCategories.observe(viewLifecycleOwner) { setAllCategories(it) }
+        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
         viewModel.navigateToEditCategory.observeEvent(viewLifecycleOwner) { navigateToCreateEditCategory(it) }
         viewModel.showBottomSheet.observeEvent(viewLifecycleOwner) { showBottomSheet(it) }
         viewModel.displayDeleteResultState.observeEvent(viewLifecycleOwner) { displayDeleteResultState(it) }
     }
 
-    private fun handleAllCategoriesLoading(allCategoriesResource: Resource<List<Category>>?) {
-        when (allCategoriesResource) {
-            is Resource.Loading -> showLoading()
-            is Resource.Error -> {
+    override fun showLoading() {
+        binding.swipeToRefreshLayout.isRefreshing = true
+    }
+
+    override fun hideLoading() {
+        binding.swipeToRefreshLayout.isRefreshing = false
+    }
+
+    private fun setAllCategories(categories: List<CategoryViewEntity>) {
+        adapter.submitList(categories) { binding.recyclerViewCategoriesList.scrollToPosition(0) }
+    }
+
+    private fun handleLoadingState(loadingState: LoadingState) {
+        when (loadingState) {
+            is LoadingState.Cold,
+            is LoadingState.Success -> hideLoading()
+            is LoadingState.Loading -> showLoading()
+            is LoadingState.Error -> {
                 hideLoading()
-                displayErrorDialog(allCategoriesResource.throwable)
-            }
-            is Resource.Success -> {
-                hideLoading()
-                adapter.submitList(allCategoriesResource.data) { recycler_view_categories_list?.scrollToPosition(0) }
+                showErrorToast(loadingState.throwable)
             }
         }
     }
@@ -70,19 +88,17 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories) {
 
     private fun navigateToCreateEditCategory(categoryId: Int) {
         navController.navigate(
-            R.id.action_navigation_categories_to_categoryCreateEditFragment,
-            bundleOf(Keys.KEY_CATEGORY_ID to categoryId)
+            CategoriesFragmentDirections.actionNavigationCategoriesToCategoryCreateEditFragment(categoryId)
         )
     }
 
-    private fun showBottomSheet(category: Category) {
+    private fun showBottomSheet(category: CategoryViewEntity) {
         EditDeleteBottomSheetDialogFragment.newInstance(category.name, R.drawable.ic_category).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
                 override fun onEdit() = navigateToCreateEditCategory(category.id)
-                override fun onDelete() = displayDeleteConfirmationDialog(category.name) { viewModel.onDeleteCategory(category.id) }
+                override fun onDelete() = displayDeleteConfirmationDialog(category.name) { /*viewModel.onDeleteCategory(category.id)*/ }
             }
         }.show(childFragmentManager, EditDeleteBottomSheetDialogFragment.TAG)
     }
-*/
 
 }
