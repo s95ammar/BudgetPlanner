@@ -13,8 +13,8 @@
 
     <item
         android:id="@+id/navigation_saving_jars"
-        android:icon="@drawable/ic_saving_jar"
-        android:title="@string/saving_jars" />
+        android:icon="@drawable/ic_savings_jar"
+        android:title="@string/savings_jars" />
 
     <item
         android:id="@+id/navigation_settings"

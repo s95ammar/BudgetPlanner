@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/navigation_saving_jars"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.savingjars.SavingsJarsFragment"
-        android:label="@string/saving_jars"
+        android:label="@string/savings_jars"
         tools:layout="@layout/fragment_savings_jars" />
     <fragment
         android:id="@+id/categoryCreateEditFragment"

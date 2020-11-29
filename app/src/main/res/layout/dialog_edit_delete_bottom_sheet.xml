@@ -14,7 +14,7 @@
         android:padding="@dimen/_8sdp"
         android:textAppearance="@style/TextTitleBlackBold16sdp"
         app:drawableTint="@color/colorPrimary"
-        tools:drawableStart="@drawable/ic_saving_jar"
+        tools:drawableStart="@drawable/ic_savings_jar"
         tools:text="Item Title" />
 
     <com.google.android.material.textview.MaterialTextView

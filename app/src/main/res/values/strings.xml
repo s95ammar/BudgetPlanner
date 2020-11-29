@@ -16,13 +16,15 @@
     <string name="error_invalid_password">Password contains invalid characters</string>
     <string name="error_incorrect_password">Incorrect password</string>
     <string name="error_passwords_do_not_match">Passwords do not match</string>
+    <string name="error_internal_server">Internal server error</string>
+    <string name="error_occurred">An error has occurred</string>
 
     <string name="settings">Settings</string>
     <string name="categories">Categories</string>
     <string name="dashboard">Dashboard</string>
     <string name="budget">Budget</string>
     <string name="expenses">Expenses</string>
-    <string name="saving_jars">Saving Jars</string>
+    <string name="savings_jars">Savings Jars</string>
     <string name="savings">Savings</string>
     <string name="create_budget">Create budget</string>
     <string name="edit_budget">Edit budget</string>

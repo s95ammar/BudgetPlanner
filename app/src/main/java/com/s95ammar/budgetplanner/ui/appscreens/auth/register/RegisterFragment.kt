@@ -5,7 +5,7 @@ import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentRegisterBinding
 import com.s95ammar.budgetplanner.models.Result
-import com.s95ammar.budgetplanner.models.api.responses.errors.UserAlreadyExistsError
+import com.s95ammar.budgetplanner.models.api.responses.errors.ConflictError
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputData
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -82,8 +82,8 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
 
     private fun handleRegistrationError(throwable: Throwable) {
         when (throwable) {
-            is UserAlreadyExistsError -> displayError(RegisterValidator.ViewKeys.VIEW_EMAIL, RegisterValidator.Errors.ERROR_EMAIL_TAKEN)
-            else -> throwable.message?.let { showToast(it) }
+            is ConflictError -> displayError(RegisterValidator.ViewKeys.VIEW_EMAIL, RegisterValidator.Errors.ERROR_EMAIL_TAKEN)
+            else -> showErrorToast(throwable)
         }
     }
 

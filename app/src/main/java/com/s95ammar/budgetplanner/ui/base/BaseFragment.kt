@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.R
+import com.s95ammar.budgetplanner.models.api.responses.errors.InternalServerError
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBindingException
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
@@ -64,8 +65,13 @@ abstract class BaseFragment : Fragment {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    fun showToast(throwable: Throwable) {
-        Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_SHORT).show()
+    fun showErrorToast(throwable: Throwable) {
+        Toast.makeText(requireContext(), getString(getErrorStringId(throwable)), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getErrorStringId(throwable: Throwable) = when (throwable) {
+        is InternalServerError -> R.string.error_internal_server
+        else -> R.string.error_occurred
     }
 
     protected fun <T> sendResult(key: String, result: T) {

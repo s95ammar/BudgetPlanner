@@ -2,12 +2,11 @@ package com.s95ammar.budgetplanner.ui.appscreens.auth.login
 
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavOptions
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentLoginBinding
 import com.s95ammar.budgetplanner.models.Result
-import com.s95ammar.budgetplanner.models.api.responses.errors.IncorrectPasswordError
-import com.s95ammar.budgetplanner.models.api.responses.errors.UserDoesNotExistError
+import com.s95ammar.budgetplanner.models.api.responses.errors.ForbiddenError
+import com.s95ammar.budgetplanner.models.api.responses.errors.NotFoundError
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputData
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.validation.LoginValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -82,8 +81,8 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
 
     private fun handleLoginError(throwable: Throwable) {
         when (throwable) {
-            is IncorrectPasswordError -> displayError(LoginValidator.ViewKeys.VIEW_PASSWORD, LoginValidator.Errors.ERROR_PASSWORD_INCORRECT)
-            is UserDoesNotExistError -> displayError(LoginValidator.ViewKeys.VIEW_EMAIL, LoginValidator.Errors.ERROR_EMAIL_NOT_REGISTERED)
+            is ForbiddenError -> displayError(LoginValidator.ViewKeys.VIEW_PASSWORD, LoginValidator.Errors.ERROR_PASSWORD_INCORRECT)
+            is NotFoundError -> displayError(LoginValidator.ViewKeys.VIEW_EMAIL, LoginValidator.Errors.ERROR_EMAIL_NOT_REGISTERED)
             else -> throwable.message?.let { showToast(it) }
         }
     }
