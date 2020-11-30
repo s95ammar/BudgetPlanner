@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.appscreens.categories.createedit.CategoryCreateEditFragment">
+    tools:context=".ui.appscreens.dashboard.budget.periods.createedit.PeriodCreateEditFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         style="@style/BudgetPlannerAppBarLayout"
@@ -20,7 +20,7 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:titleTextAppearance="@style/TextTitleWhiteBold16sdp"
-            tools:title="@string/create_category" />
+            tools:title="@string/create_period" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
 
@@ -49,6 +49,27 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:maxLength="30"
+                android:textAppearance="@style/TextAppearanceCairo" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_max"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/total_expenses_estimate_optional"
+            app:boxBackgroundColor="@null"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:errorTextAppearance="@style/TextAppearanceCairo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_layout_title">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="10"
                 android:textAppearance="@style/TextAppearanceCairo" />
 
         </com.google.android.material.textfield.TextInputLayout>

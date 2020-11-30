@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.appscreens.categories.CategoriesFragment">
+    tools:context=".ui.appscreens.dashboard.budget.periods.PeriodsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         style="@style/BudgetPlannerAppBarLayout"
@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/categories"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/periods"
             app:titleTextAppearance="@style/TextTitleWhiteBold16sdp" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
@@ -37,19 +38,8 @@
             android:clipToPadding="false"
             android:paddingBottom="@dimen/_80sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_category" />
+            tools:listitem="@layout/item_period" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_categories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:contentDescription="@string/add"
-        android:src="@drawable/ic_add"
-        app:backgroundTint="@color/colorPrimary"
-        app:tint="@android:color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

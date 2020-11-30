@@ -1,14 +1,13 @@
-package com.s95ammar.budgetplanner.ui.appscreens.categories.createedit
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit
 
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.databinding.FragmentCategoryCreateEditBinding
-import com.s95ammar.budgetplanner.models.api.responses.errors.ConflictError
-import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
+import com.s95ammar.budgetplanner.databinding.FragmentPeriodCreateEditBinding
+import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.data.CategoryInputBundle
-import com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.validation.CategoryCreateEditValidator
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit.data.PeriodInputBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit.validation.PeriodCreateEditValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
@@ -19,15 +18,15 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_create_edit), ViewBinder<FragmentCategoryCreateEditBinding> {
+class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_edit), ViewBinder<FragmentPeriodCreateEditBinding> {
 
-    private val viewModel: CategoryCreateEditViewModel by viewModels()
+    private val viewModel: PeriodCreateEditViewModel by viewModels()
 
-    override val binding: FragmentCategoryCreateEditBinding
+    override val binding: FragmentPeriodCreateEditBinding
         get() = getBinding()
 
-    override fun initViewBinding(view: View): FragmentCategoryCreateEditBinding {
-        return FragmentCategoryCreateEditBinding.bind(view)
+    override fun initViewBinding(view: View): FragmentPeriodCreateEditBinding {
+        return FragmentPeriodCreateEditBinding.bind(view)
     }
 
     override fun setUpViews() {
@@ -39,7 +38,7 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
     override fun initObservers() {
         super.initObservers()
         viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
-        viewModel.editedCategory.observe(viewLifecycleOwner) { setViewsToEditedCategory(it) }
+        viewModel.editedPeriod.observe(viewLifecycleOwner) { setViewsToEditedPeriod(it) }
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
         viewModel.displayValidationResults.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
         viewModel.onApplySuccess.observeEvent(viewLifecycleOwner) { onApplySuccess() }
@@ -48,11 +47,11 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
     private fun setViewsToMode(mode: CreateEditMode) {
         when (mode) {
             CreateEditMode.CREATE -> {
-                binding.toolbar.title = getString(R.string.create_category)
+                binding.toolbar.title = getString(R.string.create_period)
                 binding.buttonApply.text = getString(R.string.create)
             }
             CreateEditMode.EDIT -> {
-                binding.toolbar.title = getString(R.string.edit_category)
+                binding.toolbar.title = getString(R.string.edit_period)
                 binding.buttonApply.text = getString(R.string.save)
             }
         }
@@ -65,23 +64,17 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
             is LoadingState.Loading -> showLoading()
             is LoadingState.Error -> {
                 hideLoading()
-                handleError(loadingState.throwable)
+                showErrorToast(loadingState.throwable)
             }
         }
     }
 
-    private fun handleError(throwable: Throwable) {
-        when (throwable) {
-            is ConflictError -> displayError(CategoryCreateEditValidator.ViewKeys.VIEW_TITLE, CategoryCreateEditValidator.Errors.NAME_TAKEN)
-            else -> showErrorToast(throwable)
-        }
-    }
-
-    private fun setViewsToEditedCategory(category: CategoryViewEntity) {
+    private fun setViewsToEditedPeriod(period: PeriodViewEntity) {
         binding.inputLayoutTitle.editText?.apply {
-            setText(category.name)
-            setSelection(category.name.length)
+            setText(period.name)
+            setSelection(period.name.length)
         }
+        binding.inputLayoutMax.inputText = period.max?.toString()
     }
 
     private fun handleValidationErrors(validationErrors: ValidationErrors) {
@@ -93,25 +86,27 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
 
     private fun displayError(viewKey: Int, errorId: Int) {
         when (viewKey) {
-            CategoryCreateEditValidator.ViewKeys.VIEW_TITLE -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
-            CategoryCreateEditValidator.Errors.NAME_TAKEN -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
+            PeriodCreateEditValidator.ViewKeys.VIEW_TITLE -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
+            PeriodCreateEditValidator.Errors.NAME_TAKEN -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
         }
     }
 
     private fun getErrorStringById(errorId: Int) = when (errorId) {
-        CategoryCreateEditValidator.Errors.EMPTY_TITLE -> getString(R.string.error_empty_field)
-        CategoryCreateEditValidator.Errors.NAME_TAKEN -> getString(R.string.error_category_name_taken)
+        PeriodCreateEditValidator.Errors.EMPTY_TITLE -> getString(R.string.error_empty_field)
         else -> null
     }
 
     private fun onApplySuccess() {
-        sendResult(Keys.KEY_ON_CATEGORY_CREATE_EDIT, true)
+        sendResult(Keys.KEY_ON_PERIOD_CREATE_EDIT, true)
         navController.navigateUp()
     }
 
     private fun onApply() {
         viewModel.onApply(
-            CategoryInputBundle(title = binding.inputLayoutTitle.inputText.orEmpty().trim())
+            PeriodInputBundle(
+                title = binding.inputLayoutTitle.inputText.orEmpty().trim(),
+                max = binding.inputLayoutMax.inputText?.trim()
+            )
         )
     }
 

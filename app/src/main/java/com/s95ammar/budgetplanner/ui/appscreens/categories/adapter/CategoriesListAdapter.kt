@@ -45,7 +45,7 @@ class CategoriesListAdapter(
         }
 
         fun bind(item: CategoryViewEntity) {
-            binding.textViewCategoryItemTitle.text = item.name
+            binding.textViewTitle.text = item.name
         }
 
     }

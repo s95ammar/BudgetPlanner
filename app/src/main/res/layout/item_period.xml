@@ -13,6 +13,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_8sdp"
         android:textAppearance="@style/TextDescBlack14sdp"
-        tools:text="Going out with friends" />
+        tools:text="Dec 10 - Jan 10" />
 
 </LinearLayout>

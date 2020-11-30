@@ -97,9 +97,9 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
     private fun onRegister() {
         viewModel.onRegister(
             UserRegisterInputData(
-                binding.inputLayoutEmail.inputText.trim(),
-                binding.inputLayoutPassword.inputText.trim(),
-                binding.inputLayoutPasswordConfirmation.inputText.trim(),
+                binding.inputLayoutEmail.inputText.orEmpty().trim(),
+                binding.inputLayoutPassword.inputText.orEmpty().trim(),
+                binding.inputLayoutPasswordConfirmation.inputText.orEmpty().trim(),
             )
         )
     }

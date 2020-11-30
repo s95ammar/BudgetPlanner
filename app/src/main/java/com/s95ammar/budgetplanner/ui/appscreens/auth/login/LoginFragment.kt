@@ -40,7 +40,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
         viewModel.onLoginSuccessful.observeEvent(viewLifecycleOwner) { onLoginSuccessful() }
     }
-    
+
     private fun handleValidationErrors(validationErrors: ValidationErrors) {
         for (viewErrors in validationErrors.viewsErrors) {
             if (viewErrors.errorsIds.isNotEmpty())
@@ -95,11 +95,10 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
     }
 
     private fun onLogin() {
-
         viewModel.onLogin(
             UserLoginInputData(
-                binding.inputLayoutEmail.inputText.trim(),
-                binding.inputLayoutPassword.inputText.trim()
+                binding.inputLayoutEmail.inputText.orEmpty().trim(),
+                binding.inputLayoutPassword.inputText.orEmpty().trim()
             )
         )
     }

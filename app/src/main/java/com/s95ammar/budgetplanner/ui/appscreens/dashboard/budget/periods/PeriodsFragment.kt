@@ -1,13 +1,13 @@
-package com.s95ammar.budgetplanner.ui.appscreens.categories
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods
 
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.databinding.FragmentCategoriesBinding
-import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
+import com.s95ammar.budgetplanner.databinding.FragmentPeriodsBinding
+import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.adapter.PeriodsListAdapter
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment
@@ -17,21 +17,21 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinder<FragmentCategoriesBinding> {
+class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<FragmentPeriodsBinding> {
 
-    override val binding: FragmentCategoriesBinding
+    override val binding: FragmentPeriodsBinding
         get() = getBinding()
 
-    private val viewModel: CategoriesViewModel by viewModels()
-    private val adapter by lazy { CategoriesListAdapter(viewModel::onCategoryItemClick, viewModel::onCategoryItemLongClick) }
+    private val viewModel: PeriodsViewModel by viewModels()
+    private val adapter by lazy { PeriodsListAdapter(viewModel::onPeriodItemClick, viewModel::onPeriodItemLongClick) }
 
-    override fun initViewBinding(view: View): FragmentCategoriesBinding {
-        return FragmentCategoriesBinding.bind(view)
+    override fun initViewBinding(view: View): FragmentPeriodsBinding {
+        return FragmentPeriodsBinding.bind(view)
     }
 
     override fun setUpViews() {
         super.setUpViews()
-        binding.fabCategories.setOnClickListener { navigateToCreateEditCategory(Int.NO_ITEM) }
+        binding.toolbar.setNavigationOnClickListener { navController.navigateUp() }
         binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.refresh() }
         setUpRecyclerView()
     }
@@ -44,11 +44,11 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.allCategories.observe(viewLifecycleOwner) { setAllCategories(it) }
+        viewModel.allPeriods.observe(viewLifecycleOwner) { setAllPeriods(it) }
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        viewModel.navigateToEditCategory.observeEvent(viewLifecycleOwner) { navigateToCreateEditCategory(it) }
+        viewModel.navigateToEditPeriod.observeEvent(viewLifecycleOwner) { navigateToCreateEditPeriod(it) }
         viewModel.showBottomSheet.observeEvent(viewLifecycleOwner) { showBottomSheet(it) }
-        observeResultLiveData<Boolean>(Keys.KEY_ON_CATEGORY_CREATE_EDIT) { viewModel.refresh() }
+        observeResultLiveData<Boolean>(Keys.KEY_ON_PERIOD_CREATE_EDIT) { viewModel.refresh() }
     }
 
     override fun showLoading() {
@@ -59,8 +59,8 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
         binding.swipeToRefreshLayout.isRefreshing = false
     }
 
-    private fun setAllCategories(categories: List<CategoryViewEntity>) {
-        adapter.submitList(categories) { binding.recyclerView.scrollToPosition(0) }
+    private fun setAllPeriods(periods: List<PeriodViewEntity>) {
+        adapter.submitList(periods)
     }
 
     private fun handleLoadingState(loadingState: LoadingState) {
@@ -75,17 +75,17 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
         }
     }
 
-    private fun navigateToCreateEditCategory(categoryId: Int) {
+    private fun navigateToCreateEditPeriod(periodId: Int) {
         navController.navigate(
-            CategoriesFragmentDirections.actionNavigationCategoriesToCategoryCreateEditFragment(categoryId)
+            PeriodsFragmentDirections.actionPeriodsFragmentToPeriodCreateEditFragment(periodId)
         )
     }
 
-    private fun showBottomSheet(category: CategoryViewEntity) {
-        EditDeleteBottomSheetDialogFragment.newInstance(category.name, R.drawable.ic_category).apply {
+    private fun showBottomSheet(period: PeriodViewEntity) {
+        EditDeleteBottomSheetDialogFragment.newInstance(period.name, R.drawable.ic_period).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
-                override fun onEdit() = navigateToCreateEditCategory(category.id)
-                override fun onDelete() = displayDeleteConfirmationDialog(category.name) { viewModel.onDeleteCategory(category.id) }
+                override fun onEdit() = navigateToCreateEditPeriod(period.id)
+                override fun onDelete() = displayDeleteConfirmationDialog(period.name) { viewModel.onDeletePeriod(period.id) }
             }
         }.show(childFragmentManager, EditDeleteBottomSheetDialogFragment.TAG)
     }
