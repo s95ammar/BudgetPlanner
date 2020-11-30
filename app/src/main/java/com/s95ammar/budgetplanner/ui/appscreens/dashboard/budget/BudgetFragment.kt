@@ -52,7 +52,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     }
 
     private fun setViewsToCurrentPeriodBundle(currentPeriodBundle: CurrentPeriodBundle) {
-        binding.textViewPeriodName.text = currentPeriodBundle.period.name
+        binding.textViewPeriodName.text = currentPeriodBundle.period?.name
         binding.imageButtonArrowPrevious.isVisible = currentPeriodBundle.isPreviousAvailable
         binding.imageButtonArrowNext.isVisible = currentPeriodBundle.isNextAvailable
         binding.imageButtonAddPeriod.isGone = currentPeriodBundle.isNextAvailable

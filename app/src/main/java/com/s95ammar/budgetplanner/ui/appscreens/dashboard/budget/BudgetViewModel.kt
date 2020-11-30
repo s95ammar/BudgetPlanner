@@ -24,7 +24,7 @@ class BudgetViewModel @ViewModelInject constructor(
     private val _allPeriods = LoaderMutableLiveData<List<PeriodViewEntity>> { loadAllPeriods() }
     private val _displayLoadingState = EventMutableLiveData<LoadingState>(LoadingState.Cold)
     private val _currentPeriodBundle = MediatorLiveData<CurrentPeriodBundle>().apply {
-        addSource(_allPeriods.distinctUntilChanged()) { if (it.isNotEmpty()) value = createCurrentPeriodBundle(it.last()) }
+        addSource(_allPeriods.distinctUntilChanged()) { value = createCurrentPeriodBundle(it.lastOrNull()) }
     }
 
     val currentPeriodBundle = _currentPeriodBundle.asLiveData()
@@ -52,14 +52,18 @@ class BudgetViewModel @ViewModelInject constructor(
         loadAllPeriods()
     }
 
-    private fun createCurrentPeriodBundle(currentPeriod: PeriodViewEntity): CurrentPeriodBundle? {
-        return _allPeriods.value?.takeIf { it.isNotEmpty() }?.let { periods ->
-            CurrentPeriodBundle(
-                period = currentPeriod,
-                isPreviousAvailable = currentPeriod != periods.first(),
-                isNextAvailable = currentPeriod != periods.last()
-            )
+    private fun createCurrentPeriodBundle(currentPeriod: PeriodViewEntity?): CurrentPeriodBundle {
+        var period: PeriodViewEntity? = null
+        var isPreviousAvailable = false
+        var isNextAvailable = false
+
+        _allPeriods.value?.takeIf { it.isNotEmpty() }?.let { periods ->
+            period = currentPeriod
+            isPreviousAvailable = currentPeriod != periods.first()
+            isNextAvailable = currentPeriod != periods.last()
         }
+
+        return CurrentPeriodBundle(period, isPreviousAvailable, isNextAvailable)
     }
 
     private fun loadAllPeriods() {
