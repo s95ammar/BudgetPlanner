@@ -25,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<FragmentDashboardBinding> {
 
     private val viewModel: DashboardViewModel by viewModels()
+    private val sharedViewModel: DashboardSharedViewModel by viewModels()
 
     override val binding: FragmentDashboardBinding
         get() = getBinding()
@@ -40,13 +41,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         binding.imageButtonArrowNext.setOnClickListener { viewModel.onNextPeriodClick() }
         binding.textViewPeriodName.setOnClickListener { navigateToPeriodsList() }
         binding.imageButtonAddPeriod.setOnClickListener { navigateToCreatePeriod() }
-    }
-
-    override fun initObservers() {
-        super.initObservers()
-        viewModel.currentPeriodBundle.observe(viewLifecycleOwner) { setViewsToCurrentPeriodBundle(it) }
-        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        observeResultLiveData<Boolean>(Keys.KEY_ON_PERIOD_CREATE_EDIT) { viewModel.refresh() }
     }
 
     private fun setUpViewPager() {
@@ -66,6 +60,18 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             tab.text = titles[position]
         }.attach()
+    }
+
+    override fun initObservers() {
+        super.initObservers()
+        viewModel.currentPeriodBundle.observe(viewLifecycleOwner) { onCurrentPeriodChanged(it) }
+        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
+        observeResultLiveData<Boolean>(Keys.KEY_ON_PERIOD_CREATE_EDIT) { viewModel.refresh() }
+    }
+
+    private fun onCurrentPeriodChanged(currentPeriodBundle: CurrentPeriodBundle) {
+        currentPeriodBundle.period?.id?.let { sharedViewModel.onPeriodChanged(it) }
+        setViewsToCurrentPeriodBundle(currentPeriodBundle)
     }
 
     private fun setViewsToCurrentPeriodBundle(currentPeriodBundle: CurrentPeriodBundle) {

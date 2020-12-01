@@ -47,13 +47,13 @@ interface ApiService {
     suspend fun getPeriodRecord(
         @Nullable @Query("id") id: Int?,
         @Nullable @Query("periodId") periodId: Int?
-    ): Response<List<PeriodRecordApiResponse>>
+    ): Response<List<PeriodRecordApiEntity>>
 
     @POST("/period/record/insert")
-    suspend fun insertPeriodRecord(@Body request: PeriodRecordUpsertApiRequest.Insertion): Response<PeriodRecordApiResponse>
+    suspend fun insertPeriodRecord(@Body request: PeriodRecordUpsertApiRequest.Insertion): Response<PeriodRecordApiEntity>
 
     @POST("/period/record/update")
-    suspend fun updatePeriodRecord(@Body request: PeriodRecordUpsertApiRequest.Update): Response<PeriodRecordApiResponse>
+    suspend fun updatePeriodRecord(@Body request: PeriodRecordUpsertApiRequest.Update): Response<PeriodRecordApiEntity>
 
     @POST("/period/record/delete")
     suspend fun deletePeriodRecord(@Body id: IdBodyRequest): Response<Boolean>

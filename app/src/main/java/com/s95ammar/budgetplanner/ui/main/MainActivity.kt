@@ -66,7 +66,8 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
     }
 
     override fun showLoading() {
-        loadingDialog.show(supportFragmentManager, LoadingDialog.TAG)
+        if (!loadingDialog.isAdded)
+            loadingDialog.show(supportFragmentManager, LoadingDialog.TAG)
     }
 
     override fun hideLoading() {

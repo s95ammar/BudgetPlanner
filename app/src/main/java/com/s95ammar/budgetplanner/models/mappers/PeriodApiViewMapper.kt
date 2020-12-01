@@ -6,10 +6,12 @@ import com.s95ammar.budgetplanner.util.NO_ITEM
 
 object PeriodApiViewMapper : BaseApiViewMapper<PeriodViewEntity, PeriodApiEntity> {
 
-    override fun toViewEntity(apiEntity: PeriodApiEntity): PeriodViewEntity {
+    override fun toViewEntity(apiEntity: PeriodApiEntity): PeriodViewEntity? {
+        if (apiEntity.id == null || apiEntity.name == null) return null
+
         return PeriodViewEntity(
-            id = apiEntity.id ?: Int.NO_ITEM,
-            name = apiEntity.name.orEmpty(),
+            id = apiEntity.id,
+            name = apiEntity.name,
             max = apiEntity.max
         )
     }

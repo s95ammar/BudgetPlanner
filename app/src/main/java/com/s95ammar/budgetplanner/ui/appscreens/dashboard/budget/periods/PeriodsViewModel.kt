@@ -52,9 +52,9 @@ class PeriodsViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             _displayLoadingState.call(LoadingState.Loading)
             remoteRepository.getAllUserPeriods()
-                .onSuccess { categoriesApiEntities ->
-                    val categories = categoriesApiEntities.orEmpty().map { apiEntity -> PeriodApiViewMapper.toViewEntity(apiEntity) }
-                    _allPeriods.value = categories
+                .onSuccess { periodApiEntities ->
+                    val periods = periodApiEntities.orEmpty().mapNotNull { apiEntity -> PeriodApiViewMapper.toViewEntity(apiEntity) }
+                    _allPeriods.value = periods
                     _displayLoadingState.call(LoadingState.Success)
                 }
                 .onError { _displayLoadingState.call(LoadingState.Error(it)) }

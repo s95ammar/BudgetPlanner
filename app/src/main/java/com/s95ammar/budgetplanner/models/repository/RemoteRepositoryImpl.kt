@@ -71,6 +71,10 @@ class RemoteRepositoryImpl @Inject constructor(private val apiService: ApiServic
         apiService.getPeriodRecord(id, periodId)
     }
 
+    override suspend fun getPeriodRecordsForPeriod(periodId: Int?) = apiRequest {
+        apiService.getPeriodRecord(id = null, periodId)
+    }
+
     override suspend fun insertPeriodRecord(request: PeriodRecordUpsertApiRequest.Insertion) = apiRequest {
         apiService.insertPeriodRecord(request)
     }
@@ -85,6 +89,10 @@ class RemoteRepositoryImpl @Inject constructor(private val apiService: ApiServic
 
     override suspend fun getBudgetTransaction(id: Int?, periodId: Int?) = apiRequest {
         apiService.getBudgetTransaction(id, periodId)
+    }
+
+    override suspend fun getBudgetTransactionsForPeriod(periodId: Int?) = apiRequest {
+        apiService.getBudgetTransaction(id = null, periodId)
     }
 
     override suspend fun insertBudgetTransaction(request: BudgetTransactionUpsertApiRequest.Insertion) = apiRequest {

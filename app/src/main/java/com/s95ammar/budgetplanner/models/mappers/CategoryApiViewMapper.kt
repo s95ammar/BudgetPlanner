@@ -6,9 +6,11 @@ import com.s95ammar.budgetplanner.util.NO_ITEM
 
 object CategoryApiViewMapper : BaseApiViewMapper<CategoryViewEntity, CategoryApiEntity> {
 
-    override fun toViewEntity(apiEntity: CategoryApiEntity): CategoryViewEntity {
+    override fun toViewEntity(apiEntity: CategoryApiEntity): CategoryViewEntity? {
+        if (apiEntity.id == null || apiEntity.name == null) return null
+
         return CategoryViewEntity(
-            id = apiEntity.id ?: Int.NO_ITEM,
+            id = apiEntity.id,
             name = apiEntity.name.orEmpty()
         )
     }

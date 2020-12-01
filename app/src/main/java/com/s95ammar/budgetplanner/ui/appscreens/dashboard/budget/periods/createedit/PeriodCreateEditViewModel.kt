@@ -56,7 +56,7 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
             remoteRepository.getPeriod(editedPeriodId)
                 .onSuccess { periodApiEntity ->
                     val period = periodApiEntity.orEmpty()
-                        .map { apiEntity -> PeriodApiViewMapper.toViewEntity(apiEntity) }
+                        .mapNotNull { apiEntity -> PeriodApiViewMapper.toViewEntity(apiEntity) }
                         .singleOrNull()
                     _editedPeriod.value = period
                     _displayLoadingState.call(LoadingState.Success)

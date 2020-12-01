@@ -21,12 +21,14 @@ interface RemoteRepository {
     suspend fun updatePeriod(request: PeriodUpsertApiRequest.Update): ApiResult<PeriodApiEntity>
     suspend fun deletePeriod(id: Int): ApiResult<Boolean>
 
-    suspend fun getPeriodRecord(id: Int?, periodId: Int?): ApiResult<List<PeriodRecordApiResponse>>
-    suspend fun insertPeriodRecord(request: PeriodRecordUpsertApiRequest.Insertion): ApiResult<PeriodRecordApiResponse>
-    suspend fun updatePeriodRecord(request: PeriodRecordUpsertApiRequest.Update): ApiResult<PeriodRecordApiResponse>
+    suspend fun getPeriodRecord(id: Int?, periodId: Int?): ApiResult<List<PeriodRecordApiEntity>>
+    suspend fun getPeriodRecordsForPeriod(periodId: Int?): ApiResult<List<PeriodRecordApiEntity>>
+    suspend fun insertPeriodRecord(request: PeriodRecordUpsertApiRequest.Insertion): ApiResult<PeriodRecordApiEntity>
+    suspend fun updatePeriodRecord(request: PeriodRecordUpsertApiRequest.Update): ApiResult<PeriodRecordApiEntity>
     suspend fun deletePeriodRecord(id: IdBodyRequest): ApiResult<Boolean>
 
     suspend fun getBudgetTransaction(id: Int?, periodId: Int?): ApiResult<List<BudgetTransactionApiEntity>>
+    suspend fun getBudgetTransactionsForPeriod(periodId: Int?): ApiResult<List<BudgetTransactionApiEntity>>
     suspend fun insertBudgetTransaction(request: BudgetTransactionUpsertApiRequest.Insertion): ApiResult<BudgetTransactionApiEntity>
     suspend fun updateBudgetTransaction(request: BudgetTransactionUpsertApiRequest.Update): ApiResult<BudgetTransactionApiEntity>
     suspend fun deleteBudgetTransaction(id: IdBodyRequest): ApiResult<Boolean>

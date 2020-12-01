@@ -52,8 +52,8 @@ class CategoriesViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             _displayLoadingState.call(LoadingState.Loading)
             remoteRepository.getAllUserCategories()
-                .onSuccess { categoriesApiEntities ->
-                    val categories = categoriesApiEntities.orEmpty().map { apiEntity -> CategoryApiViewMapper.toViewEntity(apiEntity) }
+                .onSuccess { categoryApiEntities ->
+                    val categories = categoryApiEntities.orEmpty().mapNotNull { apiEntity -> CategoryApiViewMapper.toViewEntity(apiEntity) }
                     _allCategories.value = categories
                     _displayLoadingState.call(LoadingState.Success)
                 }

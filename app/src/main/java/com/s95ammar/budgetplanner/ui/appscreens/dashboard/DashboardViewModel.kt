@@ -70,7 +70,7 @@ class DashboardViewModel @ViewModelInject constructor(
             _displayLoadingState.call(LoadingState.Loading)
             remoteRepository.getAllUserPeriods()
                 .onSuccess { periodsApiEntities ->
-                    _allPeriods.value = periodsApiEntities.orEmpty().map { apiEntity -> PeriodApiViewMapper.toViewEntity(apiEntity) }
+                    _allPeriods.value = periodsApiEntities.orEmpty().mapNotNull { apiEntity -> PeriodApiViewMapper.toViewEntity(apiEntity) }
                     _displayLoadingState.call(LoadingState.Success)
                 }
                 .onError { _displayLoadingState.call(LoadingState.Error(it)) }
