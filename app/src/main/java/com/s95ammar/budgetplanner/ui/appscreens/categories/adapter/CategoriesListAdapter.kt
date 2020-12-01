@@ -10,8 +10,16 @@ import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
 
 class CategoriesListAdapter(
     private val onItemClick: (Int) -> Unit,
-    private val onItemLongClick: (Int) -> Unit
+    private val onItemLongClick: ((Int) -> Unit)?
 ) : ListAdapter<CategoryViewEntity, CategoriesListAdapter.CategoriesViewHolder>(CALLBACK) {
+
+    companion object {
+        val CALLBACK
+            get() = object : DiffUtil.ItemCallback<CategoryViewEntity>() {
+                override fun areItemsTheSame(oldItem: CategoryViewEntity, newItem: CategoryViewEntity) = (oldItem.id == newItem.id)
+                override fun areContentsTheSame(oldItem: CategoryViewEntity, newItem: CategoryViewEntity) = (oldItem == newItem)
+            }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
         return CategoriesViewHolder(
@@ -25,23 +33,15 @@ class CategoriesListAdapter(
         getItem(position)?.let { holder.bind(it) }
     }
 
-    companion object {
-        val CALLBACK
-            get() = object : DiffUtil.ItemCallback<CategoryViewEntity>() {
-                override fun areItemsTheSame(oldItem: CategoryViewEntity, newItem: CategoryViewEntity) = (oldItem.id == newItem.id)
-                override fun areContentsTheSame(oldItem: CategoryViewEntity, newItem: CategoryViewEntity) = (oldItem == newItem)
-            }
-    }
-
     class CategoriesViewHolder(
         private val onItemClick: (Int) -> Unit,
-        private val onItemLongClick: (Int) -> Unit,
+        private val onItemLongClick: ((Int) -> Unit)?,
         private val binding: ItemCategoryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener { onItemClick(adapterPosition) }
-            itemView.setOnLongClickListener { onItemLongClick(adapterPosition); true }
+            itemView.setOnLongClickListener { onItemLongClick?.invoke(adapterPosition); true }
         }
 
         fun bind(item: CategoryViewEntity) {

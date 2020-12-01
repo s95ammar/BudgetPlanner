@@ -1,29 +1,29 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.expenses
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.transactions
 
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.databinding.FragmentDashboardExpensesBinding
+import com.s95ammar.budgetplanner.databinding.FragmentDashboardTransactionsBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ExpensesFragment : BaseFragment(R.layout.fragment_dashboard_expenses), ViewBinder<FragmentDashboardExpensesBinding> {
+class TransactionsFragment : BaseFragment(R.layout.fragment_dashboard_transactions), ViewBinder<FragmentDashboardTransactionsBinding> {
 
     companion object {
-        fun newInstance() = ExpensesFragment()
+        fun newInstance() = TransactionsFragment()
     }
 
-    private val viewModel: ExpensesViewModel by viewModels()
+    private val viewModel: TransactionsViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
-    override val binding: FragmentDashboardExpensesBinding
+    override val binding: FragmentDashboardTransactionsBinding
         get() = getBinding()
 
-    override fun initViewBinding(view: View): FragmentDashboardExpensesBinding {
-        return FragmentDashboardExpensesBinding.bind(view)
+    override fun initViewBinding(view: View): FragmentDashboardTransactionsBinding {
+        return FragmentDashboardTransactionsBinding.bind(view)
     }
 
     override fun setUpViews() {

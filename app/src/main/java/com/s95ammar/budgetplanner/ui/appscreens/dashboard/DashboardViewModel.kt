@@ -8,7 +8,7 @@ import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
 import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.data.CurrentPeriodBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodBundle
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData

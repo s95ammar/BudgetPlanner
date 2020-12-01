@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.data
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.data
 
 import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
 

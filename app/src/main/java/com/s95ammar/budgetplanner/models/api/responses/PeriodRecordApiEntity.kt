@@ -7,6 +7,7 @@ data class PeriodRecordApiEntity(
     @SerializedName("max") val max: Int?,
     @SerializedName("amount") val amount: Int?,
     @SerializedName("categoryId") val categoryId: Int?,
+    @SerializedName("categoryName") val categoryName: String?,
     @SerializedName("periodId") val periodId: Int?,
     @SerializedName("userId") val userId: Int?
 )

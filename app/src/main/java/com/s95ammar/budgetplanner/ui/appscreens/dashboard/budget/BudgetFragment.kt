@@ -2,12 +2,19 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget
 
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBudgetBinding
+import com.s95ammar.budgetplanner.models.view.PeriodRecordViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardFragmentDirections
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.adapter.PeriodRecordsListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.data.PeriodRecordsNavigationBundle
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
+import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +28,8 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     private val viewModel: BudgetViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
+    private val adapter by lazy { PeriodRecordsListAdapter(/*TODO*/) }
+
     override val binding: FragmentDashboardBudgetBinding
         get() = getBinding()
 
@@ -30,14 +39,32 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
 
     override fun setUpViews() {
         super.setUpViews()
+        binding.fab.setOnClickListener { viewModel.onNavigateToPeriodRecords() }
+        binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.onRefresh() }
+        setUpRecyclerView()
+    }
+
+    private fun setUpRecyclerView() {
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.setHasFixedSize(true)
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.periodRecords
+        viewModel.currentPeriodId.observe(viewLifecycleOwner) { showFabIfPeriodIsAvailable(it) }
+        viewModel.periodRecords.observe(viewLifecycleOwner) { setPeriodRecords(it) }
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-
+        viewModel.navigateToPeriodRecords.observeEvent(viewLifecycleOwner) { navigateToPeriodRecords(it) }
         sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.onPeriodChanged(it) }
+    }
+
+    private fun showFabIfPeriodIsAvailable(periodId: Int) {
+        if (periodId == Int.NO_ITEM) binding.fab.hide() else binding.fab.show()
+    }
+
+    private fun setPeriodRecords(periodRecords: List<PeriodRecordViewEntity>) {
+        adapter.submitList(periodRecords)
     }
 
     private fun handleLoadingState(loadingState: LoadingState) {
@@ -52,9 +79,29 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
         }
     }
 
+    override fun showLoading() {
+        binding.swipeToRefreshLayout.isRefreshing = true
+    }
+
+    override fun hideLoading() {
+        binding.swipeToRefreshLayout.isRefreshing = false
+    }
+
     private fun handleError(throwable: Throwable) {
         when (throwable) {
             else -> throwable.message?.let { showToast(it) }
         }
+    }
+
+    // TODO: refactor with nested navGraph or the SharedViewModel
+    private fun navigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
+        requireParentFragment()
+            .findNavController()
+            .navigate(
+                DashboardFragmentDirections.actionNavigationDashboardToPeriodRecordsFragment(
+                    navigationBundle.excludedCategoryIds.toIntArray(),
+                    navigationBundle.periodId
+                )
+            )
     }
 }

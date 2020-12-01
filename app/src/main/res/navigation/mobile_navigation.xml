@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_periodCreateEditFragment"
             app:destination="@id/periodCreateEditFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_periodRecordsFragment"
+            app:destination="@id/periodRecordsFragment" />
     </fragment>
 
     <fragment
@@ -109,5 +112,17 @@
         <action
             android:id="@+id/action_periodsFragment_to_periodCreateEditFragment"
             app:destination="@id/periodCreateEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/periodRecordsFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periodrecords.PeriodRecordsFragment"
+        android:label="fragment_period_records"
+        tools:layout="@layout/fragment_period_records" >
+        <argument
+            android:name="excludedCategoryIds"
+            app:argType="integer[]" />
+        <argument
+            android:name="periodId"
+            app:argType="integer" />
     </fragment>
 </navigation>

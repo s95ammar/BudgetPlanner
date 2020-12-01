@@ -31,7 +31,7 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
 
     override fun setUpViews() {
         super.setUpViews()
-        binding.fabCategories.setOnClickListener { navigateToCreateEditCategory(Int.NO_ITEM) }
+        binding.fab.setOnClickListener { navigateToCreateEditCategory(Int.NO_ITEM) }
         binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.refresh() }
         setUpRecyclerView()
     }

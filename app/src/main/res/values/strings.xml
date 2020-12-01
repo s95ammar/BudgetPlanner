@@ -29,11 +29,12 @@
     <string name="periods">Periods</string>
     <string name="dashboard">Dashboard</string>
     <string name="budget">Budget</string>
-    <string name="expenses">Expenses</string>
+    <string name="expenses_and_income">Expenses and income</string>
     <string name="savings_jars">Savings Jars</string>
     <string name="savings">Savings</string>
     <string name="create_budget">Create budget</string>
     <string name="edit_budget">Edit budget</string>
+    <string name="choose_a_category">Choose a category</string>
 
     <string name="key_total_balance">Total balance:</string>
     <string name="key_total_spending_estimate">Total spending estimate:</string>
@@ -68,4 +69,6 @@
     <string name="add">Add</string>
 
     <string name="log_out">Log out</string>
+
+    <string name="format_value_out_of">%d / %d</string>
 </resources>

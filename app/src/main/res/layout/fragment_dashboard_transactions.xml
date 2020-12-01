@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipe_to_refresh_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.appscreens.dashboard.budget.BudgetFragment">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ui.appscreens.dashboard.transactions.TransactionsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -35,8 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:contentDescription="@string/edit"
-            android:src="@drawable/ic_edit"
+            android:contentDescription="@string/add"
+            android:src="@drawable/ic_add"
             android:visibility="visible"
             app:backgroundTint="@color/colorPrimary"
             app:elevation="@dimen/_10sdp"

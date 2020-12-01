@@ -7,14 +7,19 @@ object PeriodRecordApiViewMapper: BaseApiViewMapper<PeriodRecordViewEntity, Peri
 
     override fun toViewEntity(apiEntity: PeriodRecordApiEntity): PeriodRecordViewEntity? {
 
-        if (apiEntity.id == null || apiEntity.amount == null || apiEntity.categoryId == null || apiEntity.periodId == null)
-            return null
+        if (apiEntity.id == null
+            || apiEntity.amount == null
+            || apiEntity.categoryId == null
+            || apiEntity.categoryName == null
+            || apiEntity.periodId == null
+        ) return null
 
         return PeriodRecordViewEntity(
             id = apiEntity.id,
             max = apiEntity.max,
             amount = apiEntity.amount,
             categoryId = apiEntity.categoryId,
+            categoryName = apiEntity.categoryName,
             periodId = apiEntity.periodId,
         )
     }
