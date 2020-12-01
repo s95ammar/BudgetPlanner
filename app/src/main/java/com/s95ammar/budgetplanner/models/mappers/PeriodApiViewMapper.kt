@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.models.mappers
 
-import com.s95ammar.budgetplanner.models.api.common.PeriodApiEntity
+import com.s95ammar.budgetplanner.models.api.responses.PeriodApiEntity
 import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
 import com.s95ammar.budgetplanner.util.NO_ITEM
 

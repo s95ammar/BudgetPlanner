@@ -3,7 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.categories.createedit
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.s95ammar.budgetplanner.models.api.common.CategoryApiEntity
+import com.s95ammar.budgetplanner.models.api.requests.CategoryUpsertApiRequest
 import com.s95ammar.budgetplanner.models.mappers.CategoryApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
@@ -66,23 +66,21 @@ class CategoryCreateEditViewModel @ViewModelInject constructor(
 
     }
 
-    private fun onValidationSuccessful(category: CategoryApiEntity) = viewModelScope.launch {
-        _mode.value?.let { mode ->
-            _displayLoadingState.call(LoadingState.Loading)
-            val result = when (mode) {
-                CreateEditMode.CREATE -> remoteRepository.insertCategory(category)
-                CreateEditMode.EDIT -> remoteRepository.updateCategory(category)
-            }
-
-            result
-                .onSuccess {
-                    _onApplySuccess.call()
-                    _displayLoadingState.call(LoadingState.Success)
-                }
-                .onError { throwable ->
-                    _displayLoadingState.call(LoadingState.Error(throwable))
-                }
+    private fun onValidationSuccessful(category: CategoryUpsertApiRequest) = viewModelScope.launch {
+        _displayLoadingState.call(LoadingState.Loading)
+        val result = when (category) {
+            is CategoryUpsertApiRequest.Insertion -> remoteRepository.insertCategory(category)
+            is CategoryUpsertApiRequest.Update -> remoteRepository.updateCategory(category)
         }
+
+        result
+            .onSuccess {
+                _onApplySuccess.call()
+                _displayLoadingState.call(LoadingState.Success)
+            }
+            .onError { throwable ->
+                _displayLoadingState.call(LoadingState.Error(throwable))
+            }
     }
 
     private fun onValidationError(validationErrors: ValidationErrors) {

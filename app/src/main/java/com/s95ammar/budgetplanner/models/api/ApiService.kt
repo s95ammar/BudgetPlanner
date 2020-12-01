@@ -1,11 +1,8 @@
 package com.s95ammar.budgetplanner.models.api
 
 import androidx.annotation.Nullable
-import com.s95ammar.budgetplanner.models.api.requests.IdBodyRequest
-import com.s95ammar.budgetplanner.models.api.responses.TokenResponse
-import com.s95ammar.budgetplanner.models.api.requests.UserCredentials
-import com.s95ammar.budgetplanner.models.api.common.CategoryApiEntity
-import com.s95ammar.budgetplanner.models.api.common.PeriodApiEntity
+import com.s95ammar.budgetplanner.models.api.requests.*
+import com.s95ammar.budgetplanner.models.api.responses.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -26,10 +23,10 @@ interface ApiService {
     suspend fun getCategory(@Nullable @Query("id") id: Int?): Response<List<CategoryApiEntity>>
 
     @POST("/category/insert")
-    suspend fun insertCategory(@Body category: CategoryApiEntity): Response<CategoryApiEntity>
+    suspend fun insertCategory(@Body request: CategoryUpsertApiRequest.Insertion): Response<CategoryApiEntity>
 
     @POST("/category/update")
-    suspend fun updateCategory(@Body category: CategoryApiEntity): Response<CategoryApiEntity>
+    suspend fun updateCategory(@Body request: CategoryUpsertApiRequest.Update): Response<CategoryApiEntity>
 
     @POST("/category/delete")
     suspend fun deleteCategory(@Body id: IdBodyRequest): Response<Boolean>
@@ -38,12 +35,42 @@ interface ApiService {
     suspend fun getPeriod(@Nullable @Query("id") id: Int?): Response<List<PeriodApiEntity>>
 
     @POST("/period/insert")
-    suspend fun insertPeriod(@Body period: PeriodApiEntity): Response<PeriodApiEntity>
+    suspend fun insertPeriod(@Body request: PeriodUpsertApiRequest.Insertion): Response<PeriodApiEntity>
 
     @POST("/period/update")
-    suspend fun updatePeriod(@Body period: PeriodApiEntity): Response<PeriodApiEntity>
+    suspend fun updatePeriod(@Body request: PeriodUpsertApiRequest.Update): Response<PeriodApiEntity>
 
     @POST("/period/delete")
     suspend fun deletePeriod(@Body id: IdBodyRequest): Response<Boolean>
+
+    @GET("/period/record/get")
+    suspend fun getPeriodRecord(
+        @Nullable @Query("id") id: Int?,
+        @Nullable @Query("periodId") periodId: Int?
+    ): Response<List<PeriodRecordApiResponse>>
+
+    @POST("/period/record/insert")
+    suspend fun insertPeriodRecord(@Body request: PeriodRecordUpsertApiRequest.Insertion): Response<PeriodRecordApiResponse>
+
+    @POST("/period/record/update")
+    suspend fun updatePeriodRecord(@Body request: PeriodRecordUpsertApiRequest.Update): Response<PeriodRecordApiResponse>
+
+    @POST("/period/record/delete")
+    suspend fun deletePeriodRecord(@Body id: IdBodyRequest): Response<Boolean>
+
+    @GET("/period/budget_transaction/get")
+    suspend fun getBudgetTransaction(
+        @Nullable @Query("id") id: Int?,
+        @Nullable @Query("periodId") periodId: Int?
+    ): Response<List<BudgetTransactionApiEntity>>
+
+    @POST("/period/budget_transaction/insert")
+    suspend fun insertBudgetTransaction(@Body request: BudgetTransactionUpsertApiRequest.Insertion): Response<BudgetTransactionApiEntity>
+
+    @POST("/period/budget_transaction/update")
+    suspend fun updateBudgetTransaction(@Body request: BudgetTransactionUpsertApiRequest.Update): Response<BudgetTransactionApiEntity>
+
+    @POST("/period/budget_transaction/delete")
+    suspend fun deleteBudgetTransaction(@Body id: IdBodyRequest): Response<Boolean>
 
 }

@@ -1,15 +1,15 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit.validation
 
-import com.s95ammar.budgetplanner.models.api.common.PeriodApiEntity
+import com.s95ammar.budgetplanner.models.api.requests.PeriodUpsertApiRequest
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
 import com.s95ammar.budgetplanner.util.NO_ITEM
 
 class PeriodCreateEditValidator(
-    private val period: Int,
+    private val periodId: Int,
     periodInputBundle: PeriodInputBundle
-) : Validator<PeriodInputBundle, PeriodApiEntity>(periodInputBundle) {
+) : Validator<PeriodInputBundle, PeriodUpsertApiRequest>(periodInputBundle) {
 
     object Errors {
         const val EMPTY_TITLE = 1
@@ -20,9 +20,12 @@ class PeriodCreateEditValidator(
         const val VIEW_TITLE = 1
     }
 
-        override fun provideOutputEntity(inputEntity: PeriodInputBundle): PeriodApiEntity {
-            return PeriodApiEntity(
-                id = if (period == Int.NO_ITEM) null else period,
+        override fun provideOutputEntity(inputEntity: PeriodInputBundle): PeriodUpsertApiRequest {
+            return if (periodId == Int.NO_ITEM) PeriodUpsertApiRequest.Insertion(
+                name = inputEntity.title,
+                max = inputEntity.max?.toIntOrNull()
+            ) else PeriodUpsertApiRequest.Update(
+                id = periodId,
                 name = inputEntity.title,
                 max = inputEntity.max?.toIntOrNull()
             )

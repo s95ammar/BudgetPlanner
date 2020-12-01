@@ -3,7 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.create
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.s95ammar.budgetplanner.models.api.common.PeriodApiEntity
+import com.s95ammar.budgetplanner.models.api.requests.PeriodUpsertApiRequest
 import com.s95ammar.budgetplanner.models.mappers.PeriodApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
@@ -66,12 +66,11 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
 
     }
 
-    private fun onValidationSuccessful(period: PeriodApiEntity) = viewModelScope.launch {
-        _mode.value?.let { mode ->
+    private fun onValidationSuccessful(period: PeriodUpsertApiRequest) = viewModelScope.launch {
             _displayLoadingState.call(LoadingState.Loading)
-            val result = when (mode) {
-                CreateEditMode.CREATE -> remoteRepository.insertPeriod(period)
-                CreateEditMode.EDIT -> remoteRepository.updatePeriod(period)
+            val result = when (period) {
+                is PeriodUpsertApiRequest.Insertion -> remoteRepository.insertPeriod(period)
+                is PeriodUpsertApiRequest.Update -> remoteRepository.updatePeriod(period)
             }
 
             result
@@ -82,7 +81,6 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
                 .onError { throwable ->
                     _displayLoadingState.call(LoadingState.Error(throwable))
                 }
-        }
     }
 
     private fun onValidationError(validationErrors: ValidationErrors) {

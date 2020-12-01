@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.models.mappers
 
-import com.s95ammar.budgetplanner.models.api.common.CategoryApiEntity
+import com.s95ammar.budgetplanner.models.api.responses.CategoryApiEntity
 import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
 import com.s95ammar.budgetplanner.util.NO_ITEM
 
