@@ -64,6 +64,7 @@ class PeriodRecordsFragment : BaseFragment(R.layout.fragment_period_records), Vi
 
     private fun onPeriodRecordAdded() {
         sendResult(Keys.KEY_ON_PERIOD_RECORD_ADDED, true)
+        navController.navigateUp()
     }
 
 }

@@ -2,14 +2,19 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periodrecords
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.api.requests.PeriodRecordUpsertApiRequest
 import com.s95ammar.budgetplanner.models.mappers.CategoryApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
 import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.util.lifecycleutil.*
+import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
+import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveDataVoid
+import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import kotlinx.coroutines.launch
 
 class PeriodRecordsViewModel @ViewModelInject constructor(
@@ -29,7 +34,7 @@ class PeriodRecordsViewModel @ViewModelInject constructor(
     val onPeriodRecordAdded = _onPeriodRecordAdded.asEventLiveData()
 
     fun onCategoryItemClick(position: Int) {
-        _allCategories.value?.getOrNull(position)?.let { category ->
+        resultCategories.value?.getOrNull(position)?.let { category ->
             insertPeriodRecord(category.id)
         }
     }
