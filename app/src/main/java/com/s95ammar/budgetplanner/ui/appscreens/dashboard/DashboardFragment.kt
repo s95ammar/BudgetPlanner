@@ -9,15 +9,17 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.BudgetFragment
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.data.PeriodRecordsNavigationBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodBundle
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.transactions.TransactionsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.savings.SavingsFragment
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.transactions.TransactionsFragment
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.FragmentProvider
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.ViewPagerFragmentAdapter
 import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.lifecycleutil.hiltNavGraphViewModels
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<FragmentDashboardBinding> {
 
     private val viewModel: DashboardViewModel by viewModels()
-    private val sharedViewModel: DashboardSharedViewModel by viewModels()
+    private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
 
     override val binding: FragmentDashboardBinding
         get() = getBinding()
@@ -66,6 +68,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         super.initObservers()
         viewModel.currentPeriodBundle.observe(viewLifecycleOwner) { onCurrentPeriodChanged(it) }
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
+        sharedViewModel.navigateToPeriodRecords.observeEvent(viewLifecycleOwner) { navigateToPeriodRecords(it) }
         observeResultLiveData<Boolean>(Keys.KEY_ON_PERIOD_CREATE_EDIT) { viewModel.refresh() }
     }
 
@@ -100,11 +103,22 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
     }
 
     private fun navigateToPeriodsList() {
-        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToPeriodsFragment())
+        navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodsFragment())
 
     }
 
     private fun navigateToCreatePeriod() {
-        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToPeriodCreateEditFragment(Int.NO_ITEM))
+        navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodCreateEditFragment(Int.NO_ITEM))
     }
+
+    private fun navigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
+        navController
+            .navigate(
+                DashboardFragmentDirections.actionNavigationDashboardToPeriodRecordsFragment(
+                    navigationBundle.excludedCategoryIds.toIntArray(),
+                    navigationBundle.periodId
+                )
+            )
+    }
+
 }

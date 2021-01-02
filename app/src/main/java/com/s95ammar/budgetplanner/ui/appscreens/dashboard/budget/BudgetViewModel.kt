@@ -37,7 +37,7 @@ class BudgetViewModel @ViewModelInject constructor(
         loadPeriodRecords()
     }
 
-    fun onRefresh() {
+    fun refresh() {
         loadPeriodRecords()
     }
 

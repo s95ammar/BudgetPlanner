@@ -2,19 +2,19 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget
 
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBudgetBinding
 import com.s95ammar.budgetplanner.models.view.PeriodRecordViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardFragmentDirections
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.adapter.PeriodRecordsListAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.data.PeriodRecordsNavigationBundle
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
+import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.lifecycleutil.hiltNavGraphViewModels
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +26,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     }
 
     private val viewModel: BudgetViewModel by viewModels()
-    private val sharedViewModel: DashboardSharedViewModel by viewModels(ownerProducer = { requireParentFragment() })
+    private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
 
     private val adapter by lazy { PeriodRecordsListAdapter(/*TODO*/) }
 
@@ -40,7 +40,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     override fun setUpViews() {
         super.setUpViews()
         binding.fab.setOnClickListener { viewModel.onNavigateToPeriodRecords() }
-        binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.onRefresh() }
+        binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.refresh() }
         setUpRecyclerView()
     }
 
@@ -57,6 +57,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
         viewModel.navigateToPeriodRecords.observeEvent(viewLifecycleOwner) { navigateToPeriodRecords(it) }
         sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.onPeriodChanged(it) }
+        observeResultLiveData<Boolean>(Keys.KEY_ON_PERIOD_RECORD_ADDED) { viewModel.refresh() }
     }
 
     private fun showFabIfPeriodIsAvailable(periodId: Int) {
@@ -93,15 +94,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
         }
     }
 
-    // TODO: refactor with nested navGraph or the SharedViewModel
     private fun navigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
-        requireParentFragment()
-            .findNavController()
-            .navigate(
-                DashboardFragmentDirections.actionNavigationDashboardToPeriodRecordsFragment(
-                    navigationBundle.excludedCategoryIds.toIntArray(),
-                    navigationBundle.periodId
-                )
-            )
+        sharedViewModel.navigateToPeriodRecords(navigationBundle)
     }
 }

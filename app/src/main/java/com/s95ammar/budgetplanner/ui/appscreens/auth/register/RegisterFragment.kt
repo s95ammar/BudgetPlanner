@@ -87,7 +87,7 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
     }
 
     private fun onRegisterSuccessful() {
-        navController.navigate(RegisterFragmentDirections.actionRegisterFragmentToNavigationDashboard())
+        navController.navigate(RegisterFragmentDirections.actionRegisterFragmentToNestedNavigationDashboard())
     }
 
     private fun navigateToLogin() {
