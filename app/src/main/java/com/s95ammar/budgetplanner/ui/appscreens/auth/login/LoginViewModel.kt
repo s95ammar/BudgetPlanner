@@ -8,11 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputData
+import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.LoginUiEvent
+import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.validation.LoginValidator
-import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
-import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderEventMutableLiveDataVoid
 import kotlinx.coroutines.launch
 
 class LoginViewModel @ViewModelInject constructor(
@@ -23,42 +22,46 @@ class LoginViewModel @ViewModelInject constructor(
 
     // TODO: handle layout config changes & process death
 
-    private val _displayValidationResult = EventMutableLiveData<ValidationErrors>()
-    private val _displayLoadingState = EventMutableLiveData<LoadingState>()
-    private val _onLoginSuccessful = LoaderEventMutableLiveDataVoid { checkCachedToken() }
+    private val _performUiEvent = EventMutableLiveData<LoginUiEvent>()
 
-    val displayValidationResult = _displayValidationResult.asEventLiveData()
-    val displayLoadingState = _displayLoadingState.asEventLiveData()
-    val onLoginSuccessful = _onLoginSuccessful.asEventLiveData()
+    val performUiEvent = _performUiEvent.asEventLiveData()
 
-    fun onLogin(userLoginInputData: UserLoginInputData) {
-        val validator = LoginValidator(userLoginInputData)
-        _displayValidationResult.call(validator.getValidationErrors(allBlank = true))
+    init {
+        checkCachedToken()
+    }
+
+    fun onLogin(userLoginInputBundle: UserLoginInputBundle) {
+        val validator = LoginValidator(userLoginInputBundle)
+        _performUiEvent.call(LoginUiEvent.DisplayValidationResult(validator.getValidationErrors(allBlank = true)))
 
         validator.getValidationResult()
             .onSuccess { login(it.email, it.password) }
-            .onError { validationErrors -> _displayValidationResult.call(validationErrors) }
+            .onError { validationErrors -> _performUiEvent.call(LoginUiEvent.DisplayValidationResult(validationErrors)) }
+    }
+
+    fun onRegister() {
+        _performUiEvent.call(LoginUiEvent.NavigateToRegister)
     }
 
     private fun checkCachedToken() {
         val cachedToken = localRepository.loadAuthToken()
         if (!cachedToken.isNullOrEmpty())
-            _onLoginSuccessful.call()
+            _performUiEvent.call(LoginUiEvent.NavigateToDashboard)
     }
 
     private fun login(email: String, password: String) = viewModelScope.launch {
-        _displayLoadingState.call(LoadingState.Loading)
+        _performUiEvent.call(LoginUiEvent.DisplayLoadingState(LoadingState.Loading))
 
         remoteRepository.login(email, password)
             .onSuccess { tokenResponse ->
                 tokenResponse?.let {
                     localRepository.saveAuthToken(tokenResponse.token)
-                    _displayLoadingState.call(LoadingState.Success)
-                    _onLoginSuccessful.call()
+                    _performUiEvent.call(LoginUiEvent.DisplayLoadingState(LoadingState.Success))
+                    _performUiEvent.call(LoginUiEvent.NavigateToDashboard)
                 }
             }
             .onError { throwable ->
-                _displayLoadingState.call(LoadingState.Error(throwable))
+                _performUiEvent.call(LoginUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }
     }
 }

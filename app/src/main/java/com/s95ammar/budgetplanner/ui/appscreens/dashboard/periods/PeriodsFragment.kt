@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods
 
 import android.os.Bundle
 import android.view.View
@@ -10,7 +10,8 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodsBinding
 import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.adapter.PeriodsListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.adapter.PeriodsListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.data.PeriodsUiEvent
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment
@@ -47,9 +48,7 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
     override fun initObservers() {
         super.initObservers()
         viewModel.allPeriods.observe(viewLifecycleOwner) { setAllPeriods(it) }
-        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        viewModel.navigateToEditPeriod.observeEvent(viewLifecycleOwner) { onNavigateToCreateEditPeriod(it) }
-        viewModel.showBottomSheet.observeEvent(viewLifecycleOwner) { showBottomSheet(it) }
+        viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         viewModel.onPeriodDeleted.observeEvent(viewLifecycleOwner) { onPeriodDeleted() }
     }
 
@@ -63,6 +62,14 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
 
     private fun setAllPeriods(periods: List<PeriodViewEntity>) {
         adapter.submitList(periods)
+    }
+
+    private fun performUiEvent(uiEvent: PeriodsUiEvent) {
+        when (uiEvent) {
+            is PeriodsUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is PeriodsUiEvent.OnNavigateToEditPeriod -> onNavigateToCreateEditPeriod(uiEvent.periodId)
+            is PeriodsUiEvent.ShowBottomSheet -> showBottomSheet(uiEvent.period)
+        }
     }
 
     private fun handleLoadingState(loadingState: LoadingState) {

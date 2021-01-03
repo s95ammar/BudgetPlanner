@@ -1,11 +1,11 @@
 package com.s95ammar.budgetplanner.ui.appscreens.auth.login.validation
 
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.AuthUtil
-import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputData
+import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
 
-class LoginValidator(inputEntity: UserLoginInputData) : Validator<UserLoginInputData, UserLoginInputData>(inputEntity) {
+class LoginValidator(inputEntity: UserLoginInputBundle) : Validator<UserLoginInputBundle, UserLoginInputBundle>(inputEntity) {
 
     object Errors {
         const val ERROR_EMAIL_EMPTY = 1
@@ -22,7 +22,7 @@ class LoginValidator(inputEntity: UserLoginInputData) : Validator<UserLoginInput
         const val VIEW_PASSWORD = 2
     }
 
-    override fun provideOutputEntity(inputEntity: UserLoginInputData): UserLoginInputData {
+    override fun provideOutputEntity(inputEntity: UserLoginInputBundle): UserLoginInputBundle {
         return inputEntity
     }
 

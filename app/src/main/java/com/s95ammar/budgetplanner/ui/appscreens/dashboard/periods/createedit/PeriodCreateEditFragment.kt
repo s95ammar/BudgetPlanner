@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit
 
 import android.os.Bundle
 import android.view.View
@@ -8,8 +8,8 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodCreateEditBinding
 import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit.data.PeriodInputBundle
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit.validation.PeriodCreateEditValidator
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit.data.PeriodInputBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit.validation.PeriodCreateEditValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
@@ -34,7 +34,7 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
     override fun setUpViews() {
         super.setUpViews()
         binding.toolbar.setNavigationOnClickListener { navController.navigateUp() }
-        binding.buttonApply.setOnClickListener { onApply() }
+        binding.buttonApply.setOnClickListener { viewModel.onApply(getPeriodInputBundle()) }
     }
 
     override fun initObservers() {
@@ -104,13 +104,9 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
         navController.navigateUp()
     }
 
-    private fun onApply() {
-        viewModel.onApply(
-            PeriodInputBundle(
-                title = binding.inputLayoutTitle.inputText.orEmpty().trim(),
-                max = binding.inputLayoutMax.inputText?.trim()
-            )
-        )
-    }
+    private fun getPeriodInputBundle() = PeriodInputBundle(
+        title = binding.inputLayoutTitle.inputText.orEmpty().trim(),
+        max = binding.inputLayoutMax.inputText?.trim()
+    )
 
 }

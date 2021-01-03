@@ -2,11 +2,11 @@ package com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation
 
 import com.s95ammar.budgetplanner.models.api.requests.UserCredentials
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.AuthUtil
-import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputData
+import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
 
-class RegisterValidator(inputEntity: UserRegisterInputData) : Validator<UserRegisterInputData, UserCredentials>(inputEntity) {
+class RegisterValidator(inputEntity: UserRegisterInputBundle) : Validator<UserRegisterInputBundle, UserCredentials>(inputEntity) {
 
     object Errors {
         const val ERROR_EMAIL_EMPTY = 1
@@ -25,7 +25,7 @@ class RegisterValidator(inputEntity: UserRegisterInputData) : Validator<UserRegi
         const val VIEW_PASSWORD_CONFIRMATION = 3
     }
 
-    override fun provideOutputEntity(inputEntity: UserRegisterInputData): UserCredentials {
+    override fun provideOutputEntity(inputEntity: UserRegisterInputBundle): UserCredentials {
         return UserCredentials(inputEntity.email, inputEntity.password)
     }
 

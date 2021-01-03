@@ -2,7 +2,6 @@ package com.s95ammar.budgetplanner.ui.appscreens.categories.createedit
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
@@ -36,7 +35,7 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
     override fun setUpViews() {
         super.setUpViews()
         binding.toolbar.setNavigationOnClickListener { navController.navigateUp() }
-        binding.buttonApply.setOnClickListener { onApply() }
+        binding.buttonApply.setOnClickListener { viewModel.onApply(getCategoryInputBundle()) }
     }
 
     override fun initObservers() {
@@ -112,10 +111,6 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
         navController.navigateUp()
     }
 
-    private fun onApply() {
-        viewModel.onApply(
-            CategoryInputBundle(title = binding.inputLayoutTitle.inputText.orEmpty().trim())
-        )
-    }
+    private fun getCategoryInputBundle() = CategoryInputBundle(title = binding.inputLayoutTitle.inputText.orEmpty().trim())
 
 }

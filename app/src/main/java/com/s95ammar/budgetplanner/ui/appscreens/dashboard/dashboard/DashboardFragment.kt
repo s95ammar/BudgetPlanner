@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard
 
 import android.view.View
 import androidx.core.view.isGone
@@ -11,7 +11,8 @@ import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.BudgetFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.data.PeriodRecordsNavigationBundle
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.data.CurrentPeriodBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.savings.SavingsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.transactions.TransactionsFragment
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -42,8 +43,8 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         setUpViewPager()
         binding.imageButtonArrowPrevious.setOnClickListener { viewModel.onPreviousPeriodClick() }
         binding.imageButtonArrowNext.setOnClickListener { viewModel.onNextPeriodClick() }
-        binding.textViewPeriodName.setOnClickListener { navigateToPeriodsList() }
-        binding.imageButtonAddPeriod.setOnClickListener { navigateToCreatePeriod() }
+        binding.textViewPeriodName.setOnClickListener { viewModel.onPeriodNameClick() }
+        binding.imageButtonAddPeriod.setOnClickListener { viewModel.onAddPeriodClick() }
     }
 
     private fun setUpViewPager() {
@@ -68,7 +69,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
     override fun initObservers() {
         super.initObservers()
         viewModel.currentPeriodBundle.observe(viewLifecycleOwner) { onCurrentPeriodChanged(it) }
-        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
+        viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         sharedViewModel.onNavigateToPeriodRecords.observeEvent(viewLifecycleOwner) { onNavigateToPeriodRecords(it) }
     }
 
@@ -82,6 +83,14 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         binding.imageButtonArrowPrevious.isVisible = currentPeriodBundle.isPreviousAvailable
         binding.imageButtonArrowNext.isVisible = currentPeriodBundle.isNextAvailable
         binding.imageButtonAddPeriod.isGone = currentPeriodBundle.isNextAvailable
+    }
+
+    private fun performUiEvent(uiEvent: DashboardUiEvent) {
+        when (uiEvent) {
+            is DashboardUiEvent.NavigateToPeriodsList -> { onNavigateToPeriodsList() }
+            is DashboardUiEvent.NavigateToCreatePeriod -> { onNavigateToCreatePeriod() }
+            is DashboardUiEvent.DisplayLoadingState -> { handleLoadingState(uiEvent.loadingState) }
+        }
     }
 
     private fun handleLoadingState(loadingState: LoadingState) {
@@ -102,22 +111,23 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         }
     }
 
-    private fun navigateToPeriodsList() {
+    private fun onNavigateToPeriodsList() {
         listenToPeriodsListChangedResult()
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodsFragment())
     }
 
-    private fun navigateToCreatePeriod() {
+    private fun onNavigateToCreatePeriod() {
         listenToPeriodsListChangedResult()
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodCreateEditFragment(Int.NO_ITEM))
     }
 
     private fun onNavigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
+        setFragmentResultListener(Keys.KEY_ON_PERIOD_RECORD_ADDED) { _, _ -> sharedViewModel.onPeriodRecordAdded() }
         navController.navigate(
-                DashboardFragmentDirections.actionNavigationDashboardToPeriodRecordsFragment(
-                    navigationBundle.excludedCategoryIds.toIntArray(),
-                    navigationBundle.periodId
-                )
+            DashboardFragmentDirections.actionNavigationDashboardToPeriodRecordsFragment(
+                navigationBundle.excludedCategoryIds.toIntArray(),
+                navigationBundle.periodId
+            )
         )
     }
 

@@ -1,13 +1,18 @@
-package com.s95ammar.budgetplanner.ui.appscreens.categories
+package com.s95ammar.budgetplanner.ui.appscreens.categories.categories
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.mappers.CategoryApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
 import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.util.lifecycleutil.*
+import com.s95ammar.budgetplanner.ui.appscreens.categories.categories.data.CategoriesUiEvent
+import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
+import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
+import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import kotlinx.coroutines.launch
 
 class CategoriesViewModel @ViewModelInject constructor(
@@ -16,48 +21,48 @@ class CategoriesViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     private val _allCategories = LoaderMutableLiveData<List<CategoryViewEntity>> { loadAllCategories() }
-    private val _displayLoadingState = EventMutableLiveData<LoadingState>(LoadingState.Cold)
-    private val _navigateToEditCategory = EventMutableLiveData<Int>()
-    private val _showBottomSheet = EventMutableLiveData<CategoryViewEntity>()
+    private val _performUiEvent = EventMutableLiveData<CategoriesUiEvent>()
 
     val allCategories = _allCategories.asLiveData()
-    val displayLoadingState = _displayLoadingState.asEventLiveData()
-    val navigateToEditCategory = _navigateToEditCategory.asEventLiveData()
-    val showBottomSheet = _showBottomSheet.asEventLiveData()
+    val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun refresh() {
         loadAllCategories()
     }
 
+    fun onNavigateToCreateCategory() {
+        _performUiEvent.call(CategoriesUiEvent.OnNavigateToEditCategory(Int.NO_ITEM))
+    }
+
     fun onCategoryItemClick(position: Int) {
         _allCategories.value?.getOrNull(position)?.let { category ->
-            _navigateToEditCategory.call(category.id)
+            _performUiEvent.call(CategoriesUiEvent.OnNavigateToEditCategory(category.id))
         }
     }
 
     fun onCategoryItemLongClick(position: Int) {
         _allCategories.value?.getOrNull(position)?.let { category ->
-            _showBottomSheet.call(category)
+            _performUiEvent.call(CategoriesUiEvent.ShowBottomSheet(category))
         }
     }
 
     fun deleteCategory(id: Int) = viewModelScope.launch {
-        _displayLoadingState.call(LoadingState.Loading)
+        _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Loading))
         remoteRepository.deleteCategory(id)
             .onSuccess { refresh() }
-            .onError { _displayLoadingState.call(LoadingState.Error(it)) }
+            .onError { _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
     }
 
     private fun loadAllCategories() {
         viewModelScope.launch {
-            _displayLoadingState.call(LoadingState.Loading)
+            _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Loading))
             remoteRepository.getAllUserCategories()
                 .onSuccess { categoryApiEntities ->
                     val categories = categoryApiEntities.orEmpty().mapNotNull { apiEntity -> CategoryApiViewMapper.toViewEntity(apiEntity) }
                     _allCategories.value = categories
-                    _displayLoadingState.call(LoadingState.Success)
+                    _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Success))
                 }
-                .onError { _displayLoadingState.call(LoadingState.Error(it)) }
+                .onError { _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
         }
     }
 

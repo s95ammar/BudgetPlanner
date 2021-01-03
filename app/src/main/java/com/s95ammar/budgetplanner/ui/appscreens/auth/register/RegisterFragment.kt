@@ -6,7 +6,8 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentRegisterBinding
 import com.s95ammar.budgetplanner.models.api.responses.errors.ConflictError
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputData
+import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.RegisterUiEvent
+import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
@@ -29,15 +30,22 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
 
     override fun setUpViews() {
         super.setUpViews()
-        binding.buttonRegister.setOnClickListener { onRegister() }
-        binding.textViewLogin.setOnClickListener { navigateToLogin() }
+        binding.buttonRegister.setOnClickListener { viewModel.onRegister(getUserRegisterInputBundle()) }
+        binding.textViewLogin.setOnClickListener { viewModel.onLogin() }
     }
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.displayValidationResult.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
-        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        viewModel.onRegisterSuccessful.observeEvent(viewLifecycleOwner) { onRegisterSuccessful() }
+        viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
+    }
+
+    private fun performUiEvent(uiEvent: RegisterUiEvent) {
+        when (uiEvent) {
+            is RegisterUiEvent.NavigateToLogin -> navigateToLogin()
+            is RegisterUiEvent.DisplayValidationResult -> handleValidationErrors(uiEvent.validationErrors)
+            is RegisterUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is RegisterUiEvent.NavigateToDashboard -> navigateToDashboard()
+        }
     }
 
     private fun handleValidationErrors(validationErrors: ValidationErrors) {
@@ -86,7 +94,7 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
         }
     }
 
-    private fun onRegisterSuccessful() {
+    private fun navigateToDashboard() {
         navController.navigate(RegisterFragmentDirections.actionRegisterFragmentToNestedNavigationDashboard())
     }
 
@@ -94,14 +102,10 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register), ViewBinder<Fr
         navController.navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
     }
 
-    private fun onRegister() {
-        viewModel.onRegister(
-            UserRegisterInputData(
-                binding.inputLayoutEmail.inputText.orEmpty().trim(),
-                binding.inputLayoutPassword.inputText.orEmpty().trim(),
-                binding.inputLayoutPasswordConfirmation.inputText.orEmpty().trim(),
-            )
-        )
-    }
+    private fun getUserRegisterInputBundle() = UserRegisterInputBundle(
+        binding.inputLayoutEmail.inputText.orEmpty().trim(),
+        binding.inputLayoutPassword.inputText.orEmpty().trim(),
+        binding.inputLayoutPasswordConfirmation.inputText.orEmpty().trim(),
+    )
 
 }

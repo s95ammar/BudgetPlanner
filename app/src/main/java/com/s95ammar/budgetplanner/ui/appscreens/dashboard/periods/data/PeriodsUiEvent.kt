@@ -1,0 +1,10 @@
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.data
+
+import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
+
+sealed class PeriodsUiEvent {
+    class DisplayLoadingState(val loadingState: LoadingState): PeriodsUiEvent()
+    class OnNavigateToEditPeriod(val periodId: Int): PeriodsUiEvent()
+    class ShowBottomSheet(val period: PeriodViewEntity): PeriodsUiEvent()
+}

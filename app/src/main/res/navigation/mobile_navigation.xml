@@ -11,7 +11,7 @@
 
         <fragment
             android:id="@+id/navigation_dashboard"
-            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardFragment"
+            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.DashboardFragment"
             android:label="fragment_dashboard"
             tools:layout="@layout/fragment_dashboard" >
             <action
@@ -21,7 +21,7 @@
 
         <fragment
             android:id="@+id/periodRecordsFragment"
-            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periodrecords.PeriodRecordsFragment"
+            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.periodrecords.PeriodRecordsFragment"
             android:label="fragment_period_records"
             tools:layout="@layout/fragment_period_records" >
             <argument
@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/navigation_categories"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.categories.CategoriesFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.categories.categories.CategoriesFragment"
         android:label="@string/categories"
         tools:layout="@layout/fragment_categories">
         <action
@@ -116,7 +116,7 @@
         tools:layout="@layout/fragment_dashboard_budget" />
     <fragment
         android:id="@+id/periodCreateEditFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit.PeriodCreateEditFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit.PeriodCreateEditFragment"
         android:label="fragment_period_create_edit"
         tools:layout="@layout/fragment_period_create_edit" >
         <argument
@@ -125,7 +125,7 @@
     </fragment>
     <fragment
         android:id="@+id/periodsFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.PeriodsFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.PeriodsFragment"
         android:label="fragment_periods"
         tools:layout="@layout/fragment_periods" >
         <action

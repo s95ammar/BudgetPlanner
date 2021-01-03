@@ -9,11 +9,10 @@ import com.s95ammar.budgetplanner.models.api.requests.UserCredentials
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputData
+import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.RegisterUiEvent
+import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidator
-import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
-import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveDataVoid
 import kotlinx.coroutines.launch
 
 class RegisterViewModel @ViewModelInject constructor(
@@ -24,36 +23,36 @@ class RegisterViewModel @ViewModelInject constructor(
 
     // TODO: handle layout config changes & process death
 
-    private val _displayValidationResult = EventMutableLiveData<ValidationErrors>()
-    private val _displayLoadingState = EventMutableLiveData<LoadingState>()
-    private val _onRegisterSuccessful = EventMutableLiveDataVoid()
+    private val _performUiEvent = EventMutableLiveData<RegisterUiEvent>()
 
-    val displayValidationResult = _displayValidationResult.asEventLiveData()
-    val displayLoadingState = _displayLoadingState.asEventLiveData()
-    val onRegisterSuccessful = _onRegisterSuccessful.asEventLiveData()
+    val performUiEvent = _performUiEvent.asEventLiveData()
 
-    fun onRegister(userRegisterInputData: UserRegisterInputData) {
-        val validator = RegisterValidator(userRegisterInputData)
-        _displayValidationResult.call(validator.getValidationErrors(allBlank = true))
+    fun onRegister(userRegisterInputBundle: UserRegisterInputBundle) {
+        val validator = RegisterValidator(userRegisterInputBundle)
+        _performUiEvent.call(RegisterUiEvent.DisplayValidationResult(validator.getValidationErrors(allBlank = true)))
 
         validator.getValidationResult()
             .onSuccess { userCredentials -> register(userCredentials) }
-            .onError { validationErrors -> _displayValidationResult.call(validationErrors) }
+            .onError { validationErrors -> _performUiEvent.call(RegisterUiEvent.DisplayValidationResult(validationErrors)) }
     }
 
-    fun register(userCredentials: UserCredentials) = viewModelScope.launch {
-        _displayLoadingState.call(LoadingState.Loading)
+    fun onLogin() {
+        _performUiEvent.call(RegisterUiEvent.NavigateToLogin)
+    }
+
+    private fun register(userCredentials: UserCredentials) = viewModelScope.launch {
+        _performUiEvent.call(RegisterUiEvent.DisplayLoadingState(LoadingState.Loading))
 
         remoteRepository.register(userCredentials)
             .onSuccess { tokenResponse ->
                 tokenResponse?.let {
                     localRepository.saveAuthToken(tokenResponse.token)
-                    _displayLoadingState.call(LoadingState.Success)
-                    _onRegisterSuccessful.call()
+                    _performUiEvent.call(RegisterUiEvent.DisplayLoadingState(LoadingState.Success))
+                    _performUiEvent.call(RegisterUiEvent.NavigateToDashboard)
                 }
             }
             .onError { throwable ->
-                _displayLoadingState.call(LoadingState.Error(throwable))
+                _performUiEvent.call(RegisterUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }
     }
 }

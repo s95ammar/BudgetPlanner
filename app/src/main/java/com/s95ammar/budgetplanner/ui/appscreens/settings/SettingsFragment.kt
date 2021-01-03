@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentSettingsBinding
+import com.s95ammar.budgetplanner.ui.appscreens.settings.data.SettingsUiEvent
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
@@ -25,14 +26,19 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings), ViewBinder<Fr
 
     override fun setUpViews() {
         super.setUpViews()
-        binding.textViewLogout.setOnClickListener {
-            displayLogoutConfirmationDialog { viewModel.logout() }
-        }
+        binding.textViewLogout.setOnClickListener { viewModel.onDisplayLogoutConfirmationDialog() }
     }
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.navigateToLogin.observeEvent(viewLifecycleOwner) { navigateToLogin() }
+        viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
+    }
+
+    private fun performUiEvent(uiEvent: SettingsUiEvent) {
+        when (uiEvent) {
+            is SettingsUiEvent.NavigateToLogin -> navigateToLogin()
+            is SettingsUiEvent.DisplayLogoutConfirmationDialog -> displayLogoutConfirmationDialog { viewModel.logout() }
+        }
     }
 
     private fun navigateToLogin() {

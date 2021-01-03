@@ -1,13 +1,18 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.mappers.PeriodApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
 import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.util.lifecycleutil.*
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.data.PeriodsUiEvent
+import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
+import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveDataVoid
+import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
+import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import kotlinx.coroutines.launch
 
 class PeriodsViewModel @ViewModelInject constructor(
@@ -16,16 +21,12 @@ class PeriodsViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     private val _allPeriods = LoaderMutableLiveData<List<PeriodViewEntity>> { loadAllPeriods() }
-    private val _displayLoadingState = EventMutableLiveData<LoadingState>(LoadingState.Cold)
-    private val _navigateToEditPeriod = EventMutableLiveData<Int>()
-    private val _showBottomSheet = EventMutableLiveData<PeriodViewEntity>()
     private val _onPeriodDeleted = EventMutableLiveDataVoid()
+    private val _performUiEvent = EventMutableLiveData<PeriodsUiEvent>()
 
     val allPeriods = _allPeriods.asLiveData()
-    val displayLoadingState = _displayLoadingState.asEventLiveData()
-    val navigateToEditPeriod = _navigateToEditPeriod.asEventLiveData()
-    val showBottomSheet = _showBottomSheet.asEventLiveData()
     val onPeriodDeleted = _onPeriodDeleted.asEventLiveData()
+    val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun refresh() {
         loadAllPeriods()
@@ -33,33 +34,33 @@ class PeriodsViewModel @ViewModelInject constructor(
 
     fun onPeriodItemClick(position: Int) {
         _allPeriods.value?.getOrNull(position)?.let { period ->
-            _navigateToEditPeriod.call(period.id)
+            _performUiEvent.call(PeriodsUiEvent.OnNavigateToEditPeriod(period.id))
         }
     }
 
     fun onPeriodItemLongClick(position: Int) {
         _allPeriods.value?.getOrNull(position)?.let { period ->
-            _showBottomSheet.call(period)
+            _performUiEvent.call(PeriodsUiEvent.ShowBottomSheet(period))
         }
     }
 
     fun deletePeriod(id: Int) = viewModelScope.launch {
-        _displayLoadingState.call(LoadingState.Loading)
+        _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
         remoteRepository.deletePeriod(id)
             .onSuccess { _onPeriodDeleted.call() }
-            .onError { _displayLoadingState.call(LoadingState.Error(it)) }
+            .onError { _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
     }
 
     private fun loadAllPeriods() {
         viewModelScope.launch {
-            _displayLoadingState.call(LoadingState.Loading)
+            _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
             remoteRepository.getAllUserPeriods()
                 .onSuccess { periodApiEntities ->
                     val periods = periodApiEntities.orEmpty().mapNotNull { apiEntity -> PeriodApiViewMapper.toViewEntity(apiEntity) }
                     _allPeriods.value = periods
-                    _displayLoadingState.call(LoadingState.Success)
+                    _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Success))
                 }
-                .onError { _displayLoadingState.call(LoadingState.Error(it)) }
+                .onError { _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periodrecords
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.periodrecords
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject

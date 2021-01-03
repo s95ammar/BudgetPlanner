@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.appscreens.dashboard.budget.periods.createedit.PeriodCreateEditFragment">
+    tools:context=".ui.appscreens.dashboard.periods.createedit.PeriodCreateEditFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         style="@style/BudgetPlannerAppBarLayout"

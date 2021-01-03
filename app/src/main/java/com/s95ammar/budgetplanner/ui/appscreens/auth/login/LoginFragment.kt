@@ -7,7 +7,8 @@ import com.s95ammar.budgetplanner.databinding.FragmentLoginBinding
 import com.s95ammar.budgetplanner.models.api.responses.errors.ForbiddenError
 import com.s95ammar.budgetplanner.models.api.responses.errors.NotFoundError
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputData
+import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.LoginUiEvent
+import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.validation.LoginValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
@@ -30,15 +31,22 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
 
     override fun setUpViews() {
         super.setUpViews()
-        binding.buttonLogin.setOnClickListener { onLogin() }
-        binding.textViewRegister.setOnClickListener { navigateToRegister() }
+        binding.buttonLogin.setOnClickListener { viewModel.onLogin(getUserLoginInputBundle()) }
+        binding.textViewRegister.setOnClickListener { viewModel.onRegister() }
     }
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.displayValidationResult.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
-        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        viewModel.onLoginSuccessful.observeEvent(viewLifecycleOwner) { onLoginSuccessful() }
+        viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
+    }
+
+    private fun performUiEvent(uiEvent: LoginUiEvent) {
+        when (uiEvent) {
+            is LoginUiEvent.NavigateToRegister -> navigateToRegister()
+            is LoginUiEvent.DisplayValidationResult -> handleValidationErrors(uiEvent.validationErrors)
+            is LoginUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is LoginUiEvent.NavigateToDashboard -> navigateToDashboard()
+        }
     }
 
     private fun handleValidationErrors(validationErrors: ValidationErrors) {
@@ -86,7 +94,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
         }
     }
 
-    private fun onLoginSuccessful() {
+    private fun navigateToDashboard() {
         navController.navigate(LoginFragmentDirections.actionLoginFragmentToNestedNavigationDashboard())
     }
     
@@ -94,12 +102,8 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
         navController.navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
     }
 
-    private fun onLogin() {
-        viewModel.onLogin(
-            UserLoginInputData(
-                binding.inputLayoutEmail.inputText.orEmpty().trim(),
-                binding.inputLayoutPassword.inputText.orEmpty().trim()
-            )
-        )
-    }
+    private fun getUserLoginInputBundle() = UserLoginInputBundle(
+        binding.inputLayoutEmail.inputText.orEmpty().trim(),
+        binding.inputLayoutPassword.inputText.orEmpty().trim()
+    )
 }

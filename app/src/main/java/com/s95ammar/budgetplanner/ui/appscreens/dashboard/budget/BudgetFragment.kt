@@ -1,18 +1,17 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget
 
 import android.view.View
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBudgetBinding
 import com.s95ammar.budgetplanner.models.view.PeriodRecordViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.adapter.PeriodRecordsListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.data.BudgetUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.data.PeriodRecordsNavigationBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
-import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.hiltNavGraphViewModels
@@ -55,9 +54,9 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
         super.initObservers()
         viewModel.currentPeriodId.observe(viewLifecycleOwner) { showFabIfPeriodIsAvailable(it) }
         viewModel.periodRecords.observe(viewLifecycleOwner) { setPeriodRecords(it) }
-        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        viewModel.onNavigateToPeriodRecords.observeEvent(viewLifecycleOwner) { onNavigateToPeriodRecords(it) }
+        viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.setAndLoadCurrentPeriod(it) }
+        sharedViewModel.onPeriodRecordAdded.observeEvent(viewLifecycleOwner) { viewModel.refresh() }
     }
 
     private fun showFabIfPeriodIsAvailable(periodId: Int) {
@@ -66,6 +65,13 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
 
     private fun setPeriodRecords(periodRecords: List<PeriodRecordViewEntity>) {
         adapter.submitList(periodRecords)
+    }
+
+    private fun performUiEvent(uiEvent: BudgetUiEvent) {
+        when (uiEvent) {
+            is BudgetUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is BudgetUiEvent.OnNavigateToPeriodRecords -> onNavigateToPeriodRecords(uiEvent.periodRecordsNavigationBundle)
+        }
     }
 
     private fun handleLoadingState(loadingState: LoadingState) {
@@ -95,7 +101,6 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     }
 
     private fun onNavigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
-        setFragmentResultListener(Keys.KEY_ON_PERIOD_RECORD_ADDED) { _, _ -> viewModel.refresh() }
         sharedViewModel.onNavigateToPeriodRecords(navigationBundle)
     }
 }

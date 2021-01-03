@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periodrecords
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.periodrecords
 
 import android.os.Bundle
 import android.view.View
@@ -9,7 +9,7 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodRecordsBinding
 import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.categories.categories.adapter.CategoriesListAdapter
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder

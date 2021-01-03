@@ -1,7 +1,7 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit.validation
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit.validation
 
 import com.s95ammar.budgetplanner.models.api.requests.PeriodUpsertApiRequest
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit.data.PeriodInputBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
 import com.s95ammar.budgetplanner.util.NO_ITEM

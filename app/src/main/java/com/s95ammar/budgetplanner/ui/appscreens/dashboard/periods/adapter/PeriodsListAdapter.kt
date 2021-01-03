@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.adapter
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

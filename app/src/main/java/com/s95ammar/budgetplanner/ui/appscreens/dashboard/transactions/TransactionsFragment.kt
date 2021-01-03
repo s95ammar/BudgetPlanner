@@ -4,7 +4,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardTransactionsBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import dagger.hilt.android.AndroidEntryPoint

@@ -3,19 +3,24 @@ package com.s95ammar.budgetplanner.ui.appscreens.settings
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
-import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveDataVoid
+import com.s95ammar.budgetplanner.ui.appscreens.settings.data.SettingsUiEvent
+import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 
 class SettingsViewModel @ViewModelInject constructor(
     private val localRepository: LocalRepository
 ) : ViewModel() {
 
-    private val _navigateToLogin = EventMutableLiveDataVoid()
+    private val _performUiEvent = EventMutableLiveData<SettingsUiEvent>()
 
-    val navigateToLogin = _navigateToLogin.asEventLiveData()
+    val performUiEvent = _performUiEvent.asEventLiveData()
+
+    fun onDisplayLogoutConfirmationDialog() {
+        _performUiEvent.call(SettingsUiEvent.DisplayLogoutConfirmationDialog)
+    }
 
     fun logout() {
         localRepository.clearAuthToken()
-        _navigateToLogin.call()
+        _performUiEvent.call(SettingsUiEvent.NavigateToLogin)
     }
 
 }

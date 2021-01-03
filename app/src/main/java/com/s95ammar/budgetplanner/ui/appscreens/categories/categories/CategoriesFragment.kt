@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.categories
+package com.s95ammar.budgetplanner.ui.appscreens.categories.categories
 
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
@@ -8,12 +8,12 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoriesBinding
 import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.categories.categories.adapter.CategoriesListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.categories.categories.data.CategoriesUiEvent
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
-import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,7 +32,7 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
 
     override fun setUpViews() {
         super.setUpViews()
-        binding.fab.setOnClickListener { onNavigateToCreateEditCategory(Int.NO_ITEM) }
+        binding.fab.setOnClickListener { viewModel.onNavigateToCreateCategory() }
         binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.refresh() }
         setUpRecyclerView()
     }
@@ -46,9 +46,7 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
     override fun initObservers() {
         super.initObservers()
         viewModel.allCategories.observe(viewLifecycleOwner) { setAllCategories(it) }
-        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        viewModel.navigateToEditCategory.observeEvent(viewLifecycleOwner) { onNavigateToCreateEditCategory(it) }
-        viewModel.showBottomSheet.observeEvent(viewLifecycleOwner) { showBottomSheet(it) }
+        viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
     override fun showLoading() {
@@ -61,6 +59,14 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
 
     private fun setAllCategories(categories: List<CategoryViewEntity>) {
         adapter.submitList(categories) { binding.recyclerView.scrollToPosition(0) }
+    }
+
+    private fun performUiEvent(uiEvent: CategoriesUiEvent) {
+        when (uiEvent) {
+            is CategoriesUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is CategoriesUiEvent.OnNavigateToEditCategory -> onNavigateToCreateEditCategory(uiEvent.categoryId)
+            is CategoriesUiEvent.ShowBottomSheet -> showBottomSheet(uiEvent.category)
+        }
     }
 
     private fun handleLoadingState(loadingState: LoadingState) {
