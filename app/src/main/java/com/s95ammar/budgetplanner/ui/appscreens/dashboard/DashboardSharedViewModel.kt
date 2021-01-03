@@ -18,17 +18,17 @@ class DashboardSharedViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     private val _selectedPeriodId = MutableLiveData<Int>()
-    private val _navigateToPeriodRecords = EventMutableLiveData<PeriodRecordsNavigationBundle>()
+    private val _onNavigateToPeriodRecords = EventMutableLiveData<PeriodRecordsNavigationBundle>()
 
     val selectedPeriodId = _selectedPeriodId.asLiveData()
-    val navigateToPeriodRecords = _navigateToPeriodRecords.asEventLiveData()
+    val onNavigateToPeriodRecords = _onNavigateToPeriodRecords.asEventLiveData()
 
     fun onPeriodChanged(periodId: Int) {
         _selectedPeriodId.value = periodId
     }
 
-    fun navigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
-        _navigateToPeriodRecords.call(navigationBundle)
+    fun onNavigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
+        _onNavigateToPeriodRecords.call(navigationBundle)
     }
 
 }

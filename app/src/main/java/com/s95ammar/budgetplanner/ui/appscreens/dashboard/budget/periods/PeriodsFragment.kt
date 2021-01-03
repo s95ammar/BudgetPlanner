@@ -48,10 +48,9 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
         super.initObservers()
         viewModel.allPeriods.observe(viewLifecycleOwner) { setAllPeriods(it) }
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        viewModel.navigateToEditPeriod.observeEvent(viewLifecycleOwner) { navigateToCreateEditPeriod(it) }
+        viewModel.navigateToEditPeriod.observeEvent(viewLifecycleOwner) { onNavigateToCreateEditPeriod(it) }
         viewModel.showBottomSheet.observeEvent(viewLifecycleOwner) { showBottomSheet(it) }
         viewModel.onPeriodDeleted.observeEvent(viewLifecycleOwner) { onPeriodDeleted() }
-        setFragmentResultListener(Keys.KEY_ON_PERIOD_CREATE_EDIT) { _, _ -> viewModel.refresh() }
     }
 
     override fun showLoading() {
@@ -78,7 +77,8 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
         }
     }
 
-    private fun navigateToCreateEditPeriod(periodId: Int) {
+    private fun onNavigateToCreateEditPeriod(periodId: Int) {
+        setFragmentResultListener(Keys.KEY_ON_PERIOD_CREATE_EDIT) { _, _ -> viewModel.refresh() }
         navController.navigate(
             PeriodsFragmentDirections.actionPeriodsFragmentToPeriodCreateEditFragment(periodId)
         )
@@ -87,7 +87,7 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
     private fun showBottomSheet(period: PeriodViewEntity) {
         EditDeleteBottomSheetDialogFragment.newInstance(period.name, R.drawable.ic_period).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
-                override fun onEdit() = navigateToCreateEditPeriod(period.id)
+                override fun onEdit() = onNavigateToCreateEditPeriod(period.id)
                 override fun onDelete() = displayDeleteConfirmationDialog(period.name) { viewModel.deletePeriod(period.id) }
             }
         }.show(childFragmentManager, EditDeleteBottomSheetDialogFragment.TAG)

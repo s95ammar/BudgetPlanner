@@ -41,7 +41,7 @@ class CategoriesViewModel @ViewModelInject constructor(
         }
     }
 
-    fun onDeleteCategory(id: Int) = viewModelScope.launch {
+    fun deleteCategory(id: Int) = viewModelScope.launch {
         _displayLoadingState.call(LoadingState.Loading)
         remoteRepository.deleteCategory(id)
             .onSuccess { refresh() }

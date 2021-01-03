@@ -32,7 +32,7 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
 
     override fun setUpViews() {
         super.setUpViews()
-        binding.fab.setOnClickListener { navigateToCreateEditCategory(Int.NO_ITEM) }
+        binding.fab.setOnClickListener { onNavigateToCreateEditCategory(Int.NO_ITEM) }
         binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.refresh() }
         setUpRecyclerView()
     }
@@ -47,9 +47,8 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
         super.initObservers()
         viewModel.allCategories.observe(viewLifecycleOwner) { setAllCategories(it) }
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        viewModel.navigateToEditCategory.observeEvent(viewLifecycleOwner) { navigateToCreateEditCategory(it) }
+        viewModel.navigateToEditCategory.observeEvent(viewLifecycleOwner) { onNavigateToCreateEditCategory(it) }
         viewModel.showBottomSheet.observeEvent(viewLifecycleOwner) { showBottomSheet(it) }
-        setFragmentResultListener(Keys.KEY_ON_CATEGORY_CREATE_EDIT) { _, _ -> viewModel.refresh() }
     }
 
     override fun showLoading() {
@@ -76,7 +75,8 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
         }
     }
 
-    private fun navigateToCreateEditCategory(categoryId: Int) {
+    private fun onNavigateToCreateEditCategory(categoryId: Int) {
+        setFragmentResultListener(Keys.KEY_ON_CATEGORY_CREATE_EDIT) { _, _ -> viewModel.refresh() }
         navController.navigate(
             CategoriesFragmentDirections.actionNavigationCategoriesToCategoryCreateEditFragment(categoryId)
         )
@@ -85,8 +85,8 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
     private fun showBottomSheet(category: CategoryViewEntity) {
         EditDeleteBottomSheetDialogFragment.newInstance(category.name, R.drawable.ic_category).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
-                override fun onEdit() = navigateToCreateEditCategory(category.id)
-                override fun onDelete() = displayDeleteConfirmationDialog(category.name) { viewModel.onDeleteCategory(category.id) }
+                override fun onEdit() = onNavigateToCreateEditCategory(category.id)
+                override fun onDelete() = displayDeleteConfirmationDialog(category.name) { viewModel.deleteCategory(category.id) }
             }
         }.show(childFragmentManager, EditDeleteBottomSheetDialogFragment.TAG)
     }

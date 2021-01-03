@@ -25,14 +25,16 @@ class BudgetViewModel @ViewModelInject constructor(
     private val _currentPeriodId = MutableLiveData<Int>()
     private val _periodRecords = MutableLiveData<List<PeriodRecordViewEntity>>()
     private val _displayLoadingState = EventMutableLiveData<LoadingState>(LoadingState.Cold)
-    private val _navigateToPeriodRecords = EventMutableLiveData<PeriodRecordsNavigationBundle>()
+    private val _onNavigateToPeriodRecords = EventMutableLiveData<PeriodRecordsNavigationBundle>()
 
     val currentPeriodId = _currentPeriodId.asLiveData()
     val periodRecords = _periodRecords.asLiveData()
     val displayLoadingState = _displayLoadingState.asEventLiveData()
-    val navigateToPeriodRecords = _navigateToPeriodRecords.asEventLiveData()
+    val onNavigateToPeriodRecords = _onNavigateToPeriodRecords.asEventLiveData()
 
-    fun onPeriodChanged(periodId: Int) {
+    fun setAndLoadCurrentPeriod(periodId: Int) {
+        if (_currentPeriodId.value == periodId) return
+
         _currentPeriodId.value = periodId
         loadPeriodRecords()
     }
@@ -44,7 +46,7 @@ class BudgetViewModel @ViewModelInject constructor(
     fun onNavigateToPeriodRecords() {
         val existingCategoryIds = _periodRecords.value.orEmpty().map { it.categoryId }
         val periodId = _currentPeriodId.value ?: return
-        _navigateToPeriodRecords.call(PeriodRecordsNavigationBundle(existingCategoryIds, periodId))
+        _onNavigateToPeriodRecords.call(PeriodRecordsNavigationBundle(existingCategoryIds, periodId))
     }
 
     private fun loadPeriodRecords() {

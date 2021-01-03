@@ -56,9 +56,8 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
         viewModel.currentPeriodId.observe(viewLifecycleOwner) { showFabIfPeriodIsAvailable(it) }
         viewModel.periodRecords.observe(viewLifecycleOwner) { setPeriodRecords(it) }
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        viewModel.navigateToPeriodRecords.observeEvent(viewLifecycleOwner) { navigateToPeriodRecords(it) }
-        sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.onPeriodChanged(it) }
-        setFragmentResultListener(Keys.KEY_ON_PERIOD_RECORD_ADDED) { _, _ -> viewModel.refresh() }
+        viewModel.onNavigateToPeriodRecords.observeEvent(viewLifecycleOwner) { onNavigateToPeriodRecords(it) }
+        sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.setAndLoadCurrentPeriod(it) }
     }
 
     private fun showFabIfPeriodIsAvailable(periodId: Int) {
@@ -95,7 +94,8 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
         }
     }
 
-    private fun navigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
-        sharedViewModel.navigateToPeriodRecords(navigationBundle)
+    private fun onNavigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
+        setFragmentResultListener(Keys.KEY_ON_PERIOD_RECORD_ADDED) { _, _ -> viewModel.refresh() }
+        sharedViewModel.onNavigateToPeriodRecords(navigationBundle)
     }
 }

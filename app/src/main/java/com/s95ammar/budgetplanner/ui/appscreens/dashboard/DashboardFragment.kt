@@ -69,9 +69,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         super.initObservers()
         viewModel.currentPeriodBundle.observe(viewLifecycleOwner) { onCurrentPeriodChanged(it) }
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        sharedViewModel.navigateToPeriodRecords.observeEvent(viewLifecycleOwner) { navigateToPeriodRecords(it) }
-        setFragmentResultListener(Keys.KEY_ON_PERIODS_LIST_CHANGED) { _, _ -> viewModel.refresh() }
-
+        sharedViewModel.onNavigateToPeriodRecords.observeEvent(viewLifecycleOwner) { onNavigateToPeriodRecords(it) }
     }
 
     private fun onCurrentPeriodChanged(currentPeriodBundle: CurrentPeriodBundle) {
@@ -105,21 +103,26 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
     }
 
     private fun navigateToPeriodsList() {
+        listenToPeriodsListChangedResult()
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodsFragment())
-
     }
 
     private fun navigateToCreatePeriod() {
+        listenToPeriodsListChangedResult()
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodCreateEditFragment(Int.NO_ITEM))
     }
 
-    private fun navigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
+    private fun onNavigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
         navController.navigate(
                 DashboardFragmentDirections.actionNavigationDashboardToPeriodRecordsFragment(
                     navigationBundle.excludedCategoryIds.toIntArray(),
                     navigationBundle.periodId
                 )
         )
+    }
+
+    private fun listenToPeriodsListChangedResult() {
+        setFragmentResultListener(Keys.KEY_ON_PERIODS_LIST_CHANGED) { _, _ -> viewModel.refresh() }
     }
 
 }
