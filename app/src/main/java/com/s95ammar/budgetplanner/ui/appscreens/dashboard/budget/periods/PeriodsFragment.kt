@@ -1,6 +1,9 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods
 
+import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
@@ -12,7 +15,6 @@ import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
-import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,7 +50,8 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
         viewModel.navigateToEditPeriod.observeEvent(viewLifecycleOwner) { navigateToCreateEditPeriod(it) }
         viewModel.showBottomSheet.observeEvent(viewLifecycleOwner) { showBottomSheet(it) }
-        observeResultLiveData<Boolean>(Keys.KEY_ON_PERIOD_CREATE_EDIT) { viewModel.refresh() }
+        viewModel.onPeriodDeleted.observeEvent(viewLifecycleOwner) { onPeriodDeleted() }
+        setFragmentResultListener(Keys.KEY_ON_PERIOD_CREATE_EDIT) { _, _ -> viewModel.refresh() }
     }
 
     override fun showLoading() {
@@ -85,9 +88,14 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
         EditDeleteBottomSheetDialogFragment.newInstance(period.name, R.drawable.ic_period).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
                 override fun onEdit() = navigateToCreateEditPeriod(period.id)
-                override fun onDelete() = displayDeleteConfirmationDialog(period.name) { viewModel.onDeletePeriod(period.id) }
+                override fun onDelete() = displayDeleteConfirmationDialog(period.name) { viewModel.deletePeriod(period.id) }
             }
         }.show(childFragmentManager, EditDeleteBottomSheetDialogFragment.TAG)
+    }
+
+    private fun onPeriodDeleted() {
+        viewModel.refresh()
+        setFragmentResult(Keys.KEY_ON_PERIODS_LIST_CHANGED, Bundle.EMPTY)
     }
 
 }

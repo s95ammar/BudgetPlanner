@@ -4,6 +4,8 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.api.requests.PeriodUpsertApiRequest
+import com.s95ammar.budgetplanner.models.api.responses.ApiResult
+import com.s95ammar.budgetplanner.models.api.responses.PeriodApiEntity
 import com.s95ammar.budgetplanner.models.mappers.PeriodApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
@@ -12,6 +14,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit.validation.PeriodCreateEditValidator
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
+import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -55,11 +58,13 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
             _displayLoadingState.call(LoadingState.Loading)
             remoteRepository.getPeriod(editedPeriodId)
                 .onSuccess { periodApiEntity ->
-                    val period = periodApiEntity.orEmpty()
-                        .mapNotNull { apiEntity -> PeriodApiViewMapper.toViewEntity(apiEntity) }
+                    periodApiEntity.orEmpty()
+                        .map { apiEntity -> PeriodApiViewMapper.toViewEntity(apiEntity) }
                         .singleOrNull()
-                    _editedPeriod.value = period
-                    _displayLoadingState.call(LoadingState.Success)
+                        ?.let { period ->
+                            _editedPeriod.value = period
+                            _displayLoadingState.call(LoadingState.Success)
+                        }
                 }
                 .onError { _displayLoadingState.call(LoadingState.Error(it)) }
         }

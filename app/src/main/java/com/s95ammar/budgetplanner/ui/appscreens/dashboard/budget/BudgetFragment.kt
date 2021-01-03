@@ -1,6 +1,7 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget
 
 import android.view.View
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
@@ -57,7 +58,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
         viewModel.navigateToPeriodRecords.observeEvent(viewLifecycleOwner) { navigateToPeriodRecords(it) }
         sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.onPeriodChanged(it) }
-        observeResultLiveData<Boolean>(Keys.KEY_ON_PERIOD_RECORD_ADDED) { viewModel.refresh() }
+        setFragmentResultListener(Keys.KEY_ON_PERIOD_RECORD_ADDED) { _, _ -> viewModel.refresh() }
     }
 
     private fun showFabIfPeriodIsAvailable(periodId: Int) {

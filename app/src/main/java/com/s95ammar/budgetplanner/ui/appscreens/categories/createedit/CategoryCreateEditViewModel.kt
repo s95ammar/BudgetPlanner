@@ -55,11 +55,13 @@ class CategoryCreateEditViewModel @ViewModelInject constructor(
             _displayLoadingState.call(LoadingState.Loading)
             remoteRepository.getCategory(editedCategoryId)
                 .onSuccess { categoryApiEntity ->
-                    val category = categoryApiEntity.orEmpty()
-                        .mapNotNull { apiEntity -> CategoryApiViewMapper.toViewEntity(apiEntity) }
+                    categoryApiEntity.orEmpty()
+                        .map { apiEntity -> CategoryApiViewMapper.toViewEntity(apiEntity) }
                         .singleOrNull()
-                    _editedCategory.value = category
-                    _displayLoadingState.call(LoadingState.Success)
+                        ?.let { category ->
+                            _editedCategory.value = category
+                            _displayLoadingState.call(LoadingState.Success)
+                        }
                 }
                 .onError { _displayLoadingState.call(LoadingState.Error(it)) }
         }

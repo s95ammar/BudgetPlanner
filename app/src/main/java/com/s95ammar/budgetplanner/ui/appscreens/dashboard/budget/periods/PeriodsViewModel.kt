@@ -19,11 +19,13 @@ class PeriodsViewModel @ViewModelInject constructor(
     private val _displayLoadingState = EventMutableLiveData<LoadingState>(LoadingState.Cold)
     private val _navigateToEditPeriod = EventMutableLiveData<Int>()
     private val _showBottomSheet = EventMutableLiveData<PeriodViewEntity>()
+    private val _onPeriodDeleted = EventMutableLiveDataVoid()
 
     val allPeriods = _allPeriods.asLiveData()
     val displayLoadingState = _displayLoadingState.asEventLiveData()
     val navigateToEditPeriod = _navigateToEditPeriod.asEventLiveData()
     val showBottomSheet = _showBottomSheet.asEventLiveData()
+    val onPeriodDeleted = _onPeriodDeleted.asEventLiveData()
 
     fun refresh() {
         loadAllPeriods()
@@ -41,10 +43,10 @@ class PeriodsViewModel @ViewModelInject constructor(
         }
     }
 
-    fun onDeletePeriod(id: Int) = viewModelScope.launch {
+    fun deletePeriod(id: Int) = viewModelScope.launch {
         _displayLoadingState.call(LoadingState.Loading)
         remoteRepository.deletePeriod(id)
-            .onSuccess { refresh() }
+            .onSuccess { _onPeriodDeleted.call() }
             .onError { _displayLoadingState.call(LoadingState.Error(it)) }
     }
 

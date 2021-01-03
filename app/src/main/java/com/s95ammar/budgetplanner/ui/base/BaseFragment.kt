@@ -76,16 +76,6 @@ abstract class BaseFragment : Fragment {
         else -> R.string.error_occurred
     }
 
-    protected fun <T> sendResult(key: String, result: T) {
-        navController.previousBackStackEntry?.savedStateHandle?.set(key, result)
-    }
-
-    protected fun <T> observeResultLiveData(key: String, onResultReceived: (T) -> Unit) {
-        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)?.observe(viewLifecycleOwner) { result ->
-            onResultReceived(result)
-        }
-    }
-
     protected fun displayErrorDialog(throwable: Throwable) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.error_something_went_wrong_title)

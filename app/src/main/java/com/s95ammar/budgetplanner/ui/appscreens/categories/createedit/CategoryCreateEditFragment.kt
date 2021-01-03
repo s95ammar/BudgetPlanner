@@ -1,6 +1,9 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories.createedit
 
+import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoryCreateEditBinding
@@ -105,7 +108,7 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
     }
 
     private fun onApplySuccess() {
-        sendResult(Keys.KEY_ON_CATEGORY_CREATE_EDIT, true)
+        setFragmentResult(Keys.KEY_ON_CATEGORY_CREATE_EDIT, Bundle.EMPTY)
         navController.navigateUp()
     }
 

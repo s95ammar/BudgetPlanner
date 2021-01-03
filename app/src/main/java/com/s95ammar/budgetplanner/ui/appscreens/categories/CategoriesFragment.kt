@@ -1,6 +1,7 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories
 
 import android.view.View
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
@@ -48,7 +49,7 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
         viewModel.navigateToEditCategory.observeEvent(viewLifecycleOwner) { navigateToCreateEditCategory(it) }
         viewModel.showBottomSheet.observeEvent(viewLifecycleOwner) { showBottomSheet(it) }
-        observeResultLiveData<Boolean>(Keys.KEY_ON_CATEGORY_CREATE_EDIT) { viewModel.refresh() }
+        setFragmentResultListener(Keys.KEY_ON_CATEGORY_CREATE_EDIT) { _, _ -> viewModel.refresh() }
     }
 
     override fun showLoading() {

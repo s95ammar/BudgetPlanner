@@ -1,6 +1,8 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periodrecords
 
+import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
@@ -63,7 +65,7 @@ class PeriodRecordsFragment : BaseFragment(R.layout.fragment_period_records), Vi
     }
 
     private fun onPeriodRecordAdded() {
-        sendResult(Keys.KEY_ON_PERIOD_RECORD_ADDED, true)
+        setFragmentResult(Keys.KEY_ON_PERIOD_RECORD_ADDED, Bundle.EMPTY)
         navController.navigateUp()
     }
 

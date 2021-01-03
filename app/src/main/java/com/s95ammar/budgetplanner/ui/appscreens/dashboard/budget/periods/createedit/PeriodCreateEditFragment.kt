@@ -1,6 +1,8 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.periods.createedit
 
+import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodCreateEditBinding
@@ -97,7 +99,8 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
     }
 
     private fun onApplySuccess() {
-        sendResult(Keys.KEY_ON_PERIOD_CREATE_EDIT, true)
+        setFragmentResult(Keys.KEY_ON_PERIODS_LIST_CHANGED, Bundle.EMPTY)
+        setFragmentResult(Keys.KEY_ON_PERIOD_CREATE_EDIT, Bundle.EMPTY)
         navController.navigateUp()
     }
 

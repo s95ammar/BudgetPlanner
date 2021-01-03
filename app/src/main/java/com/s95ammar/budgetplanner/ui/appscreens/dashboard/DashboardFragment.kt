@@ -3,6 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard
 import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.s95ammar.budgetplanner.R
@@ -69,7 +70,8 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         viewModel.currentPeriodBundle.observe(viewLifecycleOwner) { onCurrentPeriodChanged(it) }
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
         sharedViewModel.navigateToPeriodRecords.observeEvent(viewLifecycleOwner) { navigateToPeriodRecords(it) }
-        observeResultLiveData<Boolean>(Keys.KEY_ON_PERIOD_CREATE_EDIT) { viewModel.refresh() }
+        setFragmentResultListener(Keys.KEY_ON_PERIODS_LIST_CHANGED) { _, _ -> viewModel.refresh() }
+
     }
 
     private fun onCurrentPeriodChanged(currentPeriodBundle: CurrentPeriodBundle) {
@@ -112,13 +114,12 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
     }
 
     private fun navigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
-        navController
-            .navigate(
+        navController.navigate(
                 DashboardFragmentDirections.actionNavigationDashboardToPeriodRecordsFragment(
                     navigationBundle.excludedCategoryIds.toIntArray(),
                     navigationBundle.periodId
                 )
-            )
+        )
     }
 
 }
