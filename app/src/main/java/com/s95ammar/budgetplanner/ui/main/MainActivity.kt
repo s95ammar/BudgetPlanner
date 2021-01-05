@@ -12,12 +12,12 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingDialog
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
@@ -35,12 +35,14 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
 
     private val loadingDialog by lazy { LoadingDialog.newInstance() }
 
+    private val bottomNavView by lazy { findViewById<BottomNavigationView>(R.id.bottom_nav_view) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        bottom_nav_view.setupWithNavController(navController)
-        bottom_nav_view.setOnNavigationItemSelectedListener { item -> onNavigationItemSelected(item) }
+        bottomNavView.setupWithNavController(navController)
+        bottomNavView.setOnNavigationItemSelectedListener { item -> onNavigationItemSelected(item) }
         navController.addOnDestinationChangedListener { _, destination, _ -> onDestinationChanged(destination) }
     }
 
@@ -50,7 +52,7 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
     }
 
     private fun onDestinationChanged(destination: NavDestination) {
-        bottom_nav_view.isVisible = (destination.id in bottomNavItems)
+        bottomNavView.isVisible = (destination.id in bottomNavItems)
         hideKeyboard()
     }
 

@@ -37,10 +37,8 @@ abstract class BaseFragment : Fragment {
     }
 
     internal inline fun <reified VB: ViewBinding> getBinding(): VB {
-        _binding?.let { binding ->
-            return binding as VB
-        }
-        throw ViewBindingException("binding is not initialized or is accessed from outside of the fragment's view lifecycle")
+        val binding = _binding ?: throw ViewBindingException(ViewBindingException.MESSAGE_INAPPROPRIATE_LIFECYCLE_STATE)
+        return binding as VB
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
