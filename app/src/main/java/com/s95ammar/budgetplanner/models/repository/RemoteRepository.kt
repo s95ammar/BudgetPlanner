@@ -15,17 +15,23 @@ interface RemoteRepository {
     suspend fun updateCategory(request: CategoryUpsertApiRequest.Update): ApiResult<CategoryApiEntity>
     suspend fun deleteCategory(id: Int): ApiResult<Boolean>
 
-    suspend fun getAllUserPeriods(): ApiResult<List<PeriodApiEntity>>
-    suspend fun getPeriod(id: Int): ApiResult<List<PeriodApiEntity>>
+    suspend fun getAllUserPeriods(): ApiResult<List<PeriodSimpleApiEntity>>
+    suspend fun getPeriod(
+        id: Int,
+        includePeriodRecords: Boolean = false,
+        includeBudgetTransactions: Boolean = false,
+        includeSavings: Boolean = false
+    ): ApiResult<PeriodApiEntity>
+    suspend fun getPeriodInsertTemplate(): ApiResult<PeriodApiEntity>
     suspend fun insertPeriod(request: PeriodUpsertApiRequest.Insertion): ApiResult<PeriodApiEntity>
     suspend fun updatePeriod(request: PeriodUpsertApiRequest.Update): ApiResult<PeriodApiEntity>
     suspend fun deletePeriod(id: Int): ApiResult<Boolean>
 
-    suspend fun getPeriodRecord(id: Int?, periodId: Int?): ApiResult<List<PeriodRecordApiEntity>>
-    suspend fun getPeriodRecordsForPeriod(periodId: Int?): ApiResult<List<PeriodRecordApiEntity>>
-    suspend fun insertPeriodRecord(request: PeriodRecordUpsertApiRequest.Insertion): ApiResult<PeriodRecordApiEntity>
-    suspend fun updatePeriodRecord(request: PeriodRecordUpsertApiRequest.Update): ApiResult<PeriodRecordApiEntity>
-    suspend fun deletePeriodRecord(id: IdBodyRequest): ApiResult<Boolean>
+//    suspend fun getPeriodRecord(id: Int?, periodId: Int?): ApiResult<List<PeriodRecordApiEntity>>
+//    suspend fun getPeriodRecordsForPeriod(periodId: Int?): ApiResult<List<PeriodRecordApiEntity>>
+//    suspend fun insertPeriodRecord(request: PeriodRecordUpsertApiRequest.Insertion): ApiResult<PeriodRecordApiEntity>
+//    suspend fun updatePeriodRecord(request: PeriodRecordUpsertApiRequest.Update): ApiResult<PeriodRecordApiEntity>
+//    suspend fun deletePeriodRecord(id: IdBodyRequest): ApiResult<Boolean>
 
     suspend fun getBudgetTransaction(id: Int?, periodId: Int?): ApiResult<List<BudgetTransactionApiEntity>>
     suspend fun getBudgetTransactionsForPeriod(periodId: Int?): ApiResult<List<BudgetTransactionApiEntity>>

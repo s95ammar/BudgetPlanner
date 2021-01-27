@@ -11,8 +11,7 @@ abstract class BaseListAdapter<T, VH : BaseListAdapter.BaseViewHolder<T>>(diffCa
 
     override fun onBindViewHolder(holder: VH, position: Int, payloads: MutableList<Any>) {
         try {
-            @Suppress("UNCHECKED_CAST")
-            bindHolder(holder, position, payloads.singleOrNull() as PayloadsHolder<T>)
+            bindHolder(holder, position, payloads.singleOrNull() as PayloadsHolder)
         } catch (e: Exception) {
             super.onBindViewHolder(holder, position, payloads)
         }
@@ -22,21 +21,21 @@ abstract class BaseListAdapter<T, VH : BaseListAdapter.BaseViewHolder<T>>(diffCa
         bindHolder(holder, position)
     }
 
-    private fun bindHolder(holder: VH, position: Int, payloads: PayloadsHolder<T> = PayloadsHolder()) {
+    private fun bindHolder(holder: VH, position: Int, payloads: PayloadsHolder = PayloadsHolder()) {
         getItem(position)?.let { holder.bind(it, payloads) }
     }
 
     abstract class BaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        abstract fun bind(item: T, payloads: PayloadsHolder<T>)
+        abstract fun bind(item: T, payloads: PayloadsHolder)
     }
 
-    class PayloadsHolder<T> {
+    class PayloadsHolder {
 
         private val payloadTypes: MutableList<Int> = mutableListOf()
 
-        fun addPayloadIfNotEqual(itemPair: Pair<T, T>, property: KProperty1<T, Any?>, payloadType: Int) {
+        fun <T> addPayloadIfNotEqual(payloadType: Int, itemPair: Pair<T, T>, vararg properties: KProperty1<T, Any?>) {
             itemPair.let { (oldItem, newItem) ->
-                if (property.get(oldItem) != property.get(newItem)) payloadTypes.add(payloadType)
+                if (properties.any { property -> property.get(oldItem) != property.get(newItem) }) payloadTypes.add(payloadType)
             }
         }
 

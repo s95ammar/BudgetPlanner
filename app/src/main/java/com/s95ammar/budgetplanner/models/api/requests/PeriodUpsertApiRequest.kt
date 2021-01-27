@@ -6,13 +6,15 @@ sealed class PeriodUpsertApiRequest {
 
     data class Insertion(
         @SerializedName("name") val name: String?,
-        @SerializedName("max") val max: Int?
+        @SerializedName("max") val max: Int?,
+        @SerializedName("periodRecords") val periodRecords: List<PeriodRecordUpsertApiRequest>?
     ) : PeriodUpsertApiRequest()
 
     data class Update(
         @SerializedName("id") val id: Int?,
         @SerializedName("name") val name: String?,
-        @SerializedName("max") val max: Int?
+        @SerializedName("max") val max: Int?,
+        @SerializedName("periodRecords") val periodRecords: List<PeriodRecordUpsertApiRequest>?
     ) : PeriodUpsertApiRequest()
 
 }

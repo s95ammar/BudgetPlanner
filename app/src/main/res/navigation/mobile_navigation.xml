@@ -5,31 +5,16 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/loginFragment">
 
+    <!-- TODO: Remove later on if there's no need for nested navigation-->
     <navigation
         android:id="@+id/nested_navigation_dashboard"
-        app:startDestination="@id/navigation_dashboard" >
+        app:startDestination="@id/navigation_dashboard">
 
         <fragment
             android:id="@+id/navigation_dashboard"
             android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.DashboardFragment"
             android:label="fragment_dashboard"
-            tools:layout="@layout/fragment_dashboard" >
-            <action
-                android:id="@+id/action_navigation_dashboard_to_periodRecordsFragment"
-                app:destination="@id/periodRecordsFragment" />
-        </fragment>
-
-        <fragment
-            android:id="@+id/periodRecordsFragment"
-            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.periodrecords.PeriodRecordsFragment"
-            android:label="fragment_period_records"
-            tools:layout="@layout/fragment_period_records" >
-            <argument
-                android:name="excludedCategoryIds"
-                app:argType="integer[]" />
-            <argument
-                android:name="periodId"
-                app:argType="integer" />
+            tools:layout="@layout/fragment_dashboard">
         </fragment>
 
         <action
@@ -60,7 +45,7 @@
         android:id="@+id/categoryCreateEditFragment"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.CategoryCreateEditFragment"
         android:label="fragment_category_create_edit"
-        tools:layout="@layout/fragment_category_create_edit" >
+        tools:layout="@layout/fragment_category_create_edit">
         <argument
             android:name="categoryId"
             app:argType="integer" />
@@ -69,7 +54,7 @@
         android:id="@+id/navigation_settings"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.settings.SettingsFragment"
         android:label="SettingsFragment"
-        tools:layout="@layout/fragment_settings" >
+        tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_navigation_settings_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -97,7 +82,7 @@
         android:id="@+id/registerFragment"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.auth.register.RegisterFragment"
         android:label="RegisterFragment"
-        tools:layout="@layout/fragment_register" >
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -118,7 +103,7 @@
         android:id="@+id/periodCreateEditFragment"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit.PeriodCreateEditFragment"
         android:label="fragment_period_create_edit"
-        tools:layout="@layout/fragment_period_create_edit" >
+        tools:layout="@layout/fragment_period_create_edit">
         <argument
             android:name="periodId"
             app:argType="integer" />
@@ -127,7 +112,7 @@
         android:id="@+id/periodsFragment"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.PeriodsFragment"
         android:label="fragment_periods"
-        tools:layout="@layout/fragment_periods" >
+        tools:layout="@layout/fragment_periods">
         <action
             android:id="@+id/action_periodsFragment_to_periodCreateEditFragment"
             app:destination="@id/periodCreateEditFragment" />

@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodCreateEditBinding
-import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
+import com.s95ammar.budgetplanner.models.view.PeriodRecordViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit.adapter.PeriodRecordsSelectionAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit.data.PeriodCreateEditUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit.validation.PeriodCreateEditValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -24,6 +28,10 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
 
     private val viewModel: PeriodCreateEditViewModel by viewModels()
 
+    private val adapter by lazy {
+        PeriodRecordsSelectionAdapter(viewModel::onPeriodRecordSelectionStateChanged, viewModel::onPeriodRecordMaxChanged)
+    }
+
     override val binding: FragmentPeriodCreateEditBinding
         get() = getBinding()
 
@@ -33,29 +41,62 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
 
     override fun setUpViews() {
         super.setUpViews()
-        binding.toolbar.setNavigationOnClickListener { navController.navigateUp() }
+        binding.toolbar.setNavigationOnClickListener { viewModel.onBack() }
         binding.buttonApply.setOnClickListener { viewModel.onApply(getPeriodInputBundle()) }
+        setUpRecyclerView()
+    }
+
+    private fun setUpRecyclerView() {
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
     override fun initObservers() {
         super.initObservers()
         viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
-        viewModel.editedPeriod.observe(viewLifecycleOwner) { setViewsToEditedPeriod(it) }
-        viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
-        viewModel.displayValidationResults.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
-        viewModel.onApplySuccess.observeEvent(viewLifecycleOwner) { onApplySuccess() }
+        viewModel.name.observe(viewLifecycleOwner) { setPeriodName(it) }
+        viewModel.max.observe(viewLifecycleOwner) { setPeriodMax(it) }
+        viewModel.periodRecords.observe(viewLifecycleOwner) { setPeriodRecords(it) }
+        viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
     private fun setViewsToMode(mode: CreateEditMode) {
         when (mode) {
             CreateEditMode.CREATE -> {
+                adapter.isInsertionTemplate = true
                 binding.toolbar.title = getString(R.string.create_period)
                 binding.buttonApply.text = getString(R.string.create)
             }
             CreateEditMode.EDIT -> {
+                adapter.isInsertionTemplate = false
                 binding.toolbar.title = getString(R.string.edit_period)
                 binding.buttonApply.text = getString(R.string.save)
             }
+        }
+    }
+
+    private fun setPeriodName(name: String) {
+        binding.inputLayoutName.editText?.apply {
+            setText(name)
+            setSelection(name.length)
+        }
+    }
+
+    private fun setPeriodMax(max: Int?) {
+        binding.inputLayoutMax.inputText = max?.toString()
+    }
+
+    private fun setPeriodRecords(periodRecords: List<PeriodRecordViewEntity>) {
+        adapter.submitList(periodRecords)
+    }
+
+    private fun performUiEvent(uiEvent: PeriodCreateEditUiEvent) {
+        when (uiEvent) {
+            is PeriodCreateEditUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is PeriodCreateEditUiEvent.SetResult -> setResult()
+            is PeriodCreateEditUiEvent.DisplayValidationResults -> handleValidationErrors(uiEvent.validationErrors)
+            is PeriodCreateEditUiEvent.Exit -> navController.navigateUp()
         }
     }
 
@@ -71,14 +112,6 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
         }
     }
 
-    private fun setViewsToEditedPeriod(period: PeriodViewEntity) {
-        binding.inputLayoutTitle.editText?.apply {
-            setText(period.name)
-            setSelection(period.name.length)
-        }
-        binding.inputLayoutMax.inputText = period.max?.toString()
-    }
-
     private fun handleValidationErrors(validationErrors: ValidationErrors) {
         for (viewErrors in validationErrors.viewsErrors) {
             if (viewErrors.errorsIds.isNotEmpty())
@@ -88,24 +121,22 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
 
     private fun displayError(viewKey: Int, errorId: Int) {
         when (viewKey) {
-            PeriodCreateEditValidator.ViewKeys.VIEW_TITLE -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
-            PeriodCreateEditValidator.Errors.NAME_TAKEN -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
+            PeriodCreateEditValidator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getErrorStringById(errorId)
         }
     }
 
     private fun getErrorStringById(errorId: Int) = when (errorId) {
-        PeriodCreateEditValidator.Errors.EMPTY_TITLE -> getString(R.string.error_empty_field)
+        PeriodCreateEditValidator.Errors.EMPTY_NAME -> getString(R.string.error_empty_field)
         else -> null
     }
 
-    private fun onApplySuccess() {
-        setFragmentResult(Keys.KEY_ON_PERIODS_LIST_CHANGED, Bundle.EMPTY)
+    private fun setResult() {
+        setFragmentResult(Keys.KEY_PERIOD_RECORDS_SCREEN_ON_PERIODS_LIST_CHANGED, Bundle.EMPTY)
         setFragmentResult(Keys.KEY_ON_PERIOD_CREATE_EDIT, Bundle.EMPTY)
-        navController.navigateUp()
     }
 
     private fun getPeriodInputBundle() = PeriodInputBundle(
-        title = binding.inputLayoutTitle.inputText.orEmpty().trim(),
+        name = binding.inputLayoutName.inputText.orEmpty().trim(),
         max = binding.inputLayoutMax.inputText?.trim()
     )
 

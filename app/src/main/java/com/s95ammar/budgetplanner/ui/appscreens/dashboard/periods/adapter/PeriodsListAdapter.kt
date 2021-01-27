@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.s95ammar.budgetplanner.databinding.ItemPeriodBinding
-import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
+import com.s95ammar.budgetplanner.models.view.PeriodSimpleViewEntity
 
 class PeriodsListAdapter(
     private val onItemClick: (Int) -> Unit,
     private val onItemLongClick: (Int) -> Unit
-) : ListAdapter<PeriodViewEntity, PeriodsListAdapter.PeriodsViewHolder>(CALLBACK) {
+) : ListAdapter<PeriodSimpleViewEntity, PeriodsListAdapter.PeriodsViewHolder>(CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodsViewHolder {
         return PeriodsViewHolder(
@@ -27,9 +27,9 @@ class PeriodsListAdapter(
 
     companion object {
         val CALLBACK
-            get() = object : DiffUtil.ItemCallback<PeriodViewEntity>() {
-                override fun areItemsTheSame(oldItem: PeriodViewEntity, newItem: PeriodViewEntity) = (oldItem.id == newItem.id)
-                override fun areContentsTheSame(oldItem: PeriodViewEntity, newItem: PeriodViewEntity) = (oldItem == newItem)
+            get() = object : DiffUtil.ItemCallback<PeriodSimpleViewEntity>() {
+                override fun areItemsTheSame(oldItem: PeriodSimpleViewEntity, newItem: PeriodSimpleViewEntity) = (oldItem.id == newItem.id)
+                override fun areContentsTheSame(oldItem: PeriodSimpleViewEntity, newItem: PeriodSimpleViewEntity) = (oldItem == newItem)
             }
     }
 
@@ -44,7 +44,7 @@ class PeriodsListAdapter(
             itemView.setOnLongClickListener { onItemLongClick(adapterPosition); true }
         }
 
-        fun bind(item: PeriodViewEntity) {
+        fun bind(item: PeriodSimpleViewEntity) {
             binding.textViewTitle.text = item.name
         }
 

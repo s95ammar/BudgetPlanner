@@ -10,12 +10,12 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.BudgetFragment
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.data.PeriodRecordsNavigationBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.data.CurrentPeriodBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.savings.SavingsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.transactions.TransactionsFragment
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
+import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.FragmentProvider
@@ -45,6 +45,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         binding.imageButtonArrowNext.setOnClickListener { viewModel.onNextPeriodClick() }
         binding.textViewPeriodName.setOnClickListener { viewModel.onPeriodNameClick() }
         binding.imageButtonAddPeriod.setOnClickListener { viewModel.onAddPeriodClick() }
+        binding.swipeToRefreshLayout.setOnRefreshListener { sharedViewModel.onRefresh() }
     }
 
     private fun setUpViewPager() {
@@ -70,7 +71,8 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         super.initObservers()
         viewModel.currentPeriodBundle.observe(viewLifecycleOwner) { onCurrentPeriodChanged(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
-        sharedViewModel.onNavigateToPeriodRecords.observeEvent(viewLifecycleOwner) { onNavigateToPeriodRecords(it) }
+        sharedViewModel.performDashboardUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
+        sharedViewModel.navigateToEditPeriod.observeEvent(viewLifecycleOwner) { navigateToEditPeriod(it) }
     }
 
     private fun onCurrentPeriodChanged(currentPeriodBundle: CurrentPeriodBundle) {
@@ -87,21 +89,35 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
 
     private fun performUiEvent(uiEvent: DashboardUiEvent) {
         when (uiEvent) {
-            is DashboardUiEvent.NavigateToPeriodsList -> { onNavigateToPeriodsList() }
-            is DashboardUiEvent.NavigateToCreatePeriod -> { onNavigateToCreatePeriod() }
-            is DashboardUiEvent.DisplayLoadingState -> { handleLoadingState(uiEvent.loadingState) }
+            is DashboardUiEvent.NavigateToPeriodsList -> navigateToPeriodsList()
+            is DashboardUiEvent.NavigateToCreatePeriod -> navigateToEditPeriod()
+            is DashboardUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState, uiEvent.loadingType)
         }
     }
 
-    private fun handleLoadingState(loadingState: LoadingState) {
+    private fun handleLoadingState(loadingState: LoadingState, @IntLoadingType loadingType: Int) {
         when (loadingState) {
             is LoadingState.Cold,
-            is LoadingState.Success -> hideLoading()
-            is LoadingState.Loading -> showLoading()
+            is LoadingState.Success -> hideLoading(loadingType)
+            is LoadingState.Loading -> showLoading(loadingType)
             is LoadingState.Error -> {
-                hideLoading()
+                hideLoading(loadingType)
                 handleError(loadingState.throwable)
             }
+        }
+    }
+
+    private fun hideLoading(@IntLoadingType loadingType: Int) {
+        when (loadingType) {
+            IntLoadingType.SWIPE_TO_REFRESH -> binding.swipeToRefreshLayout.isRefreshing = false
+            IntLoadingType.MAIN -> hideLoading()
+        }
+    }
+
+    private fun showLoading(@IntLoadingType loadingType: Int) {
+        when (loadingType) {
+            IntLoadingType.SWIPE_TO_REFRESH -> binding.swipeToRefreshLayout.isRefreshing = true
+            IntLoadingType.MAIN -> showLoading()
         }
     }
 
@@ -111,28 +127,23 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         }
     }
 
-    private fun onNavigateToPeriodsList() {
+    private fun navigateToPeriodsList() {
         listenToPeriodsListChangedResult()
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodsFragment())
     }
 
-    private fun onNavigateToCreatePeriod() {
+    private fun navigateToEditPeriod() {
         listenToPeriodsListChangedResult()
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodCreateEditFragment(Int.NO_ITEM))
     }
 
-    private fun onNavigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
-        setFragmentResultListener(Keys.KEY_ON_PERIOD_RECORD_ADDED) { _, _ -> sharedViewModel.onPeriodRecordAdded() }
-        navController.navigate(
-            DashboardFragmentDirections.actionNavigationDashboardToPeriodRecordsFragment(
-                navigationBundle.excludedCategoryIds.toIntArray(),
-                navigationBundle.periodId
-            )
-        )
+    private fun navigateToEditPeriod(periodId: Int) {
+//        setFragmentResultListener(Keys.KEY_DASHBOARD_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> sharedViewModel.onPeriodRecordsChanged() }
+        navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodCreateEditFragment(periodId))
     }
 
     private fun listenToPeriodsListChangedResult() {
-        setFragmentResultListener(Keys.KEY_ON_PERIODS_LIST_CHANGED) { _, _ -> viewModel.refresh() }
+        setFragmentResultListener(Keys.KEY_PERIOD_RECORDS_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> viewModel.refresh() }
     }
 
 }

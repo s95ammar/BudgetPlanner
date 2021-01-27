@@ -14,12 +14,12 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.models.api.responses.errors.InternalServerError
 import com.s95ammar.budgetplanner.models.api.responses.errors.UnauthorizedError
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBindingException
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
+import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBindingException
 
 
-abstract class BaseFragment : Fragment {
+abstract class BaseFragment : Fragment, LoadingManager {
 
     constructor() : super()
     constructor(@LayoutRes layoutResId: Int) : super(layoutResId)
@@ -52,9 +52,13 @@ abstract class BaseFragment : Fragment {
 
     open fun initObservers() {}
 
-    open fun showLoading() = loadingManager?.showLoading()
+    override fun showLoading() {
+        loadingManager?.showLoading()
+    }
 
-    open fun hideLoading() = loadingManager?.hideLoading()
+    override fun hideLoading() {
+        loadingManager?.hideLoading()
+    }
 
     fun showKeyboard() = keyboardManager?.showKeyboard()
 

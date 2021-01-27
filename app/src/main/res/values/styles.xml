@@ -71,6 +71,12 @@
         <item name="android:textSize">@dimen/_14sdp</item>
     </style>
 
+    <style name="TextDescGray10sdp">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textColor">@color/colorGray</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+
     <style name="TextDescGray12sdp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@color/colorGray</item>

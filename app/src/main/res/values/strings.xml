@@ -41,6 +41,7 @@
     <string name="key_total_savings">Total savings:</string>
 
     <string name="title">Title</string>
+    <string name="name">Name</string>
     <string name="create">Create</string>
     <string name="save">Save</string>
     <string name="total_expenses_estimate_optional">Total expenses estimate (optional)</string>
@@ -71,4 +72,6 @@
     <string name="log_out">Log out</string>
 
     <string name="format_value_out_of">%d / %d</string>
+    <string name="choose_period_categories">Choose categories for this period:</string>
+    <string name="category_unselectable">This category already has budget transactions created during this period</string>
 </resources>

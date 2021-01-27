@@ -11,9 +11,6 @@ class LocalRepositoryImpl @Inject constructor(
 
     // SharedPreferences
 
-    override fun doesActiveBudgetExist() = sharedPrefs.doesActiveBudgetExist()
-    override fun loadActiveBudgetId() = sharedPrefs.loadActiveBudgetId()
-    override fun saveActiveBudgetId(id: Int) = sharedPrefs.saveActiveBudgetId(id)
     override fun saveAuthToken(token: String) = sharedPrefs.saveAuthToken(token)
     override fun loadAuthToken(): String? = sharedPrefs.loadAuthToken()
     override fun clearAuthToken() = sharedPrefs.clearAuthToken()

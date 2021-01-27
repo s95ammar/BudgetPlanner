@@ -11,6 +11,10 @@ object Logger {
         Log.d(LOG_TAG, "${logSource.simpleName}: $message")
     }
 
+    fun logError(logSource: KClass<out Any>, message: String) {
+        Log.e(LOG_TAG, "${logSource.simpleName}: $message")
+    }
+
     fun logObjToString(logSource: KClass<out Any>, obj: Any?) {
         Log.d(LOG_TAG, "${logSource.simpleName}: ${obj.toString()}")
     }

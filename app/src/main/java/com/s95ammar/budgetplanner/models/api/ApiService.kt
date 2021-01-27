@@ -32,7 +32,18 @@ interface ApiService {
     suspend fun deleteCategory(@Body id: IdBodyRequest): Response<Boolean>
 
     @GET("/period/get")
-    suspend fun getPeriod(@Nullable @Query("id") id: Int?): Response<List<PeriodApiEntity>>
+    suspend fun getPeriod(
+        @Query("id") id: Int,
+        @Query("includePeriodRecords") includePeriodRecords: Boolean,
+        @Query("includeBudgetTransactions") includeBudgetTransactions: Boolean,
+        @Query("includeSavings") includeSavings: Boolean
+    ): Response<PeriodApiEntity>
+
+    @GET("/period/getAll")
+    suspend fun getAllUserPeriods(): Response<List<PeriodSimpleApiEntity>>
+
+    @GET("/period/getInsertTemplate")
+    suspend fun getPeriodInsertTemplate(): Response<PeriodApiEntity>
 
     @POST("/period/insert")
     suspend fun insertPeriod(@Body request: PeriodUpsertApiRequest.Insertion): Response<PeriodApiEntity>
@@ -43,34 +54,19 @@ interface ApiService {
     @POST("/period/delete")
     suspend fun deletePeriod(@Body id: IdBodyRequest): Response<Boolean>
 
-    @GET("/period/record/get")
-    suspend fun getPeriodRecord(
-        @Nullable @Query("id") id: Int?,
-        @Nullable @Query("periodId") periodId: Int?
-    ): Response<List<PeriodRecordApiEntity>>
-
-    @POST("/period/record/insert")
-    suspend fun insertPeriodRecord(@Body request: PeriodRecordUpsertApiRequest.Insertion): Response<PeriodRecordApiEntity>
-
-    @POST("/period/record/update")
-    suspend fun updatePeriodRecord(@Body request: PeriodRecordUpsertApiRequest.Update): Response<PeriodRecordApiEntity>
-
-    @POST("/period/record/delete")
-    suspend fun deletePeriodRecord(@Body id: IdBodyRequest): Response<Boolean>
-
-    @GET("/period/budget_transaction/get")
+    @GET("/period/budgetTransaction/get")
     suspend fun getBudgetTransaction(
         @Nullable @Query("id") id: Int?,
         @Nullable @Query("periodId") periodId: Int?
     ): Response<List<BudgetTransactionApiEntity>>
 
-    @POST("/period/budget_transaction/insert")
+    @POST("/period/budgetTransaction/insert")
     suspend fun insertBudgetTransaction(@Body request: BudgetTransactionUpsertApiRequest.Insertion): Response<BudgetTransactionApiEntity>
 
-    @POST("/period/budget_transaction/update")
+    @POST("/period/budgetTransaction/update")
     suspend fun updateBudgetTransaction(@Body request: BudgetTransactionUpsertApiRequest.Update): Response<BudgetTransactionApiEntity>
 
-    @POST("/period/budget_transaction/delete")
+    @POST("/period/budgetTransaction/delete")
     suspend fun deleteBudgetTransaction(@Body id: IdBodyRequest): Response<Boolean>
 
 }

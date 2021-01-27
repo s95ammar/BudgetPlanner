@@ -5,9 +5,9 @@ import com.s95ammar.budgetplanner.models.view.BudgetTransactionViewEntity
 
 object BudgetTransactionApiViewMapper: BaseApiViewMapper<BudgetTransactionViewEntity, BudgetTransactionApiEntity> {
 
-    override fun toViewEntity(apiEntity: BudgetTransactionApiEntity): BudgetTransactionViewEntity? {
+    override fun toViewEntity(apiEntity: BudgetTransactionApiEntity?): BudgetTransactionViewEntity? {
 
-        if (apiEntity.id == null
+        if (apiEntity?.id == null
             || apiEntity.name == null
             || apiEntity.type == null
             || apiEntity.amount == null

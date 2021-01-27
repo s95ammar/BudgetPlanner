@@ -10,5 +10,6 @@ data class BudgetTransactionApiEntity(
     @SerializedName("amount") val amount: Int?,
     @SerializedName("creationUnixMs") val creationUnixMs: Long?,
     @SerializedName("periodRecordId") val periodRecordId: Int?,
+    @SerializedName("categoryName") val categoryName: String?,
     @SerializedName("userId") val userId: Int?
 )

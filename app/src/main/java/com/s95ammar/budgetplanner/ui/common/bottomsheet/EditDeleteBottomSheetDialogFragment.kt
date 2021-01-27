@@ -45,7 +45,7 @@ class EditDeleteBottomSheetDialogFragment : BaseBottomSheetDialogFragment(), Vie
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return binding.root
+        return inflater.inflate(R.layout.dialog_edit_delete_bottom_sheet, container, false)
     }
 
     override fun setUpViews() {

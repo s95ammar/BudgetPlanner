@@ -1,11 +1,11 @@
 package com.s95ammar.budgetplanner.models.repository
 
-import com.s95ammar.budgetplanner.models.ApiResponseMapper.mapToApiResult
 import com.s95ammar.budgetplanner.models.api.ApiService
 import com.s95ammar.budgetplanner.models.api.requests.*
 import com.s95ammar.budgetplanner.models.api.responses.ApiResult
-import com.s95ammar.budgetplanner.models.api.responses.BudgetTransactionApiEntity
+import com.s95ammar.budgetplanner.models.api.responses.PeriodApiEntity
 import com.s95ammar.budgetplanner.models.api.responses.TokenResponse
+import com.s95ammar.budgetplanner.models.mapToApiResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -48,11 +48,20 @@ class RemoteRepositoryImpl @Inject constructor(private val apiService: ApiServic
     }
 
     override suspend fun getAllUserPeriods() = apiRequest {
-        apiService.getPeriod(id = null)
+        apiService.getAllUserPeriods()
     }
 
-    override suspend fun getPeriod(id: Int) = apiRequest {
-        apiService.getPeriod(id)
+    override suspend fun getPeriod(
+        id: Int,
+        includePeriodRecords: Boolean,
+        includeBudgetTransactions: Boolean,
+        includeSavings: Boolean
+    ): ApiResult<PeriodApiEntity> = apiRequest {
+        apiService.getPeriod(id, includePeriodRecords, includeBudgetTransactions, includeSavings)
+    }
+
+    override suspend fun getPeriodInsertTemplate(): ApiResult<PeriodApiEntity> = apiRequest {
+        apiService.getPeriodInsertTemplate()
     }
 
     override suspend fun insertPeriod(request: PeriodUpsertApiRequest.Insertion) = apiRequest {
@@ -65,26 +74,6 @@ class RemoteRepositoryImpl @Inject constructor(private val apiService: ApiServic
 
     override suspend fun deletePeriod(id: Int) = apiRequest {
         apiService.deletePeriod(IdBodyRequest(id))
-    }
-
-    override suspend fun getPeriodRecord(id: Int?, periodId: Int?) = apiRequest {
-        apiService.getPeriodRecord(id, periodId)
-    }
-
-    override suspend fun getPeriodRecordsForPeriod(periodId: Int?) = apiRequest {
-        apiService.getPeriodRecord(id = null, periodId)
-    }
-
-    override suspend fun insertPeriodRecord(request: PeriodRecordUpsertApiRequest.Insertion) = apiRequest {
-        apiService.insertPeriodRecord(request)
-    }
-
-    override suspend fun updatePeriodRecord(request: PeriodRecordUpsertApiRequest.Update) = apiRequest {
-        apiService.updatePeriodRecord(request)
-    }
-
-    override suspend fun deletePeriodRecord(id: IdBodyRequest) = apiRequest {
-        apiService.deletePeriodRecord(id)
     }
 
     override suspend fun getBudgetTransaction(id: Int?, periodId: Int?) = apiRequest {

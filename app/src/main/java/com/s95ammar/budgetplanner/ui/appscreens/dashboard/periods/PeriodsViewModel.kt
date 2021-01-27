@@ -3,10 +3,10 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.s95ammar.budgetplanner.models.mappers.PeriodApiViewMapper
+import com.s95ammar.budgetplanner.models.mappers.PeriodSimpleApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
-import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
+import com.s95ammar.budgetplanner.models.view.PeriodSimpleViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.data.PeriodsUiEvent
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -20,7 +20,7 @@ class PeriodsViewModel @ViewModelInject constructor(
     private val remoteRepository: RemoteRepository
 ) : ViewModel() {
 
-    private val _allPeriods = LoaderMutableLiveData<List<PeriodViewEntity>> { loadAllPeriods() }
+    private val _allPeriods = LoaderMutableLiveData<List<PeriodSimpleViewEntity>> { loadAllPeriods() }
     private val _onPeriodDeleted = EventMutableLiveDataVoid()
     private val _performUiEvent = EventMutableLiveData<PeriodsUiEvent>()
 
@@ -56,7 +56,7 @@ class PeriodsViewModel @ViewModelInject constructor(
             _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
             remoteRepository.getAllUserPeriods()
                 .onSuccess { periodApiEntities ->
-                    val periods = periodApiEntities.orEmpty().mapNotNull { apiEntity -> PeriodApiViewMapper.toViewEntity(apiEntity) }
+                    val periods = periodApiEntities.orEmpty().mapNotNull { apiEntity -> PeriodSimpleApiViewMapper.toViewEntity(apiEntity) }
                     _allPeriods.value = periods
                     _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Success))
                 }

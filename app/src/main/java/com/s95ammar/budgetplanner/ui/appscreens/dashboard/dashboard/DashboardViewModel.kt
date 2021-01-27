@@ -3,13 +3,14 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.s95ammar.budgetplanner.models.mappers.PeriodApiViewMapper
+import com.s95ammar.budgetplanner.models.mappers.PeriodSimpleApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
-import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
+import com.s95ammar.budgetplanner.models.view.PeriodSimpleViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.data.CurrentPeriodBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.data.DashboardUiEvent
+import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
@@ -21,7 +22,7 @@ class DashboardViewModel @ViewModelInject constructor(
     private val remoteRepository: RemoteRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _allPeriods = LoaderMutableLiveData<List<PeriodViewEntity>> { loadAllPeriods() }
+    private val _allPeriods = LoaderMutableLiveData<List<PeriodSimpleViewEntity>> { loadAllPeriods() }
     private val _currentPeriodBundle = MediatorLiveData<CurrentPeriodBundle>().apply {
         addSource(_allPeriods.distinctUntilChanged()) { value = createCurrentPeriodBundle(it.lastOrNull()) }
     }
@@ -60,8 +61,8 @@ class DashboardViewModel @ViewModelInject constructor(
         loadAllPeriods()
     }
 
-    private fun createCurrentPeriodBundle(currentPeriod: PeriodViewEntity?): CurrentPeriodBundle {
-        var period: PeriodViewEntity? = null
+    private fun createCurrentPeriodBundle(currentPeriod: PeriodSimpleViewEntity?): CurrentPeriodBundle {
+        var period: PeriodSimpleViewEntity? = null
         var isPreviousAvailable = false
         var isNextAvailable = false
 
@@ -76,13 +77,16 @@ class DashboardViewModel @ViewModelInject constructor(
 
     private fun loadAllPeriods() {
         viewModelScope.launch {
-            _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Loading))
+            _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Loading, IntLoadingType.MAIN))
             remoteRepository.getAllUserPeriods()
                 .onSuccess { periodsApiEntities ->
-                    _allPeriods.value = periodsApiEntities.orEmpty().mapNotNull { apiEntity -> PeriodApiViewMapper.toViewEntity(apiEntity) }
-                    _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Success))
+                    _allPeriods.value = periodsApiEntities.orEmpty()
+                        .mapNotNull { apiEntity -> PeriodSimpleApiViewMapper.toViewEntity(apiEntity) }
+                    _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Success, IntLoadingType.MAIN))
                 }
-                .onError { _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
+                .onError { throwable ->
+                    _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Error(throwable), IntLoadingType.MAIN))
+                }
         }
     }
 

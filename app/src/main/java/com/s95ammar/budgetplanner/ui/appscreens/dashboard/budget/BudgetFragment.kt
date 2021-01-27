@@ -6,10 +6,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBudgetBinding
 import com.s95ammar.budgetplanner.models.view.PeriodRecordViewEntity
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.adapter.PeriodRecordsListAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.data.BudgetUiEvent
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.data.PeriodRecordsNavigationBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
@@ -28,7 +26,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     private val viewModel: BudgetViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
 
-    private val adapter by lazy { PeriodRecordsListAdapter(/*TODO*/) }
+    private val adapter by lazy { PeriodRecordsListAdapter() }
 
     override val binding: FragmentDashboardBudgetBinding
         get() = getBinding()
@@ -39,8 +37,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
 
     override fun setUpViews() {
         super.setUpViews()
-        binding.fab.setOnClickListener { viewModel.onNavigateToPeriodRecords() }
-        binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.refresh() }
+        binding.fab.setOnClickListener { viewModel.onEditPeriod() }
         setUpRecyclerView()
     }
 
@@ -53,10 +50,13 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     override fun initObservers() {
         super.initObservers()
         viewModel.currentPeriodId.observe(viewLifecycleOwner) { showFabIfPeriodIsAvailable(it) }
-        viewModel.periodRecords.observe(viewLifecycleOwner) { setPeriodRecords(it) }
+        viewModel.resultPeriodRecords.observe(viewLifecycleOwner) { setPeriodRecords(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
-        sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.setAndLoadCurrentPeriod(it) }
-        sharedViewModel.onPeriodRecordAdded.observeEvent(viewLifecycleOwner) { viewModel.refresh() }
+        sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.onSelectedPeriodChanged(it) }
+        sharedViewModel.onPeriodRecordsLoaded.observeEvent(viewLifecycleOwner) { (periodId, periodRecords) ->
+            viewModel.onPeriodRecordsLoaded(periodId, periodRecords)
+        }
+//        sharedViewModel.onPeriodRecordsChanged.observeEvent(viewLifecycleOwner) { viewModel.refresh() }
     }
 
     private fun showFabIfPeriodIsAvailable(periodId: Int) {
@@ -69,38 +69,11 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
 
     private fun performUiEvent(uiEvent: BudgetUiEvent) {
         when (uiEvent) {
-            is BudgetUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
-            is BudgetUiEvent.OnNavigateToPeriodRecords -> onNavigateToPeriodRecords(uiEvent.periodRecordsNavigationBundle)
+            is BudgetUiEvent.OnEditPeriod -> onEditPeriod(uiEvent.periodId)
         }
     }
 
-    private fun handleLoadingState(loadingState: LoadingState) {
-        when (loadingState) {
-            is LoadingState.Cold,
-            is LoadingState.Success -> hideLoading()
-            is LoadingState.Loading -> showLoading()
-            is LoadingState.Error -> {
-                hideLoading()
-                handleError(loadingState.throwable)
-            }
-        }
-    }
-
-    override fun showLoading() {
-        binding.swipeToRefreshLayout.isRefreshing = true
-    }
-
-    override fun hideLoading() {
-        binding.swipeToRefreshLayout.isRefreshing = false
-    }
-
-    private fun handleError(throwable: Throwable) {
-        when (throwable) {
-            else -> throwable.message?.let { showToast(it) }
-        }
-    }
-
-    private fun onNavigateToPeriodRecords(navigationBundle: PeriodRecordsNavigationBundle) {
-        sharedViewModel.onNavigateToPeriodRecords(navigationBundle)
+    private fun onEditPeriod(periodId: Int) {
+        sharedViewModel.onEditPeriod(periodId)
     }
 }
