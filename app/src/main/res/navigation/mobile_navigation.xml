@@ -12,7 +12,7 @@
 
         <fragment
             android:id="@+id/navigation_dashboard"
-            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.dashboard.DashboardFragment"
+            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardFragment"
             android:label="fragment_dashboard"
             tools:layout="@layout/fragment_dashboard">
         </fragment>
@@ -43,7 +43,7 @@
         tools:layout="@layout/fragment_savings_jars" />
     <fragment
         android:id="@+id/categoryCreateEditFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.categories.createedit.CategoryCreateEditFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.CategoryCreateEditFragment"
         android:label="fragment_category_create_edit"
         tools:layout="@layout/fragment_category_create_edit">
         <argument
@@ -96,12 +96,12 @@
     </fragment>
     <fragment
         android:id="@+id/budgetFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.budget.BudgetFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.BudgetFragment"
         android:label="fragment_dashboard_budget"
         tools:layout="@layout/fragment_dashboard_budget" />
     <fragment
         android:id="@+id/periodCreateEditFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.createedit.PeriodCreateEditFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditFragment"
         android:label="fragment_period_create_edit"
         tools:layout="@layout/fragment_period_create_edit">
         <argument
@@ -110,7 +110,7 @@
     </fragment>
     <fragment
         android:id="@+id/periodsFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.periods.PeriodsFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.PeriodsFragment"
         android:label="fragment_periods"
         tools:layout="@layout/fragment_periods">
         <action
