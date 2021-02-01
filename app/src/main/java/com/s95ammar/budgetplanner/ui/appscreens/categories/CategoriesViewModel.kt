@@ -1,14 +1,13 @@
-package com.s95ammar.budgetplanner.ui.appscreens.categories.categories
+package com.s95ammar.budgetplanner.ui.appscreens.categories
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.s95ammar.budgetplanner.models.mappers.CategoryApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
-import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.categories.categories.data.CategoriesUiEvent
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.categories.data.CategoriesUiEvent
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
@@ -58,7 +57,7 @@ class CategoriesViewModel @ViewModelInject constructor(
             _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Loading))
             remoteRepository.getAllUserCategories()
                 .onSuccess { categoryApiEntities ->
-                    val categories = categoryApiEntities.orEmpty().mapNotNull { apiEntity -> CategoryApiViewMapper.toViewEntity(apiEntity) }
+                    val categories = categoryApiEntities.orEmpty().mapNotNull { apiEntity -> CategoryViewEntity.ApiMapper.toViewEntity(apiEntity) }
                     _allCategories.value = categories
                     _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Success))
                 }

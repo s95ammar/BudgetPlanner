@@ -5,10 +5,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBudgetBinding
-import com.s95ammar.budgetplanner.models.view.PeriodRecordViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodRecordViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.adapter.PeriodRecordsListAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.data.BudgetUiEvent
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.util.NO_ITEM

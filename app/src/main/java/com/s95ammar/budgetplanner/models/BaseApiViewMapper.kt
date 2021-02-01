@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.models.mappers
+package com.s95ammar.budgetplanner.models
 
 interface BaseApiViewMapper<ViewEntity, ApiEntity> {
 

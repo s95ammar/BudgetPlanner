@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DiffUtil
 import com.s95ammar.budgetplanner.databinding.ItemPeriodRecordSelectionBinding
-import com.s95ammar.budgetplanner.models.view.PeriodRecordViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodRecordViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.adapter.PeriodRecordsSelectionAdapter.PeriodRecordsSelectionViewHolder
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.util.inputText

@@ -8,21 +8,20 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemPeriodRecordBinding
-import com.s95ammar.budgetplanner.models.view.PeriodRecordViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodRecordViewEntity
 import kotlin.math.roundToInt
 
-class PeriodRecordsListAdapter : ListAdapter<PeriodRecordViewEntity, PeriodRecordsListAdapter.PeriodRecordsViewHolder>(CALLBACK) {
+class PeriodRecordsListAdapter : ListAdapter<PeriodRecordViewEntity, PeriodRecordsListAdapter.PeriodRecordsViewHolder>(DiffUtilCallback()) {
 
     companion object {
-        val CALLBACK
-            get() = object : DiffUtil.ItemCallback<PeriodRecordViewEntity>() {
-                override fun areItemsTheSame(oldItem: PeriodRecordViewEntity, newItem: PeriodRecordViewEntity): Boolean {
-                    return (oldItem.categoryId == newItem.categoryId)
-                }
-                override fun areContentsTheSame(oldItem: PeriodRecordViewEntity, newItem: PeriodRecordViewEntity): Boolean {
-                    return (oldItem == newItem)
-                }
+        class DiffUtilCallback : DiffUtil.ItemCallback<PeriodRecordViewEntity>() {
+            override fun areItemsTheSame(oldItem: PeriodRecordViewEntity, newItem: PeriodRecordViewEntity): Boolean {
+                return (oldItem.categoryId == newItem.categoryId)
             }
+            override fun areContentsTheSame(oldItem: PeriodRecordViewEntity, newItem: PeriodRecordViewEntity): Boolean {
+                return (oldItem == newItem)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodRecordsViewHolder {

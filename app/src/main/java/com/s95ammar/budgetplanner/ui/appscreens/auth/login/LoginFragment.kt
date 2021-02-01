@@ -90,7 +90,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login), ViewBinder<Fragment
         when (throwable) {
             is ForbiddenError -> displayError(LoginValidator.ViewKeys.VIEW_PASSWORD, LoginValidator.Errors.ERROR_PASSWORD_INCORRECT)
             is NotFoundError -> displayError(LoginValidator.ViewKeys.VIEW_EMAIL, LoginValidator.Errors.ERROR_EMAIL_NOT_REGISTERED)
-            else -> throwable.message?.let { showToast(it) }
+            else -> showErrorToast(throwable)
         }
     }
 

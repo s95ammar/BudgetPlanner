@@ -9,9 +9,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.BudgetFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.BudgetFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.savings.SavingsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.transactions.TransactionsFragment
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -123,7 +123,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
 
     private fun handleError(throwable: Throwable) {
         when (throwable) {
-            else -> throwable.message?.let { showToast(it) }
+            else -> showErrorToast(throwable)
         }
     }
 

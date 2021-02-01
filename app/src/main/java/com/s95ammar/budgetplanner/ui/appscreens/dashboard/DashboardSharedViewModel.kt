@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.s95ammar.budgetplanner.models.mappers.PeriodApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
-import com.s95ammar.budgetplanner.models.view.PeriodRecordViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodRecordViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -57,7 +57,7 @@ class DashboardSharedViewModel @ViewModelInject constructor(
                 includeBudgetTransactions = true,
                 includeSavings = true
             ).onSuccess { periodApiEntity ->
-                PeriodApiViewMapper.toViewEntity(periodApiEntity)?.let { period ->
+                PeriodViewEntity.ApiMapper.toViewEntity(periodApiEntity)?.let { period ->
                     _onPeriodRecordsLoaded.call(periodId to period.periodRecords)
                 }
                 _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Success, IntLoadingType.SWIPE_TO_REFRESH))

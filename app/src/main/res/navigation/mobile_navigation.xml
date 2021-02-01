@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/navigation_categories"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.categories.categories.CategoriesFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.categories.CategoriesFragment"
         android:label="@string/categories"
         tools:layout="@layout/fragment_categories">
         <action

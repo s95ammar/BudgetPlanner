@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.categories.categories
+package com.s95ammar.budgetplanner.ui.appscreens.categories
 
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
@@ -6,10 +6,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoriesBinding
-import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.categories.categories.adapter.CategoriesListAdapter
-import com.s95ammar.budgetplanner.ui.appscreens.categories.categories.data.CategoriesUiEvent
+import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.categories.data.CategoriesUiEvent
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment

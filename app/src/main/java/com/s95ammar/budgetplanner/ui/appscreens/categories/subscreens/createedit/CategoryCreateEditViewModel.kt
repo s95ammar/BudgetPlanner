@@ -2,13 +2,15 @@ package com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedi
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.api.requests.CategoryUpsertApiRequest
-import com.s95ammar.budgetplanner.models.mappers.CategoryApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
-import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.validation.CategoryCreateEditValidator
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
@@ -56,7 +58,7 @@ class CategoryCreateEditViewModel @ViewModelInject constructor(
             remoteRepository.getCategory(editedCategoryId)
                 .onSuccess { categoryApiEntity ->
                     categoryApiEntity.orEmpty()
-                        .map { apiEntity -> CategoryApiViewMapper.toViewEntity(apiEntity) }
+                        .map { apiEntity -> CategoryViewEntity.ApiMapper.toViewEntity(apiEntity) }
                         .singleOrNull()
                         ?.let { category ->
                             _editedCategory.value = category

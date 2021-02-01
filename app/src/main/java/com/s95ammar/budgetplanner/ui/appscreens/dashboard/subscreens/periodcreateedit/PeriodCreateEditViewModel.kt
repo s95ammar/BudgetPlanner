@@ -5,12 +5,11 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.api.requests.PeriodRecordUpsertApiRequest
 import com.s95ammar.budgetplanner.models.api.requests.PeriodUpsertApiRequest
-import com.s95ammar.budgetplanner.models.mappers.PeriodApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
-import com.s95ammar.budgetplanner.models.view.PeriodRecordViewEntity
-import com.s95ammar.budgetplanner.models.view.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodRecordViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation.PeriodCreateEditValidator
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
@@ -100,7 +99,7 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
 
             result
                 .onSuccess { periodApiEntity ->
-                    PeriodApiViewMapper.toViewEntity(periodApiEntity)?.let { periodViewEntity ->
+                    PeriodViewEntity.ApiMapper.toViewEntity(periodApiEntity)?.let { periodViewEntity ->
                         _period.value = periodViewEntity
                         _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
                     }

@@ -3,11 +3,10 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.s95ammar.budgetplanner.models.mappers.PeriodSimpleApiViewMapper
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
-import com.s95ammar.budgetplanner.models.view.PeriodSimpleViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimpleViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
@@ -81,7 +80,7 @@ class DashboardViewModel @ViewModelInject constructor(
             remoteRepository.getAllUserPeriods()
                 .onSuccess { periodsApiEntities ->
                     _allPeriods.value = periodsApiEntities.orEmpty()
-                        .mapNotNull { apiEntity -> PeriodSimpleApiViewMapper.toViewEntity(apiEntity) }
+                        .mapNotNull { apiEntity -> PeriodSimpleViewEntity.ApiMapper.toViewEntity(apiEntity) }
                     _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Success, IntLoadingType.MAIN))
                 }
                 .onError { throwable ->

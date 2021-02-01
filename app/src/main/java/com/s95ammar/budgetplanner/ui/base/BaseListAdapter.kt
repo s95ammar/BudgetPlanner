@@ -13,7 +13,7 @@ abstract class BaseListAdapter<T, VH : BaseListAdapter.BaseViewHolder<T>>(diffCa
         try {
             bindHolder(holder, position, payloads.singleOrNull() as PayloadsHolder)
         } catch (e: Exception) {
-            super.onBindViewHolder(holder, position, payloads)
+            onBindViewHolder(holder, position)
         }
     }
 

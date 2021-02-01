@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.categories.categories.adapter
+package com.s95ammar.budgetplanner.ui.appscreens.categories.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,19 +6,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.s95ammar.budgetplanner.databinding.ItemCategoryBinding
-import com.s95ammar.budgetplanner.models.view.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
 
 class CategoriesListAdapter(
     private val onItemClick: (Int) -> Unit,
     private val onItemLongClick: ((Int) -> Unit)?
-) : ListAdapter<CategoryViewEntity, CategoriesListAdapter.CategoriesViewHolder>(CALLBACK) {
+) : ListAdapter<CategoryViewEntity, CategoriesListAdapter.CategoriesViewHolder>(DiffUtilCallback()) {
 
     companion object {
-        val CALLBACK
-            get() = object : DiffUtil.ItemCallback<CategoryViewEntity>() {
-                override fun areItemsTheSame(oldItem: CategoryViewEntity, newItem: CategoryViewEntity) = (oldItem.id == newItem.id)
-                override fun areContentsTheSame(oldItem: CategoryViewEntity, newItem: CategoryViewEntity) = (oldItem == newItem)
-            }
+        class DiffUtilCallback : DiffUtil.ItemCallback<CategoryViewEntity>() {
+            override fun areItemsTheSame(oldItem: CategoryViewEntity, newItem: CategoryViewEntity) = (oldItem.id == newItem.id)
+            override fun areContentsTheSame(oldItem: CategoryViewEntity, newItem: CategoryViewEntity) = (oldItem == newItem)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
