@@ -70,6 +70,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     private fun performUiEvent(uiEvent: BudgetUiEvent) {
         when (uiEvent) {
             is BudgetUiEvent.OnEditPeriod -> onEditPeriod(uiEvent.periodId)
+            is BudgetUiEvent.OnNoLocalData -> sharedViewModel.onRefresh()
         }
     }
 

@@ -29,7 +29,7 @@ object RetrofitModule {
                 if (request.url.encodedPath in BudgetPlannerApiConfig.NO_TOKEN_PATHS)
                     chain.proceed(request)
                 else
-                    chain.proceed(request.addTokenHeader(sharedPreferences))
+                    chain.proceed(request.addTokenHeader(sharedPreferences.loadAuthToken()))
             }
             .apply {
                 if (BuildConfig.DEBUG) addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
@@ -40,9 +40,8 @@ object RetrofitModule {
             .build()
     }
 
-    private fun Request.addTokenHeader(sharedPreferences: SharedPrefsManager): Request {
+    private fun Request.addTokenHeader(token: String?): Request {
         val requestBuilder: Request.Builder = newBuilder()
-        val token = sharedPreferences.loadAuthToken()
 
         if (!token.isNullOrEmpty())
             requestBuilder.addHeader(BudgetPlannerApiConfig.TOKEN_HEADER_KEY, "${BudgetPlannerApiConfig.TOKEN_HEADER_VALUE_PREFIX}$token")

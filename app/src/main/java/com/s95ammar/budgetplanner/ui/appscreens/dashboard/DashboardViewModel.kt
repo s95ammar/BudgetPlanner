@@ -7,7 +7,7 @@ import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimpleViewEntity
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.util.NO_ITEM
@@ -22,8 +22,8 @@ class DashboardViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _allPeriods = LoaderMutableLiveData<List<PeriodSimpleViewEntity>> { loadAllPeriods() }
-    private val _currentPeriodBundle = MediatorLiveData<CurrentPeriodBundle>().apply {
-        addSource(_allPeriods.distinctUntilChanged()) { value = createCurrentPeriodBundle(it.lastOrNull()) }
+    private val _currentPeriodBundle = MediatorLiveData<CurrentPeriodHeaderBundle>().apply {
+        addSource(_allPeriods.distinctUntilChanged()) { value = createCurrentPeriodHeaderBundle(it.lastOrNull()) }
     }
     private val _performUiEvent = EventMutableLiveData<DashboardUiEvent>()
 
@@ -35,8 +35,10 @@ class DashboardViewModel @ViewModelInject constructor(
         val allPeriods = _allPeriods.value ?: return
 
         val currentPeriodIndex = allPeriods.indexOf(currentPeriod)
-        if (currentPeriodIndex != Int.NO_ITEM && currentPeriodIndex != allPeriods.lastIndex)
-            _currentPeriodBundle.value = createCurrentPeriodBundle(allPeriods[currentPeriodIndex + 1])
+        if (currentPeriodIndex != Int.NO_ITEM && currentPeriodIndex != allPeriods.lastIndex) {
+            val newCurrentPeriod = allPeriods[currentPeriodIndex + 1]
+            _currentPeriodBundle.value = createCurrentPeriodHeaderBundle(newCurrentPeriod)
+        }
     }
 
     fun onPreviousPeriodClick() {
@@ -44,8 +46,10 @@ class DashboardViewModel @ViewModelInject constructor(
         val allPeriods = _allPeriods.value ?: return
 
         val currentPeriodIndex = allPeriods.indexOf(currentPeriod)
-        if (currentPeriodIndex != Int.NO_ITEM && currentPeriodIndex != 0)
-            _currentPeriodBundle.value = createCurrentPeriodBundle(allPeriods[currentPeriodIndex - 1])
+        if (currentPeriodIndex != Int.NO_ITEM && currentPeriodIndex != 0) {
+            val newCurrentPeriod = allPeriods[currentPeriodIndex - 1]
+            _currentPeriodBundle.value = createCurrentPeriodHeaderBundle(newCurrentPeriod)
+        }
     }
 
     fun onPeriodNameClick() {
@@ -60,7 +64,7 @@ class DashboardViewModel @ViewModelInject constructor(
         loadAllPeriods()
     }
 
-    private fun createCurrentPeriodBundle(currentPeriod: PeriodSimpleViewEntity?): CurrentPeriodBundle {
+    private fun createCurrentPeriodHeaderBundle(currentPeriod: PeriodSimpleViewEntity?): CurrentPeriodHeaderBundle {
         var period: PeriodSimpleViewEntity? = null
         var isPreviousAvailable = false
         var isNextAvailable = false
@@ -71,7 +75,7 @@ class DashboardViewModel @ViewModelInject constructor(
             isNextAvailable = currentPeriod != periods.last()
         }
 
-        return CurrentPeriodBundle(period, isPreviousAvailable, isNextAvailable)
+        return CurrentPeriodHeaderBundle(period, isPreviousAvailable, isNextAvailable)
     }
 
     private fun loadAllPeriods() {

@@ -19,11 +19,13 @@ class BudgetViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _periodIdToPeriodicCategoriesMap = MutableLiveData(mutableMapOf<Int, List<PeriodicCategoryViewEntity>>())
+    private val _cachedData = MutableLiveData(mutableMapOf<Int, List<PeriodicCategoryViewEntity>>())
 
     private val _currentPeriodId = MutableLiveData<Int>()
+
     private val _resultPeriodicCategories = MediatorLiveData<List<PeriodicCategoryViewEntity>>().apply {
-        addSource(_periodIdToPeriodicCategoriesMap) { map ->
+        addSource(_cachedData) { map ->
+
             _currentPeriodId.value?.let { periodId ->
                 value = map[periodId].orEmpty().filter { it.isSelected }
             }
@@ -36,14 +38,21 @@ class BudgetViewModel @ViewModelInject constructor(
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun onSelectedPeriodChanged(periodId: Int) {
-        if (_currentPeriodId.value == periodId) return
+        if (_currentPeriodId.value != periodId) {
 
-        _currentPeriodId.value = periodId
-        _resultPeriodicCategories.value = _periodIdToPeriodicCategoriesMap.value?.get(periodId).orEmpty().filter { it.isSelected }
+            _currentPeriodId.value = periodId
+            val cachedPeriodicCategories = _cachedData.value?.get(periodId)
+            if (cachedPeriodicCategories != null) {
+                _resultPeriodicCategories.value = cachedPeriodicCategories.filter { it.isSelected }
+            } else {
+                _performUiEvent.call(BudgetUiEvent.OnNoLocalData)
+            }
+
+        }
     }
 
     fun onPeriodicCategoriesLoaded(periodId: Int, periodicCategories: List<PeriodicCategoryViewEntity>) {
-        _periodIdToPeriodicCategoriesMap.value = _periodIdToPeriodicCategoriesMap.value?.apply { set(periodId, periodicCategories) }
+        _cachedData.value = _cachedData.value?.apply { set(periodId, periodicCategories) }
     }
 
     fun onEditPeriod() {

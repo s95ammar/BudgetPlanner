@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
@@ -33,9 +34,8 @@ class DashboardSharedViewModel @ViewModelInject constructor(
     val onPeriodicCategoriesLoaded = _onPeriodicCategoriesLoaded.asEventLiveData()
     val performDashboardUiEvent = _performDashboardUiEvent.asEventLiveData()
 
-    fun onPeriodChanged(periodId: Int) {
-        _selectedPeriodId.value = periodId
-        loadPeriod(periodId)
+    fun onPeriodChanged(periodId: Int?) {
+        periodId?.let { _selectedPeriodId.value = it }
     }
 
     fun onEditPeriod(periodId: Int) {

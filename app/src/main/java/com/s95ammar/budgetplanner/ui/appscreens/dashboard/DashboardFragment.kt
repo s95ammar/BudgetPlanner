@@ -9,7 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.BudgetFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.savings.SavingsFragment
@@ -69,22 +69,20 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.currentPeriodBundle.observe(viewLifecycleOwner) { onCurrentPeriodChanged(it) }
+        viewModel.currentPeriodBundle.observe(viewLifecycleOwner) {
+            sharedViewModel.onPeriodChanged(it.period?.id)
+            setViewsToCurrentPeriodBundle(it)
+        }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         sharedViewModel.performDashboardUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         sharedViewModel.navigateToEditPeriod.observeEvent(viewLifecycleOwner) { navigateToEditPeriod(it) }
     }
 
-    private fun onCurrentPeriodChanged(currentPeriodBundle: CurrentPeriodBundle) {
-        currentPeriodBundle.period?.id?.let { sharedViewModel.onPeriodChanged(it) }
-        setViewsToCurrentPeriodBundle(currentPeriodBundle)
-    }
-
-    private fun setViewsToCurrentPeriodBundle(currentPeriodBundle: CurrentPeriodBundle) {
-        binding.textViewPeriodName.text = currentPeriodBundle.period?.name
-        binding.imageButtonArrowPrevious.isVisible = currentPeriodBundle.isPreviousAvailable
-        binding.imageButtonArrowNext.isVisible = currentPeriodBundle.isNextAvailable
-        binding.imageButtonAddPeriod.isGone = currentPeriodBundle.isNextAvailable
+    private fun setViewsToCurrentPeriodBundle(currentPeriodHeaderBundle: CurrentPeriodHeaderBundle) {
+        binding.textViewPeriodName.text = currentPeriodHeaderBundle.period?.name
+        binding.imageButtonArrowPrevious.isVisible = currentPeriodHeaderBundle.isPreviousAvailable
+        binding.imageButtonArrowNext.isVisible = currentPeriodHeaderBundle.isNextAvailable
+        binding.imageButtonAddPeriod.isGone = currentPeriodHeaderBundle.isNextAvailable
     }
 
     private fun performUiEvent(uiEvent: DashboardUiEvent) {
