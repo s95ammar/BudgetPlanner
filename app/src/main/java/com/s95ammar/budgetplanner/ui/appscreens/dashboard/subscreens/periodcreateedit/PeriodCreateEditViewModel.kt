@@ -3,13 +3,13 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcrea
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.s95ammar.budgetplanner.models.api.requests.PeriodRecordUpsertApiRequest
 import com.s95ammar.budgetplanner.models.api.requests.PeriodUpsertApiRequest
+import com.s95ammar.budgetplanner.models.api.requests.PeriodicCategoryUpsertApiRequest
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodRecordViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation.PeriodCreateEditValidator
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
@@ -38,8 +38,8 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
     private val _max = MediatorLiveData<Int>().apply {
         addSource(_period) { value = it.max }
     }
-    private val _periodRecords = MediatorLiveData<List<PeriodRecordViewEntity>>().apply {
-        addSource(_period) { value = it.periodRecords }
+    private val _periodicCategories = MediatorLiveData<List<PeriodicCategoryViewEntity>>().apply {
+        addSource(_period) { value = it.periodicCategories }
     }
 
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
@@ -47,18 +47,18 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
     val mode = _mode.asLiveData()
     val name = _name.asLiveData()
     val max = _max.asLiveData()
-    val periodRecords = _periodRecords.asLiveData()
+    val periodicCategories = _periodicCategories.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
-    fun onPeriodRecordSelectionStateChanged(position: Int, isSelected: Boolean) {
-        _periodRecords.value = _periodRecords.value.orEmpty().mapIndexed { i, periodRecord ->
-            periodRecord.copy(isSelected = if (i == position) isSelected else periodRecord.isSelected)
+    fun onPeriodicCategorySelectionStateChanged(position: Int, isSelected: Boolean) {
+        _periodicCategories.value = _periodicCategories.value.orEmpty().mapIndexed { i, periodicCategory ->
+            periodicCategory.copy(isSelected = if (i == position) isSelected else periodicCategory.isSelected)
         }
     }
 
-    fun onPeriodRecordMaxChanged(position: Int, maxInput: String?) {
-        _periodRecords.value?.getOrNull(position)?.let { periodRecord ->
-            periodRecord.max = maxInput?.toIntOrNull()
+    fun onPeriodicCategoryMaxChanged(position: Int, maxInput: String?) {
+        _periodicCategories.value?.getOrNull(position)?.let { periodicCategory ->
+            periodicCategory.max = maxInput?.toIntOrNull()
         }
     }
 
@@ -78,13 +78,13 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
     }
 
     private fun createValidator(periodInputBundle: PeriodInputBundle): PeriodCreateEditValidator {
-        val periodRecordUpsertApiRequestListGetter = {
-            _periodRecords.value.orEmpty()
+        val periodicCategoryUpsertApiRequestListGetter = {
+            _periodicCategories.value.orEmpty()
                 .filter { it.isSelected }
-                .map { PeriodRecordUpsertApiRequest(it.categoryId, it.max) }
+                .map { PeriodicCategoryUpsertApiRequest(it.categoryId, it.max) }
         }
 
-        return PeriodCreateEditValidator(editedPeriodId, periodRecordUpsertApiRequestListGetter, periodInputBundle)
+        return PeriodCreateEditValidator(editedPeriodId, periodicCategoryUpsertApiRequestListGetter, periodInputBundle)
     }
 
     private fun loadEditedPeriodOrInsertTemplate() {
@@ -93,7 +93,7 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
             val result = when (mode) {
-                CreateEditMode.EDIT -> remoteRepository.getPeriod(editedPeriodId, includePeriodRecords = true)
+                CreateEditMode.EDIT -> remoteRepository.getPeriod(editedPeriodId, includePeriodicCategories = true)
                 CreateEditMode.CREATE -> remoteRepository.getPeriodInsertTemplate()
             }
 

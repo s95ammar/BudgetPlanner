@@ -7,7 +7,7 @@ data class PeriodViewEntity(
     val id: Int,
     val name: String,
     val max: Int?,
-    val periodRecords: List<PeriodRecordViewEntity>,
+    val periodicCategories: List<PeriodicCategoryViewEntity>,
     val budgetTransactions: List<BudgetTransactionViewEntity>
 ) {
     object ApiMapper : BaseApiViewMapper<PeriodViewEntity, PeriodApiEntity> {
@@ -19,7 +19,7 @@ data class PeriodViewEntity(
                 id = apiEntity.id,
                 name = apiEntity.name,
                 max = apiEntity.max,
-                periodRecords = apiEntity.periodRecords.orEmpty().mapNotNull(PeriodRecordViewEntity.ApiMapper::toViewEntity),
+                periodicCategories = apiEntity.periodicCategories.orEmpty().mapNotNull(PeriodicCategoryViewEntity.ApiMapper::toViewEntity),
                 budgetTransactions = apiEntity.budgetTransactions.orEmpty().mapNotNull(BudgetTransactionViewEntity.ApiMapper::toViewEntity)
             )
         }

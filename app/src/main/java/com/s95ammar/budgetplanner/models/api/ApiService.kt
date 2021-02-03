@@ -34,7 +34,7 @@ interface ApiService {
     @GET("/period/get")
     suspend fun getPeriod(
         @Query("id") id: Int,
-        @Query("includePeriodRecords") includePeriodRecords: Boolean,
+        @Query("includePeriodicCategories") includePeriodicCategories: Boolean,
         @Query("includeBudgetTransactions") includeBudgetTransactions: Boolean,
         @Query("includeSavings") includeSavings: Boolean
     ): Response<PeriodApiEntity>

@@ -53,11 +53,11 @@ class RemoteRepositoryImpl @Inject constructor(private val apiService: ApiServic
 
     override suspend fun getPeriod(
         id: Int,
-        includePeriodRecords: Boolean,
+        includePeriodicCategories: Boolean,
         includeBudgetTransactions: Boolean,
         includeSavings: Boolean
     ): ApiResult<PeriodApiEntity> = apiRequest {
-        apiService.getPeriod(id, includePeriodRecords, includeBudgetTransactions, includeSavings)
+        apiService.getPeriod(id, includePeriodicCategories, includeBudgetTransactions, includeSavings)
     }
 
     override suspend fun getPeriodInsertTemplate(): ApiResult<PeriodApiEntity> = apiRequest {

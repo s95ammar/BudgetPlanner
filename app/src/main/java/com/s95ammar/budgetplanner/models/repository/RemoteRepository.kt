@@ -18,7 +18,7 @@ interface RemoteRepository {
     suspend fun getAllUserPeriods(): ApiResult<List<PeriodSimpleApiEntity>>
     suspend fun getPeriod(
         id: Int,
-        includePeriodRecords: Boolean = false,
+        includePeriodicCategories: Boolean = false,
         includeBudgetTransactions: Boolean = false,
         includeSavings: Boolean = false
     ): ApiResult<PeriodApiEntity>
@@ -27,11 +27,11 @@ interface RemoteRepository {
     suspend fun updatePeriod(request: PeriodUpsertApiRequest.Update): ApiResult<PeriodApiEntity>
     suspend fun deletePeriod(id: Int): ApiResult<Boolean>
 
-//    suspend fun getPeriodRecord(id: Int?, periodId: Int?): ApiResult<List<PeriodRecordApiEntity>>
-//    suspend fun getPeriodRecordsForPeriod(periodId: Int?): ApiResult<List<PeriodRecordApiEntity>>
-//    suspend fun insertPeriodRecord(request: PeriodRecordUpsertApiRequest.Insertion): ApiResult<PeriodRecordApiEntity>
-//    suspend fun updatePeriodRecord(request: PeriodRecordUpsertApiRequest.Update): ApiResult<PeriodRecordApiEntity>
-//    suspend fun deletePeriodRecord(id: IdBodyRequest): ApiResult<Boolean>
+//    suspend fun getPeriodicCategory(id: Int?, periodId: Int?): ApiResult<List<PeriodicCategoryApiEntity>>
+//    suspend fun getPeriodicCategoriesForPeriod(periodId: Int?): ApiResult<List<PeriodicCategoryApiEntity>>
+//    suspend fun insertPeriodicCategory(request: PeriodicCategoryUpsertApiRequest.Insertion): ApiResult<PeriodicCategoryApiEntity>
+//    suspend fun updatePeriodicCategory(request: PeriodicCategoryUpsertApiRequest.Update): ApiResult<PeriodicCategoryApiEntity>
+//    suspend fun deletePeriodicCategory(id: IdBodyRequest): ApiResult<Boolean>
 
     suspend fun getBudgetTransaction(id: Int?, periodId: Int?): ApiResult<List<BudgetTransactionApiEntity>>
     suspend fun getBudgetTransactionsForPeriod(periodId: Int?): ApiResult<List<BudgetTransactionApiEntity>>

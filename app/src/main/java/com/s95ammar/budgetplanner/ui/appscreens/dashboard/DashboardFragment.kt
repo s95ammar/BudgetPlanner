@@ -138,12 +138,12 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
     }
 
     private fun navigateToEditPeriod(periodId: Int) {
-//        setFragmentResultListener(Keys.KEY_DASHBOARD_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> sharedViewModel.onPeriodRecordsChanged() }
+//        setFragmentResultListener(Keys.KEY_DASHBOARD_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> sharedViewModel.onPeriodicCategoriesChanged() }
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodCreateEditFragment(periodId))
     }
 
     private fun listenToPeriodsListChangedResult() {
-        setFragmentResultListener(Keys.KEY_PERIOD_RECORDS_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> viewModel.refresh() }
+        setFragmentResultListener(Keys.KEY_PERIODIC_CATEGORIES_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> viewModel.refresh() }
     }
 
 }

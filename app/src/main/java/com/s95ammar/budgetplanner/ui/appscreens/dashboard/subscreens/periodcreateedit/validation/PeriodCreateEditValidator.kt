@@ -1,7 +1,7 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation
 
-import com.s95ammar.budgetplanner.models.api.requests.PeriodRecordUpsertApiRequest
 import com.s95ammar.budgetplanner.models.api.requests.PeriodUpsertApiRequest
+import com.s95ammar.budgetplanner.models.api.requests.PeriodicCategoryUpsertApiRequest
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
@@ -9,7 +9,7 @@ import com.s95ammar.budgetplanner.util.NO_ITEM
 
 class PeriodCreateEditValidator(
     private val periodId: Int,
-    private val periodRecordUpsertApiRequestListGetter: () -> List<PeriodRecordUpsertApiRequest>,
+    private val periodicCategoryUpsertApiRequestListGetter: () -> List<PeriodicCategoryUpsertApiRequest>,
     periodInputBundle: PeriodInputBundle
 ) : Validator<PeriodInputBundle, PeriodUpsertApiRequest>(periodInputBundle) {
 
@@ -25,12 +25,12 @@ class PeriodCreateEditValidator(
         return if (periodId == Int.NO_ITEM) PeriodUpsertApiRequest.Insertion(
             name = inputEntity.name,
             max = inputEntity.max?.toIntOrNull(),
-            periodRecords = periodRecordUpsertApiRequestListGetter()
+            periodicCategories = periodicCategoryUpsertApiRequestListGetter()
         ) else PeriodUpsertApiRequest.Update(
             id = periodId,
             name = inputEntity.name,
             max = inputEntity.max?.toIntOrNull(),
-            periodRecords = periodRecordUpsertApiRequestListGetter()
+            periodicCategories = periodicCategoryUpsertApiRequestListGetter()
         )
     }
 

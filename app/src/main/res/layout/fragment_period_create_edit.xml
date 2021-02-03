@@ -99,7 +99,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_choose_period_categories"
                 tools:itemCount="3"
-                tools:listitem="@layout/item_period_record_selection" />
+                tools:listitem="@layout/item_periodic_category_selection" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_apply"

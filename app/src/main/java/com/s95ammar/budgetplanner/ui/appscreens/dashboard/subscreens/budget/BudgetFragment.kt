@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBudgetBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodRecordViewEntity
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.adapter.PeriodRecordsListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.adapter.PeriodicCategoriesListAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.data.BudgetUiEvent
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
@@ -26,7 +26,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     private val viewModel: BudgetViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
 
-    private val adapter by lazy { PeriodRecordsListAdapter() }
+    private val adapter by lazy { PeriodicCategoriesListAdapter() }
 
     override val binding: FragmentDashboardBudgetBinding
         get() = getBinding()
@@ -50,21 +50,21 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     override fun initObservers() {
         super.initObservers()
         viewModel.currentPeriodId.observe(viewLifecycleOwner) { showFabIfPeriodIsAvailable(it) }
-        viewModel.resultPeriodRecords.observe(viewLifecycleOwner) { setPeriodRecords(it) }
+        viewModel.resultPeriodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.onSelectedPeriodChanged(it) }
-        sharedViewModel.onPeriodRecordsLoaded.observeEvent(viewLifecycleOwner) { (periodId, periodRecords) ->
-            viewModel.onPeriodRecordsLoaded(periodId, periodRecords)
+        sharedViewModel.onPeriodicCategoriesLoaded.observeEvent(viewLifecycleOwner) { (periodId, periodicCategories) ->
+            viewModel.onPeriodicCategoriesLoaded(periodId, periodicCategories)
         }
-//        sharedViewModel.onPeriodRecordsChanged.observeEvent(viewLifecycleOwner) { viewModel.refresh() }
+//        sharedViewModel.onPeriodicCategoriesChanged.observeEvent(viewLifecycleOwner) { viewModel.refresh() }
     }
 
     private fun showFabIfPeriodIsAvailable(periodId: Int) {
         if (periodId == Int.NO_ITEM) binding.fab.hide() else binding.fab.show()
     }
 
-    private fun setPeriodRecords(periodRecords: List<PeriodRecordViewEntity>) {
-        adapter.submitList(periodRecords)
+    private fun setPeriodicCategories(periodicCategories: List<PeriodicCategoryViewEntity>) {
+        adapter.submitList(periodicCategories)
     }
 
     private fun performUiEvent(uiEvent: BudgetUiEvent) {

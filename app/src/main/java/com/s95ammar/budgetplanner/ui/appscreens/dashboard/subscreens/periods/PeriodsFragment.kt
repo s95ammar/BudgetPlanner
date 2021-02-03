@@ -102,7 +102,7 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
 
     private fun onPeriodDeleted() {
         viewModel.refresh()
-        setFragmentResult(Keys.KEY_PERIOD_RECORDS_SCREEN_ON_PERIODS_LIST_CHANGED, Bundle.EMPTY)
+        setFragmentResult(Keys.KEY_PERIODIC_CATEGORIES_SCREEN_ON_PERIODS_LIST_CHANGED, Bundle.EMPTY)
     }
 
 }

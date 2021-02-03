@@ -7,37 +7,37 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DiffUtil
-import com.s95ammar.budgetplanner.databinding.ItemPeriodRecordSelectionBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodRecordViewEntity
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.adapter.PeriodRecordsSelectionAdapter.PeriodRecordsSelectionViewHolder
+import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategorySelectionBinding
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.adapter.PeriodicCategoriesSelectionAdapter.PeriodicCategoriesSelectionViewHolder
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.util.inputText
 
-class PeriodRecordsSelectionAdapter(
+class PeriodicCategoriesSelectionAdapter(
     private val onClick: (Int, Boolean) -> Unit,
     private val onMaxInputChanged: (Int, String?) -> Unit
-) : BaseListAdapter<PeriodRecordViewEntity, PeriodRecordsSelectionViewHolder>(DiffUtilCallback()) {
+) : BaseListAdapter<PeriodicCategoryViewEntity, PeriodicCategoriesSelectionViewHolder>(DiffUtilCallback()) {
 
     var isInsertionTemplate = false
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodRecordsSelectionViewHolder {
-        return PeriodRecordsSelectionViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodicCategoriesSelectionViewHolder {
+        return PeriodicCategoriesSelectionViewHolder(
             onSelectionStateChanged = onClick,
             onMaxInputChanged = onMaxInputChanged,
-            binding = ItemPeriodRecordSelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            binding = ItemPeriodicCategorySelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             isInsertionTemplate = isInsertionTemplate
         )
     }
 
-    class PeriodRecordsSelectionViewHolder(
+    class PeriodicCategoriesSelectionViewHolder(
         private val onSelectionStateChanged: (Int, Boolean) -> Unit,
         private val onMaxInputChanged: (Int, String?) -> Unit,
-        private val binding: ItemPeriodRecordSelectionBinding,
+        private val binding: ItemPeriodicCategorySelectionBinding,
         private val isInsertionTemplate: Boolean
-    ) : BaseListAdapter.BaseViewHolder<PeriodRecordViewEntity>(binding.root) {
+    ) : BaseListAdapter.BaseViewHolder<PeriodicCategoryViewEntity>(binding.root) {
 
 
-        override fun bind(item: PeriodRecordViewEntity, payloads: PayloadsHolder) {
+        override fun bind(item: PeriodicCategoryViewEntity, payloads: PayloadsHolder) {
             binding.checkBoxCategoryName.setOnCheckedChangeListener { _, isChecked -> onSelectionStateChanged(adapterPosition, isChecked) }
             binding.inputLayoutMax.editText?.doAfterTextChanged { onMaxInputChanged(adapterPosition, it?.toString()) }
 
@@ -70,24 +70,24 @@ class PeriodRecordsSelectionAdapter(
         }
     }
 
-    class DiffUtilCallback : DiffUtil.ItemCallback<PeriodRecordViewEntity>() {
-        override fun areItemsTheSame(oldItem: PeriodRecordViewEntity, newItem: PeriodRecordViewEntity): Boolean {
+    class DiffUtilCallback : DiffUtil.ItemCallback<PeriodicCategoryViewEntity>() {
+        override fun areItemsTheSame(oldItem: PeriodicCategoryViewEntity, newItem: PeriodicCategoryViewEntity): Boolean {
             return oldItem.categoryId == newItem.categoryId
         }
 
-        override fun areContentsTheSame(oldItem: PeriodRecordViewEntity, newItem: PeriodRecordViewEntity): Boolean {
+        override fun areContentsTheSame(oldItem: PeriodicCategoryViewEntity, newItem: PeriodicCategoryViewEntity): Boolean {
             return oldItem == newItem
         }
 
-        override fun getChangePayload(oldItem: PeriodRecordViewEntity, newItem: PeriodRecordViewEntity): PayloadsHolder {
+        override fun getChangePayload(oldItem: PeriodicCategoryViewEntity, newItem: PeriodicCategoryViewEntity): PayloadsHolder {
             return PayloadsHolder().apply {
-                addPayloadIfNotEqual(PayloadType.NAME, oldItem to newItem, PeriodRecordViewEntity::categoryName)
-                addPayloadIfNotEqual(PayloadType.MAX, oldItem to newItem, PeriodRecordViewEntity::max)
+                addPayloadIfNotEqual(PayloadType.NAME, oldItem to newItem, PeriodicCategoryViewEntity::categoryName)
+                addPayloadIfNotEqual(PayloadType.MAX, oldItem to newItem, PeriodicCategoryViewEntity::max)
                 addPayloadIfNotEqual(
                     PayloadType.SELECTION,
                     oldItem to newItem,
-                    PeriodRecordViewEntity::isSelected,
-                    PeriodRecordViewEntity::amount
+                    PeriodicCategoryViewEntity::isSelected,
+                    PeriodicCategoryViewEntity::amount
                 )
             }
         }

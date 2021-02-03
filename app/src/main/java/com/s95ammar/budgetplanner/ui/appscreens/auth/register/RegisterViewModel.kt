@@ -45,8 +45,8 @@ class RegisterViewModel @ViewModelInject constructor(
 
         remoteRepository.register(userCredentials)
             .onSuccess { tokenResponse ->
-                tokenResponse?.let {
-                    localRepository.saveAuthToken(tokenResponse.token)
+                tokenResponse?.token?.let { token ->
+                    localRepository.saveAuthToken(token)
                     _performUiEvent.call(RegisterUiEvent.DisplayLoadingState(LoadingState.Success))
                     _performUiEvent.call(RegisterUiEvent.NavigateToDashboard)
                 }

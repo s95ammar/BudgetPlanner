@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodCreateEditBinding
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodRecordViewEntity
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.adapter.PeriodRecordsSelectionAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.adapter.PeriodicCategoriesSelectionAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation.PeriodCreateEditValidator
@@ -29,7 +29,7 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
     private val viewModel: PeriodCreateEditViewModel by viewModels()
 
     private val adapter by lazy {
-        PeriodRecordsSelectionAdapter(viewModel::onPeriodRecordSelectionStateChanged, viewModel::onPeriodRecordMaxChanged)
+        PeriodicCategoriesSelectionAdapter(viewModel::onPeriodicCategorySelectionStateChanged, viewModel::onPeriodicCategoryMaxChanged)
     }
 
     override val binding: FragmentPeriodCreateEditBinding
@@ -57,7 +57,7 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
         viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
         viewModel.name.observe(viewLifecycleOwner) { setPeriodName(it) }
         viewModel.max.observe(viewLifecycleOwner) { setPeriodMax(it) }
-        viewModel.periodRecords.observe(viewLifecycleOwner) { setPeriodRecords(it) }
+        viewModel.periodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
@@ -87,8 +87,8 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
         binding.inputLayoutMax.inputText = max?.toString()
     }
 
-    private fun setPeriodRecords(periodRecords: List<PeriodRecordViewEntity>) {
-        adapter.submitList(periodRecords)
+    private fun setPeriodicCategories(periodicCategories: List<PeriodicCategoryViewEntity>) {
+        adapter.submitList(periodicCategories)
     }
 
     private fun performUiEvent(uiEvent: PeriodCreateEditUiEvent) {
@@ -131,7 +131,7 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
     }
 
     private fun setResult() {
-        setFragmentResult(Keys.KEY_PERIOD_RECORDS_SCREEN_ON_PERIODS_LIST_CHANGED, Bundle.EMPTY)
+        setFragmentResult(Keys.KEY_PERIODIC_CATEGORIES_SCREEN_ON_PERIODS_LIST_CHANGED, Bundle.EMPTY)
         setFragmentResult(Keys.KEY_ON_PERIOD_CREATE_EDIT, Bundle.EMPTY)
     }
 

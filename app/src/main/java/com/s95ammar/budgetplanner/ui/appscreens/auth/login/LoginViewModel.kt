@@ -54,8 +54,8 @@ class LoginViewModel @ViewModelInject constructor(
 
         remoteRepository.login(email, password)
             .onSuccess { tokenResponse ->
-                tokenResponse?.let {
-                    localRepository.saveAuthToken(tokenResponse.token)
+                tokenResponse?.token?.let { token ->
+                    localRepository.saveAuthToken(token)
                     _performUiEvent.call(LoginUiEvent.DisplayLoadingState(LoadingState.Success))
                     _performUiEvent.call(LoginUiEvent.NavigateToDashboard)
                 }

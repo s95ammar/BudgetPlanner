@@ -8,7 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.s95ammar.budgetplanner.models.repository.LocalRepository
 import com.s95ammar.budgetplanner.models.repository.RemoteRepository
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodRecordViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.data.BudgetUiEvent
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
@@ -19,11 +19,11 @@ class BudgetViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _periodIdToPeriodRecordsMap = MutableLiveData(mutableMapOf<Int, List<PeriodRecordViewEntity>>())
+    private val _periodIdToPeriodicCategoriesMap = MutableLiveData(mutableMapOf<Int, List<PeriodicCategoryViewEntity>>())
 
     private val _currentPeriodId = MutableLiveData<Int>()
-    private val _resultPeriodRecords = MediatorLiveData<List<PeriodRecordViewEntity>>().apply {
-        addSource(_periodIdToPeriodRecordsMap) { map ->
+    private val _resultPeriodicCategories = MediatorLiveData<List<PeriodicCategoryViewEntity>>().apply {
+        addSource(_periodIdToPeriodicCategoriesMap) { map ->
             _currentPeriodId.value?.let { periodId ->
                 value = map[periodId].orEmpty().filter { it.isSelected }
             }
@@ -32,18 +32,18 @@ class BudgetViewModel @ViewModelInject constructor(
     private val _performUiEvent = EventMutableLiveData<BudgetUiEvent>()
 
     val currentPeriodId = _currentPeriodId.asLiveData()
-    val resultPeriodRecords = _resultPeriodRecords.asLiveData()
+    val resultPeriodicCategories = _resultPeriodicCategories.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun onSelectedPeriodChanged(periodId: Int) {
         if (_currentPeriodId.value == periodId) return
 
         _currentPeriodId.value = periodId
-        _resultPeriodRecords.value = _periodIdToPeriodRecordsMap.value?.get(periodId).orEmpty().filter { it.isSelected }
+        _resultPeriodicCategories.value = _periodIdToPeriodicCategoriesMap.value?.get(periodId).orEmpty().filter { it.isSelected }
     }
 
-    fun onPeriodRecordsLoaded(periodId: Int, periodRecords: List<PeriodRecordViewEntity>) {
-        _periodIdToPeriodRecordsMap.value = _periodIdToPeriodRecordsMap.value?.apply { set(periodId, periodRecords) }
+    fun onPeriodicCategoriesLoaded(periodId: Int, periodicCategories: List<PeriodicCategoryViewEntity>) {
+        _periodIdToPeriodicCategoriesMap.value = _periodIdToPeriodicCategoriesMap.value?.apply { set(periodId, periodicCategories) }
     }
 
     fun onEditPeriod() {
