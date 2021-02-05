@@ -19,6 +19,7 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent as UiEvent
 
@@ -91,13 +92,15 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
         val mode = _mode.value ?: return
 
         viewModelScope.launch {
-            _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
             val flowRequest = when (mode) {
                 CreateEditMode.EDIT -> repository.getPeriod(editedPeriodId, includePeriodicCategories = true)
                 CreateEditMode.CREATE -> repository.getPeriodInsertTemplate()
             }
 
             flowRequest
+                .onStart {
+                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
+                }
                 .catch { throwable ->
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
@@ -111,13 +114,15 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
     }
 
     private fun insertOrUpdatePeriod(period: PeriodUpsertApiRequest) = viewModelScope.launch {
-            _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
             val flowRequest = when (period) {
                 is PeriodUpsertApiRequest.Insertion -> repository.insertPeriod(period)
                 is PeriodUpsertApiRequest.Update -> repository.updatePeriod(period)
             }
 
             flowRequest
+                .onStart {
+                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
+                }
                 .catch { throwable ->
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }

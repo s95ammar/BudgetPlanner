@@ -13,6 +13,7 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class CategoriesViewModel @ViewModelInject constructor(
@@ -46,17 +47,28 @@ class CategoriesViewModel @ViewModelInject constructor(
     }
 
     fun deleteCategory(id: Int) = viewModelScope.launch {
-        _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Loading))
         repository.deleteCategory(id)
-            .catch { _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
-            .collect { refresh() }
+            .onStart {
+                _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Loading))
+            }
+            .catch {
+                _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Error(it)))
+            }
+            .collect {
+                _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Success))
+                refresh()
+            }
     }
 
     private fun loadAllCategories() {
         viewModelScope.launch {
-            _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Loading))
             repository.getAllUserCategories()
-                .catch { _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
+                .onStart {
+                    _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Loading))
+                }
+                .catch {
+                    _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Error(it)))
+                }
                 .collect { categoryApiEntities ->
                     val categories = categoryApiEntities.mapNotNull { apiEntity -> CategoryViewEntity.ApiMapper.toViewEntity(apiEntity) }
                     _allCategories.value = categories

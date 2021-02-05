@@ -14,6 +14,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.Registe
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class RegisterViewModel @ViewModelInject constructor(
@@ -39,9 +40,10 @@ class RegisterViewModel @ViewModelInject constructor(
     }
 
     private fun register(userCredentials: UserCredentials) = viewModelScope.launch {
-        _performUiEvent.call(RegisterUiEvent.DisplayLoadingState(LoadingState.Loading))
-
         repository.register(userCredentials)
+            .onStart {
+                _performUiEvent.call(RegisterUiEvent.DisplayLoadingState(LoadingState.Loading))
+            }
             .catch { throwable ->
                 _performUiEvent.call(RegisterUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }

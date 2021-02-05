@@ -13,6 +13,7 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class PeriodsViewModel @ViewModelInject constructor(
@@ -44,17 +45,25 @@ class PeriodsViewModel @ViewModelInject constructor(
     }
 
     fun deletePeriod(id: Int) = viewModelScope.launch {
-        _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
         repository.deletePeriod(id)
-            .catch { _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
+            .onStart {
+                _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
+            }
+            .catch {
+                _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it)))
+            }
             .collect { _onPeriodDeleted.call() }
     }
 
     private fun loadAllPeriods() {
         viewModelScope.launch {
-            _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
             repository.getAllUserPeriods()
-                .catch { _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
+                .onStart {
+                    _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
+                }
+                .catch {
+                    _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it)))
+                }
                 .collect { periodApiEntities ->
                     val periods = periodApiEntities.mapNotNull { apiEntity -> PeriodSimpleViewEntity.ApiMapper.toViewEntity(apiEntity) }
                     _allPeriods.value = periods

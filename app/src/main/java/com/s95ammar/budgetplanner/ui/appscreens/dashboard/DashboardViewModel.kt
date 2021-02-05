@@ -15,6 +15,7 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class DashboardViewModel @ViewModelInject constructor(
@@ -80,8 +81,10 @@ class DashboardViewModel @ViewModelInject constructor(
 
     private fun loadAllPeriods() {
         viewModelScope.launch {
-            _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Loading, IntLoadingType.MAIN))
             repository.getAllUserPeriods()
+                .onStart {
+                    _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Loading, IntLoadingType.MAIN))
+                }
                 .catch { throwable ->
                     _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Error(throwable), IntLoadingType.MAIN))
                 }

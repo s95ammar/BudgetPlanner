@@ -14,8 +14,10 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class DashboardSharedViewModel @ViewModelInject constructor(
@@ -47,23 +49,21 @@ class DashboardSharedViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun loadPeriod(periodId: Int) {
-        viewModelScope.launch {
+    private fun loadPeriod(periodId: Int) = viewModelScope.launch {
+        repository.getPeriod(
+            id = periodId,
+            includePeriodicCategories = true,
+            includeBudgetTransactions = true,
+            includeSavings = true
+        ).onStart {
             _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Loading, IntLoadingType.SWIPE_TO_REFRESH))
-            repository.getPeriod(
-                id = periodId,
-                includePeriodicCategories = true,
-                includeBudgetTransactions = true,
-                includeSavings = true
-            ).catch {
-                _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Error(it), IntLoadingType.SWIPE_TO_REFRESH))
-            }.collect { periodApiEntity ->
-                PeriodViewEntity.ApiMapper.toViewEntity(periodApiEntity)?.let { period ->
-                    _onPeriodicCategoriesLoaded.call(periodId to period.periodicCategories)
-                }
-                _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Success, IntLoadingType.SWIPE_TO_REFRESH))
+        }.catch {
+            _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Error(it), IntLoadingType.SWIPE_TO_REFRESH))
+        }.collect { periodApiEntity ->
+            PeriodViewEntity.ApiMapper.toViewEntity(periodApiEntity)?.let { period ->
+                _onPeriodicCategoriesLoaded.call(periodId to period.periodicCategories)
             }
+            _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Success, IntLoadingType.SWIPE_TO_REFRESH))
         }
-
     }
 }

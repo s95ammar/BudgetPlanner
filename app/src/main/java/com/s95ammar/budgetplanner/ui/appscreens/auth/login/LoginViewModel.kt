@@ -13,6 +13,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.auth.login.validation.LoginValid
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class LoginViewModel @ViewModelInject constructor(
@@ -47,9 +48,10 @@ class LoginViewModel @ViewModelInject constructor(
     }
 
     private fun login(email: String, password: String) = viewModelScope.launch {
-        _performUiEvent.call(LoginUiEvent.DisplayLoadingState(LoadingState.Loading))
-
         repository.login(email, password)
+            .onStart {
+                _performUiEvent.call(LoginUiEvent.DisplayLoadingState(LoadingState.Loading))
+            }
             .catch { throwable ->
                 _performUiEvent.call(LoginUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }
