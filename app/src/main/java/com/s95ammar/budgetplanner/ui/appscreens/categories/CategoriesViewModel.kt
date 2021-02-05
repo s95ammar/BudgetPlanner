@@ -3,8 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.categories
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.s95ammar.budgetplanner.models.repository.LocalRepository
-import com.s95ammar.budgetplanner.models.repository.RemoteRepository
+import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.categories.data.CategoriesUiEvent
@@ -12,11 +11,12 @@ import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class CategoriesViewModel @ViewModelInject constructor(
-    private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository
+    private val repository: CategoriesRepository
 ) : ViewModel() {
 
     private val _allCategories = LoaderMutableLiveData<List<CategoryViewEntity>> { loadAllCategories() }
@@ -47,21 +47,21 @@ class CategoriesViewModel @ViewModelInject constructor(
 
     fun deleteCategory(id: Int) = viewModelScope.launch {
         _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Loading))
-        remoteRepository.deleteCategory(id)
-            .onSuccess { refresh() }
-            .onError { _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
+        repository.deleteCategory(id)
+            .catch { _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
+            .collect { refresh() }
     }
 
     private fun loadAllCategories() {
         viewModelScope.launch {
             _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Loading))
-            remoteRepository.getAllUserCategories()
-                .onSuccess { categoryApiEntities ->
-                    val categories = categoryApiEntities.orEmpty().mapNotNull { apiEntity -> CategoryViewEntity.ApiMapper.toViewEntity(apiEntity) }
+            repository.getAllUserCategories()
+                .catch { _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
+                .collect { categoryApiEntities ->
+                    val categories = categoryApiEntities.mapNotNull { apiEntity -> CategoryViewEntity.ApiMapper.toViewEntity(apiEntity) }
                     _allCategories.value = categories
                     _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Success))
                 }
-                .onError { _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
         }
     }
 

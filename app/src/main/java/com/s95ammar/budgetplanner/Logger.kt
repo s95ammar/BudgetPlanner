@@ -1,21 +1,18 @@
 package com.s95ammar.budgetplanner
 
 import android.util.Log
-import kotlin.reflect.KClass
 
-object Logger {
+private const val LOG_TAG = "Budget_Planner"
 
-    private const val LOG_TAG = "Budget_Planner"
+fun<T: Any> T.logFromHere(message: String) {
+    Log.d(LOG_TAG, "${this::class.java.simpleName}: $message")
+}
 
-    fun logDebug(logSource: KClass<out Any>, message: String) {
-        Log.d(LOG_TAG, "${logSource.simpleName}: $message")
-    }
+fun <T : Any> T.logThreadNameFromHere(message: String = "") {
+    val prefix = if (message.isEmpty()) "" else "$message - "
+    logFromHere("$prefix${Thread.currentThread().name}")
+}
 
-    fun logError(logSource: KClass<out Any>, message: String) {
-        Log.e(LOG_TAG, "${logSource.simpleName}: $message")
-    }
-
-    fun logObjToString(logSource: KClass<out Any>, obj: Any?) {
-        Log.d(LOG_TAG, "${logSource.simpleName}: ${obj.toString()}")
-    }
+fun<T: Any> T.logFromHere(throwable: Throwable) {
+    Log.e(LOG_TAG, "${this::class.java.simpleName}: ${throwable.stackTrace}")
 }

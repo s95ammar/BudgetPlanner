@@ -7,8 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.api.requests.CategoryUpsertApiRequest
-import com.s95ammar.budgetplanner.models.repository.LocalRepository
-import com.s95ammar.budgetplanner.models.repository.RemoteRepository
+import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
@@ -20,11 +19,12 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveDataVoid
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class CategoryCreateEditViewModel @ViewModelInject constructor(
-    private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository,
+    private val repository: CategoriesRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -55,35 +55,32 @@ class CategoryCreateEditViewModel @ViewModelInject constructor(
     private fun loadEditedCategory() {
         viewModelScope.launch {
             _displayLoadingState.call(LoadingState.Loading)
-            remoteRepository.getCategory(editedCategoryId)
-                .onSuccess { categoryApiEntity ->
-                    categoryApiEntity.orEmpty()
-                        .map { apiEntity -> CategoryViewEntity.ApiMapper.toViewEntity(apiEntity) }
-                        .singleOrNull()
-                        ?.let { category ->
-                            _editedCategory.value = category
-                            _displayLoadingState.call(LoadingState.Success)
-                        }
+            repository.getCategory(editedCategoryId)
+                .catch { _displayLoadingState.call(LoadingState.Error(it)) }
+                .collect { categoryApiEntity ->
+                    CategoryViewEntity.ApiMapper.toViewEntity(categoryApiEntity)?.let { category ->
+                        _editedCategory.value = category
+                        _displayLoadingState.call(LoadingState.Success)
+                    }
                 }
-                .onError { _displayLoadingState.call(LoadingState.Error(it)) }
         }
 
     }
 
     private fun onValidationSuccessful(category: CategoryUpsertApiRequest) = viewModelScope.launch {
         _displayLoadingState.call(LoadingState.Loading)
-        val result = when (category) {
-            is CategoryUpsertApiRequest.Insertion -> remoteRepository.insertCategory(category)
-            is CategoryUpsertApiRequest.Update -> remoteRepository.updateCategory(category)
+        val flowRequest = when (category) {
+            is CategoryUpsertApiRequest.Insertion -> repository.insertCategory(category)
+            is CategoryUpsertApiRequest.Update -> repository.updateCategory(category)
         }
 
-        result
-            .onSuccess {
+        flowRequest
+            .catch { throwable ->
+                _displayLoadingState.call(LoadingState.Error(throwable))
+            }
+            .collect {
                 _onApplySuccess.call()
                 _displayLoadingState.call(LoadingState.Success)
-            }
-            .onError { throwable ->
-                _displayLoadingState.call(LoadingState.Error(throwable))
             }
     }
 

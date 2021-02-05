@@ -3,8 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.s95ammar.budgetplanner.models.repository.LocalRepository
-import com.s95ammar.budgetplanner.models.repository.RemoteRepository
+import com.s95ammar.budgetplanner.models.repository.PeriodRepository
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimpleViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.data.PeriodsUiEvent
@@ -12,11 +11,12 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveDataVoid
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class PeriodsViewModel @ViewModelInject constructor(
-    private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository
+    private val repository: PeriodRepository
 ) : ViewModel() {
 
     private val _allPeriods = LoaderMutableLiveData<List<PeriodSimpleViewEntity>> { loadAllPeriods() }
@@ -45,21 +45,21 @@ class PeriodsViewModel @ViewModelInject constructor(
 
     fun deletePeriod(id: Int) = viewModelScope.launch {
         _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
-        remoteRepository.deletePeriod(id)
-            .onSuccess { _onPeriodDeleted.call() }
-            .onError { _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
+        repository.deletePeriod(id)
+            .catch { _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
+            .collect { _onPeriodDeleted.call() }
     }
 
     private fun loadAllPeriods() {
         viewModelScope.launch {
             _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
-            remoteRepository.getAllUserPeriods()
-                .onSuccess { periodApiEntities ->
-                    val periods = periodApiEntities.orEmpty().mapNotNull { apiEntity -> PeriodSimpleViewEntity.ApiMapper.toViewEntity(apiEntity) }
+            repository.getAllUserPeriods()
+                .catch { _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
+                .collect { periodApiEntities ->
+                    val periods = periodApiEntities.mapNotNull { apiEntity -> PeriodSimpleViewEntity.ApiMapper.toViewEntity(apiEntity) }
                     _allPeriods.value = periods
                     _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Success))
                 }
-                .onError { _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it))) }
         }
     }
 

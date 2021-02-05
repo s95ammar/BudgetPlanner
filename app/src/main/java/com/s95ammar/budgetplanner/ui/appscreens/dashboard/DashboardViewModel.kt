@@ -3,8 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.s95ammar.budgetplanner.models.repository.LocalRepository
-import com.s95ammar.budgetplanner.models.repository.RemoteRepository
+import com.s95ammar.budgetplanner.models.repository.PeriodRepository
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimpleViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
@@ -14,11 +13,12 @@ import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DashboardViewModel @ViewModelInject constructor(
-    private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository,
+    private val repository: PeriodRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _allPeriods = LoaderMutableLiveData<List<PeriodSimpleViewEntity>> { loadAllPeriods() }
@@ -81,14 +81,14 @@ class DashboardViewModel @ViewModelInject constructor(
     private fun loadAllPeriods() {
         viewModelScope.launch {
             _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Loading, IntLoadingType.MAIN))
-            remoteRepository.getAllUserPeriods()
-                .onSuccess { periodsApiEntities ->
+            repository.getAllUserPeriods()
+                .catch { throwable ->
+                    _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Error(throwable), IntLoadingType.MAIN))
+                }
+                .collect { periodsApiEntities ->
                     _allPeriods.value = periodsApiEntities.orEmpty()
                         .mapNotNull { apiEntity -> PeriodSimpleViewEntity.ApiMapper.toViewEntity(apiEntity) }
                     _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Success, IntLoadingType.MAIN))
-                }
-                .onError { throwable ->
-                    _performUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Error(throwable), IntLoadingType.MAIN))
                 }
         }
     }

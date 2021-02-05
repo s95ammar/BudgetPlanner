@@ -5,8 +5,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.api.requests.PeriodUpsertApiRequest
 import com.s95ammar.budgetplanner.models.api.requests.PeriodicCategoryUpsertApiRequest
-import com.s95ammar.budgetplanner.models.repository.LocalRepository
-import com.s95ammar.budgetplanner.models.repository.RemoteRepository
+import com.s95ammar.budgetplanner.models.repository.PeriodRepository
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
@@ -18,12 +17,13 @@ import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent as UiEvent
 
 class PeriodCreateEditViewModel @ViewModelInject constructor(
-    private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository,
+    private val repository: PeriodRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -92,39 +92,39 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
 
         viewModelScope.launch {
             _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
-            val result = when (mode) {
-                CreateEditMode.EDIT -> remoteRepository.getPeriod(editedPeriodId, includePeriodicCategories = true)
-                CreateEditMode.CREATE -> remoteRepository.getPeriodInsertTemplate()
+            val flowRequest = when (mode) {
+                CreateEditMode.EDIT -> repository.getPeriod(editedPeriodId, includePeriodicCategories = true)
+                CreateEditMode.CREATE -> repository.getPeriodInsertTemplate()
             }
 
-            result
-                .onSuccess { periodApiEntity ->
+            flowRequest
+                .catch { throwable ->
+                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
+                }
+                .collect { periodApiEntity ->
                     PeriodViewEntity.ApiMapper.toViewEntity(periodApiEntity)?.let { periodViewEntity ->
                         _period.value = periodViewEntity
                         _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
                     }
-                }
-                .onError { throwable ->
-                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
         }
     }
 
     private fun insertOrUpdatePeriod(period: PeriodUpsertApiRequest) = viewModelScope.launch {
             _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
-            val result = when (period) {
-                is PeriodUpsertApiRequest.Insertion -> remoteRepository.insertPeriod(period)
-                is PeriodUpsertApiRequest.Update -> remoteRepository.updatePeriod(period)
+            val flowRequest = when (period) {
+                is PeriodUpsertApiRequest.Insertion -> repository.insertPeriod(period)
+                is PeriodUpsertApiRequest.Update -> repository.updatePeriod(period)
             }
 
-            result
-                .onSuccess {
+            flowRequest
+                .catch { throwable ->
+                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
+                }
+                .collect {
                     _performUiEvent.call(UiEvent.SetResult)
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
                     _performUiEvent.call(UiEvent.Exit)
-                }
-                .onError { throwable ->
-                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
     }
 

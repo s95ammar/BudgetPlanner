@@ -5,22 +5,20 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.s95ammar.budgetplanner.models.repository.LocalRepository
-import com.s95ammar.budgetplanner.models.repository.RemoteRepository
+import com.s95ammar.budgetplanner.models.repository.AuthRepository
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.LoginUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.data.UserLoginInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.auth.login.validation.LoginValidator
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class LoginViewModel @ViewModelInject constructor(
-    private val remoteRepository: RemoteRepository,
-    private val localRepository: LocalRepository,
+    private val repository: AuthRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
-    // TODO: handle layout config changes & process death
 
     private val _performUiEvent = EventMutableLiveData<LoginUiEvent>()
 
@@ -44,24 +42,20 @@ class LoginViewModel @ViewModelInject constructor(
     }
 
     private fun checkCachedToken() {
-        val cachedToken = localRepository.loadAuthToken()
-        if (!cachedToken.isNullOrEmpty())
+        if (repository.tokenExists())
             _performUiEvent.call(LoginUiEvent.NavigateToDashboard)
     }
 
     private fun login(email: String, password: String) = viewModelScope.launch {
         _performUiEvent.call(LoginUiEvent.DisplayLoadingState(LoadingState.Loading))
 
-        remoteRepository.login(email, password)
-            .onSuccess { tokenResponse ->
-                tokenResponse?.token?.let { token ->
-                    localRepository.saveAuthToken(token)
-                    _performUiEvent.call(LoginUiEvent.DisplayLoadingState(LoadingState.Success))
-                    _performUiEvent.call(LoginUiEvent.NavigateToDashboard)
-                }
-            }
-            .onError { throwable ->
+        repository.login(email, password)
+            .catch { throwable ->
                 _performUiEvent.call(LoginUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
+            }
+            .collect {
+                _performUiEvent.call(LoginUiEvent.DisplayLoadingState(LoadingState.Success))
+                _performUiEvent.call(LoginUiEvent.NavigateToDashboard)
             }
     }
 }

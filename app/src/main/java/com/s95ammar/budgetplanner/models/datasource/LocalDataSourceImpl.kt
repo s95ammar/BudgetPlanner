@@ -1,13 +1,13 @@
-package com.s95ammar.budgetplanner.models.repository
+package com.s95ammar.budgetplanner.models.datasource
 
 import com.s95ammar.budgetplanner.models.sharedprefs.SharedPrefsManager
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocalRepositoryImpl @Inject constructor(
+class LocalDataSourceImpl @Inject constructor(
     private val sharedPrefs: SharedPrefsManager
-) : LocalRepository {
+) : LocalDataSource {
 
     // SharedPreferences
 
