@@ -6,16 +6,12 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.s95ammar.budgetplanner.models.datasource.LocalDataSource
-import com.s95ammar.budgetplanner.models.datasource.RemoteDataSource
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.data.BudgetUiEvent
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 
 class BudgetViewModel @ViewModelInject constructor(
-    private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

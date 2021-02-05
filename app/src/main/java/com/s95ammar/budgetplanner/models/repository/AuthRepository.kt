@@ -19,6 +19,8 @@ class AuthRepository @Inject constructor(
         return !localDataSource.loadAuthToken().isNullOrEmpty()
     }
 
+    fun clearAuthToken() = localDataSource.clearAuthToken()
+
     suspend fun login(email: String, password: String) = flowOnIo {
         remoteDataSource.login(email, password)
             .parseResponse()
