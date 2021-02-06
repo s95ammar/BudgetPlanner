@@ -22,11 +22,7 @@ class RemoteDataSourceImpl @Inject constructor(private val apiService: ApiServic
         apiService.authenticate()
     }
 
-    override suspend fun getAllUserCategories() = apiRequestAsFlow {
-        apiService.getCategory(id = null)
-    }
-
-    override suspend fun getCategory(id: Int) = apiRequestAsFlow {
+    override suspend fun getCategory(id: Int?) = apiRequestAsFlow {
         apiService.getCategory(id)
     }
 

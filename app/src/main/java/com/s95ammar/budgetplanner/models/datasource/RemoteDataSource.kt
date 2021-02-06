@@ -11,8 +11,7 @@ interface RemoteDataSource {
     suspend fun login(email: String, password: String): Flow<Response<TokenResponse>>
     suspend fun authenticate(): Flow<Response<String>>
 
-    suspend fun getAllUserCategories(): Flow<Response<List<CategoryApiEntity>>>
-    suspend fun getCategory(id: Int): Flow<Response<List<CategoryApiEntity>>>
+    suspend fun getCategory(id: Int?): Flow<Response<List<CategoryApiEntity>>>
     suspend fun insertCategory(request: CategoryUpsertApiRequest.Insertion): Flow<Response<CategoryApiEntity>>
     suspend fun updateCategory(request: CategoryUpsertApiRequest.Update): Flow<Response<CategoryApiEntity>>
     suspend fun deleteCategory(idBodyRequest: IdBodyRequest): Flow<Response<Boolean>>

@@ -19,7 +19,7 @@ class CategoriesRepository @Inject constructor(
     }
 
     suspend fun getAllUserCategories() = flowOnIo {
-        remoteDataSource.getAllUserCategories()
+        remoteDataSource.getCategory(id = null)
             .parseResponse()
     }
 

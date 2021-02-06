@@ -113,10 +113,10 @@ class PeriodCreateEditViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun insertOrUpdatePeriod(period: PeriodUpsertApiRequest) = viewModelScope.launch {
-            val flowRequest = when (period) {
-                is PeriodUpsertApiRequest.Insertion -> repository.insertPeriod(period)
-                is PeriodUpsertApiRequest.Update -> repository.updatePeriod(period)
+    private fun insertOrUpdatePeriod(request: PeriodUpsertApiRequest) = viewModelScope.launch {
+            val flowRequest = when (request) {
+                is PeriodUpsertApiRequest.Insertion -> repository.insertPeriod(request)
+                is PeriodUpsertApiRequest.Update -> repository.updatePeriod(request)
             }
 
             flowRequest

@@ -67,11 +67,11 @@ class CategoryCreateEditViewModel @ViewModelInject constructor(
 
     }
 
-    private fun onValidationSuccessful(category: CategoryUpsertApiRequest) = viewModelScope.launch {
+    private fun onValidationSuccessful(request: CategoryUpsertApiRequest) = viewModelScope.launch {
         _displayLoadingState.call(LoadingState.Loading)
-        val flowRequest = when (category) {
-            is CategoryUpsertApiRequest.Insertion -> repository.insertCategory(category)
-            is CategoryUpsertApiRequest.Update -> repository.updateCategory(category)
+        val flowRequest = when (request) {
+            is CategoryUpsertApiRequest.Insertion -> repository.insertCategory(request)
+            is CategoryUpsertApiRequest.Update -> repository.updateCategory(request)
         }
 
         flowRequest
