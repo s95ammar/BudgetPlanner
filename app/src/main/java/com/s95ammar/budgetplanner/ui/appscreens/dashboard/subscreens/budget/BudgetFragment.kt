@@ -50,12 +50,10 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     override fun initObservers() {
         super.initObservers()
         viewModel.currentPeriodId.observe(viewLifecycleOwner) { showFabIfPeriodIsAvailable(it) }
-        viewModel.resultPeriodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
+
+        sharedViewModel.currentPeriodicRecords.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
         sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.onSelectedPeriodChanged(it) }
-        sharedViewModel.onPeriodicCategoriesLoaded.observeEvent(viewLifecycleOwner) { (periodId, periodicCategories) ->
-            viewModel.onPeriodicCategoriesLoaded(periodId, periodicCategories)
-        }
 //        sharedViewModel.onPeriodicCategoriesChanged.observeEvent(viewLifecycleOwner) { viewModel.refresh() }
     }
 
@@ -70,7 +68,6 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
     private fun performUiEvent(uiEvent: BudgetUiEvent) {
         when (uiEvent) {
             is BudgetUiEvent.OnEditPeriod -> onEditPeriod(uiEvent.periodId)
-            is BudgetUiEvent.OnNoLocalData -> sharedViewModel.onRefresh()
         }
     }
 

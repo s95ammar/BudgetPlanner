@@ -2,5 +2,4 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.dat
 
 sealed class BudgetUiEvent {
     class OnEditPeriod(val periodId: Int): BudgetUiEvent()
-    object OnNoLocalData: BudgetUiEvent()
 }

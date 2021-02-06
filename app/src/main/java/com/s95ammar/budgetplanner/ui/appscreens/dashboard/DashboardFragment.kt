@@ -75,7 +75,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         sharedViewModel.performDashboardUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
-        sharedViewModel.navigateToEditPeriod.observeEvent(viewLifecycleOwner) { navigateToEditPeriod(it) }
     }
 
     private fun setViewsToCurrentPeriodBundle(currentPeriodHeaderBundle: CurrentPeriodHeaderBundle) {
@@ -88,7 +87,8 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
     private fun performUiEvent(uiEvent: DashboardUiEvent) {
         when (uiEvent) {
             is DashboardUiEvent.NavigateToPeriodsList -> navigateToPeriodsList()
-            is DashboardUiEvent.NavigateToCreatePeriod -> navigateToEditPeriod()
+            is DashboardUiEvent.NavigateToCreatePeriod -> navigateToCreatePeriod()
+            is DashboardUiEvent.NavigateToEditPeriod -> navigateToEditPeriod(uiEvent.periodId)
             is DashboardUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState, uiEvent.loadingType)
         }
     }
@@ -130,7 +130,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodsFragment())
     }
 
-    private fun navigateToEditPeriod() {
+    private fun navigateToCreatePeriod() {
         listenToPeriodsListChangedResult()
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodCreateEditFragment(Int.NO_ITEM))
     }

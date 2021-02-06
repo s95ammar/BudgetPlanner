@@ -31,5 +31,8 @@ data class BudgetTransactionViewEntity(
                 creationUnixMs = apiEntity.creationUnixMs
             )
         }
+
+        fun List<BudgetTransactionApiEntity?>.mapToViewEntityList() = mapNotNull { toViewEntity(it) }
+
     }
 }

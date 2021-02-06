@@ -29,5 +29,6 @@ data class PeriodicCategoryViewEntity(
             )
         }
 
+        fun List<PeriodicCategoryApiEntity?>.mapToViewEntityList() = mapNotNull { toViewEntity(it) }
     }
 }

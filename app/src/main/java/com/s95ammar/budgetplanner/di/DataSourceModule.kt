@@ -11,10 +11,10 @@ import dagger.hilt.android.components.ApplicationComponent
 
 @Module
 @InstallIn(ApplicationComponent::class)
-abstract class RepositoryModule {
+abstract class DataSourceModule {
     @Binds
     abstract fun bindLocalRepository(localRepository: LocalDataSourceImpl): LocalDataSource
 
     @Binds
-    abstract fun bindremoteDataSource(remoteDataSourceImpl: RemoteDataSourceImpl): RemoteDataSource
+    abstract fun bindRemoteDataSource(remoteDataSourceImpl: RemoteDataSourceImpl): RemoteDataSource
 }

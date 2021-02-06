@@ -5,5 +5,5 @@ data class PeriodApiEntity(
     val name: String?,
     val max: Int?,
     val periodicCategories: List<PeriodicCategoryApiEntity?>?,
-    val budgetTransactions: List<BudgetTransactionApiEntity>?,
+    val budgetTransactions: List<BudgetTransactionApiEntity?>?,
 )

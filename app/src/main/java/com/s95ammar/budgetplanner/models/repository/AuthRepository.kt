@@ -21,7 +21,7 @@ class AuthRepository @Inject constructor(
 
     fun clearAuthToken() = localDataSource.clearAuthToken()
 
-    suspend fun login(email: String, password: String) = flowOnIo {
+    fun login(email: String, password: String) = flowOnIo {
         remoteDataSource.login(email, password)
             .parseResponse()
             .map { tokenResponse ->
@@ -30,7 +30,7 @@ class AuthRepository @Inject constructor(
             }
     }
 
-    suspend fun register(userCredentials: UserCredentials) = flowOnIo {
+    fun register(userCredentials: UserCredentials) = flowOnIo {
         remoteDataSource.register(userCredentials)
             .parseResponse()
             .map { tokenResponse ->

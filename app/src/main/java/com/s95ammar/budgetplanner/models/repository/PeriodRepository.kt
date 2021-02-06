@@ -7,12 +7,14 @@ import com.s95ammar.budgetplanner.models.datasource.LocalDataSource
 import com.s95ammar.budgetplanner.models.datasource.RemoteDataSource
 import com.s95ammar.budgetplanner.util.flowOnIo
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class PeriodRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource,
 ) {
-    suspend fun getPeriod(
+    fun getPeriod(
         id: Int,
         includePeriodicCategories: Boolean = false,
         includeBudgetTransactions: Boolean = false,
@@ -22,27 +24,27 @@ class PeriodRepository @Inject constructor(
             .parseResponse()
     }
 
-    suspend fun getAllUserPeriods() = flowOnIo {
+    fun getAllUserPeriods() = flowOnIo {
         remoteDataSource.getAllUserPeriods()
             .parseResponse()
     }
 
-    suspend fun insertPeriod(request: PeriodUpsertApiRequest.Insertion) = flowOnIo {
+    fun insertPeriod(request: PeriodUpsertApiRequest.Insertion) = flowOnIo {
         remoteDataSource.insertPeriod(request)
             .parseResponse()
     }
 
-    suspend fun updatePeriod(request: PeriodUpsertApiRequest.Update) = flowOnIo {
+    fun updatePeriod(request: PeriodUpsertApiRequest.Update) = flowOnIo {
         remoteDataSource.updatePeriod(request)
             .parseResponse()
     }
 
-    suspend fun deletePeriod(id: Int) = flowOnIo {
+    fun deletePeriod(id: Int) = flowOnIo {
         remoteDataSource.deletePeriod(IdBodyRequest(id))
             .parseResponse()
     }
 
-    suspend fun getPeriodInsertTemplate() = flowOnIo {
+    fun getPeriodInsertTemplate() = flowOnIo {
         remoteDataSource.getPeriodInsertTemplate()
             .parseResponse()
     }
