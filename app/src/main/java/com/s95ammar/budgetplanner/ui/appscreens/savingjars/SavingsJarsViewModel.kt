@@ -1,7 +1,9 @@
 package com.s95ammar.budgetplanner.ui.appscreens.savingjars
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SavingsJarsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SavingsJarsViewModel @Inject constructor(
 ) : ViewModel()

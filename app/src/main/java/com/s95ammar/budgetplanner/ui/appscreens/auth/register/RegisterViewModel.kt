@@ -1,7 +1,5 @@
 package com.s95ammar.budgetplanner.ui.appscreens.auth.register
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,14 +10,17 @@ import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.RegisterUiEve
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.data.UserRegisterInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.auth.register.validation.RegisterValidator
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegisterViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
     private val repository: AuthRepository,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _performUiEvent = EventMutableLiveData<RegisterUiEvent>()

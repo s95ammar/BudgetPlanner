@@ -1,6 +1,5 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
@@ -11,12 +10,15 @@ import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CategoriesViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CategoriesViewModel @Inject constructor(
     private val repository: CategoriesRepository
 ) : ViewModel() {
 

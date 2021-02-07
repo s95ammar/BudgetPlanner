@@ -1,12 +1,14 @@
 package com.s95ammar.budgetplanner.ui.appscreens.settings
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.s95ammar.budgetplanner.models.repository.AuthRepository
 import com.s95ammar.budgetplanner.ui.appscreens.settings.data.SettingsUiEvent
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SettingsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
     private val repository: AuthRepository
 ) : ViewModel() {
 
