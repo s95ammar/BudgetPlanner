@@ -5,6 +5,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
@@ -21,7 +22,6 @@ import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.FragmentProvider
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.ViewPagerFragmentAdapter
 import com.s95ammar.budgetplanner.util.NO_ITEM
-import com.s95ammar.budgetplanner.util.lifecycleutil.hiltNavGraphViewModels
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 

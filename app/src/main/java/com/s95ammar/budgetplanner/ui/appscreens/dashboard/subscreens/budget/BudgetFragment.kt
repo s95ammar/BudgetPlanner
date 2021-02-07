@@ -2,6 +2,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget
 
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBudgetBinding
@@ -12,7 +13,6 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.data
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.util.NO_ITEM
-import com.s95ammar.budgetplanner.util.lifecycleutil.hiltNavGraphViewModels
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 

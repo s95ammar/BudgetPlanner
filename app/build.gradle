@@ -81,6 +81,7 @@ dependencies {
 
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:${depVersions.hiltLifecycle}"
     kapt "androidx.hilt:hilt-compiler:${depVersions.hiltLifecycle}"
+    implementation "androidx.hilt:hilt-navigation-fragment:${depVersions.hiltLifecycle}"
 
 
     // Navigation
