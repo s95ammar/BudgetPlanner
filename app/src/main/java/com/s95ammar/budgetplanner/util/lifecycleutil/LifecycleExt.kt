@@ -8,3 +8,4 @@ fun <T> MutableLiveData<T>.asLiveData(): LiveData<T> = this
 
 fun <T> MediatorLiveData<T>.asLiveData(): LiveData<T> = this
 
+fun <T> MediatorLiveData(initialValue: T) = MediatorLiveData<T>().apply { value = initialValue }

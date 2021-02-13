@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.adapter
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budget.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.transactions
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.transactions
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle

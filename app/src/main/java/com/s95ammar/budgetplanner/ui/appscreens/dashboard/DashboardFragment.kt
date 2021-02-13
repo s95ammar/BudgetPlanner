@@ -10,11 +10,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budget.BudgetFragment
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.savings.SavingsFragment
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.transactions.TransactionsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.BudgetFragment
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.savings.SavingsFragment
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.transactions.TransactionsFragment
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.ui.common.Keys

@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/budgetFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budget.BudgetFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budget.BudgetFragment"
         android:label="fragment_dashboard_budget"
         tools:layout="@layout/fragment_dashboard_budget" />
     <fragment

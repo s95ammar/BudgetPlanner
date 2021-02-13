@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.transactions
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.transactions
 
 import android.view.View
 import androidx.fragment.app.viewModels

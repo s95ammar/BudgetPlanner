@@ -9,7 +9,9 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCa
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity.ApiMapper.mapToViewEntityList
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
+import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
+import com.s95ammar.budgetplanner.util.lifecycleutil.MediatorLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -24,7 +26,7 @@ class DashboardSharedViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _selectedPeriodId = MediatorLiveData<Int>().apply {
+    private val _selectedPeriodId = MediatorLiveData(Int.NO_ITEM).apply {
         addSource(this) { loadPeriod(it) }
     }
     private val _currentPeriodicRecords = MutableLiveData<List<PeriodicCategoryViewEntity>>()
@@ -32,6 +34,7 @@ class DashboardSharedViewModel @Inject constructor(
     private val _performDashboardUiEvent = EventMutableLiveData<DashboardUiEvent>()
 
     val selectedPeriodId = _selectedPeriodId.asLiveData()
+    val isPeriodAvailable = _selectedPeriodId.map { it != Int.NO_ITEM }
     val currentPeriodicRecords = _currentPeriodicRecords.asLiveData()
     val currentBudgetTransactions = _currentBudgetTransactions.asLiveData()
     val performDashboardUiEvent = _performDashboardUiEvent.asEventLiveData()
@@ -40,8 +43,10 @@ class DashboardSharedViewModel @Inject constructor(
         periodId?.let { _selectedPeriodId.value = it }
     }
 
-    fun onEditPeriod(periodId: Int) {
-        _performDashboardUiEvent.call(DashboardUiEvent.NavigateToEditPeriod(periodId))
+    fun onEditSelectedPeriod() {
+        _selectedPeriodId.value?.takeIf { it != Int.NO_ITEM }?.let { periodId ->
+            _performDashboardUiEvent.call(DashboardUiEvent.NavigateToEditPeriod(periodId))
+        }
     }
 
     fun onRefresh() {
@@ -51,6 +56,8 @@ class DashboardSharedViewModel @Inject constructor(
     }
 
     private fun loadPeriod(periodId: Int) = viewModelScope.launch {
+        if (periodId == Int.NO_ITEM) return@launch
+
         repository.getPeriod(
             id = periodId,
             includePeriodicCategories = true,
