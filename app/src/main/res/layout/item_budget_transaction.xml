@@ -3,34 +3,85 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/_8sdp">
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/view_type"
+        android:layout_width="@dimen/_2sdp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@color/colorRed" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_view_category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:ellipsize="marquee"
         android:singleLine="true"
-        android:textAppearance="@style/TextTitleBlackBold16sdp"
+        android:textAppearance="@style/TextTitleBlackBold20sdp"
         app:layout_constrainedWidth="true"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/view_type"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Out with friends" />
+        tools:text="Out with friends test long long " />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_view_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
         android:ellipsize="marquee"
         android:singleLine="true"
-        android:textAppearance="@style/TextDescBlack14sdp"
+        android:textAppearance="@style/TextDescGray12sdp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/text_view_category_name"
         app:layout_constraintTop_toBottomOf="@+id/text_view_category_name"
-        tools:text="At Satori with Natasha" />
+        tools:text="At Satori with Friends test long long long long long long long long " />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_view_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textAppearance="@style/TextTitleBlackBold20sdp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/text_view_category_name"
+        tools:text="-1,500"
+        tools:textColor="@color/colorRed" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_view_date_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textAppearance="@style/TextDescGray12sdp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="@+id/text_view_amount"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/text_view_name"
+        app:layout_constraintTop_toTopOf="@+id/text_view_name"
+        tools:text="Oct 23, 8:30 PM" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.66" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

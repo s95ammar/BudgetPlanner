@@ -33,7 +33,6 @@ class DashboardSharedViewModel @Inject constructor(
     private val _currentBudgetTransactions = MutableLiveData<List<BudgetTransactionViewEntity>>()
     private val _performDashboardUiEvent = EventMutableLiveData<DashboardUiEvent>()
 
-    val selectedPeriodId = _selectedPeriodId.asLiveData()
     val isPeriodAvailable = _selectedPeriodId.map { it != Int.NO_ITEM }
     val currentPeriodicRecords = _currentPeriodicRecords.asLiveData()
     val currentBudgetTransactions = _currentBudgetTransactions.asLiveData()

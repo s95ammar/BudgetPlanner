@@ -11,8 +11,8 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budget.BudgetFragment
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budgettransactions.BudgetTransactionsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.savings.SavingsFragment
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.transactions.TransactionsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -53,7 +53,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
             this,
             listOf(
                 FragmentProvider { BudgetFragment.newInstance() },
-                FragmentProvider { TransactionsFragment.newInstance() },
+                FragmentProvider { BudgetTransactionsFragment.newInstance() },
                 FragmentProvider { SavingsFragment.newInstance() }
             )
         )

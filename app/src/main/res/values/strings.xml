@@ -74,4 +74,7 @@
     <string name="format_value_out_of">%d / %d</string>
     <string name="choose_period_categories">Choose categories for this period:</string>
     <string name="category_unselectable">This category already has budget transactions created during this period</string>
+
+    <string name="format_plus_sign_prefix">+ %s</string>
+    <string name="format_minus_sign_prefix">- %s</string>
 </resources>

@@ -1,6 +1,9 @@
 package com.s95ammar.budgetplanner.ui.base
 
 import android.view.View
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +30,9 @@ abstract class BaseListAdapter<T, VH : BaseListAdapter.BaseViewHolder<T>>(diffCa
 
     abstract class BaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
         abstract fun bind(item: T, payloads: PayloadsHolder)
+        protected fun getColor(@ColorRes colorResId: Int) = ContextCompat.getColor(itemView.context, colorResId)
+        protected fun getString(@StringRes stringResId: Int) = itemView.resources.getString(stringResId)
+        protected fun getString(@StringRes stringResId: Int, vararg formatArgs: Any) = itemView.resources.getString(stringResId, *formatArgs)
     }
 
     class PayloadsHolder {

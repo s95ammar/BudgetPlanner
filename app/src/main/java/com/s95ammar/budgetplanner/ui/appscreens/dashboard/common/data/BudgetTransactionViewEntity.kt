@@ -9,7 +9,9 @@ data class BudgetTransactionViewEntity(
     val name: String,
     @IntBudgetTransactionType val type: Int,
     val amount: Int,
-    val creationUnixMs: Long
+    val creationUnixMs: Long,
+    val periodicCategoryId: Int,
+    val categoryName: String
 ) {
 
     object ApiMapper: BaseApiViewMapper<BudgetTransactionViewEntity, BudgetTransactionApiEntity> {
@@ -21,6 +23,8 @@ data class BudgetTransactionViewEntity(
                 || apiEntity.type == null
                 || apiEntity.amount == null
                 || apiEntity.creationUnixMs == null
+                || apiEntity.periodicCategoryId == null
+                || apiEntity.categoryName == null
             ) return null
 
             return BudgetTransactionViewEntity(
@@ -28,7 +32,9 @@ data class BudgetTransactionViewEntity(
                 name = apiEntity.name,
                 type = apiEntity.type,
                 amount = apiEntity.amount,
-                creationUnixMs = apiEntity.creationUnixMs
+                creationUnixMs = apiEntity.creationUnixMs,
+                periodicCategoryId = apiEntity.periodicCategoryId,
+                categoryName = apiEntity.categoryName
             )
         }
 

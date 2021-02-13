@@ -7,4 +7,6 @@
     <color name="colorWhite">#FFFFFF</color>
 
     <color name="colorDivider">#C3C3C3</color>
+    <color name="colorRed">#F21E0F</color>
+    <color name="colorGreen">#0DB337</color>
 </resources>
