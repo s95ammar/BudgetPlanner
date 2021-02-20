@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.models.api.requests
 
-import com.s95ammar.budgetplanner.models.common.IntBudgetTransactionType
+import com.s95ammar.budgetplanner.models.api.responses.IntBudgetTransactionType
 
 sealed class BudgetTransactionUpsertApiRequest {
 

@@ -64,12 +64,12 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
     private fun setViewsToMode(mode: CreateEditMode) {
         when (mode) {
             CreateEditMode.CREATE -> {
-                adapter.isInsertionTemplate = true
+                adapter.alwaysAllowCategorySelection = true
                 binding.toolbar.title = getString(R.string.create_period)
                 binding.buttonApply.text = getString(R.string.create)
             }
             CreateEditMode.EDIT -> {
-                adapter.isInsertionTemplate = false
+                adapter.alwaysAllowCategorySelection = false
                 binding.toolbar.title = getString(R.string.edit_period)
                 binding.buttonApply.text = getString(R.string.save)
             }

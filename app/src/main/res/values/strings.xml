@@ -32,8 +32,6 @@
     <string name="expenses_and_income">Expenses and income</string>
     <string name="savings_jars">Savings Jars</string>
     <string name="savings">Savings</string>
-    <string name="create_budget">Create budget</string>
-    <string name="edit_budget">Edit budget</string>
     <string name="choose_a_category">Choose a category</string>
 
     <string name="key_total_balance">Total balance:</string>
@@ -77,4 +75,10 @@
 
     <string name="format_plus_sign_prefix">+ %s</string>
     <string name="format_minus_sign_prefix">- %s</string>
+
+    <string name="create_budget_transaction">Create expense or income</string>
+    <string name="edit_budget_transaction">Edit expense or income</string>
+
+    <string name="expense">Expense</string>
+    <string name="income">Income</string>
 </resources>

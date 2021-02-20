@@ -23,7 +23,7 @@
         android:id="@+id/view_disabled"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/transparent"
+        android:background="@color/colorTransparent"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/check_box_category_name"
         app:layout_constraintEnd_toEndOf="@+id/check_box_category_name"

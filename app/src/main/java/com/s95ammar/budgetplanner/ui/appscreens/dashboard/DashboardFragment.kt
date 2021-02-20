@@ -86,10 +86,12 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
 
     private fun performUiEvent(uiEvent: DashboardUiEvent) {
         when (uiEvent) {
-            is DashboardUiEvent.NavigateToPeriodsList -> navigateToPeriodsList()
-            is DashboardUiEvent.NavigateToCreatePeriod -> navigateToCreatePeriod()
+            is DashboardUiEvent.NavigateToPeriodsList -> onNavigateToPeriodsList()
+            is DashboardUiEvent.NavigateToCreatePeriod -> onNavigateToCreatePeriod()
+            is DashboardUiEvent.NavigateToCreateBudgetTransaction -> navigateToCreateBudgetTransaction()
             is DashboardUiEvent.NavigateToEditPeriod -> navigateToEditPeriod(uiEvent.periodId)
             is DashboardUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState, uiEvent.loadingType)
+            is DashboardUiEvent.NavigateToEditBudgetTransaction -> TODO()
         }
     }
 
@@ -125,14 +127,19 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         }
     }
 
-    private fun navigateToPeriodsList() {
+    private fun onNavigateToPeriodsList() {
         listenToPeriodsListChangedResult()
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodsFragment())
     }
 
-    private fun navigateToCreatePeriod() {
+    private fun onNavigateToCreatePeriod() {
         listenToPeriodsListChangedResult()
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodCreateEditFragment(Int.NO_ITEM))
+    }
+
+    private fun navigateToCreateBudgetTransaction() {
+//        listenToBudgetTransactionsListChangedResult()
+        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToBudgetTransactionCreateEditFragment(Int.NO_ITEM))
     }
 
     private fun navigateToEditPeriod(periodId: Int) {

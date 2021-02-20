@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemBudgetTransactionBinding
-import com.s95ammar.budgetplanner.models.common.IntBudgetTransactionType
+import com.s95ammar.budgetplanner.models.api.responses.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import java.text.SimpleDateFormat

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimary">@color/colorPurple100</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorGray">#9C9C9C</color>
@@ -9,4 +9,16 @@
     <color name="colorDivider">#C3C3C3</color>
     <color name="colorRed">#F21E0F</color>
     <color name="colorGreen">#0DB337</color>
+    <color name="colorTransparent">@android:color/transparent</color>
+
+    <color name="colorPurple10">#Efe6fd</color>
+    <color name="colorPurple20">#E0ccfc</color>
+    <color name="colorPurple30">#D0b3fa</color>
+    <color name="colorPurple40">#C099f8</color>
+    <color name="colorPurple50">#B180f7</color>
+    <color name="colorPurple60">#A166f5</color>
+    <color name="colorPurple70">#914Df3</color>
+    <color name="colorPurple80">#8133F1</color>
+    <color name="colorPurple90">#721Af0</color>
+    <color name="colorPurple100">#6200Ee</color>
 </resources>

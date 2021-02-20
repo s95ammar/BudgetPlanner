@@ -38,6 +38,12 @@ class DashboardSharedViewModel @Inject constructor(
     val currentBudgetTransactions = _currentBudgetTransactions.asLiveData()
     val performDashboardUiEvent = _performDashboardUiEvent.asEventLiveData()
 
+    fun onRefresh() {
+        _selectedPeriodId.value?.let { id ->
+            loadPeriod(id)
+        }
+    }
+
     fun onPeriodChanged(periodId: Int?) {
         periodId?.let { _selectedPeriodId.value = it }
     }
@@ -48,10 +54,8 @@ class DashboardSharedViewModel @Inject constructor(
         }
     }
 
-    fun onRefresh() {
-        _selectedPeriodId.value?.let { id ->
-            loadPeriod(id)
-        }
+    fun onAddBudgetTransaction() {
+        _performDashboardUiEvent.call(DashboardUiEvent.NavigateToCreateBudgetTransaction)
     }
 
     private fun loadPeriod(periodId: Int) = viewModelScope.launch {

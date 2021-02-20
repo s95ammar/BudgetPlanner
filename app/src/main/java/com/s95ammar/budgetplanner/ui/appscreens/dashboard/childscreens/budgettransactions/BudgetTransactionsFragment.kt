@@ -34,7 +34,7 @@ class BudgetTransactionsFragment : BaseFragment(R.layout.fragment_dashboard_tran
 
     override fun setUpViews() {
         super.setUpViews()
-//        binding.fab.setOnClickListener { sharedViewModel.onAddBudgetTransaction() } // TODO
+        binding.fab.setOnClickListener { sharedViewModel.onAddBudgetTransaction() }
         setUpRecyclerView()
     }
 

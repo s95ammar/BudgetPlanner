@@ -15,14 +15,47 @@
             android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardFragment"
             android:label="fragment_dashboard"
             tools:layout="@layout/fragment_dashboard">
+            <action
+                android:id="@+id/action_nested_navigation_dashboard_to_periodsFragment"
+                app:destination="@id/periodsFragment" />
+            <action
+                android:id="@+id/action_nested_navigation_dashboard_to_periodCreateEditFragment"
+                app:destination="@id/periodCreateEditFragment" />
+            <action
+                android:id="@+id/action_navigation_dashboard_to_budgetTransactionCreateEditFragment"
+                app:destination="@id/budgetTransactionCreateEditFragment" />
+
         </fragment>
 
-        <action
-            android:id="@+id/action_nested_navigation_dashboard_to_periodsFragment"
-            app:destination="@id/periodsFragment" />
-        <action
-            android:id="@+id/action_nested_navigation_dashboard_to_periodCreateEditFragment"
-            app:destination="@id/periodCreateEditFragment" />
+
+        <fragment
+            android:id="@+id/periodsFragment"
+            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.PeriodsFragment"
+            android:label="fragment_periods"
+            tools:layout="@layout/fragment_periods">
+            <action
+                android:id="@+id/action_periodsFragment_to_periodCreateEditFragment"
+                app:destination="@id/periodCreateEditFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/periodCreateEditFragment"
+            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditFragment"
+            android:label="fragment_period_create_edit"
+            tools:layout="@layout/fragment_period_create_edit">
+            <argument
+                android:name="periodId"
+                app:argType="integer" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/budgetTransactionCreateEditFragment"
+            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.BudgetTransactionCreateEditFragment"
+            android:label="BudgetTransactionCreateEditFragment"
+            tools:layout="@layout/fragment_budget_transaction_create_edit">
+            <argument
+                android:name="budgetTransactionId"
+                app:argType="integer" />
+        </fragment>
 
     </navigation>
 
@@ -93,28 +126,5 @@
             app:destination="@id/nested_navigation_dashboard"
             app:popUpTo="@id/registerFragment"
             app:popUpToInclusive="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/budgetFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budget.BudgetFragment"
-        android:label="fragment_dashboard_budget"
-        tools:layout="@layout/fragment_dashboard_budget" />
-    <fragment
-        android:id="@+id/periodCreateEditFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditFragment"
-        android:label="fragment_period_create_edit"
-        tools:layout="@layout/fragment_period_create_edit">
-        <argument
-            android:name="periodId"
-            app:argType="integer" />
-    </fragment>
-    <fragment
-        android:id="@+id/periodsFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.PeriodsFragment"
-        android:label="fragment_periods"
-        tools:layout="@layout/fragment_periods">
-        <action
-            android:id="@+id/action_periodsFragment_to_periodCreateEditFragment"
-            app:destination="@id/periodCreateEditFragment" />
     </fragment>
 </navigation>

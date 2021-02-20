@@ -18,14 +18,14 @@ class PeriodicCategoriesSelectionAdapter(
     private val onMaxInputChanged: (Int, String?) -> Unit
 ) : BaseListAdapter<PeriodicCategoryViewEntity, PeriodicCategoriesSelectionViewHolder>(DiffUtilCallback()) {
 
-    var isInsertionTemplate = false
+    var alwaysAllowCategorySelection = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodicCategoriesSelectionViewHolder {
         return PeriodicCategoriesSelectionViewHolder(
             onSelectionStateChanged = onClick,
             onMaxInputChanged = onMaxInputChanged,
             binding = ItemPeriodicCategorySelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            isInsertionTemplate = isInsertionTemplate
+            alwaysAllowCategorySelection = alwaysAllowCategorySelection
         )
     }
 
@@ -33,7 +33,7 @@ class PeriodicCategoriesSelectionAdapter(
         private val onSelectionStateChanged: (Int, Boolean) -> Unit,
         private val onMaxInputChanged: (Int, String?) -> Unit,
         private val binding: ItemPeriodicCategorySelectionBinding,
-        private val isInsertionTemplate: Boolean
+        private val alwaysAllowCategorySelection: Boolean
     ) : BaseListAdapter.BaseViewHolder<PeriodicCategoryViewEntity>(binding.root) {
 
 
@@ -43,7 +43,7 @@ class PeriodicCategoriesSelectionAdapter(
 
             if (payloads.shouldUpdate(PayloadType.NAME)) setName(item.categoryName)
             if (payloads.shouldUpdate(PayloadType.MAX)) setMax(item.max)
-            if (payloads.shouldUpdate(PayloadType.SELECTION)) setSelection(item.isSelected, item.amount == 0 || isInsertionTemplate)
+            if (payloads.shouldUpdate(PayloadType.SELECTION)) setSelection(item.isSelected, alwaysAllowCategorySelection || item.amount == 0)
         }
 
         private fun setName(categoryName: String) {
