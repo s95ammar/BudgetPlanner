@@ -9,7 +9,7 @@ import com.s95ammar.budgetplanner.util.NO_ITEM
 
 class PeriodCreateEditValidator(
     private val periodId: Int,
-    private val periodicCategoryUpsertApiRequestListGetter: () -> List<PeriodicCategoryUpsertApiRequest>,
+    private val periodicCategoryUpsertApiRequestListProvider: () -> List<PeriodicCategoryUpsertApiRequest>,
     periodInputBundle: PeriodInputBundle
 ) : Validator<PeriodInputBundle, PeriodUpsertApiRequest>(periodInputBundle) {
 
@@ -25,12 +25,12 @@ class PeriodCreateEditValidator(
         return if (periodId == Int.NO_ITEM) PeriodUpsertApiRequest.Insertion(
             name = inputEntity.name,
             max = inputEntity.max?.toIntOrNull(),
-            periodicCategories = periodicCategoryUpsertApiRequestListGetter()
+            periodicCategories = periodicCategoryUpsertApiRequestListProvider()
         ) else PeriodUpsertApiRequest.Update(
             id = periodId,
             name = inputEntity.name,
             max = inputEntity.max?.toIntOrNull(),
-            periodicCategories = periodicCategoryUpsertApiRequestListGetter()
+            periodicCategories = periodicCategoryUpsertApiRequestListProvider()
         )
     }
 

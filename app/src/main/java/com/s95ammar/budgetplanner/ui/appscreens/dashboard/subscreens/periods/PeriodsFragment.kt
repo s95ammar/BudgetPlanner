@@ -87,7 +87,7 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
     private fun onNavigateToCreateEditPeriod(periodId: Int) {
         setFragmentResultListener(Keys.KEY_ON_PERIOD_CREATE_EDIT) { _, _ -> viewModel.refresh() }
         navController.navigate(
-            PeriodsFragmentDirections.actionPeriodsFragmentToPeriodCreateEditFragment(periodId)
+            PeriodsFragmentDirections.actionPeriodsFragmentToNestedPeriodCreateEdit(periodId)
         )
     }
 

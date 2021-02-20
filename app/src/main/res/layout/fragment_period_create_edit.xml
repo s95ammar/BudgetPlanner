@@ -33,13 +33,13 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_16sdp">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_layout_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:hint="@string/name"
                 app:boxBackgroundColor="@null"
@@ -62,6 +62,7 @@
                 android:id="@+id/input_layout_max"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:hint="@string/total_expenses_estimate_optional"
                 app:boxBackgroundColor="@null"
@@ -80,39 +81,47 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/text_view_choose_period_categories"
+                android:id="@+id/text_view_period_categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_16sdp"
-                android:text="@string/choose_period_categories"
+                android:text="@string/categories_for_this_period"
                 android:textAppearance="@style/TextDescBlack14sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/input_layout_max" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_period_categories_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:overScrollMode="ifContentScrolls"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableEnd="@drawable/ic_arrow_right_narrow"
+                android:focusable="true"
+                android:paddingVertical="@dimen/_8sdp"
+                android:text="@string/choose_categories"
+                android:textAppearance="@style/TextDescGray12sdp"
+                app:drawableTint="@color/colorGray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_choose_period_categories"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_periodic_category_selection" />
+                app:layout_constraintTop_toBottomOf="@+id/text_view_period_categories" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_apply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextTitleWhiteBold14sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_view"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_period_categories_value"
                 app:layout_constraintVertical_bias="1.0"
                 tools:text="@string/create" />
 

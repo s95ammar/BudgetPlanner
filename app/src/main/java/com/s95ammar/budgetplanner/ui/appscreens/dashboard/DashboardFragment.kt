@@ -134,7 +134,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
 
     private fun onNavigateToCreatePeriod() {
         listenToPeriodsListChangedResult()
-        navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodCreateEditFragment(Int.NO_ITEM))
+        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(Int.NO_ITEM))
     }
 
     private fun navigateToCreateBudgetTransaction() {
@@ -144,7 +144,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
 
     private fun navigateToEditPeriod(periodId: Int) {
 //        setFragmentResultListener(Keys.KEY_DASHBOARD_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> sharedViewModel.onPeriodicCategoriesChanged() }
-        navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodCreateEditFragment(periodId))
+        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(periodId))
     }
 
     private fun listenToPeriodsListChangedResult() {

@@ -5,7 +5,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/loginFragment">
 
-    <!-- TODO: Remove later on if there's no need for nested navigation-->
     <navigation
         android:id="@+id/nested_navigation_dashboard"
         app:startDestination="@id/navigation_dashboard">
@@ -19,11 +18,11 @@
                 android:id="@+id/action_nested_navigation_dashboard_to_periodsFragment"
                 app:destination="@id/periodsFragment" />
             <action
-                android:id="@+id/action_nested_navigation_dashboard_to_periodCreateEditFragment"
-                app:destination="@id/periodCreateEditFragment" />
-            <action
                 android:id="@+id/action_navigation_dashboard_to_budgetTransactionCreateEditFragment"
                 app:destination="@id/budgetTransactionCreateEditFragment" />
+            <action
+                android:id="@+id/action_navigation_dashboard_to_nested_period_create_edit"
+                app:destination="@id/nested_period_create_edit" />
 
         </fragment>
 
@@ -34,9 +33,18 @@
             android:label="fragment_periods"
             tools:layout="@layout/fragment_periods">
             <action
-                android:id="@+id/action_periodsFragment_to_periodCreateEditFragment"
-                app:destination="@id/periodCreateEditFragment" />
+                android:id="@+id/action_periodsFragment_to_nested_period_create_edit"
+                app:destination="@id/nested_period_create_edit" />
         </fragment>
+
+        <navigation
+            android:id="@+id/nested_period_create_edit"
+            app:startDestination="@id/periodCreateEditFragment">
+            <argument
+                android:name="periodId"
+                app:argType="integer" />
+
+
         <fragment
             android:id="@+id/periodCreateEditFragment"
             android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditFragment"
@@ -45,7 +53,17 @@
             <argument
                 android:name="periodId"
                 app:argType="integer" />
+            <action
+                android:id="@+id/action_periodCreateEditFragment_to_periodCategoriesSelectionFragment"
+                app:destination="@id/periodCategoriesSelectionFragment" />
         </fragment>
+        <fragment
+            android:id="@+id/periodCategoriesSelectionFragment"
+            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.PeriodCategoriesSelectionFragment"
+            android:label="period_categories_selection_fragment"
+            tools:layout="@layout/period_categories_selection_fragment" />
+        </navigation>
+
 
         <fragment
             android:id="@+id/budgetTransactionCreateEditFragment"
@@ -56,7 +74,6 @@
                 android:name="budgetTransactionId"
                 app:argType="integer" />
         </fragment>
-
     </navigation>
 
     <fragment

@@ -2,15 +2,14 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcrea
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodCreateEditBinding
 import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.adapter.PeriodicCategoriesSelectionAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation.PeriodCreateEditValidator
@@ -27,10 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_edit), ViewBinder<FragmentPeriodCreateEditBinding> {
 
     private val viewModel: PeriodCreateEditViewModel by viewModels()
-
-    private val adapter by lazy {
-        PeriodicCategoriesSelectionAdapter(viewModel::onPeriodicCategorySelectionStateChanged, viewModel::onPeriodicCategoryMaxChanged)
-    }
+    private val sharedViewModel: PeriodCreateEditSharedViewModel by hiltNavGraphViewModels(R.id.nested_period_create_edit)
 
     override val binding: FragmentPeriodCreateEditBinding
         get() = getBinding()
@@ -42,34 +38,28 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
     override fun setUpViews() {
         super.setUpViews()
         binding.toolbar.setNavigationOnClickListener { viewModel.onBack() }
-        binding.buttonApply.setOnClickListener { viewModel.onApply(getPeriodInputBundle()) }
-        setUpRecyclerView()
-    }
-
-    private fun setUpRecyclerView() {
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        binding.textViewPeriodCategoriesValue.setOnClickListener { viewModel.onChooseCategories() }
+        binding.buttonApply.setOnClickListener { sharedViewModel.onApply(getPeriodInputBundle()) }
     }
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
-        viewModel.name.observe(viewLifecycleOwner) { setPeriodName(it) }
-        viewModel.max.observe(viewLifecycleOwner) { setPeriodMax(it) }
-        viewModel.periodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
+        sharedViewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
+        sharedViewModel.name.observe(viewLifecycleOwner) { setPeriodName(it) }
+        sharedViewModel.max.observe(viewLifecycleOwner) { setPeriodMax(it) }
+        sharedViewModel.selectedPeriodicCategories.observe(viewLifecycleOwner) { setCategoriesNamesStringValue(it) }
+
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
+        sharedViewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
     private fun setViewsToMode(mode: CreateEditMode) {
         when (mode) {
             CreateEditMode.CREATE -> {
-                adapter.alwaysAllowCategorySelection = true
                 binding.toolbar.title = getString(R.string.create_period)
                 binding.buttonApply.text = getString(R.string.create)
             }
             CreateEditMode.EDIT -> {
-                adapter.alwaysAllowCategorySelection = false
                 binding.toolbar.title = getString(R.string.edit_period)
                 binding.buttonApply.text = getString(R.string.save)
             }
@@ -87,8 +77,22 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
         binding.inputLayoutMax.inputText = max?.toString()
     }
 
-    private fun setPeriodicCategories(periodicCategories: List<PeriodicCategoryViewEntity>) {
-        adapter.submitList(periodicCategories)
+    private fun setCategoriesNamesStringValue(items: List<PeriodicCategoryViewEntity>) {
+        val isEmpty = items.isEmpty()
+
+        binding.textViewPeriodCategoriesValue.text = if (isEmpty) {
+            getString(R.string.choose_categories)
+        } else {
+            buildString {
+                for ((i, periodicCategory) in items.withIndex()) {
+                    if (i != 0) append(", ")
+                    append(periodicCategory.categoryName)
+                }
+            }
+        }
+        binding.textViewPeriodCategoriesValue.setTextColor(
+            ContextCompat.getColor(requireContext(), if (isEmpty) R.color.colorGray else R.color.colorBlack)
+        )
     }
 
     private fun performUiEvent(uiEvent: PeriodCreateEditUiEvent) {
@@ -97,6 +101,7 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
             is PeriodCreateEditUiEvent.SetResult -> setResult()
             is PeriodCreateEditUiEvent.DisplayValidationResults -> handleValidationErrors(uiEvent.validationErrors)
             is PeriodCreateEditUiEvent.Exit -> navController.navigateUp()
+            is PeriodCreateEditUiEvent.ChooseCategories -> navigateToCategoriesSelection()
         }
     }
 
@@ -133,6 +138,10 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
     private fun setResult() {
         setFragmentResult(Keys.KEY_PERIODIC_CATEGORIES_SCREEN_ON_PERIODS_LIST_CHANGED, Bundle.EMPTY)
         setFragmentResult(Keys.KEY_ON_PERIOD_CREATE_EDIT, Bundle.EMPTY)
+    }
+
+    private fun navigateToCategoriesSelection() {
+        navController.navigate(R.id.action_periodCreateEditFragment_to_periodCategoriesSelectionFragment)
     }
 
     private fun getPeriodInputBundle() = PeriodInputBundle(

@@ -108,7 +108,7 @@
         app:tabMaxWidth="0dp"
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextAppearance="@style/TextTitleWhite14sdp"
-        app:tabTextColor="@android:color/black" />
+        app:tabTextColor="@color/colorBlack" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_to_refresh_layout"
