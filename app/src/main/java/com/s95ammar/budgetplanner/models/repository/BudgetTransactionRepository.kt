@@ -4,6 +4,7 @@ import com.s95ammar.budgetplanner.models.api.parseResponse
 import com.s95ammar.budgetplanner.models.datasource.LocalDataSource
 import com.s95ammar.budgetplanner.models.datasource.RemoteDataSource
 import com.s95ammar.budgetplanner.util.flowOnIo
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,6 +16,12 @@ class BudgetTransactionRepository @Inject constructor(
     fun getBudgetTransactionsForPeriod(periodId: Int?) = flowOnIo {
         remoteDataSource.getBudgetTransactionsForPeriod(periodId)
             .parseResponse()
+    }
+
+    fun getBudgetTransaction(id: Int?, periodId: Int?) = flowOnIo {
+        remoteDataSource.getBudgetTransaction(id, periodId)
+            .parseResponse()
+            .map { it.singleOrNull() }
     }
 
 }

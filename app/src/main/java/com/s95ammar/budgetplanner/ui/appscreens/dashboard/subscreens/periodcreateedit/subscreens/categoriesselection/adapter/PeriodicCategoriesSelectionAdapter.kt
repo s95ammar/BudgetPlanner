@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.adapter
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DiffUtil
 import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategorySelectionBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.adapter.PeriodicCategoriesSelectionAdapter.PeriodicCategoriesSelectionViewHolder
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesSelectionAdapter.PeriodicCategoriesSelectionViewHolder
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.util.inputText
 

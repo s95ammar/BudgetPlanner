@@ -1,15 +1,21 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit
 
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCreateEditBinding
 import com.s95ammar.budgetplanner.models.api.responses.IntBudgetTransactionType
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
+import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.util.doOnTabSelected
+import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.BudgetTransactionCreateEditUiEvent as UiEvent
 
 @AndroidEntryPoint
 class BudgetTransactionCreateEditFragment : BaseFragment(R.layout.fragment_budget_transaction_create_edit),
@@ -26,8 +32,9 @@ class BudgetTransactionCreateEditFragment : BaseFragment(R.layout.fragment_budge
 
     override fun setUpViews() {
         super.setUpViews()
-//        binding.toolbar.setNavigationOnClickListener { viewModel.onBack() }
+        binding.toolbar.setNavigationOnClickListener { viewModel.onBack() }
         setUpTabLayout()
+        binding.textViewPeriodCategoryValue.setOnClickListener { viewModel.onChooseCategory() }
 //        binding.buttonApply.setOnClickListener { viewModel.onApply(getPeriodInputBundle()) }
     }
 
@@ -38,7 +45,7 @@ class BudgetTransactionCreateEditFragment : BaseFragment(R.layout.fragment_budge
                     IntBudgetTransactionType.EXPENSE -> getString(R.string.expense)
                     IntBudgetTransactionType.INCOME -> getString(R.string.income)
                     else -> null
-                }
+                } ?: continue
                 addTab(newTab().setText(tabTitle))
             }
             doOnTabSelected { tab ->
@@ -49,13 +56,39 @@ class BudgetTransactionCreateEditFragment : BaseFragment(R.layout.fragment_budge
 
     override fun initObservers() {
         super.initObservers()
-//        viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
+        viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
 /*
         viewModel.name.observe(viewLifecycleOwner) { setPeriodName(it) }
         viewModel.max.observe(viewLifecycleOwner) { setPeriodMax(it) }
         viewModel.periodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
-        viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
 */
+        viewModel.selectedCategory.observe(viewLifecycleOwner) { setSelectedCategory(it) }
+        viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
+    }
+
+    private fun setSelectedCategory(category: CategoryViewEntity) {
+        binding.textViewPeriodCategoryValue.text = category.name
+        binding.textViewPeriodCategoryValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
+    }
+
+    private fun performUiEvent(uiEvent: UiEvent) {
+        when (uiEvent) {
+            is UiEvent.ChooseCategory -> onNavigateToCategorySelection()
+            is UiEvent.DisplayValidationResults -> TODO()
+            is UiEvent.Exit -> navController.navigateUp()
+        }
+    }
+
+    private fun onNavigateToCategorySelection() {
+        setFragmentResultListener(Keys.KEY_ON_CATEGORY_SELECTED) { _, bundle ->
+            bundle.getParcelable<CategoryViewEntity>(Keys.KEY_CATEGORY)?.let { category ->
+                viewModel.setCategory(category)
+            }
+        }
+        navController.navigate(
+            BudgetTransactionCreateEditFragmentDirections
+                .actionBudgetTransactionCreateEditFragmentToBudgetTransactionCategorySelectionFragment()
+        )
     }
 
     private fun setViewsToMode(mode: CreateEditMode) {

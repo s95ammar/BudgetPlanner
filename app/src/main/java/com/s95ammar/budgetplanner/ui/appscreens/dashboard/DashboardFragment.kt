@@ -88,10 +88,10 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         when (uiEvent) {
             is DashboardUiEvent.NavigateToPeriodsList -> onNavigateToPeriodsList()
             is DashboardUiEvent.NavigateToCreatePeriod -> onNavigateToCreatePeriod()
-            is DashboardUiEvent.NavigateToCreateBudgetTransaction -> navigateToCreateBudgetTransaction()
+            is DashboardUiEvent.NavigateToCreateBudgetTransaction -> navigateToCreateBudgetTransaction(uiEvent.periodId)
+            is DashboardUiEvent.NavigateToEditBudgetTransaction -> navigateToEditBudgetTransaction(uiEvent.periodId, uiEvent.budgetTransactionId)
             is DashboardUiEvent.NavigateToEditPeriod -> navigateToEditPeriod(uiEvent.periodId)
             is DashboardUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState, uiEvent.loadingType)
-            is DashboardUiEvent.NavigateToEditBudgetTransaction -> TODO()
         }
     }
 
@@ -137,9 +137,26 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(Int.NO_ITEM))
     }
 
-    private fun navigateToCreateBudgetTransaction() {
+    private fun navigateToCreateBudgetTransaction(periodId: Int) {
 //        listenToBudgetTransactionsListChangedResult()
-        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToBudgetTransactionCreateEditFragment(Int.NO_ITEM))
+        navController.navigate(
+            DashboardFragmentDirections
+                .actionNavigationDashboardToBudgetTransactionCreateEditFragment(
+                    periodId = periodId,
+                    budgetTransactionId = Int.NO_ITEM
+                )
+        )
+    }
+
+    private fun navigateToEditBudgetTransaction(periodId: Int, budgetTransactionId: Int) {
+//        listenToBudgetTransactionsListChangedResult()
+        navController.navigate(
+            DashboardFragmentDirections
+                .actionNavigationDashboardToBudgetTransactionCreateEditFragment(
+                    periodId = periodId,
+                    budgetTransactionId = Int.NO_ITEM
+                )
+        )
     }
 
     private fun navigateToEditPeriod(periodId: Int) {

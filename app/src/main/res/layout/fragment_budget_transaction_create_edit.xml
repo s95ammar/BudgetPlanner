@@ -33,8 +33,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_16sdp">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
@@ -43,7 +42,7 @@
                 android:background="@drawable/shape_budget_transaction_tabs_background"
                 app:tabBackground="@drawable/selector_budget_transaction_tabs"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_margin="@dimen/_16sdp"
                 app:tabRippleColor="@color/colorPurple50"
                 app:tabUnboundedRipple="true"
                 app:tabIndicatorColor="@null"
@@ -56,7 +55,7 @@
                 android:id="@+id/input_layout_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_margin="@dimen/_16sdp"
                 android:hint="@string/name"
                 app:boxBackgroundColor="@null"
                 app:errorIconDrawable="@null"
@@ -74,11 +73,53 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:hint="@string/amount"
+                app:boxBackgroundColor="@null"
+                app:errorTextAppearance="@style/TextAppearanceCairo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:textAppearance="@style/TextAppearanceCairo" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_period_category_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableEnd="@drawable/ic_arrow_right_narrow"
+                android:focusable="true"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:text="@string/choose_a_category"
+                android:textAppearance="@style/TextDescGray12sdp"
+                app:drawableTint="@color/colorGray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_amount" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_apply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:textAllCaps="true"
@@ -86,7 +127,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/input_layout_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_period_category_value"
                 app:layout_constraintVertical_bias="1.0"
                 tools:text="@string/create" />
 

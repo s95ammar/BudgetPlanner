@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
         (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
     }
 
-    private val loadingDialog by lazy { LoadingDialog.newInstance() }
 
     private val bottomNavView by lazy { findViewById<BottomNavigationView>(R.id.bottom_nav_view) }
 
@@ -68,13 +67,10 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
     }
 
     override fun showLoading() {
-//        if (!loadingDialog.isAdded)
-            LoadingDialog.newInstance().show(supportFragmentManager, LoadingDialog.TAG)
+        LoadingDialog.newInstance().show(supportFragmentManager, LoadingDialog.TAG)
     }
 
     override fun hideLoading() {
         (supportFragmentManager.findFragmentByTag(LoadingDialog.TAG) as? LoadingDialog)?.dismiss()
-//        if (loadingDialog.isAdded)
-//            loadingDialog.dismiss()
     }
 }

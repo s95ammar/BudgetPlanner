@@ -45,7 +45,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/text_view_category_name"
         app:layout_constraintTop_toBottomOf="@+id/text_view_category_name"
-        tools:text="At Satori with Friends test long long long long long long long long " />
+        tools:text="At Satori with Friends test long long long long long long long long" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_view_amount"

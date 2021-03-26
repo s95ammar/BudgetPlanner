@@ -6,17 +6,17 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.databinding.PeriodCategoriesSelectionFragmentBinding
+import com.s95ammar.budgetplanner.databinding.FragmentPeriodCategoriesSelectionBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditSharedViewModel
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.adapter.PeriodicCategoriesSelectionAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesSelectionAdapter
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.data.PeriodCategoriesSelectionUiEvent as UiEvent
 
-class PeriodCategoriesSelectionFragment : BaseFragment(R.layout.period_categories_selection_fragment),
-    ViewBinder<PeriodCategoriesSelectionFragmentBinding> {
+class PeriodCategoriesSelectionFragment : BaseFragment(R.layout.fragment_period_categories_selection),
+    ViewBinder<FragmentPeriodCategoriesSelectionBinding> {
 
     private val viewModel: PeriodCategoriesSelectionViewModel by viewModels()
     private val sharedViewModel: PeriodCreateEditSharedViewModel by hiltNavGraphViewModels(R.id.nested_period_create_edit)
@@ -28,11 +28,11 @@ class PeriodCategoriesSelectionFragment : BaseFragment(R.layout.period_categorie
         )
     }
 
-    override val binding: PeriodCategoriesSelectionFragmentBinding
+    override val binding: FragmentPeriodCategoriesSelectionBinding
         get() = getBinding()
 
-    override fun initViewBinding(view: View): PeriodCategoriesSelectionFragmentBinding {
-        return PeriodCategoriesSelectionFragmentBinding.bind(view)
+    override fun initViewBinding(view: View): FragmentPeriodCategoriesSelectionBinding {
+        return FragmentPeriodCategoriesSelectionBinding.bind(view)
     }
 
     override fun setUpViews() {

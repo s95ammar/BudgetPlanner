@@ -39,7 +39,7 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
         super.setUpViews()
         binding.toolbar.setNavigationOnClickListener { viewModel.onBack() }
         binding.textViewPeriodCategoriesValue.setOnClickListener { viewModel.onChooseCategories() }
-        binding.buttonApply.setOnClickListener { sharedViewModel.onApply(getPeriodInputBundle()) }
+        binding.buttonApply.setOnClickListener { sharedViewModel.onApply(createPeriodInputBundle()) }
     }
 
     override fun initObservers() {
@@ -144,7 +144,7 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
         navController.navigate(R.id.action_periodCreateEditFragment_to_periodCategoriesSelectionFragment)
     }
 
-    private fun getPeriodInputBundle() = PeriodInputBundle(
+    private fun createPeriodInputBundle() = PeriodInputBundle(
         name = binding.inputLayoutName.inputText.orEmpty().trim(),
         max = binding.inputLayoutMax.inputText?.trim()
     )
