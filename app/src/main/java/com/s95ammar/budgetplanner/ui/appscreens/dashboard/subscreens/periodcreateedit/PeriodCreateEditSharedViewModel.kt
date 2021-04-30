@@ -1,10 +1,9 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit
 
 import androidx.lifecycle.*
-import com.s95ammar.budgetplanner.models.api.requests.PeriodUpsertApiRequest
-import com.s95ammar.budgetplanner.models.api.requests.PeriodicCategoryUpsertApiRequest
+import com.s95ammar.budgetplanner.models.datasource.remote.api.requests.PeriodUpsertApiRequest
+import com.s95ammar.budgetplanner.models.datasource.remote.api.requests.PeriodicCategoryUpsertApiRequest
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent
@@ -17,9 +16,6 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -93,11 +89,13 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     }
 
     private fun loadEditedPeriodOrInsertTemplate() {
+        // TODO
+/*
         val mode = _mode.value ?: return
 
         viewModelScope.launch {
             val flowRequest = when (mode) {
-                CreateEditMode.EDIT -> repository.getPeriod(editedPeriodId, includePeriodicCategories = true)
+                CreateEditMode.EDIT -> repository.getPeriodicCategoryJoinEntityList(editedPeriodId)
                 CreateEditMode.CREATE -> repository.getPeriodInsertTemplate()
             }
 
@@ -115,9 +113,12 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
                     }
                 }
         }
+*/
     }
 
     private fun insertOrUpdatePeriod(request: PeriodUpsertApiRequest) = viewModelScope.launch {
+        // TODO
+/*
             val flowRequest = when (request) {
                 is PeriodUpsertApiRequest.Insertion -> repository.insertPeriod(request)
                 is PeriodUpsertApiRequest.Update -> repository.updatePeriod(request)
@@ -135,6 +136,7 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
                     _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
                     _performUiEvent.call(PeriodCreateEditUiEvent.Exit)
                 }
+*/
     }
 
     private fun onValidationError(validationErrors: ValidationErrors) {

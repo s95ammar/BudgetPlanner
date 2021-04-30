@@ -1,51 +1,38 @@
 package com.s95ammar.budgetplanner.models.repository
 
-import com.s95ammar.budgetplanner.models.api.parseResponse
-import com.s95ammar.budgetplanner.models.api.requests.IdBodyRequest
-import com.s95ammar.budgetplanner.models.api.requests.PeriodUpsertApiRequest
-import com.s95ammar.budgetplanner.models.datasource.LocalDataSource
-import com.s95ammar.budgetplanner.models.datasource.RemoteDataSource
-import com.s95ammar.budgetplanner.util.flowOnIo
+import com.s95ammar.budgetplanner.models.datasource.local.LocalDataSource
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
+import com.s95ammar.budgetplanner.util.flowOnDispatcher
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class PeriodRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource,
+//    private val remoteDataSource: RemoteDataSource,
 ) {
-    fun getPeriod(
-        id: Int,
-        includePeriodicCategories: Boolean = false,
-        includeBudgetTransactions: Boolean = false,
-        includeSavings: Boolean = false
-    ) = flowOnIo {
-        remoteDataSource.getPeriod(id, includePeriodicCategories, includeBudgetTransactions, includeSavings)
-            .parseResponse()
+
+    fun getPeriodJoinEntityList(id: Int) = flowOnDispatcher(Dispatchers.IO) {
+        localDataSource.getPeriodJoinEntityList(id)
     }
 
-    fun getAllUserPeriods() = flowOnIo {
-        remoteDataSource.getAllUserPeriods()
-            .parseResponse()
+    fun getPeriodicCategoryJoinEntityList(id: Int) = localDataSource.getPeriodicCategoryJoinEntityList(id)
+
+    fun getAllUserPeriods() = localDataSource.getAllPeriods()
+
+    fun insertPeriod(period: PeriodEntity) = flowOnDispatcher(Dispatchers.IO) {
+        localDataSource.insertPeriod(period)
     }
 
-    fun insertPeriod(request: PeriodUpsertApiRequest.Insertion) = flowOnIo {
-        remoteDataSource.insertPeriod(request)
-            .parseResponse()
+    fun updatePeriod(period: PeriodEntity) = flowOnDispatcher(Dispatchers.IO) {
+        localDataSource.updatePeriod(period)
     }
 
-    fun updatePeriod(request: PeriodUpsertApiRequest.Update) = flowOnIo {
-        remoteDataSource.updatePeriod(request)
-            .parseResponse()
+    fun deletePeriod(id: Int) = flowOnDispatcher(Dispatchers.IO) {
+        localDataSource.deletePeriod(id)
     }
 
-    fun deletePeriod(id: Int) = flowOnIo {
-        remoteDataSource.deletePeriod(IdBodyRequest(id))
-            .parseResponse()
-    }
+    fun getPeriodInsertTemplate() = localDataSource.getPeriodInsertTemplate()
 
-    fun getPeriodInsertTemplate() = flowOnIo {
-        remoteDataSource.getPeriodInsertTemplate()
-            .parseResponse()
-    }
 }

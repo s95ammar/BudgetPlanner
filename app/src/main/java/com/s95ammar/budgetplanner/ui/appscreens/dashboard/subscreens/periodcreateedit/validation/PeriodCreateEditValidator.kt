@@ -1,7 +1,7 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation
 
-import com.s95ammar.budgetplanner.models.api.requests.PeriodUpsertApiRequest
-import com.s95ammar.budgetplanner.models.api.requests.PeriodicCategoryUpsertApiRequest
+import com.s95ammar.budgetplanner.models.datasource.remote.api.requests.PeriodUpsertApiRequest
+import com.s95ammar.budgetplanner.models.datasource.remote.api.requests.PeriodicCategoryUpsertApiRequest
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation

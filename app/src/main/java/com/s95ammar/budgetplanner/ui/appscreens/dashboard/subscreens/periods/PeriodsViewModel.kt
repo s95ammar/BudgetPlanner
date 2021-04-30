@@ -3,9 +3,9 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimpleViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.data.PeriodsUiEvent
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveDataVoid
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
@@ -67,9 +67,11 @@ class PeriodsViewModel @Inject constructor(
                     _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it)))
                 }
                 .collect { periodApiEntities ->
+/*
                     val periods = periodApiEntities.mapNotNull { apiEntity -> PeriodSimpleViewEntity.ApiMapper.toViewEntity(apiEntity) }
                     _allPeriods.value = periods
                     _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Success))
+*/
                 }
         }
     }

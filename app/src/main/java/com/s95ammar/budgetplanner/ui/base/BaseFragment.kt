@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.models.api.responses.errors.InternalServerError
-import com.s95ammar.budgetplanner.models.api.responses.errors.UnauthorizedError
+import com.s95ammar.budgetplanner.models.datasource.remote.api.responses.errors.InternalServerError
+import com.s95ammar.budgetplanner.models.datasource.remote.api.responses.errors.UnauthorizedError
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder

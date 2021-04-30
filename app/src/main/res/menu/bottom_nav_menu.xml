@@ -16,9 +16,4 @@
         android:icon="@drawable/ic_savings_jar"
         android:title="@string/savings_jars" />
 
-    <item
-        android:id="@+id/navigation_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/settings" />
-
 </menu>

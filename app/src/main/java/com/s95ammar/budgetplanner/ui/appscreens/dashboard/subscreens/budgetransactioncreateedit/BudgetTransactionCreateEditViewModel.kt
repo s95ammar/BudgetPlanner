@@ -4,7 +4,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.s95ammar.budgetplanner.models.api.responses.IntBudgetTransactionType
+import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.models.repository.BudgetTransactionRepository
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity

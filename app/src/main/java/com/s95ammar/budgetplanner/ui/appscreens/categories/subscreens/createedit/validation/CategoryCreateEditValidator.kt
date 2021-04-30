@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.validation
 
-import com.s95ammar.budgetplanner.models.api.requests.CategoryUpsertApiRequest
+import com.s95ammar.budgetplanner.models.datasource.remote.api.requests.CategoryUpsertApiRequest
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation

@@ -1,7 +1,7 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data
 
 import com.s95ammar.budgetplanner.models.BaseApiViewMapper
-import com.s95ammar.budgetplanner.models.api.responses.PeriodicCategoryApiEntity
+import com.s95ammar.budgetplanner.models.datasource.remote.api.responses.PeriodicCategoryApiEntity
 
 data class PeriodicCategoryViewEntity(
     val categoryName: String,

@@ -1,7 +1,7 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data
 
 import com.s95ammar.budgetplanner.models.BaseApiViewMapper
-import com.s95ammar.budgetplanner.models.api.responses.PeriodApiEntity
+import com.s95ammar.budgetplanner.models.datasource.remote.api.responses.PeriodApiEntity
 
 data class PeriodViewEntity(
     val id: Int,

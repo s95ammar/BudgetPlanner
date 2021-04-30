@@ -6,18 +6,18 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoryCreateEditBinding
-import com.s95ammar.budgetplanner.models.api.responses.errors.ConflictError
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
+import com.s95ammar.budgetplanner.models.datasource.remote.api.responses.errors.ConflictError
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.validation.CategoryCreateEditValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
-import com.s95ammar.budgetplanner.util.inputText
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
+import com.s95ammar.budgetplanner.util.text
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -111,6 +111,6 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
         navController.navigateUp()
     }
 
-    private fun getCategoryInputBundle() = CategoryInputBundle(title = binding.inputLayoutTitle.inputText.orEmpty().trim())
+    private fun getCategoryInputBundle() = CategoryInputBundle(title = binding.inputLayoutTitle.text.orEmpty().trim())
 
 }

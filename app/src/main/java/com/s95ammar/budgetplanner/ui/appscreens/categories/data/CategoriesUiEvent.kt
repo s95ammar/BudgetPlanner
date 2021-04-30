@@ -1,7 +1,7 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories.data
 
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 
 sealed class CategoriesUiEvent {
     class DisplayLoadingState(val loadingState: LoadingState): CategoriesUiEvent()

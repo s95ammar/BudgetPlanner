@@ -21,7 +21,7 @@ ext {
             "fragment_version": "1.3.0-rc01",
             "lifecycle"       : "2.2.0",
             "viewPager2"      : "1.0.0",
-            "room"            : "2.2.5",
+            "room"            : "2.3.0",
             "retrofit"        : "2.9.0",
             "okhttp"          : "4.9.0",
             "dimen"           : "1.0.6",

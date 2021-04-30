@@ -1,8 +1,8 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data
 
 import com.s95ammar.budgetplanner.models.BaseApiViewMapper
-import com.s95ammar.budgetplanner.models.api.responses.BudgetTransactionApiEntity
-import com.s95ammar.budgetplanner.models.api.responses.IntBudgetTransactionType
+import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
+import com.s95ammar.budgetplanner.models.datasource.remote.api.responses.BudgetTransactionApiEntity
 
 data class BudgetTransactionViewEntity(
     val id: Int,

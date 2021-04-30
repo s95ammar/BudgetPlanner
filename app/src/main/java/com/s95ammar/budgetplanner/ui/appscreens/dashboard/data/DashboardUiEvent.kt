@@ -1,7 +1,7 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.data
 
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 
 sealed class DashboardUiEvent {
     object NavigateToPeriodsList : DashboardUiEvent()

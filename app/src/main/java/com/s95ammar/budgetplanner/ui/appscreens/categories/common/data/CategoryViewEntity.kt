@@ -2,7 +2,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.categories.common.data
 
 import android.os.Parcelable
 import com.s95ammar.budgetplanner.models.BaseApiViewMapper
-import com.s95ammar.budgetplanner.models.api.responses.CategoryApiEntity
+import com.s95ammar.budgetplanner.models.datasource.remote.api.responses.CategoryApiEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

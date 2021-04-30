@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
@@ -47,9 +47,11 @@ class BudgetTransactionCategorySelectionViewModel @Inject constructor(
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(it)))
                 }
                 .collect { categoryApiEntities ->
+/*
                     val categories = categoryApiEntities.mapNotNull { apiEntity -> CategoryViewEntity.ApiMapper.toViewEntity(apiEntity) }
                     _categories.value = categories
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
+*/
                 }
         }
     }

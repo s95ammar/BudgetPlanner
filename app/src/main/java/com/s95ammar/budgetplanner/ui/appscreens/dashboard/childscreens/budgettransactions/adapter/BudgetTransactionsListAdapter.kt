@@ -1,11 +1,12 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budgettransactions.adapter
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemBudgetTransactionBinding
-import com.s95ammar.budgetplanner.models.api.responses.IntBudgetTransactionType
+import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import java.text.SimpleDateFormat
@@ -83,9 +84,13 @@ class BudgetTransactionsListAdapter : BaseListAdapter<BudgetTransactionViewEntit
             }
         }
 
+        @Suppress("Deprecation")
         private fun setCreationUnixMs(creationUnixMs: Long) {
             // TODO: format date properly
-            binding.textViewDateTime.text = SimpleDateFormat("MMM dd yyyy HH:mm", itemView.resources.configuration.locale).format(Date(creationUnixMs))
+
+
+            val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) itemView.resources.configuration.locales[0] else itemView.resources.configuration.locale
+            binding.textViewDateTime.text = SimpleDateFormat("MMM dd yyyy HH:mm", locale).format(Date(creationUnixMs))
         }
 
         private fun setCategoryName(categoryName: String) {

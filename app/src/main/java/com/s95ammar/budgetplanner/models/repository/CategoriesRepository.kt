@@ -1,44 +1,34 @@
 package com.s95ammar.budgetplanner.models.repository
 
-import com.s95ammar.budgetplanner.models.api.parseResponse
-import com.s95ammar.budgetplanner.models.api.requests.CategoryUpsertApiRequest
-import com.s95ammar.budgetplanner.models.api.requests.IdBodyRequest
-import com.s95ammar.budgetplanner.models.datasource.LocalDataSource
-import com.s95ammar.budgetplanner.models.datasource.RemoteDataSource
-import com.s95ammar.budgetplanner.util.flowOnIo
-import kotlinx.coroutines.flow.map
+import com.s95ammar.budgetplanner.models.datasource.local.LocalDataSource
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
+import com.s95ammar.budgetplanner.util.flowOnDispatcher
+import kotlinx.coroutines.Dispatchers
+//import com.s95ammar.budgetplanner.models.datasource.remote.RemoteDataSource
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CategoriesRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource,
+//    private val remoteDataSource: RemoteDataSource,
 ) {
-    fun deleteCategory(id: Int) = flowOnIo {
-        remoteDataSource.deleteCategory(IdBodyRequest(id))
-            .parseResponse()
+    fun deleteCategory(id: Int) = flowOnDispatcher(Dispatchers.IO) {
+        localDataSource.deleteCategory(id)
     }
 
-    fun getAllUserCategories() = flowOnIo {
-        remoteDataSource.getCategory(id = null)
-            .parseResponse()
+    fun getAllUserCategories() = localDataSource.getAllCategories()
+
+    fun getCategory(id: Int) = flowOnDispatcher(Dispatchers.IO) {
+        localDataSource.getCategory(id)
     }
 
-    fun getCategory(id: Int) = flowOnIo {
-        remoteDataSource.getCategory(id)
-            .parseResponse()
-            .map { it.singleOrNull() }
+    fun insertCategory(category: CategoryEntity) = flowOnDispatcher(Dispatchers.IO) {
+        localDataSource.insertCategory(category)
     }
 
-    fun insertCategory(request: CategoryUpsertApiRequest.Insertion) = flowOnIo {
-        remoteDataSource.insertCategory(request)
-            .parseResponse()
-    }
-
-    fun updateCategory(request: CategoryUpsertApiRequest.Update) = flowOnIo {
-        remoteDataSource.updateCategory(request)
-            .parseResponse()
+    fun updateCategory(category: CategoryEntity) = flowOnDispatcher(Dispatchers.IO) {
+        localDataSource.updateCategory(category)
     }
 
 }

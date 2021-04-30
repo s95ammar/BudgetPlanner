@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodCreateEditBinding
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
@@ -16,10 +15,11 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreat
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
-import com.s95ammar.budgetplanner.util.inputText
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
+import com.s95ammar.budgetplanner.util.text
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -74,7 +74,7 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
     }
 
     private fun setPeriodMax(max: Int?) {
-        binding.inputLayoutMax.inputText = max?.toString()
+        binding.inputLayoutMax.text = max?.toString()
     }
 
     private fun setCategoriesNamesStringValue(items: List<PeriodicCategoryViewEntity>) {
@@ -145,8 +145,8 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
     }
 
     private fun createPeriodInputBundle() = PeriodInputBundle(
-        name = binding.inputLayoutName.inputText.orEmpty().trim(),
-        max = binding.inputLayoutMax.inputText?.trim()
+        name = binding.inputLayoutName.text.orEmpty().trim(),
+        max = binding.inputLayoutMax.text?.trim()
     )
 
 }

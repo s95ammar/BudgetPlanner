@@ -4,13 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.s95ammar.budgetplanner.models.api.requests.CategoryUpsertApiRequest
+import com.s95ammar.budgetplanner.models.datasource.remote.api.requests.CategoryUpsertApiRequest
 import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.validation.CategoryCreateEditValidator
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -59,10 +59,12 @@ class CategoryCreateEditViewModel @Inject constructor(
             repository.getCategory(editedCategoryId)
                 .catch { _displayLoadingState.call(LoadingState.Error(it)) }
                 .collect { categoryApiEntity ->
+/*
                     CategoryViewEntity.ApiMapper.toViewEntity(categoryApiEntity)?.let { category ->
                         _editedCategory.value = category
                         _displayLoadingState.call(LoadingState.Success)
                     }
+*/
                 }
         }
 
@@ -70,6 +72,7 @@ class CategoryCreateEditViewModel @Inject constructor(
 
     private fun onValidationSuccessful(request: CategoryUpsertApiRequest) = viewModelScope.launch {
         _displayLoadingState.call(LoadingState.Loading)
+/*
         val flowRequest = when (request) {
             is CategoryUpsertApiRequest.Insertion -> repository.insertCategory(request)
             is CategoryUpsertApiRequest.Update -> repository.updateCategory(request)
@@ -83,6 +86,7 @@ class CategoryCreateEditViewModel @Inject constructor(
                 _onApplySuccess.call()
                 _displayLoadingState.call(LoadingState.Success)
             }
+*/
     }
 
     private fun onValidationError(validationErrors: ValidationErrors) {

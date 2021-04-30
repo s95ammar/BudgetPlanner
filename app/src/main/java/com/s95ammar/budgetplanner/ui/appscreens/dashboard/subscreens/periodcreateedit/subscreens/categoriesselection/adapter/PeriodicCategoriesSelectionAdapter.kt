@@ -11,7 +11,7 @@ import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategorySelectionBindi
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesSelectionAdapter.PeriodicCategoriesSelectionViewHolder
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
-import com.s95ammar.budgetplanner.util.inputText
+import com.s95ammar.budgetplanner.util.text
 
 class PeriodicCategoriesSelectionAdapter(
     private val onClick: (Int, Boolean) -> Unit,
@@ -51,7 +51,7 @@ class PeriodicCategoriesSelectionAdapter(
         }
 
         private fun setMax(max: Int?) {
-            binding.inputLayoutMax.inputText = max?.toString()
+            binding.inputLayoutMax.text = max?.toString()
         }
 
         private fun setSelection(isChecked: Boolean, isEnabled: Boolean) {

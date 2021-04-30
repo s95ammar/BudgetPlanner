@@ -2,13 +2,11 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard
 
 import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity.ApiMapper.mapToViewEntityList
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity.ApiMapper.mapToViewEntityList
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.MediatorLiveData
@@ -55,25 +53,23 @@ class DashboardSharedViewModel @Inject constructor(
     }
 
     fun onAddBudgetTransaction() {
-        _performDashboardUiEvent.call(DashboardUiEvent.NavigateToCreateBudgetTransaction)
+        _performDashboardUiEvent.call(DashboardUiEvent.NavigateToCreateBudgetTransaction(Int.NO_ITEM))
     }
 
     private fun loadPeriod(periodId: Int) = viewModelScope.launch {
         if (periodId == Int.NO_ITEM) return@launch
 
-        repository.getPeriod(
-            id = periodId,
-            includePeriodicCategories = true,
-            includeBudgetTransactions = true,
-            includeSavings = true
-        ).onStart {
-            _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Loading, IntLoadingType.SWIPE_TO_REFRESH))
-        }.catch {
-            _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Error(it), IntLoadingType.SWIPE_TO_REFRESH))
-        }.collect { period ->
-            _currentPeriodicRecords.value = period.periodicCategories.orEmpty().mapToViewEntityList().filter { it.isSelected }
-            _currentBudgetTransactions.value = period.budgetTransactions.orEmpty().mapToViewEntityList()
-            _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Success, IntLoadingType.SWIPE_TO_REFRESH))
-        }
+        repository.getPeriodJoinEntityList(id = periodId)
+            .onStart {
+                _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Loading, IntLoadingType.SWIPE_TO_REFRESH))
+            }.catch {
+                _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Error(it), IntLoadingType.SWIPE_TO_REFRESH))
+            }.collect { period ->
+/*
+                _currentPeriodicRecords.value = period.periodicCategories.orEmpty().mapToViewEntityList().filter { it.isSelected }
+                _currentBudgetTransactions.value = period.budgetTransactions.orEmpty().mapToViewEntityList()
+                _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Success, IntLoadingType.SWIPE_TO_REFRESH))
+*/
+            }
     }
 }

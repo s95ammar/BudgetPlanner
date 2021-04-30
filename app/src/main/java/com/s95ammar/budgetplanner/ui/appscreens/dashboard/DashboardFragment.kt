@@ -9,7 +9,6 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
-import com.s95ammar.budgetplanner.ui.appscreens.auth.common.LoadingState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budget.BudgetFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budgettransactions.BudgetTransactionsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.savings.SavingsFragment
@@ -18,6 +17,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.ui.common.Keys
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.FragmentProvider
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.ViewPagerFragmentAdapter
