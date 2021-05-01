@@ -1,11 +1,10 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit
 
 import androidx.lifecycle.*
-import com.s95ammar.budgetplanner.models.datasource.remote.api.requests.PeriodUpsertApiRequest
-import com.s95ammar.budgetplanner.models.datasource.remote.api.requests.PeriodicCategoryUpsertApiRequest
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodViewEntity
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodFull
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation.PeriodCreateEditValidator
@@ -28,7 +27,7 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     private val editedPeriodId = savedStateHandle.get<Int>(PeriodCreateEditFragmentArgs::periodId.name) ?: Int.NO_ITEM
 
     private val _mode = MutableLiveData(CreateEditMode.getById(editedPeriodId))
-    private val _period = LoaderMutableLiveData<PeriodViewEntity> { loadEditedPeriodOrInsertTemplate() }
+    private val _period = LoaderMutableLiveData<PeriodFull> { loadEditedPeriodOrInsertTemplate() }
 
     private val _name = MediatorLiveData<String>().apply {
         addSource(_period) { value = it.name }
@@ -36,7 +35,7 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     private val _max = MediatorLiveData<Int>().apply {
         addSource(_period) { value = it.max }
     }
-    private val _periodicCategories = MediatorLiveData<List<PeriodicCategoryViewEntity>>().apply {
+    private val _periodicCategories = MediatorLiveData<List<PeriodicCategory>>().apply {
         addSource(_period) { value = it.periodicCategories }
     }
 
@@ -82,10 +81,10 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
         val periodicCategoryUpsertApiRequestListGetter = {
             _periodicCategories.value.orEmpty()
                 .filter { it.isSelected }
-                .map { PeriodicCategoryUpsertApiRequest(it.categoryId, it.max) }
+//                .map { PeriodicCategoryUpsertApiRequest(it.categoryId, it.max) }
         }
 
-        return PeriodCreateEditValidator(editedPeriodId, periodicCategoryUpsertApiRequestListGetter, periodInputBundle)
+        return PeriodCreateEditValidator(editedPeriodId, /*periodicCategoryUpsertApiRequestListGetter,*/ periodInputBundle)
     }
 
     private fun loadEditedPeriodOrInsertTemplate() {
@@ -116,7 +115,7 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
 */
     }
 
-    private fun insertOrUpdatePeriod(request: PeriodUpsertApiRequest) = viewModelScope.launch {
+    private fun insertOrUpdatePeriod(period: PeriodEntity) = viewModelScope.launch {
         // TODO
 /*
             val flowRequest = when (request) {

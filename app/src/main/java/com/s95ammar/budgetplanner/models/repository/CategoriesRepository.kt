@@ -4,14 +4,12 @@ import com.s95ammar.budgetplanner.models.datasource.local.LocalDataSource
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
 import com.s95ammar.budgetplanner.util.flowOnDispatcher
 import kotlinx.coroutines.Dispatchers
-//import com.s95ammar.budgetplanner.models.datasource.remote.RemoteDataSource
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CategoriesRepository @Inject constructor(
-    private val localDataSource: LocalDataSource,
-//    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource
 ) {
     fun deleteCategory(id: Int) = flowOnDispatcher(Dispatchers.IO) {
         localDataSource.deleteCategory(id)

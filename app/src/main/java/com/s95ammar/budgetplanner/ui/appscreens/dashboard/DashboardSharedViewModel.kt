@@ -3,7 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard
 import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.ui.common.LoadingState
@@ -27,7 +27,7 @@ class DashboardSharedViewModel @Inject constructor(
     private val _selectedPeriodId = MediatorLiveData(Int.NO_ITEM).apply {
         addSource(this) { loadPeriod(it) }
     }
-    private val _currentPeriodicRecords = MutableLiveData<List<PeriodicCategoryViewEntity>>()
+    private val _currentPeriodicRecords = MutableLiveData<List<PeriodicCategory>>()
     private val _currentBudgetTransactions = MutableLiveData<List<BudgetTransactionViewEntity>>()
     private val _performDashboardUiEvent = EventMutableLiveData<DashboardUiEvent>()
 

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoriesBinding
 import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter
-import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.appscreens.categories.data.CategoriesUiEvent
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
@@ -57,7 +57,7 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
         binding.swipeToRefreshLayout.isRefreshing = false
     }
 
-    private fun setAllCategories(categories: List<CategoryViewEntity>) {
+    private fun setAllCategories(categories: List<Category>) {
         adapter.submitList(categories) { binding.recyclerView.scrollToPosition(0) }
     }
 
@@ -88,7 +88,7 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
         )
     }
 
-    private fun showBottomSheet(category: CategoryViewEntity) {
+    private fun showBottomSheet(category: Category) {
         EditDeleteBottomSheetDialogFragment.newInstance(category.name, R.drawable.ic_category).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
                 override fun onEdit() = onNavigateToCreateEditCategory(category.id)

@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodCreateEditBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation.PeriodCreateEditValidator
@@ -77,7 +77,7 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
         binding.inputLayoutMax.text = max?.toString()
     }
 
-    private fun setCategoriesNamesStringValue(items: List<PeriodicCategoryViewEntity>) {
+    private fun setCategoriesNamesStringValue(items: List<PeriodicCategory>) {
         val isEmpty = items.isEmpty()
 
         binding.textViewPeriodCategoriesValue.text = if (isEmpty) {

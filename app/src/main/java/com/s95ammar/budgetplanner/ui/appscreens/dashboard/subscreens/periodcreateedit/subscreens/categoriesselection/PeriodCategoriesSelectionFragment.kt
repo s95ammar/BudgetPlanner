@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodCategoriesSelectionBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesSelectionAdapter
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -65,7 +65,7 @@ class PeriodCategoriesSelectionFragment : BaseFragment(R.layout.fragment_period_
         adapter.alwaysAllowCategorySelection = alwaysAllowCategorySelection
     }
 
-    private fun setPeriodicCategories(periodicCategories: List<PeriodicCategoryViewEntity>) {
+    private fun setPeriodicCategories(periodicCategories: List<PeriodicCategory>) {
         adapter.submitList(periodicCategories)
     }
 

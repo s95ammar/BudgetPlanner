@@ -1,17 +1,15 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation
 
-import com.s95ammar.budgetplanner.models.datasource.remote.api.requests.PeriodUpsertApiRequest
-import com.s95ammar.budgetplanner.models.datasource.remote.api.requests.PeriodicCategoryUpsertApiRequest
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
-import com.s95ammar.budgetplanner.util.NO_ITEM
 
 class PeriodCreateEditValidator(
     private val periodId: Int,
-    private val periodicCategoryUpsertApiRequestListProvider: () -> List<PeriodicCategoryUpsertApiRequest>,
+//    private val periodicCategoryUpsertApiRequestListProvider: () -> List<PeriodicCategoryUpsertApiRequest>,
     periodInputBundle: PeriodInputBundle
-) : Validator<PeriodInputBundle, PeriodUpsertApiRequest>(periodInputBundle) {
+) : Validator<PeriodInputBundle, PeriodEntity>(periodInputBundle) {
 
     object Errors {
         const val EMPTY_NAME = 1
@@ -21,17 +19,8 @@ class PeriodCreateEditValidator(
         const val VIEW_NAME = 1
     }
 
-    override fun provideOutputEntity(inputEntity: PeriodInputBundle): PeriodUpsertApiRequest {
-        return if (periodId == Int.NO_ITEM) PeriodUpsertApiRequest.Insertion(
-            name = inputEntity.name,
-            max = inputEntity.max?.toIntOrNull(),
-            periodicCategories = periodicCategoryUpsertApiRequestListProvider()
-        ) else PeriodUpsertApiRequest.Update(
-            id = periodId,
-            name = inputEntity.name,
-            max = inputEntity.max?.toIntOrNull(),
-            periodicCategories = periodicCategoryUpsertApiRequestListProvider()
-        )
+    override fun provideOutputEntity(inputEntity: PeriodInputBundle): PeriodEntity {
+        TODO()
     }
 
     override fun provideViewValidationList(): List<ViewValidation> {

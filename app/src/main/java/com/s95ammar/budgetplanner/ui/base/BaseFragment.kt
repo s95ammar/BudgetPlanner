@@ -11,13 +11,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.models.datasource.remote.api.responses.errors.InternalServerError
-import com.s95ammar.budgetplanner.models.datasource.remote.api.responses.errors.UnauthorizedError
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBindingException
-
 
 abstract class BaseFragment : Fragment, LoadingManager {
 
@@ -37,7 +34,7 @@ abstract class BaseFragment : Fragment, LoadingManager {
     }
 
     internal inline fun <reified VB: ViewBinding> getBinding(): VB {
-        val binding = _binding ?: throw ViewBindingException(ViewBindingException.MESSAGE_INAPPROPRIATE_LIFECYCLE_STATE)
+        val binding = _binding ?: throw ViewBindingException()
         return binding as VB
     }
 
@@ -73,8 +70,6 @@ abstract class BaseFragment : Fragment, LoadingManager {
     }
 
     private fun getErrorStringId(throwable: Throwable) = when (throwable) {
-        is InternalServerError -> R.string.error_internal_server
-        is UnauthorizedError -> R.string.error_unauthorized
         else -> R.string.error_occurred
     }
 

@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.s95ammar.budgetplanner.models.datasource.remote.api.requests.CategoryUpsertApiRequest
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
 import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
-import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.validation.CategoryCreateEditValidator
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
@@ -32,7 +32,7 @@ class CategoryCreateEditViewModel @Inject constructor(
     private val editedCategoryId = savedStateHandle.get<Int>(CategoryCreateEditFragmentArgs::categoryId.name) ?: Int.NO_ITEM
 
     private val _mode = MutableLiveData(CreateEditMode.getById(editedCategoryId))
-    private val _editedCategory = LoaderMutableLiveData<CategoryViewEntity> { if (_mode.value == CreateEditMode.EDIT) loadEditedCategory() }
+    private val _editedCategory = LoaderMutableLiveData<Category> { if (_mode.value == CreateEditMode.EDIT) loadEditedCategory() }
     private val _displayLoadingState = EventMutableLiveData<LoadingState>(LoadingState.Cold)
     private val _onApplySuccess = EventMutableLiveDataVoid()
     private val _displayValidationResults = EventMutableLiveData<ValidationErrors>()
@@ -70,7 +70,7 @@ class CategoryCreateEditViewModel @Inject constructor(
 
     }
 
-    private fun onValidationSuccessful(request: CategoryUpsertApiRequest) = viewModelScope.launch {
+    private fun onValidationSuccessful(category: CategoryEntity) = viewModelScope.launch {
         _displayLoadingState.call(LoadingState.Loading)
 /*
         val flowRequest = when (request) {

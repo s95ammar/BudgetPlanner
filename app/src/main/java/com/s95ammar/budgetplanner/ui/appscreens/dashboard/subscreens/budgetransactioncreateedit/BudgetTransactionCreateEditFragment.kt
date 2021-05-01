@@ -7,7 +7,7 @@ import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCreateEditBinding
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
-import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
@@ -66,7 +66,7 @@ class BudgetTransactionCreateEditFragment : BaseFragment(R.layout.fragment_budge
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
-    private fun setSelectedCategory(category: CategoryViewEntity) {
+    private fun setSelectedCategory(category: Category) {
         binding.textViewPeriodCategoryValue.text = category.name
         binding.textViewPeriodCategoryValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
     }
@@ -81,7 +81,7 @@ class BudgetTransactionCreateEditFragment : BaseFragment(R.layout.fragment_budge
 
     private fun onNavigateToCategorySelection() {
         setFragmentResultListener(Keys.KEY_ON_CATEGORY_SELECTED) { _, bundle ->
-            bundle.getParcelable<CategoryViewEntity>(Keys.KEY_CATEGORY)?.let { category ->
+            bundle.getParcelable<Category>(Keys.KEY_CATEGORY)?.let { category ->
                 viewModel.setCategory(category)
             }
         }

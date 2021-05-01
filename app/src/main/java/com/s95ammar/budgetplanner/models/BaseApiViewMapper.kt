@@ -4,5 +4,5 @@ interface BaseApiViewMapper<ViewEntity, ApiEntity> {
 
     fun toApiEntity(viewEntity: ViewEntity?): ApiEntity? = null
 
-    fun toViewEntity(apiEntity: ApiEntity?): ViewEntity? = null
+    fun fromEntity(apiEntity: ApiEntity?): ViewEntity? = null
 }

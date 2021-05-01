@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCategorySelectionBinding
 import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter
-import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
@@ -49,7 +49,7 @@ class BudgetTransactionCategorySelectionFragment : BaseFragment(R.layout.fragmen
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
-    private fun setAllCategories(categories: List<CategoryViewEntity>) {
+    private fun setAllCategories(categories: List<Category>) {
         adapter.submitList(categories)
     }
 
@@ -73,7 +73,7 @@ class BudgetTransactionCategorySelectionFragment : BaseFragment(R.layout.fragmen
         }
     }
 
-    private fun setResult(category: CategoryViewEntity) {
+    private fun setResult(category: Category) {
         setFragmentResult(Keys.KEY_ON_CATEGORY_SELECTED, bundleOf(Keys.KEY_CATEGORY to category))
     }
 

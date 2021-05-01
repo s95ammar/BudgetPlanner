@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DiffUtil
 import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategorySelectionBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesSelectionAdapter.PeriodicCategoriesSelectionViewHolder
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.util.text
@@ -16,7 +16,7 @@ import com.s95ammar.budgetplanner.util.text
 class PeriodicCategoriesSelectionAdapter(
     private val onClick: (Int, Boolean) -> Unit,
     private val onMaxInputChanged: (Int, String?) -> Unit
-) : BaseListAdapter<PeriodicCategoryViewEntity, PeriodicCategoriesSelectionViewHolder>(DiffUtilCallback()) {
+) : BaseListAdapter<PeriodicCategory, PeriodicCategoriesSelectionViewHolder>(DiffUtilCallback()) {
 
     var alwaysAllowCategorySelection = false
 
@@ -34,10 +34,10 @@ class PeriodicCategoriesSelectionAdapter(
         private val onMaxInputChanged: (Int, String?) -> Unit,
         private val binding: ItemPeriodicCategorySelectionBinding,
         private val alwaysAllowCategorySelection: Boolean
-    ) : BaseListAdapter.BaseViewHolder<PeriodicCategoryViewEntity>(binding.root) {
+    ) : BaseListAdapter.BaseViewHolder<PeriodicCategory>(binding.root) {
 
 
-        override fun bind(item: PeriodicCategoryViewEntity, payloads: PayloadsHolder) {
+        override fun bind(item: PeriodicCategory, payloads: PayloadsHolder) {
             binding.checkBoxCategoryName.setOnCheckedChangeListener { _, isChecked -> onSelectionStateChanged(adapterPosition, isChecked) }
             binding.inputLayoutMax.editText?.doAfterTextChanged { onMaxInputChanged(adapterPosition, it?.toString()) }
 
@@ -70,24 +70,24 @@ class PeriodicCategoriesSelectionAdapter(
         }
     }
 
-    class DiffUtilCallback : DiffUtil.ItemCallback<PeriodicCategoryViewEntity>() {
-        override fun areItemsTheSame(oldItem: PeriodicCategoryViewEntity, newItem: PeriodicCategoryViewEntity): Boolean {
+    class DiffUtilCallback : DiffUtil.ItemCallback<PeriodicCategory>() {
+        override fun areItemsTheSame(oldItem: PeriodicCategory, newItem: PeriodicCategory): Boolean {
             return oldItem.categoryId == newItem.categoryId
         }
 
-        override fun areContentsTheSame(oldItem: PeriodicCategoryViewEntity, newItem: PeriodicCategoryViewEntity): Boolean {
+        override fun areContentsTheSame(oldItem: PeriodicCategory, newItem: PeriodicCategory): Boolean {
             return oldItem == newItem
         }
 
-        override fun getChangePayload(oldItem: PeriodicCategoryViewEntity, newItem: PeriodicCategoryViewEntity): PayloadsHolder {
+        override fun getChangePayload(oldItem: PeriodicCategory, newItem: PeriodicCategory): PayloadsHolder {
             return PayloadsHolder().apply {
-                addPayloadIfNotEqual(PayloadType.NAME, oldItem to newItem, PeriodicCategoryViewEntity::categoryName)
-                addPayloadIfNotEqual(PayloadType.MAX, oldItem to newItem, PeriodicCategoryViewEntity::max)
+                addPayloadIfNotEqual(PayloadType.NAME, oldItem to newItem, PeriodicCategory::categoryName)
+                addPayloadIfNotEqual(PayloadType.MAX, oldItem to newItem, PeriodicCategory::max)
                 addPayloadIfNotEqual(
                     PayloadType.SELECTION,
                     oldItem to newItem,
-                    PeriodicCategoryViewEntity::isSelected,
-                    PeriodicCategoryViewEntity::amount
+                    PeriodicCategory::isSelected,
+                    PeriodicCategory::amount
                 )
             }
         }

@@ -8,7 +8,7 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBudgetBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budget.adapter.PeriodicCategoriesListAdapter
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,7 +54,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
         if (isVisible) binding.fab.show() else binding.fab.hide()
     }
 
-    private fun setPeriodicCategories(periodicCategories: List<PeriodicCategoryViewEntity>) {
+    private fun setPeriodicCategories(periodicCategories: List<PeriodicCategory>) {
         adapter.submitList(periodicCategories)
     }
 

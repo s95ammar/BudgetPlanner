@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodsBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimpleViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.adapter.PeriodsListAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.data.PeriodsUiEvent
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -60,7 +60,7 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
         binding.swipeToRefreshLayout.isRefreshing = false
     }
 
-    private fun setAllPeriods(periods: List<PeriodSimpleViewEntity>) {
+    private fun setAllPeriods(periods: List<PeriodSimple>) {
         adapter.submitList(periods)
     }
 
@@ -91,7 +91,7 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
         )
     }
 
-    private fun showBottomSheet(period: PeriodSimpleViewEntity) {
+    private fun showBottomSheet(period: PeriodSimple) {
         EditDeleteBottomSheetDialogFragment.newInstance(period.name, R.drawable.ic_period).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
                 override fun onEdit() = onNavigateToCreateEditPeriod(period.id)

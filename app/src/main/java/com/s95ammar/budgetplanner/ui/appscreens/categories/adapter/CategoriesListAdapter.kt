@@ -6,17 +6,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.s95ammar.budgetplanner.databinding.ItemCategoryBinding
-import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 
 class CategoriesListAdapter(
     private val onItemClick: (Int) -> Unit,
     private val onItemLongClick: ((Int) -> Unit)?
-) : ListAdapter<CategoryViewEntity, CategoriesListAdapter.CategoriesViewHolder>(DiffUtilCallback()) {
+) : ListAdapter<Category, CategoriesListAdapter.CategoriesViewHolder>(DiffUtilCallback()) {
 
     companion object {
-        class DiffUtilCallback : DiffUtil.ItemCallback<CategoryViewEntity>() {
-            override fun areItemsTheSame(oldItem: CategoryViewEntity, newItem: CategoryViewEntity) = (oldItem.id == newItem.id)
-            override fun areContentsTheSame(oldItem: CategoryViewEntity, newItem: CategoryViewEntity) = (oldItem == newItem)
+        class DiffUtilCallback : DiffUtil.ItemCallback<Category>() {
+            override fun areItemsTheSame(oldItem: Category, newItem: Category) = (oldItem.id == newItem.id)
+            override fun areContentsTheSame(oldItem: Category, newItem: Category) = (oldItem == newItem)
         }
     }
 
@@ -43,7 +43,7 @@ class CategoriesListAdapter(
             itemView.setOnLongClickListener { onItemLongClick?.invoke(adapterPosition); true }
         }
 
-        fun bind(item: CategoryViewEntity) {
+        fun bind(item: Category) {
             binding.textViewTitle.text = item.name
         }
 

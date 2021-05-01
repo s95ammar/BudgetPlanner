@@ -3,7 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimpleViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.data.PeriodsUiEvent
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -22,7 +22,7 @@ class PeriodsViewModel @Inject constructor(
     private val repository: PeriodRepository
 ) : ViewModel() {
 
-    private val _allPeriods = LoaderMutableLiveData<List<PeriodSimpleViewEntity>> { loadAllPeriods() }
+    private val _allPeriods = LoaderMutableLiveData<List<PeriodSimple>> { loadAllPeriods() }
     private val _onPeriodDeleted = EventMutableLiveDataVoid()
     private val _performUiEvent = EventMutableLiveData<PeriodsUiEvent>()
 

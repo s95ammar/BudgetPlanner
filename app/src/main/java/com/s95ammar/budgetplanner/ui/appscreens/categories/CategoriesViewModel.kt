@@ -3,7 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.categories
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
-import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.appscreens.categories.data.CategoriesUiEvent
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -18,7 +18,7 @@ class CategoriesViewModel @Inject constructor(
     private val repository: CategoriesRepository
 ) : ViewModel() {
 
-    private val _allCategories = LoaderMutableLiveData<List<CategoryViewEntity>> { loadAllCategories() }
+    private val _allCategories = LoaderMutableLiveData<List<Category>> { loadAllCategories() }
     private val _performUiEvent = EventMutableLiveData<CategoriesUiEvent>()
 
     val allCategories = _allCategories.asLiveData()

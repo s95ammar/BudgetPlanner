@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimpleViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
@@ -27,7 +27,7 @@ class DashboardViewModel @Inject constructor(
     private val repository: PeriodRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _allPeriods = LoaderMutableLiveData<List<PeriodSimpleViewEntity>> { loadAllPeriods() }
+    private val _allPeriods = LoaderMutableLiveData<List<PeriodSimple>> { loadAllPeriods() }
     private val _currentPeriodBundle = MediatorLiveData(createCurrentPeriodHeaderBundle(null)).apply {
         addSource(_allPeriods.distinctUntilChanged()) { value = createCurrentPeriodHeaderBundle(it.lastOrNull()) }
     }
@@ -70,8 +70,8 @@ class DashboardViewModel @Inject constructor(
         loadAllPeriods()
     }
 
-    private fun createCurrentPeriodHeaderBundle(currentPeriod: PeriodSimpleViewEntity?): CurrentPeriodHeaderBundle {
-        var period: PeriodSimpleViewEntity? = null
+    private fun createCurrentPeriodHeaderBundle(currentPeriod: PeriodSimple?): CurrentPeriodHeaderBundle {
+        var period: PeriodSimple? = null
         var isPreviousAvailable = false
         var isNextAvailable = false
 

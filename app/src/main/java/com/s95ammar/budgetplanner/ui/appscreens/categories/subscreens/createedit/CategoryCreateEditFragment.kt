@@ -6,8 +6,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoryCreateEditBinding
-import com.s95ammar.budgetplanner.models.datasource.remote.api.responses.errors.ConflictError
-import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.validation.CategoryCreateEditValidator
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -74,12 +73,12 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
 
     private fun handleError(throwable: Throwable) {
         when (throwable) {
-            is ConflictError -> displayError(CategoryCreateEditValidator.ViewKeys.VIEW_TITLE, CategoryCreateEditValidator.Errors.NAME_TAKEN)
+//            is ConflictError -> displayError(CategoryCreateEditValidator.ViewKeys.VIEW_TITLE, CategoryCreateEditValidator.Errors.NAME_TAKEN)
             else -> showErrorToast(throwable)
         }
     }
 
-    private fun setViewsToEditedCategory(category: CategoryViewEntity) {
+    private fun setViewsToEditedCategory(category: Category) {
         binding.inputLayoutTitle.editText?.apply {
             setText(category.name)
             setSelection(category.name.length)

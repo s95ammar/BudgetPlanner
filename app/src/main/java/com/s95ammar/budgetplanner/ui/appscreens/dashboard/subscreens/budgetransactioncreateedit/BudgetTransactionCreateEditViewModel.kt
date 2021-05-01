@@ -6,7 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.models.repository.BudgetTransactionRepository
-import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.CategoryViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.util.NO_ITEM
@@ -31,7 +31,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     }
 
     private val _selectedType = MutableLiveData<@IntBudgetTransactionType Int>()
-    private val _selectedCategory = MutableLiveData<CategoryViewEntity>()
+    private val _selectedCategory = MutableLiveData<Category>()
 
 
     private val _name = MediatorLiveData<String>().apply {
@@ -40,8 +40,8 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     private val _amount = MediatorLiveData<Int>().apply {
         addSource(_budgetTransaction) { value = it.amount }
     }
-    private val _category = MediatorLiveData<CategoryViewEntity>().apply {
-        addSource(_budgetTransaction) { value = CategoryViewEntity(it.periodicCategoryId, it.categoryName) }
+    private val _category = MediatorLiveData<Category>().apply {
+        addSource(_budgetTransaction) { value = Category(it.periodicCategoryId, it.categoryName) }
     }
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
@@ -86,7 +86,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
         _performUiEvent.call(UiEvent.ChooseCategory)
     }
 
-    fun setCategory(category: CategoryViewEntity) {
+    fun setCategory(category: Category) {
         _selectedCategory.value = category
     }
 
