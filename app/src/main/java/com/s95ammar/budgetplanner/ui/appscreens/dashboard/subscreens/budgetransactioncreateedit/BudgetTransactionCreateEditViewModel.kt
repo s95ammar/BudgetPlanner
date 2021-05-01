@@ -125,8 +125,8 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
                 .catch { throwable ->
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
-                .collect { periodApiEntity ->
-                    PeriodViewEntity.ApiMapper.toViewEntity(periodApiEntity)?.let { periodViewEntity ->
+                .collect { periodEntity ->
+                    PeriodViewEntity.EntityMapper.toViewEntity(periodEntity)?.let { periodViewEntity ->
                         _period.value = periodViewEntity
                         _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
                     }

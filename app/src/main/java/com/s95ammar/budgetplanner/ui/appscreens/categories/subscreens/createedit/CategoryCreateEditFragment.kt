@@ -1,5 +1,6 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit
 
+import android.database.sqlite.SQLiteConstraintException
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.setFragmentResult
@@ -8,24 +9,20 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoryCreateEditBinding
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
-import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.validation.CategoryCreateEditValidator
-import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
+import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.text
 import dagger.hilt.android.AndroidEntryPoint
+import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.validation.CategoryCreateEditValidator as Validator
 
 @AndroidEntryPoint
-class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_create_edit), ViewBinder<FragmentCategoryCreateEditBinding> {
+class CategoryCreateEditFragment : BaseViewBinderFragment<FragmentCategoryCreateEditBinding>(R.layout.fragment_category_create_edit) {
 
     private val viewModel: CategoryCreateEditViewModel by viewModels()
-
-    override val binding: FragmentCategoryCreateEditBinding
-        get() = getBinding()
 
     override fun initViewBinding(view: View): FragmentCategoryCreateEditBinding {
         return FragmentCategoryCreateEditBinding.bind(view)
@@ -73,7 +70,7 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
 
     private fun handleError(throwable: Throwable) {
         when (throwable) {
-//            is ConflictError -> displayError(CategoryCreateEditValidator.ViewKeys.VIEW_TITLE, CategoryCreateEditValidator.Errors.NAME_TAKEN)
+            is SQLiteConstraintException -> displayError(Validator.ViewKeys.VIEW_TITLE, Validator.Errors.NAME_TAKEN)
             else -> showErrorToast(throwable)
         }
     }
@@ -94,14 +91,14 @@ class CategoryCreateEditFragment : BaseFragment(R.layout.fragment_category_creat
 
     private fun displayError(viewKey: Int, errorId: Int) {
         when (viewKey) {
-            CategoryCreateEditValidator.ViewKeys.VIEW_TITLE -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
-            CategoryCreateEditValidator.Errors.NAME_TAKEN -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
+            Validator.ViewKeys.VIEW_TITLE -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
+            Validator.Errors.NAME_TAKEN -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
         }
     }
 
     private fun getErrorStringById(errorId: Int) = when (errorId) {
-        CategoryCreateEditValidator.Errors.EMPTY_TITLE -> getString(R.string.error_empty_field)
-        CategoryCreateEditValidator.Errors.NAME_TAKEN -> getString(R.string.error_category_name_taken)
+        Validator.Errors.EMPTY_TITLE -> getString(R.string.error_empty_field)
+        Validator.Errors.NAME_TAKEN -> getString(R.string.error_category_name_taken)
         else -> null
     }
 

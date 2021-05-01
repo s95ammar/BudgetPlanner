@@ -16,9 +16,9 @@ interface BudgetTransactionDao {
     suspend fun delete(budgetTransaction: BudgetTransactionEntity)
 
     @Query("SELECT * FROM budgetTransaction WHERE id=:id")
-    fun getBudgetTransactionEntityById(id: Int): Flow<BudgetTransactionEntity>
+    fun getBudgetTransactionByIdFlow(id: Int): Flow<BudgetTransactionEntity>
 
     @Query("SELECT * FROM budgetTransaction")
-    fun getAllCategories(): Flow<List<BudgetTransactionEntity>>
+    fun getAllBudgetTransactionsFlow(): Flow<List<BudgetTransactionEntity>>
 
 }

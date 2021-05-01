@@ -39,16 +39,16 @@ class BudgetTransactionCategorySelectionViewModel @Inject constructor(
 
     private fun loadCategories() {
         viewModelScope.launch {
-            repository.getAllUserCategories()
+            repository.getAllUserCategoriesFlow()
                 .onStart {
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
                 }
                 .catch {
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(it)))
                 }
-                .collect { categoryApiEntities ->
+                .collect { categoryEntityList ->
 /*
-                    val categories = categoryApiEntities.mapNotNull { apiEntity -> CategoryViewEntity.ApiMapper.toViewEntity(apiEntity) }
+                    val categories = categoryEntityList.mapNotNull { entity -> CategoryViewEntity.EntityMapper.toViewEntity(entity) }
                     _categories.value = categories
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
 */

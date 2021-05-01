@@ -8,7 +8,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
 data class PeriodEntity(
     val name: String,
     val max: Int?,
-    val creationUnixMs: Long
+    val creationUnixMs: Long = System.currentTimeMillis()
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

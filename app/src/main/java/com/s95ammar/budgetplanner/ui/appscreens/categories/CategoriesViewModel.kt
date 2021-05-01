@@ -5,11 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.appscreens.categories.data.CategoriesUiEvent
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -44,8 +48,8 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    fun deleteCategory(id: Int) = viewModelScope.launch {/*
-        repository.deleteCategory(id)
+    fun deleteCategory(id: Int) = viewModelScope.launch {
+        repository.deleteCategoryFlow(id)
             .onStart {
                 _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Loading))
             }
@@ -56,23 +60,22 @@ class CategoriesViewModel @Inject constructor(
                 _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Success))
                 refresh()
             }
-    */}
+    }
 
-    private fun loadAllCategories() {/*
+    private fun loadAllCategories() {
         viewModelScope.launch {
-            repository.getAllUserCategories()
+            repository.getAllUserCategoriesFlow()
                 .onStart {
                     _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Loading))
                 }
                 .catch {
                     _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Error(it)))
                 }
-                .collect { categoryApiEntities ->
-                    val categories = categoryApiEntities.mapNotNull { apiEntity -> CategoryViewEntity.ApiMapper.toViewEntity(apiEntity) }
-                    _allCategories.value = categories
+                .collect { categoryEntityList ->
+                    _allCategories.value = categoryEntityList.mapNotNull(Category.Mapper::fromEntity)
                     _performUiEvent.call(CategoriesUiEvent.DisplayLoadingState(LoadingState.Success))
                 }
         }
-    */}
+    }
 
 }

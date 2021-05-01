@@ -13,12 +13,12 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
         ForeignKey(
             entity = PeriodicCategoryEntity::class,
             parentColumns = [BudgetPlannerDbConfig.COLUMN_NAME_ID],
-            childColumns = [BudgetPlannerDbConfig.COLUMN_NAME_PERIODIC_CATEGORY_ID],
+            childColumns = [BudgetPlannerDbConfig.COLUMN_NAME_NAME],
             onDelete = ForeignKey.CASCADE
         )
     ],
     indices = [
-        Index(value = [BudgetPlannerDbConfig.COLUMN_NAME_PERIODIC_CATEGORY_ID])
+        Index(value = [BudgetPlannerDbConfig.COLUMN_NAME_NAME])
     ]
 )
 data class BudgetTransactionEntity(

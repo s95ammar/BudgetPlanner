@@ -6,16 +6,16 @@ import androidx.annotation.LayoutRes
 import androidx.viewbinding.ViewBinding
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 
-abstract class BaseViewBinderFragment<T : ViewBinding> : BaseFragment {
+abstract class BaseViewBinderFragment<VB : ViewBinding> : BaseFragment {
 
     constructor() : super()
     constructor(@LayoutRes layoutResId: Int) : super(layoutResId)
 
-    private var _binding: T? = null
-    protected val binding
+    private var _binding: VB? = null
+    val binding: VB
         get() = _binding ?: throw ViewBindingException()
 
-    abstract fun initViewBinding(view: View): T
+    abstract fun initViewBinding(view: View): VB
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = initViewBinding(view)

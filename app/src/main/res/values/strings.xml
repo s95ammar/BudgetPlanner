@@ -7,7 +7,7 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm password</string>
 
-    <string name="error_empty_field">Please fill in the field</string>
+    <string name="error_empty_field">Required field</string>
 
     <string name="error_invalid_email">Invalid email</string>
     <string name="error_email_taken">This email is already registered</string>
@@ -61,9 +61,11 @@
 
     <string name="create_category">Create category</string>
     <string name="edit_category">Edit category</string>
+    <string name="create_category_instruction">You have no categories.\nCreate categories to organize your expenses and income!</string>
 
     <string name="create_period">Create period</string>
     <string name="edit_period">Edit period</string>
+    <string name="create_period_instruction">Create a period to start managing your budget!</string>
 
     <string name="add">Add</string>
 

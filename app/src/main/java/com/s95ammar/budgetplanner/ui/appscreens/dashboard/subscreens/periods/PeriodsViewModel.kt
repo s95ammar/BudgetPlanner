@@ -47,7 +47,7 @@ class PeriodsViewModel @Inject constructor(
     }
 
     fun deletePeriod(id: Int) = viewModelScope.launch {
-        repository.deletePeriod(id)
+        repository.deletePeriodFlow(id)
             .onStart {
                 _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
             }
@@ -59,16 +59,16 @@ class PeriodsViewModel @Inject constructor(
 
     private fun loadAllPeriods() {
         viewModelScope.launch {
-            repository.getAllUserPeriods()
+            repository.getAllUserPeriodsFlow()
                 .onStart {
                     _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
                 }
                 .catch {
                     _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it)))
                 }
-                .collect { periodApiEntities ->
+                .collect { periodEntityList ->
 /*
-                    val periods = periodApiEntities.mapNotNull { apiEntity -> PeriodSimpleViewEntity.ApiMapper.toViewEntity(apiEntity) }
+                    val periods = periodEntityList.mapNotNull { entity -> PeriodSimpleViewEntity.EntityMapper.toViewEntity(entity) }
                     _allPeriods.value = periods
                     _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Success))
 */

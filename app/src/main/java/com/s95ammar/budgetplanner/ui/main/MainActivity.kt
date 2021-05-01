@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
         (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
     }
 
-
     private val bottomNavView by lazy { findViewById<BottomNavigationView>(R.id.bottom_nav_view) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,10 +65,14 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
     }
 
     override fun showLoading() {
-        LoadingDialog.newInstance().show(supportFragmentManager, LoadingDialog.TAG)
+        val loadingDialog = (supportFragmentManager.findFragmentByTag(LoadingDialog.TAG) as? LoadingDialog) ?: LoadingDialog.newInstance()
+        if (!loadingDialog.isAdded)
+            loadingDialog.show(supportFragmentManager, LoadingDialog.TAG)
     }
 
     override fun hideLoading() {
-        (supportFragmentManager.findFragmentByTag(LoadingDialog.TAG) as? LoadingDialog)?.dismiss()
+        supportFragmentManager.executePendingTransactions()
+        val loadingDialog = supportFragmentManager.findFragmentByTag(LoadingDialog.TAG) as? LoadingDialog
+        loadingDialog?.dismiss()
     }
 }

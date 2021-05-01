@@ -13,26 +13,26 @@ class PeriodRepository @Inject constructor(
 //    private val remoteDataSource: RemoteDataSource,
 ) {
 
-    fun getPeriodJoinEntityList(id: Int) = flowOnDispatcher(Dispatchers.IO) {
-        localDataSource.getPeriodJoinEntityList(id)
+    fun getPeriodJoinEntityListFlow(id: Int) = flowOnDispatcher(Dispatchers.IO) {
+        localDataSource.getPeriodJoinEntityListFlow(id)
     }
 
-    fun getPeriodicCategoryJoinEntityList(id: Int) = localDataSource.getPeriodicCategoryJoinEntityList(id)
+    fun getPeriodicCategoryJoinEntityListFlow(id: Int) = localDataSource.getPeriodicCategoryJoinEntityListFlow(id)
 
-    fun getAllUserPeriods() = localDataSource.getAllPeriods()
+    fun getAllUserPeriodsFlow() = localDataSource.getAllPeriodsFlow()
 
-    fun insertPeriod(period: PeriodEntity) = flowOnDispatcher(Dispatchers.IO) {
+    fun insertPeriodFlow(period: PeriodEntity) = flowOnDispatcher(Dispatchers.IO) {
         localDataSource.insertPeriod(period)
     }
 
-    fun updatePeriod(period: PeriodEntity) = flowOnDispatcher(Dispatchers.IO) {
+    fun updatePeriodFlow(period: PeriodEntity) = flowOnDispatcher(Dispatchers.IO) {
         localDataSource.updatePeriod(period)
     }
 
-    fun deletePeriod(id: Int) = flowOnDispatcher(Dispatchers.IO) {
+    fun deletePeriodFlow(id: Int) = flowOnDispatcher(Dispatchers.IO) {
         localDataSource.deletePeriod(id)
     }
 
-    fun getPeriodInsertTemplate() = localDataSource.getPeriodInsertTemplate()
+    fun getPeriodInsertTemplateFlow() = localDataSource.getPeriodInsertTemplateFlow()
 
 }

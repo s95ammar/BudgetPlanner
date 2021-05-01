@@ -19,12 +19,12 @@ class PeriodCreateEditValidator(
         const val VIEW_NAME = 1
     }
 
-    override fun provideOutputEntity(inputEntity: PeriodInputBundle): PeriodEntity {
+    override fun provideOutput(input: PeriodInputBundle): PeriodEntity {
         TODO()
     }
 
     override fun provideViewValidationList(): List<ViewValidation> {
-        val caseEmptyTitle = ViewValidation.Case(Errors.EMPTY_NAME) { inputEntity.name.isEmpty() }
+        val caseEmptyTitle = ViewValidation.Case(Errors.EMPTY_NAME) { input.name.isEmpty() }
 
         return listOf(
             ViewValidation(ViewKeys.VIEW_NAME, listOf(caseEmptyTitle))

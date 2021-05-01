@@ -4,11 +4,12 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEnti
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
+import com.s95ammar.budgetplanner.util.NO_ITEM
 
 class CategoryCreateEditValidator(
     private val categoryId: Int,
-    categoryInputBundle: CategoryInputBundle
-) : Validator<CategoryInputBundle, CategoryEntity>(categoryInputBundle) {
+    input: CategoryInputBundle
+) : Validator<CategoryInputBundle, CategoryEntity>(input) {
 
     object Errors {
         const val EMPTY_TITLE = 1
@@ -19,12 +20,12 @@ class CategoryCreateEditValidator(
         const val VIEW_TITLE = 1
     }
 
-    override fun provideOutputEntity(inputEntity: CategoryInputBundle): CategoryEntity {
-        TODO()
+    override fun provideOutput(input: CategoryInputBundle): CategoryEntity {
+        return CategoryEntity(input.title).apply { if (categoryId != Int.NO_ITEM) id = categoryId }
     }
 
     override fun provideViewValidationList(): List<ViewValidation> {
-        val caseEmptyTitle = ViewValidation.Case(Errors.EMPTY_TITLE) { inputEntity.title.isEmpty() }
+        val caseEmptyTitle = ViewValidation.Case(Errors.EMPTY_TITLE) { input.title.isEmpty() }
 
         return listOf(
             ViewValidation(ViewKeys.VIEW_TITLE, listOf(caseEmptyTitle))

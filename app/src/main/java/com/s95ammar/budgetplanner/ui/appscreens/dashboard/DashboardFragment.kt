@@ -13,26 +13,22 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budget.Bu
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budgettransactions.BudgetTransactionsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.savings.SavingsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
-import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
+import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.FragmentProvider
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.ViewPagerFragmentAdapter
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent as UiEvent
 
 @AndroidEntryPoint
-class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<FragmentDashboardBinding> {
+class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.layout.fragment_dashboard) {
 
     private val viewModel: DashboardViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
-
-    override val binding: FragmentDashboardBinding
-        get() = getBinding()
 
     override fun initViewBinding(view: View): FragmentDashboardBinding {
         return FragmentDashboardBinding.bind(view)
@@ -50,8 +46,8 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
 
     private fun setUpViewPager() {
         binding.pager.adapter = ViewPagerFragmentAdapter(
-            this,
-            listOf(
+            parentFragment = this,
+            childFragmentsProviders = listOf(
                 FragmentProvider { BudgetFragment.newInstance() },
                 FragmentProvider { BudgetTransactionsFragment.newInstance() },
                 FragmentProvider { SavingsFragment.newInstance() }
@@ -70,8 +66,8 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
     override fun initObservers() {
         super.initObservers()
         viewModel.currentPeriodBundle.observe(viewLifecycleOwner) {
-            sharedViewModel.onPeriodChanged(it.period?.id)
             setViewsToCurrentPeriodBundle(it)
+//            sharedViewModel.onPeriodChanged(it.period?.id) // TODO
         }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         sharedViewModel.performDashboardUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
@@ -82,16 +78,20 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ViewBinder<
         binding.imageButtonArrowPrevious.isVisible = currentPeriodHeaderBundle.isPreviousAvailable
         binding.imageButtonArrowNext.isVisible = currentPeriodHeaderBundle.isNextAvailable
         binding.imageButtonAddPeriod.isGone = currentPeriodHeaderBundle.isNextAvailable
+
+        binding.pager.isGone = currentPeriodHeaderBundle.period == null
+        binding.instructionsLayout.root.isVisible = currentPeriodHeaderBundle.period == null
+        binding.instructionsLayout.messageTextView.text = getString(R.string.create_period_instruction)
     }
 
-    private fun performUiEvent(uiEvent: DashboardUiEvent) {
+    private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
-            is DashboardUiEvent.NavigateToPeriodsList -> onNavigateToPeriodsList()
-            is DashboardUiEvent.NavigateToCreatePeriod -> onNavigateToCreatePeriod()
-            is DashboardUiEvent.NavigateToCreateBudgetTransaction -> navigateToCreateBudgetTransaction(uiEvent.periodId)
-            is DashboardUiEvent.NavigateToEditBudgetTransaction -> navigateToEditBudgetTransaction(uiEvent.periodId, uiEvent.budgetTransactionId)
-            is DashboardUiEvent.NavigateToEditPeriod -> navigateToEditPeriod(uiEvent.periodId)
-            is DashboardUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState, uiEvent.loadingType)
+            is UiEvent.NavigateToPeriodsList -> onNavigateToPeriodsList()
+            is UiEvent.NavigateToCreatePeriod -> onNavigateToCreatePeriod()
+            is UiEvent.NavigateToCreateBudgetTransaction -> navigateToCreateBudgetTransaction(uiEvent.periodId)
+            is UiEvent.NavigateToEditBudgetTransaction -> navigateToEditBudgetTransaction(uiEvent.periodId, uiEvent.budgetTransactionId)
+            is UiEvent.NavigateToEditPeriod -> navigateToEditPeriod(uiEvent.periodId)
+            is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState, uiEvent.loadingType)
         }
     }
 

@@ -18,11 +18,11 @@ interface PeriodDao {
     suspend fun delete(id: IdWrapper)
 
     @Query("SELECT * FROM $TABLE_NAME_PERIOD WHERE id=:id")
-    fun getPeriodById(id: Int): Flow<PeriodEntity>
+    fun getPeriodByIdFlow(id: Int): Flow<PeriodEntity>
 
 /*
     @Query("""""") // TODO
-    fun getPeriodJoinEntityList(periodId: Int): Flow<List<PeriodJoinEntity>>
+    fun getPeriodJoinEntityListFlow(periodId: Int): Flow<List<PeriodJoinEntity>>
 */
 
 /*
@@ -46,9 +46,9 @@ interface PeriodDao {
     on data.periodId = sum.periodicCategoryId
         """
     )
-    fun getPeriodicCategoryJoinEntityList(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
+    fun getPeriodicCategoryJoinEntityListFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
 */
 
     @Query("SELECT * FROM period")
-    fun getAllPeriods(): Flow<List<PeriodEntity>>
+    fun getAllPeriodsFlow(): Flow<List<PeriodEntity>>
 }

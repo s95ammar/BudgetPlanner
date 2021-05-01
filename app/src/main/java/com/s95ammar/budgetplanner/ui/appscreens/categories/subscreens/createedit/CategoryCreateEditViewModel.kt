@@ -20,6 +20,7 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,6 +34,7 @@ class CategoryCreateEditViewModel @Inject constructor(
 
     private val _mode = MutableLiveData(CreateEditMode.getById(editedCategoryId))
     private val _editedCategory = LoaderMutableLiveData<Category> { if (_mode.value == CreateEditMode.EDIT) loadEditedCategory() }
+    // TODO: move events to a sealed class
     private val _displayLoadingState = EventMutableLiveData<LoadingState>(LoadingState.Cold)
     private val _onApplySuccess = EventMutableLiveDataVoid()
     private val _displayValidationResults = EventMutableLiveData<ValidationErrors>()
@@ -55,38 +57,41 @@ class CategoryCreateEditViewModel @Inject constructor(
 
     private fun loadEditedCategory() {
         viewModelScope.launch {
-            _displayLoadingState.call(LoadingState.Loading)
-            repository.getCategory(editedCategoryId)
-                .catch { _displayLoadingState.call(LoadingState.Error(it)) }
-                .collect { categoryApiEntity ->
-/*
-                    CategoryViewEntity.ApiMapper.toViewEntity(categoryApiEntity)?.let { category ->
+            repository.getCategoryFlow(editedCategoryId)
+                .onStart {
+                    _displayLoadingState.call(LoadingState.Loading)
+                }
+                .catch { throwable ->
+                    _displayLoadingState.call(LoadingState.Error(throwable))
+                }
+                .collect { categoryEntity ->
+                    Category.Mapper.fromEntity(categoryEntity)?.let { category ->
                         _editedCategory.value = category
                         _displayLoadingState.call(LoadingState.Success)
                     }
-*/
                 }
         }
 
     }
 
     private fun onValidationSuccessful(category: CategoryEntity) = viewModelScope.launch {
-        _displayLoadingState.call(LoadingState.Loading)
-/*
-        val flowRequest = when (request) {
-            is CategoryUpsertApiRequest.Insertion -> repository.insertCategory(request)
-            is CategoryUpsertApiRequest.Update -> repository.updateCategory(request)
+        val flowRequest = when (_mode.value) {
+            CreateEditMode.CREATE -> repository.insertCategoryFlow(category)
+            CreateEditMode.EDIT -> repository.updateCategoryFlow(category)
+            else -> return@launch
         }
 
         flowRequest
+            .onStart {
+                _displayLoadingState.call(LoadingState.Loading)
+            }
             .catch { throwable ->
                 _displayLoadingState.call(LoadingState.Error(throwable))
             }
             .collect {
-                _onApplySuccess.call()
                 _displayLoadingState.call(LoadingState.Success)
+                _onApplySuccess.call()
             }
-*/
     }
 
     private fun onValidationError(validationErrors: ValidationErrors) {

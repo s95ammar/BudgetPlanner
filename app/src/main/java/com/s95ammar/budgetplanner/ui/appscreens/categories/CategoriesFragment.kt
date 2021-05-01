@@ -1,6 +1,8 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories
 
 import android.view.View
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -9,19 +11,15 @@ import com.s95ammar.budgetplanner.databinding.FragmentCategoriesBinding
 import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.appscreens.categories.data.CategoriesUiEvent
-import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
+import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinder<FragmentCategoriesBinding> {
-
-    override val binding: FragmentCategoriesBinding
-        get() = getBinding()
+class CategoriesFragment : BaseViewBinderFragment<FragmentCategoriesBinding>(R.layout.fragment_categories) {
 
     private val viewModel: CategoriesViewModel by viewModels()
     private val adapter by lazy { CategoriesListAdapter(viewModel::onCategoryItemClick, viewModel::onCategoryItemLongClick) }
@@ -58,7 +56,10 @@ class CategoriesFragment : BaseFragment(R.layout.fragment_categories), ViewBinde
     }
 
     private fun setAllCategories(categories: List<Category>) {
-        adapter.submitList(categories) { binding.recyclerView.scrollToPosition(0) }
+        adapter.submitList(categories)
+        binding.recyclerView.isGone = categories.isEmpty()
+        binding.instructionsLayout.root.isVisible = categories.isEmpty()
+        binding.instructionsLayout.messageTextView.text = getString(R.string.create_category_instruction)
     }
 
     private fun performUiEvent(uiEvent: CategoriesUiEvent) {

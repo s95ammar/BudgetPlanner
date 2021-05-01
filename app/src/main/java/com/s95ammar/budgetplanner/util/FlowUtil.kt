@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.flowOn
 inline fun <T> flowOnDispatcher(
     dispatcher: CoroutineDispatcher,
     crossinline block: suspend () -> T
-): Flow<T> {
-    return flow<T> { block() }.flowOn(dispatcher)
-}
+): Flow<T> = flow {
+    emit(block())
+}.flowOn(dispatcher)

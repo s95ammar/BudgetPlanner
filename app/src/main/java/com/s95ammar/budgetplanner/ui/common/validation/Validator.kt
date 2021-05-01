@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.ui.common.validation
 
-abstract class Validator<InputEntity, OutputEntity>(protected val inputEntity: InputEntity) {
+abstract class Validator<Input, Output>(protected val input: Input) {
 
     private val viewsValidation by lazy { provideViewValidationList() }
 
@@ -19,14 +19,14 @@ abstract class Validator<InputEntity, OutputEntity>(protected val inputEntity: I
         )
     }
 
-    fun getValidationResult(): ValidationResult<OutputEntity> {
+    fun getValidationResult(): ValidationResult<Output> {
         return if (isAllValid())
-            ValidationResult.Success(provideOutputEntity(inputEntity))
+            ValidationResult.Success(provideOutput(input))
         else
             ValidationResult.Error(getValidationErrors())
     }
 
-    protected abstract fun provideOutputEntity(inputEntity: InputEntity): OutputEntity
+    protected abstract fun provideOutput(input: Input): Output
 
     protected abstract fun provideViewValidationList(): List<ViewValidation>
 }

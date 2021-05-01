@@ -16,9 +16,9 @@ interface PeriodicCategoryDao {
     suspend fun delete(periodicCategory: PeriodicCategoryEntity)
 
     @Query("SELECT * FROM periodicCategory WHERE id=:id")
-    fun getPeriodicCategoryEntityById(id: Int): Flow<PeriodicCategoryEntity>
+    fun getPeriodicCategoryByIdFlow(id: Int): Flow<PeriodicCategoryEntity>
 
     @Query("SELECT * FROM periodicCategory")
-    fun getAllCategories(): Flow<List<PeriodicCategoryEntity>>
+    fun getAllPeriodicCategoriesFlow(): Flow<List<PeriodicCategoryEntity>>
 
 }

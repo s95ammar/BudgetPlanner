@@ -8,18 +8,18 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSource {
 
-    fun getPeriodJoinEntityList(periodId: Int): Flow<List<PeriodJoinEntity>>
-    fun getPeriodicCategoryJoinEntityList(id: Int, ): Flow<List<PeriodicCategoryJoinEntity>>
-    fun getAllPeriods(): Flow<List<PeriodEntity>>
+    fun getPeriodJoinEntityListFlow(periodId: Int): Flow<List<PeriodJoinEntity>>
+    fun getPeriodicCategoryJoinEntityListFlow(id: Int): Flow<List<PeriodicCategoryJoinEntity>>
+    fun getAllPeriodsFlow(): Flow<List<PeriodEntity>>
     suspend fun insertPeriod(period: PeriodEntity)
     suspend fun updatePeriod(period: PeriodEntity)
     suspend fun deletePeriod(id: Int)
-    fun getPeriodInsertTemplate(): Flow<*> // TODO
+    fun getPeriodInsertTemplateFlow(): Flow<*> // TODO
 
-    fun getAllCategories(): Flow<List<CategoryEntity>> { TODO("make abstract") }
-    suspend fun getCategory(id: Int): CategoryEntity { TODO("make abstract") }
-    suspend fun insertCategory(category: CategoryEntity) { TODO("make abstract") }
-    suspend fun updateCategory(category: CategoryEntity) { TODO("make abstract") }
-    suspend fun deleteCategory(id: Int) { TODO("make abstract") }
+    fun getAllCategoriesFlow(): Flow<List<CategoryEntity>>
+    fun getCategoryFlow(id: Int): Flow<CategoryEntity>
+    suspend fun insertCategory(category: CategoryEntity)
+    suspend fun updateCategory(category: CategoryEntity)
+    suspend fun deleteCategory(id: Int)
 
 }

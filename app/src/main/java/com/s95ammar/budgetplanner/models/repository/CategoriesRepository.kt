@@ -11,21 +11,19 @@ import javax.inject.Singleton
 class CategoriesRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) {
-    fun deleteCategory(id: Int) = flowOnDispatcher(Dispatchers.IO) {
+    fun deleteCategoryFlow(id: Int) = flowOnDispatcher(Dispatchers.IO) {
         localDataSource.deleteCategory(id)
     }
 
-    fun getAllUserCategories() = localDataSource.getAllCategories()
+    fun getAllUserCategoriesFlow() = localDataSource.getAllCategoriesFlow()
 
-    fun getCategory(id: Int) = flowOnDispatcher(Dispatchers.IO) {
-        localDataSource.getCategory(id)
-    }
+    fun getCategoryFlow(id: Int) = localDataSource.getCategoryFlow(id)
 
-    fun insertCategory(category: CategoryEntity) = flowOnDispatcher(Dispatchers.IO) {
+    fun insertCategoryFlow(category: CategoryEntity) = flowOnDispatcher(Dispatchers.IO) {
         localDataSource.insertCategory(category)
     }
 
-    fun updateCategory(category: CategoryEntity) = flowOnDispatcher(Dispatchers.IO) {
+    fun updateCategoryFlow(category: CategoryEntity) = flowOnDispatcher(Dispatchers.IO) {
         localDataSource.updateCategory(category)
     }
 

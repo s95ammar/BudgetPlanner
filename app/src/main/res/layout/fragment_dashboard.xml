@@ -26,7 +26,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_period_selection"
+        android:id="@+id/period_selection_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -103,9 +103,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabGravity="center"
-        app:tabMode="auto"
         app:tabIndicatorColor="@color/colorPrimary"
         app:tabMaxWidth="0dp"
+        app:tabMode="auto"
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextAppearance="@style/TextTitleWhite14sdp"
         app:tabTextColor="@color/colorBlack" />
@@ -115,11 +115,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/instructions_layout"
+                layout="@layout/layout_instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

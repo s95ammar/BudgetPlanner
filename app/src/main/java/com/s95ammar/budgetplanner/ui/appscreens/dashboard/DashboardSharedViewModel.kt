@@ -59,7 +59,7 @@ class DashboardSharedViewModel @Inject constructor(
     private fun loadPeriod(periodId: Int) = viewModelScope.launch {
         if (periodId == Int.NO_ITEM) return@launch
 
-        repository.getPeriodJoinEntityList(id = periodId)
+        repository.getPeriodJoinEntityListFlow(id = periodId)
             .onStart {
                 _performDashboardUiEvent.call(DashboardUiEvent.DisplayLoadingState(LoadingState.Loading, IntLoadingType.SWIPE_TO_REFRESH))
             }.catch {
