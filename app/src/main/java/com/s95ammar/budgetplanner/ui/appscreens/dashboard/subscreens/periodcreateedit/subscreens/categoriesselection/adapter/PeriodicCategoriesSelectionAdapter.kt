@@ -18,14 +18,14 @@ class PeriodicCategoriesSelectionAdapter(
     private val onMaxInputChanged: (Int, String?) -> Unit
 ) : BaseListAdapter<PeriodicCategory, PeriodicCategoriesSelectionViewHolder>(DiffUtilCallback()) {
 
-    var alwaysAllowCategorySelection = false
+    var allowCategorySelectionForAll = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodicCategoriesSelectionViewHolder {
         return PeriodicCategoriesSelectionViewHolder(
             onSelectionStateChanged = onClick,
             onMaxInputChanged = onMaxInputChanged,
             binding = ItemPeriodicCategorySelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            alwaysAllowCategorySelection = alwaysAllowCategorySelection
+            alwaysAllowCategorySelection = allowCategorySelectionForAll
         )
     }
 

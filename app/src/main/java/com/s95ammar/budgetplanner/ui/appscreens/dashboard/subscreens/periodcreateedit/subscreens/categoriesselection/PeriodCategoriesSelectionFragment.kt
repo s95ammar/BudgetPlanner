@@ -10,13 +10,12 @@ import com.s95ammar.budgetplanner.databinding.FragmentPeriodCategoriesSelectionB
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesSelectionAdapter
-import com.s95ammar.budgetplanner.ui.base.BaseFragment
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
+import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.data.PeriodCategoriesSelectionUiEvent as UiEvent
 
-class PeriodCategoriesSelectionFragment : BaseFragment(R.layout.fragment_period_categories_selection),
-    ViewBinder<FragmentPeriodCategoriesSelectionBinding> {
+class PeriodCategoriesSelectionFragment :
+    BaseViewBinderFragment<FragmentPeriodCategoriesSelectionBinding>(R.layout.fragment_period_categories_selection) {
 
     private val viewModel: PeriodCategoriesSelectionViewModel by viewModels()
     private val sharedViewModel: PeriodCreateEditSharedViewModel by hiltNavGraphViewModels(R.id.nested_period_create_edit)
@@ -27,9 +26,6 @@ class PeriodCategoriesSelectionFragment : BaseFragment(R.layout.fragment_period_
             onMaxInputChanged = sharedViewModel::onPeriodicCategoryMaxChanged
         )
     }
-
-    override val binding: FragmentPeriodCategoriesSelectionBinding
-        get() = getBinding()
 
     override fun initViewBinding(view: View): FragmentPeriodCategoriesSelectionBinding {
         return FragmentPeriodCategoriesSelectionBinding.bind(view)
@@ -49,7 +45,7 @@ class PeriodCategoriesSelectionFragment : BaseFragment(R.layout.fragment_period_
 
     override fun initObservers() {
         super.initObservers()
-        sharedViewModel.alwaysAllowCategorySelection.observe(viewLifecycleOwner) { setAlwaysAllowCategorySelection(it) }
+        sharedViewModel.allowCategorySelectionForAll.observe(viewLifecycleOwner) { setAllowCategorySelectionForAll(it) }
 
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         sharedViewModel.periodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
@@ -61,8 +57,8 @@ class PeriodCategoriesSelectionFragment : BaseFragment(R.layout.fragment_period_
         }
     }
 
-    private fun setAlwaysAllowCategorySelection(alwaysAllowCategorySelection: Boolean) {
-        adapter.alwaysAllowCategorySelection = alwaysAllowCategorySelection
+    private fun setAllowCategorySelectionForAll(alwaysAllowCategorySelection: Boolean) {
+        adapter.allowCategorySelectionForAll = alwaysAllowCategorySelection
     }
 
     private fun setPeriodicCategories(periodicCategories: List<PeriodicCategory>) {

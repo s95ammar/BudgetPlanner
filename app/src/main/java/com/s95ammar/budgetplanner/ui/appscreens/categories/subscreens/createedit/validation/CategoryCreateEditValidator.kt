@@ -17,7 +17,7 @@ class CategoryCreateEditValidator(
     }
 
     object ViewKeys {
-        const val VIEW_TITLE = 1
+        const val VIEW_NAME = 1
     }
 
     override fun provideOutput(input: CategoryInputBundle): CategoryEntity {
@@ -28,7 +28,7 @@ class CategoryCreateEditValidator(
         val caseEmptyTitle = ViewValidation.Case(Errors.EMPTY_TITLE) { input.title.isEmpty() }
 
         return listOf(
-            ViewValidation(ViewKeys.VIEW_TITLE, listOf(caseEmptyTitle))
+            ViewValidation(ViewKeys.VIEW_NAME, listOf(caseEmptyTitle))
         )
     }
 

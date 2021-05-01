@@ -1,12 +1,17 @@
 package com.s95ammar.budgetplanner.models.datasource.local.db.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConfig
 
-@Entity(tableName = BudgetPlannerDbConfig.TABLE_NAME_PERIOD)
+@Entity(
+    tableName = BudgetPlannerDbConfig.TABLE_NAME_PERIOD,
+    indices = [Index(BudgetPlannerDbConfig.COLUMN_NAME_NAME, unique = true)]
+)
 data class PeriodEntity(
-    val name: String,
+    @ColumnInfo(collate = ColumnInfo.NOCASE) val name: String,
     val max: Int?,
     val creationUnixMs: Long = System.currentTimeMillis()
 ) {

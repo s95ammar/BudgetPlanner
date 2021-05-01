@@ -45,7 +45,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_view_period_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_40sdp"
             android:layout_marginTop="@dimen/_8sdp"
@@ -54,6 +54,7 @@
             android:ellipsize="marquee"
             android:focusable="true"
             android:singleLine="true"
+            android:textAlignment="center"
             android:textAppearance="@style/TextDescBlack14sdp"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="@+id/image_button_arrow_next"

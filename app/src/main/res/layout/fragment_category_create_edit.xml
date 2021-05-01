@@ -32,11 +32,11 @@
         android:paddingHorizontal="@dimen/_16sdp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_title"
+            android:id="@+id/input_layout_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
-            android:hint="@string/title"
+            android:hint="@string/name"
             app:boxBackgroundColor="@null"
             app:errorIconDrawable="@null"
             app:errorTextAppearance="@style/TextAppearanceCairo"

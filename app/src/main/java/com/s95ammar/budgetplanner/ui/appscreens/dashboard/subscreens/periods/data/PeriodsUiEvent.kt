@@ -7,4 +7,6 @@ sealed class PeriodsUiEvent {
     class DisplayLoadingState(val loadingState: LoadingState): PeriodsUiEvent()
     class OnNavigateToEditPeriod(val periodId: Int): PeriodsUiEvent()
     class ShowBottomSheet(val period: PeriodSimple): PeriodsUiEvent()
+    object OnPeriodDeleted : PeriodsUiEvent()
+    object Exit: PeriodsUiEvent()
 }

@@ -1,9 +1,6 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
 import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
@@ -34,13 +31,16 @@ class CategoryCreateEditViewModel @Inject constructor(
 
     private val _mode = MutableLiveData(CreateEditMode.getById(editedCategoryId))
     private val _editedCategory = LoaderMutableLiveData<Category> { if (_mode.value == CreateEditMode.EDIT) loadEditedCategory() }
+    private val _name = MediatorLiveData<String>().apply {
+        addSource(_editedCategory) { value = it.name }
+    }
     // TODO: move events to a sealed class
     private val _displayLoadingState = EventMutableLiveData<LoadingState>(LoadingState.Cold)
     private val _onApplySuccess = EventMutableLiveDataVoid()
     private val _displayValidationResults = EventMutableLiveData<ValidationErrors>()
 
     val mode = _mode.asLiveData()
-    val editedCategory = _editedCategory.asLiveData()
+    val name = _name.asLiveData()
     val displayLoadingState = _displayLoadingState.asEventLiveData()
     val onApplySuccess = _onApplySuccess.asEventLiveData()
     val displayValidationResults = _displayValidationResults.asEventLiveData()
@@ -50,8 +50,8 @@ class CategoryCreateEditViewModel @Inject constructor(
         _displayValidationResults.call(validator.getValidationErrors(allBlank = true))
 
         validator.getValidationResult()
-            .onSuccess { onValidationSuccessful(it) }
-            .onError { onValidationError(it) }
+            .onSuccess { insertOrUpdateCategory(it) }
+            .onError { displayValidationResults(it) }
 
     }
 
@@ -74,11 +74,12 @@ class CategoryCreateEditViewModel @Inject constructor(
 
     }
 
-    private fun onValidationSuccessful(category: CategoryEntity) = viewModelScope.launch {
-        val flowRequest = when (_mode.value) {
+    private fun insertOrUpdateCategory(category: CategoryEntity) = viewModelScope.launch {
+        val mode = _mode.value ?: return@launch
+
+        val flowRequest = when (mode) {
             CreateEditMode.CREATE -> repository.insertCategoryFlow(category)
             CreateEditMode.EDIT -> repository.updateCategoryFlow(category)
-            else -> return@launch
         }
 
         flowRequest
@@ -94,7 +95,7 @@ class CategoryCreateEditViewModel @Inject constructor(
             }
     }
 
-    private fun onValidationError(validationErrors: ValidationErrors) {
+    private fun displayValidationResults(validationErrors: ValidationErrors) {
         _displayValidationResults.call(validationErrors)
     }
 

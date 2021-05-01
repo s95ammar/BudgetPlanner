@@ -9,12 +9,16 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreat
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation.PeriodCreateEditValidator
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.util.NO_ITEM
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,11 +42,9 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     private val _periodicCategories = MediatorLiveData<List<PeriodicCategory>>().apply {
         addSource(_period) { value = it.periodicCategories }
     }
-
-    private val _alwaysAllowCategorySelection = MediatorLiveData<Boolean>().apply {
+    private val _allowCategorySelectionForAll = MediatorLiveData<Boolean>().apply {
         addSource(_mode) { value = it == CreateEditMode.CREATE }
     }
-
     private val _performUiEvent = EventMutableLiveData<PeriodCreateEditUiEvent>()
 
     val mode = _mode.asLiveData()
@@ -50,7 +52,7 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     val max = _max.asLiveData()
     val periodicCategories = _periodicCategories.asLiveData()
     val selectedPeriodicCategories = _periodicCategories.map { list -> list.filter { it.isSelected } }
-    val alwaysAllowCategorySelection = _alwaysAllowCategorySelection.asLiveData()
+    val allowCategorySelectionForAll = _allowCategorySelectionForAll.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun onPeriodicCategorySelectionStateChanged(position: Int, isSelected: Boolean) {
@@ -68,12 +70,11 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
 
     fun onApply(periodInputBundle: PeriodInputBundle) {
         val validator = createValidator(periodInputBundle)
-
         _performUiEvent.call(PeriodCreateEditUiEvent.DisplayValidationResults(validator.getValidationErrors(allBlank = true)))
 
         validator.getValidationResult()
             .onSuccess { insertOrUpdatePeriod(it) }
-            .onError { onValidationError(it) }
+            .onError { displayValidationResults(it) }
 
     }
 
@@ -88,10 +89,9 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     }
 
     private fun loadEditedPeriodOrInsertTemplate() {
-        // TODO
-/*
         val mode = _mode.value ?: return
 
+/*
         viewModelScope.launch {
             val flowRequest = when (mode) {
                 CreateEditMode.EDIT -> repository.getPeriodicCategoryJoinEntityList(editedPeriodId)
@@ -106,7 +106,7 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
                     _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
                 .collect { periodEntity ->
-                    PeriodViewEntity.EntityMapper.toViewEntity(periodEntity)?.let { periodViewEntity ->
+                    Period.Mapper.toViewEntity(periodEntity)?.let { periodViewEntity ->
                         _period.value = periodViewEntity
                         _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
                     }
@@ -116,29 +116,28 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     }
 
     private fun insertOrUpdatePeriod(period: PeriodEntity) = viewModelScope.launch {
-        // TODO
-/*
-            val flowRequest = when (request) {
-                is PeriodUpsertApiRequest.Insertion -> repository.insertPeriod(request)
-                is PeriodUpsertApiRequest.Update -> repository.updatePeriod(request)
-            }
+        val mode = _mode.value ?: return@launch
 
-            flowRequest
-                .onStart {
-                    _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Loading))
-                }
-                .catch { throwable ->
-                    _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
-                }
-                .collect {
-                    _performUiEvent.call(PeriodCreateEditUiEvent.SetResult)
-                    _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
-                    _performUiEvent.call(PeriodCreateEditUiEvent.Exit)
-                }
-*/
+        val flowRequest = when (mode) {
+            CreateEditMode.CREATE -> repository.insertPeriodFlow(period) // TODO: implement adding/updating/deleting periodic categories
+            CreateEditMode.EDIT -> repository.updatePeriodFlow(period) // TODO: implement adding/updating/deleting periodic categories
+        }
+
+        flowRequest
+            .onStart {
+                _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Loading))
+            }
+            .catch { throwable ->
+                _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
+            }
+            .collect {
+                _performUiEvent.call(PeriodCreateEditUiEvent.SetResult)
+                _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
+                _performUiEvent.call(PeriodCreateEditUiEvent.Exit)
+            }
     }
 
-    private fun onValidationError(validationErrors: ValidationErrors) {
+    private fun displayValidationResults(validationErrors: ValidationErrors) {
         _performUiEvent.call(PeriodCreateEditUiEvent.DisplayValidationResults(validationErrors))
     }
 

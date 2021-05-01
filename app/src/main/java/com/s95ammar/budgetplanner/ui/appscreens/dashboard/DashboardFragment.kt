@@ -79,6 +79,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         binding.imageButtonArrowNext.isVisible = currentPeriodHeaderBundle.isNextAvailable
         binding.imageButtonAddPeriod.isGone = currentPeriodHeaderBundle.isNextAvailable
 
+        binding.textViewPeriodName.isClickable = currentPeriodHeaderBundle.period != null
         binding.pager.isGone = currentPeriodHeaderBundle.period == null
         binding.instructionsLayout.root.isVisible = currentPeriodHeaderBundle.period == null
         binding.instructionsLayout.messageTextView.text = getString(R.string.create_period_instruction)

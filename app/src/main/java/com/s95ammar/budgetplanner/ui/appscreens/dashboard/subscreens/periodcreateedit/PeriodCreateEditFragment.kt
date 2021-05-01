@@ -1,5 +1,6 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit
 
+import android.database.sqlite.SQLiteConstraintException
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -9,27 +10,23 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodCreateEditBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation.PeriodCreateEditValidator
-import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
+import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.text
 import dagger.hilt.android.AndroidEntryPoint
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent as UiEvent
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation.PeriodCreateEditValidator as Validator
 
 @AndroidEntryPoint
-class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_edit), ViewBinder<FragmentPeriodCreateEditBinding> {
+class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEditBinding>(R.layout.fragment_period_create_edit) {
 
     private val viewModel: PeriodCreateEditViewModel by viewModels()
     private val sharedViewModel: PeriodCreateEditSharedViewModel by hiltNavGraphViewModels(R.id.nested_period_create_edit)
-
-    override val binding: FragmentPeriodCreateEditBinding
-        get() = getBinding()
 
     override fun initViewBinding(view: View): FragmentPeriodCreateEditBinding {
         return FragmentPeriodCreateEditBinding.bind(view)
@@ -95,13 +92,13 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
         )
     }
 
-    private fun performUiEvent(uiEvent: PeriodCreateEditUiEvent) {
+    private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
-            is PeriodCreateEditUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
-            is PeriodCreateEditUiEvent.SetResult -> setResult()
-            is PeriodCreateEditUiEvent.DisplayValidationResults -> handleValidationErrors(uiEvent.validationErrors)
-            is PeriodCreateEditUiEvent.Exit -> navController.navigateUp()
-            is PeriodCreateEditUiEvent.ChooseCategories -> navigateToCategoriesSelection()
+            is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is UiEvent.SetResult -> setResult()
+            is UiEvent.DisplayValidationResults -> handleValidationErrors(uiEvent.validationErrors)
+            is UiEvent.Exit -> navController.navigateUp()
+            is UiEvent.ChooseCategories -> navigateToCategoriesSelection()
         }
     }
 
@@ -112,8 +109,15 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
             is LoadingState.Loading -> showLoading()
             is LoadingState.Error -> {
                 hideLoading()
-                showErrorToast(loadingState.throwable)
+                handleError(loadingState.throwable)
             }
+        }
+    }
+
+    private fun handleError(throwable: Throwable) {
+        when (throwable) {
+            is SQLiteConstraintException -> displayError(Validator.ViewKeys.VIEW_NAME, Validator.Errors.NAME_TAKEN)
+            else -> showErrorToast(throwable)
         }
     }
 
@@ -126,12 +130,13 @@ class PeriodCreateEditFragment : BaseFragment(R.layout.fragment_period_create_ed
 
     private fun displayError(viewKey: Int, errorId: Int) {
         when (viewKey) {
-            PeriodCreateEditValidator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getErrorStringById(errorId)
+            Validator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getErrorStringById(errorId)
         }
     }
 
     private fun getErrorStringById(errorId: Int) = when (errorId) {
-        PeriodCreateEditValidator.Errors.EMPTY_NAME -> getString(R.string.error_empty_field)
+        Validator.Errors.NAME_TAKEN -> getString(R.string.error_period_name_taken)
+        Validator.Errors.EMPTY_NAME -> getString(R.string.error_empty_field)
         else -> null
     }
 

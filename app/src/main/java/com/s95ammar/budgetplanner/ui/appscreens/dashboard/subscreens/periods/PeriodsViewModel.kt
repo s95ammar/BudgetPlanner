@@ -4,10 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.data.PeriodsUiEvent
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
-import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveDataVoid
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +14,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.data.PeriodsUiEvent as UiEvent
 
 @HiltViewModel
 class PeriodsViewModel @Inject constructor(
@@ -23,11 +22,9 @@ class PeriodsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _allPeriods = LoaderMutableLiveData<List<PeriodSimple>> { loadAllPeriods() }
-    private val _onPeriodDeleted = EventMutableLiveDataVoid()
-    private val _performUiEvent = EventMutableLiveData<PeriodsUiEvent>()
+    private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
     val allPeriods = _allPeriods.asLiveData()
-    val onPeriodDeleted = _onPeriodDeleted.asEventLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun refresh() {
@@ -36,42 +33,46 @@ class PeriodsViewModel @Inject constructor(
 
     fun onPeriodItemClick(position: Int) {
         _allPeriods.value?.getOrNull(position)?.let { period ->
-            _performUiEvent.call(PeriodsUiEvent.OnNavigateToEditPeriod(period.id))
+            _performUiEvent.call(UiEvent.OnNavigateToEditPeriod(period.id))
         }
     }
 
     fun onPeriodItemLongClick(position: Int) {
         _allPeriods.value?.getOrNull(position)?.let { period ->
-            _performUiEvent.call(PeriodsUiEvent.ShowBottomSheet(period))
+            _performUiEvent.call(UiEvent.ShowBottomSheet(period))
         }
     }
 
     fun deletePeriod(id: Int) = viewModelScope.launch {
         repository.deletePeriodFlow(id)
             .onStart {
-                _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
             }
-            .catch {
-                _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it)))
+            .catch { throwable ->
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }
-            .collect { _onPeriodDeleted.call() }
+            .collect {
+                _performUiEvent.call(UiEvent.OnPeriodDeleted)
+            }
     }
 
     private fun loadAllPeriods() {
         viewModelScope.launch {
             repository.getAllUserPeriodsFlow()
                 .onStart {
-                    _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Loading))
+                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
                 }
-                .catch {
-                    _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Error(it)))
+                .catch { throwable ->
+                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
                 .collect { periodEntityList ->
-/*
-                    val periods = periodEntityList.mapNotNull { entity -> PeriodSimpleViewEntity.EntityMapper.toViewEntity(entity) }
-                    _allPeriods.value = periods
-                    _performUiEvent.call(PeriodsUiEvent.DisplayLoadingState(LoadingState.Success))
-*/
+                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
+
+                    if (periodEntityList.isEmpty()) {
+                        _performUiEvent.call(UiEvent.Exit)
+                    } else {
+                        _allPeriods.value = periodEntityList.mapNotNull(PeriodSimple.Mapper::fromEntity)
+                    }
                 }
         }
     }

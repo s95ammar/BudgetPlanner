@@ -7,7 +7,6 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoryCreateEditBinding
-import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
@@ -37,7 +36,7 @@ class CategoryCreateEditFragment : BaseViewBinderFragment<FragmentCategoryCreate
     override fun initObservers() {
         super.initObservers()
         viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
-        viewModel.editedCategory.observe(viewLifecycleOwner) { setViewsToEditedCategory(it) }
+        viewModel.name.observe(viewLifecycleOwner) { setCategoryName(it) }
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
         viewModel.displayValidationResults.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
         viewModel.onApplySuccess.observeEvent(viewLifecycleOwner) { onApplySuccess() }
@@ -70,15 +69,15 @@ class CategoryCreateEditFragment : BaseViewBinderFragment<FragmentCategoryCreate
 
     private fun handleError(throwable: Throwable) {
         when (throwable) {
-            is SQLiteConstraintException -> displayError(Validator.ViewKeys.VIEW_TITLE, Validator.Errors.NAME_TAKEN)
+            is SQLiteConstraintException -> displayError(Validator.ViewKeys.VIEW_NAME, Validator.Errors.NAME_TAKEN)
             else -> showErrorToast(throwable)
         }
     }
 
-    private fun setViewsToEditedCategory(category: Category) {
-        binding.inputLayoutTitle.editText?.apply {
-            setText(category.name)
-            setSelection(category.name.length)
+    private fun setCategoryName(name: String) {
+        binding.inputLayoutName.editText?.apply {
+            setText(name)
+            setSelection(name.length)
         }
     }
 
@@ -91,8 +90,8 @@ class CategoryCreateEditFragment : BaseViewBinderFragment<FragmentCategoryCreate
 
     private fun displayError(viewKey: Int, errorId: Int) {
         when (viewKey) {
-            Validator.ViewKeys.VIEW_TITLE -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
-            Validator.Errors.NAME_TAKEN -> binding.inputLayoutTitle.error = getErrorStringById(errorId)
+            Validator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getErrorStringById(errorId)
+            Validator.Errors.NAME_TAKEN -> binding.inputLayoutName.error = getErrorStringById(errorId)
         }
     }
 
@@ -107,6 +106,6 @@ class CategoryCreateEditFragment : BaseViewBinderFragment<FragmentCategoryCreate
         navController.navigateUp()
     }
 
-    private fun getCategoryInputBundle() = CategoryInputBundle(title = binding.inputLayoutTitle.text.orEmpty().trim())
+    private fun getCategoryInputBundle() = CategoryInputBundle(title = binding.inputLayoutName.text.orEmpty().trim())
 
 }
