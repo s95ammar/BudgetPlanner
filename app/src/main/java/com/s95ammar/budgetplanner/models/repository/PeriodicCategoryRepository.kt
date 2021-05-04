@@ -9,5 +9,5 @@ class PeriodicCategoryRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) {
 
-
+    fun getPeriodicCategoriesFlow(periodId: Int) = localDataSource.getPeriodicCategoriesFlow(periodId)
 }

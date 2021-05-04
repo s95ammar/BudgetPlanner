@@ -66,7 +66,6 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         viewModel.fabState.observe(viewLifecycleOwner) { setFabState(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         viewModel.dashboardTabs.observe(viewLifecycleOwner) { setUpViewPager(it) }
-        sharedViewModel.performDashboardUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
     private fun setUpViewPager(tabs: List<Int>) {

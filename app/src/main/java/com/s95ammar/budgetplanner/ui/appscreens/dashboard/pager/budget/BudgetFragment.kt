@@ -41,7 +41,8 @@ class BudgetFragment : BaseViewBinderFragment<FragmentDashboardBudgetBinding>(R.
 
     override fun initObservers() {
         super.initObservers()
-        sharedViewModel.currentPeriodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
+        viewModel.periodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
+        sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.onPeriodChanged(it) }
     }
 
     private fun setPeriodicCategories(periodicCategories: List<PeriodicCategory>) {

@@ -39,4 +39,8 @@ object RoomModule {
     @Provides
     fun provideBudgetTransactionDao(db: BudgetPlannerDb) = db.budgetTransactionDao
 
+    @Singleton
+    @Provides
+    fun provideJoinDao(db: BudgetPlannerDb) = db.joinDao
+
 }

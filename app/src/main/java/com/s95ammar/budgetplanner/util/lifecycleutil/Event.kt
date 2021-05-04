@@ -1,6 +1,8 @@
 package com.s95ammar.budgetplanner.util.lifecycleutil
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 
 open class Event<out T>(private val content: T) {
     var hasBeenHandled = false

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface LocalDataSource {
 
     fun getPeriodJoinEntityListFlow(periodId: Int): Flow<List<PeriodJoinEntity>>
-    fun getPeriodicCategoryJoinEntityListFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
+    fun getPeriodEditDataFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
     fun getPeriodInsertTemplateFlow(): Flow<List<PeriodicCategoryJoinEntity>>
     fun getAllPeriodsFlow(): Flow<List<PeriodEntity>>
     suspend fun insertPeriodWithPeriodicCategories(period: PeriodEntity, periodicCategories: List<PeriodicCategoryEntity>)
@@ -29,4 +29,5 @@ interface LocalDataSource {
     suspend fun updateCategory(category: CategoryEntity)
     suspend fun deleteCategory(id: Int)
 
+    fun getPeriodicCategoriesFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
 }

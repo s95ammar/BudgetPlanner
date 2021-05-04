@@ -5,6 +5,7 @@ import com.s95ammar.budgetplanner.models.IdWrapper
 import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDb
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.BudgetTransactionDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.CategoryDao
+import com.s95ammar.budgetplanner.models.datasource.local.db.dao.JoinDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.PeriodDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.PeriodicCategoryDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
@@ -22,7 +23,8 @@ class LocalDataSourceImpl @Inject constructor(
     private val periodDao: PeriodDao,
     private val categoryDao: CategoryDao,
     private val periodicCategoryDao: PeriodicCategoryDao,
-    private val budgetTransactionDao: BudgetTransactionDao
+    private val budgetTransactionDao: BudgetTransactionDao,
+    private val joinDao: JoinDao
 ) : LocalDataSource {
 
     // Period & PeriodicCategory
@@ -30,12 +32,12 @@ class LocalDataSourceImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getPeriodicCategoryJoinEntityListFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>> {
-        return periodDao.getPeriodicCategoryJoinEntityListFlow(periodId)
+    override fun getPeriodEditDataFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>> {
+        return joinDao.getPeriodEditData(periodId)
     }
 
     override fun getPeriodInsertTemplateFlow(): Flow<List<PeriodicCategoryJoinEntity>> {
-        return periodDao.getPeriodInsertTemplate()
+        return joinDao.getPeriodInsertTemplateFlow()
     }
 
     override fun getAllPeriodsFlow(): Flow<List<PeriodEntity>> {
@@ -65,6 +67,10 @@ class LocalDataSourceImpl @Inject constructor(
 
     override suspend fun deletePeriod(id: Int) {
         periodDao.delete(IdWrapper(id))
+    }
+
+    override fun getPeriodicCategoriesFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>> {
+        return joinDao.getPeriodicCategoriesFlow(periodId)
     }
 
     // Category

@@ -95,8 +95,8 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
 
         viewModelScope.launch {
             val flowRequest = when (mode) {
-                CreateEditMode.EDIT -> repository.getPeriodicCategoryJoinEntityListFlow(editedPeriodId)
-                CreateEditMode.CREATE -> repository.getPeriodInsertTemplate()
+                CreateEditMode.EDIT -> repository.getPeriodEditDataFlow(editedPeriodId)
+                CreateEditMode.CREATE -> repository.getPeriodInsertTemplateFlow()
             }
 
             flowRequest

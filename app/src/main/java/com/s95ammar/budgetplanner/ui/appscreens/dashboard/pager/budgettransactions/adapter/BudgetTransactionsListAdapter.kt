@@ -10,7 +10,7 @@ import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 class BudgetTransactionsListAdapter : BaseListAdapter<BudgetTransactionViewEntity, BudgetTransactionsListAdapter.BudgetTransactionsViewHolder>(
     DiffUtilCallback()

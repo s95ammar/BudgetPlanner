@@ -45,7 +45,7 @@ class BudgetTransactionsFragment : BaseFragment(R.layout.fragment_dashboard_tran
 
     override fun initObservers() {
         super.initObservers()
-        sharedViewModel.currentBudgetTransactions.observe(viewLifecycleOwner) { setBudgetTransactionViewEntity(it) }
+//        sharedViewModel.currentBudgetTransactions.observe(viewLifecycleOwner) { setBudgetTransactionViewEntity(it) }
     }
 
     private fun setBudgetTransactionViewEntity(budgetTransactions: List<BudgetTransactionViewEntity>) {

@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.BudgetTransactionDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.CategoryDao
+import com.s95ammar.budgetplanner.models.datasource.local.db.dao.JoinDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.PeriodDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.PeriodicCategoryDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
@@ -28,5 +29,6 @@ abstract class BudgetPlannerDb : RoomDatabase() {
     abstract val categoryDao: CategoryDao
     abstract val periodicCategoryDao: PeriodicCategoryDao
     abstract val budgetTransactionDao: BudgetTransactionDao
+    abstract val joinDao: JoinDao
 
 }

@@ -15,9 +15,9 @@ class PeriodRepository @Inject constructor(
 
     fun getPeriodJoinEntityListFlow(id: Int) = localDataSource.getPeriodJoinEntityListFlow(id)
 
-    fun getPeriodicCategoryJoinEntityListFlow(periodId: Int) = localDataSource.getPeriodicCategoryJoinEntityListFlow(periodId)
+    fun getPeriodEditDataFlow(periodId: Int) = localDataSource.getPeriodEditDataFlow(periodId)
 
-    fun getPeriodInsertTemplate() = localDataSource.getPeriodInsertTemplateFlow()
+    fun getPeriodInsertTemplateFlow() = localDataSource.getPeriodInsertTemplateFlow()
 
     fun getAllUserPeriodsFlow() = localDataSource.getAllPeriodsFlow()
 
@@ -45,7 +45,5 @@ class PeriodRepository @Inject constructor(
     fun deletePeriodFlow(id: Int) = flowOnDispatcher(Dispatchers.IO) {
         localDataSource.deletePeriod(id)
     }
-
-    fun getPeriodInsertTemplateFlow() = localDataSource.getPeriodInsertTemplateFlow()
 
 }
