@@ -18,7 +18,7 @@
             style="@style/BudgetPlannerMaterialToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:title="@string/choose_categories"
+            app:title="@string/choose_categories"
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:titleTextAppearance="@style/TextTitleWhiteBold16sdp" />

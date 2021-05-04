@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budget.adapter
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,7 +23,7 @@ class PeriodicCategoriesListAdapter : BaseListAdapter<PeriodicCategory, Periodic
 
             override fun getChangePayload(oldItem: PeriodicCategory, newItem: PeriodicCategory) = PayloadsHolder().apply {
                 addPayloadIfNotEqual(PayloadType.CATEGORY_NAME, oldItem to newItem, PeriodicCategory::categoryName)
-                addPayloadIfNotEqual(PayloadType.AMOUNT_MAX, oldItem to newItem, PeriodicCategory::max, PeriodicCategory::amount)
+                addPayloadIfNotEqual(PayloadType.AMOUNT_MAX, oldItem to newItem, PeriodicCategory::max, PeriodicCategory::budgetTransactionsAmountSum)
             }
         }
     }
@@ -40,7 +40,7 @@ class PeriodicCategoriesListAdapter : BaseListAdapter<PeriodicCategory, Periodic
 
         override fun bind(item: PeriodicCategory, payloads: PayloadsHolder) {
             if (payloads.shouldUpdate(PayloadType.CATEGORY_NAME)) setCategoryName(item.categoryName)
-            if (payloads.shouldUpdate(PayloadType.AMOUNT_MAX)) setAmountAndMax(item.amount, item.max)
+            if (payloads.shouldUpdate(PayloadType.AMOUNT_MAX)) setAmountAndMax(item.budgetTransactionsAmountSum, item.max)
         }
 
         private fun setCategoryName(categoryName: String) {

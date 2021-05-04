@@ -43,7 +43,7 @@ class PeriodicCategoriesSelectionAdapter(
 
             if (payloads.shouldUpdate(PayloadType.NAME)) setName(item.categoryName)
             if (payloads.shouldUpdate(PayloadType.MAX)) setMax(item.max)
-            if (payloads.shouldUpdate(PayloadType.SELECTION)) setSelection(item.isSelected, alwaysAllowCategorySelection || item.amount == 0)
+            if (payloads.shouldUpdate(PayloadType.SELECTION)) setSelection(item.isSelected, alwaysAllowCategorySelection || item.budgetTransactionsAmountSum == 0)
         }
 
         private fun setName(categoryName: String) {
@@ -87,7 +87,7 @@ class PeriodicCategoriesSelectionAdapter(
                     PayloadType.SELECTION,
                     oldItem to newItem,
                     PeriodicCategory::isSelected,
-                    PeriodicCategory::amount
+                    PeriodicCategory::budgetTransactionsAmountSum
                 )
             }
         }

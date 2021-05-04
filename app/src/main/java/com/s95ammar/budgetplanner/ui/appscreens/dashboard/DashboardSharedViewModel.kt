@@ -7,7 +7,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCa
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.ui.common.LoadingState
-import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.MediatorLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
@@ -24,14 +24,14 @@ class DashboardSharedViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _selectedPeriodId = MediatorLiveData(Int.NO_ITEM).apply {
+    private val _selectedPeriodId = MediatorLiveData(Int.INVALID).apply {
         addSource(this) { loadPeriod(it) }
     }
     private val _currentPeriodicRecords = MutableLiveData<List<PeriodicCategory>>()
     private val _currentBudgetTransactions = MutableLiveData<List<BudgetTransactionViewEntity>>()
     private val _performDashboardUiEvent = EventMutableLiveData<DashboardUiEvent>()
 
-    val isPeriodAvailable = _selectedPeriodId.map { it != Int.NO_ITEM }
+    val isPeriodAvailable = _selectedPeriodId.map { it != Int.INVALID }
     val currentPeriodicRecords = _currentPeriodicRecords.asLiveData()
     val currentBudgetTransactions = _currentBudgetTransactions.asLiveData()
     val performDashboardUiEvent = _performDashboardUiEvent.asEventLiveData()
@@ -47,17 +47,17 @@ class DashboardSharedViewModel @Inject constructor(
     }
 
     fun onEditSelectedPeriod() {
-        _selectedPeriodId.value?.takeIf { it != Int.NO_ITEM }?.let { periodId ->
+        _selectedPeriodId.value?.takeIf { it != Int.INVALID }?.let { periodId ->
             _performDashboardUiEvent.call(DashboardUiEvent.NavigateToEditPeriod(periodId))
         }
     }
 
     fun onAddBudgetTransaction() {
-        _performDashboardUiEvent.call(DashboardUiEvent.NavigateToCreateBudgetTransaction(Int.NO_ITEM))
+        _performDashboardUiEvent.call(DashboardUiEvent.NavigateToCreateBudgetTransaction(Int.INVALID))
     }
 
     private fun loadPeriod(periodId: Int) = viewModelScope.launch {
-        if (periodId == Int.NO_ITEM) return@launch
+        if (periodId == Int.INVALID) return@launch
 
         repository.getPeriodJoinEntityListFlow(id = periodId)
             .onStart {

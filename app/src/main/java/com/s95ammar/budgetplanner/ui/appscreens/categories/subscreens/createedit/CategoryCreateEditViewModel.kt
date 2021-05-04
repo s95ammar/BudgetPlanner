@@ -9,7 +9,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
-import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveDataVoid
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
@@ -27,7 +27,7 @@ class CategoryCreateEditViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val editedCategoryId = savedStateHandle.get<Int>(CategoryCreateEditFragmentArgs::categoryId.name) ?: Int.NO_ITEM
+    private val editedCategoryId = savedStateHandle.get<Int>(CategoryCreateEditFragmentArgs::categoryId.name) ?: Int.INVALID
 
     private val _mode = MutableLiveData(CreateEditMode.getById(editedCategoryId))
     private val _editedCategory = LoaderMutableLiveData<Category> { if (_mode.value == CreateEditMode.EDIT) loadEditedCategory() }

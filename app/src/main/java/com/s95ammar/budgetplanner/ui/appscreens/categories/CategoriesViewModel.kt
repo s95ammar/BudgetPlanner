@@ -6,7 +6,7 @@ import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.appscreens.categories.data.CategoriesUiEvent
 import com.s95ammar.budgetplanner.ui.common.LoadingState
-import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
@@ -33,7 +33,7 @@ class CategoriesViewModel @Inject constructor(
     }
 
     fun onNavigateToCreateCategory() {
-        _performUiEvent.call(CategoriesUiEvent.OnNavigateToEditCategory(Int.NO_ITEM))
+        _performUiEvent.call(CategoriesUiEvent.OnNavigateToEditCategory(Int.INVALID))
     }
 
     fun onCategoryItemClick(position: Int) {

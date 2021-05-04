@@ -1,6 +1,7 @@
 package com.s95ammar.budgetplanner.models.datasource.local.db.dao
 
 import androidx.room.*
+import com.s95ammar.budgetplanner.models.IdWrapper
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -14,6 +15,9 @@ interface PeriodicCategoryDao {
 
     @Delete
     suspend fun delete(periodicCategory: PeriodicCategoryEntity)
+
+    @Delete(entity = PeriodicCategoryEntity::class)
+    suspend fun delete(id: IdWrapper)
 
     @Query("SELECT * FROM periodicCategory WHERE id=:id")
     fun getPeriodicCategoryByIdFlow(id: Int): Flow<PeriodicCategoryEntity>

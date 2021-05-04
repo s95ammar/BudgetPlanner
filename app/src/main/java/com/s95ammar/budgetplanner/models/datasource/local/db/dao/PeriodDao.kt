@@ -4,6 +4,8 @@ import androidx.room.*
 import com.s95ammar.budgetplanner.models.IdWrapper
 import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConfig.TABLE_NAME_PERIOD
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryJoinEntity
+import com.s95ammar.budgetplanner.util.INT_INVALID
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,29 +27,53 @@ interface PeriodDao {
     fun getPeriodJoinEntityListFlow(periodId: Int): Flow<List<PeriodJoinEntity>>
 */
 
-/*
-    @Query( // TODO
+    @Query(
         """
-    SELECT periodic_category_id, periodId, category_name, category_id, max, budget_transactions_amount_sum
-    FROM (
-            SELECT p.id AS period_id, c.name AS category_name, c.id AS category_id, pc.id AS periodic_category_id, pc.max AS max, pc.id AS periodId
-            FROM period p
-                INNER JOIN periodicCategory pc
-                    ON p.id = pc.periodId
-                INNER JOIN category c
-                    ON pc.categoryId = c.id
-            WHERE p.id = :periodId
-    ) AS data
-    INNER JOIN (
-        SELECT periodicCategoryId, SUM(amount) AS budget_transactions_amount_sum
-        FROM budgetTransaction
-        GROUP BY periodicCategoryId
-    ) AS sum
-    on data.periodId = sum.periodicCategoryId
-        """
+    SELECT IFNULL(pcOfPeriod.id, $INT_INVALID) as periodicCategoryId,
+           IFNULL(pcOfPeriod.periodId, $INT_INVALID) as periodId,
+           category.id as categoryId,
+           category.name as categoryName,
+           pcOfPeriod.max as max,
+           IFNULL(btAmountSumGrouped.btAmountSum, 0) as budgetTransactionsAmountSum
+    FROM category
+    LEFT JOIN (
+        SELECT * FROM periodicCategory
+    	WHERE periodId = :periodId
+    ) AS pcOfPeriod
+        ON category.id = pcOfPeriod.categoryId
+    LEFT JOIN (
+    	SELECT periodicCategoryId, SUM(amount) AS btAmountSum
+    	FROM budgetTransaction
+    	GROUP BY periodicCategoryId
+    ) AS btAmountSumGrouped
+        ON pcOfPeriod.id = btAmountSumGrouped.periodicCategoryId
+    """
     )
     fun getPeriodicCategoryJoinEntityListFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
-*/
+
+    @Query(
+        """
+    SELECT IFNULL(pcOfPeriod.id, $INT_INVALID) as periodicCategoryId,
+           IFNULL(pcOfPeriod.periodId, $INT_INVALID) as periodId,
+           category.id as categoryId,
+           category.name as categoryName,
+           pcOfPeriod.max as max,
+           IFNULL(btAmountSumGrouped.btAmountSum, 0) as budgetTransactionsAmountSum
+    FROM category
+    LEFT JOIN (
+        SELECT * FROM periodicCategory
+    	WHERE periodId = (SELECT MAX(id) FROM period)
+    ) AS pcOfPeriod
+        ON category.id = pcOfPeriod.categoryId
+    LEFT JOIN (
+    	SELECT periodicCategoryId, SUM(amount) AS btAmountSum
+    	FROM budgetTransaction
+    	GROUP BY periodicCategoryId
+    ) AS btAmountSumGrouped
+        ON pcOfPeriod.id = btAmountSumGrouped.periodicCategoryId
+    """
+    )
+    fun getPeriodInsertTemplate(): Flow<List<PeriodicCategoryJoinEntity>>
 
     @Query("SELECT * FROM period")
     fun getAllPeriodsFlow(): Flow<List<PeriodEntity>>

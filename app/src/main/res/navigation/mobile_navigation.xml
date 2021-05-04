@@ -43,7 +43,10 @@
             <argument
                 android:name="periodId"
                 app:argType="integer" />
-
+            <argument
+                android:name="periodName"
+                app:argType="string"
+                app:nullable="true" />
 
         <fragment
             android:id="@+id/periodCreateEditFragment"
@@ -53,6 +56,10 @@
             <argument
                 android:name="periodId"
                 app:argType="integer" />
+            <argument
+                android:name="periodName"
+                app:argType="string"
+                app:nullable="true" />
             <action
                 android:id="@+id/action_periodCreateEditFragment_to_periodCategoriesSelectionFragment"
                 app:destination="@id/periodCategoriesSelectionFragment" />

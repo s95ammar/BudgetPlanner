@@ -1,12 +1,14 @@
 package com.s95ammar.budgetplanner.models.datasource.local
 
 import com.s95ammar.budgetplanner.models.IdWrapper
+import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDb
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.BudgetTransactionDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.CategoryDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.PeriodDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.PeriodicCategoryDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryJoinEntity
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +17,7 @@ import javax.inject.Singleton
 
 @Singleton
 class LocalDataSourceImpl @Inject constructor(
+    private val db: BudgetPlannerDb,
     private val periodDao: PeriodDao,
     private val categoryDao: CategoryDao,
     private val periodicCategoryDao: PeriodicCategoryDao,
@@ -26,8 +29,12 @@ class LocalDataSourceImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getPeriodicCategoryJoinEntityListFlow(id: Int): Flow<List<PeriodicCategoryJoinEntity>> {
-        TODO("Not yet implemented")
+    override fun getPeriodicCategoryJoinEntityListFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>> {
+        return periodDao.getPeriodicCategoryJoinEntityListFlow(periodId)
+    }
+
+    override fun getPeriodInsertTemplateFlow(): Flow<List<PeriodicCategoryJoinEntity>> {
+        return periodDao.getPeriodInsertTemplate()
     }
 
     override fun getAllPeriodsFlow(): Flow<List<PeriodEntity>> {
@@ -44,10 +51,6 @@ class LocalDataSourceImpl @Inject constructor(
 
     override suspend fun deletePeriod(id: Int) {
         periodDao.delete(IdWrapper(id))
-    }
-
-    override fun getPeriodInsertTemplateFlow(): Flow<*> {
-        TODO("Not yet implemented")
     }
 
     // Category
@@ -70,4 +73,26 @@ class LocalDataSourceImpl @Inject constructor(
     override suspend fun deleteCategory(id: Int) {
         categoryDao.delete(IdWrapper(id))
     }
+
+    // PeriodicCategory
+    override fun getAllPeriodicCategoriesFlow(): Flow<List<PeriodicCategoryEntity>> {
+        return periodicCategoryDao.getAllPeriodicCategoriesFlow()
+    }
+
+    override fun getPeriodicCategoryFlow(id: Int): Flow<PeriodicCategoryEntity> {
+        return periodicCategoryDao.getPeriodicCategoryByIdFlow(id)
+    }
+
+    override suspend fun insertPeriodicCategory(periodicCategory: PeriodicCategoryEntity) {
+        periodicCategoryDao.insert(periodicCategory)
+    }
+
+    override suspend fun updatePeriodicCategory(periodicCategory: PeriodicCategoryEntity) {
+        periodicCategoryDao.update(periodicCategory)
+    }
+
+    override suspend fun deletePeriodicCategory(id: Int) {
+        periodicCategoryDao.delete(IdWrapper(id))
+    }
+
 }

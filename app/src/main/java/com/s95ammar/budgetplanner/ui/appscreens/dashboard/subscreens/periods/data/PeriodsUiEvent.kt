@@ -5,7 +5,7 @@ import com.s95ammar.budgetplanner.ui.common.LoadingState
 
 sealed class PeriodsUiEvent {
     class DisplayLoadingState(val loadingState: LoadingState): PeriodsUiEvent()
-    class OnNavigateToEditPeriod(val periodId: Int): PeriodsUiEvent()
+    class OnNavigateToEditPeriod(val period: PeriodSimple): PeriodsUiEvent()
     class ShowBottomSheet(val period: PeriodSimple): PeriodsUiEvent()
     object OnPeriodDeleted : PeriodsUiEvent()
     object Exit: PeriodsUiEvent()

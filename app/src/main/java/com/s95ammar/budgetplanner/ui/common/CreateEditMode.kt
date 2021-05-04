@@ -1,6 +1,6 @@
 package com.s95ammar.budgetplanner.ui.common
 
-import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.INVALID
 
 
 enum class CreateEditMode {
@@ -9,7 +9,7 @@ enum class CreateEditMode {
 
     companion object {
         fun getById(id: Int): CreateEditMode {
-            return if (id == Int.NO_ITEM) CREATE else EDIT
+            return if (id == Int.INVALID) CREATE else EDIT
         }
     }
 

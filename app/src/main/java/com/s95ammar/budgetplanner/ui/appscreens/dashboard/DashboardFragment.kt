@@ -1,25 +1,25 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard
 
 import android.view.View
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budget.BudgetFragment
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budgettransactions.BudgetTransactionsFragment
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.savings.SavingsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.IntDashboardTab
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.BudgetFragment
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.BudgetTransactionsFragment
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.savings.SavingsFragment
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.FragmentProvider
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.ViewPagerFragmentAdapter
-import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardUiEvent as UiEvent
@@ -29,6 +29,12 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
 
     private val viewModel: DashboardViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
+    private val pagerOnPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            viewModel.onTabSelected(position)
+        }
+    }
 
     override fun initViewBinding(view: View): FragmentDashboardBinding {
         return FragmentDashboardBinding.bind(view)
@@ -36,7 +42,6 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
 
     override fun setUpViews() {
         super.setUpViews()
-        setUpViewPager()
         binding.imageButtonArrowPrevious.setOnClickListener { viewModel.onPreviousPeriodClick() }
         binding.imageButtonArrowNext.setOnClickListener { viewModel.onNextPeriodClick() }
         binding.textViewPeriodName.setOnClickListener { viewModel.onPeriodNameClick() }
@@ -44,27 +49,9 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         binding.swipeToRefreshLayout.setOnRefreshListener { sharedViewModel.onRefresh() }
     }
 
-    private fun setUpViewPager() {
-        binding.pager.adapter = ViewPagerFragmentAdapter(
-            parentFragment = this,
-            childFragmentsProviders = listOf(
-                FragmentProvider { BudgetFragment.newInstance() },
-                FragmentProvider { BudgetTransactionsFragment.newInstance() },
-                FragmentProvider { SavingsFragment.newInstance() }
-            )
-        )
-        val titles = listOf(
-            getString(R.string.budget),
-            getString(R.string.expenses_and_income),
-            getString(R.string.savings)
-        )
-        TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
-            tab.text = titles[position]
-        }.attach()
-    }
-
     override fun initObservers() {
         super.initObservers()
+        viewModel.dashboardTabs.observe(viewLifecycleOwner) { setUpViewPager(it) }
         viewModel.currentPeriodBundle.observe(viewLifecycleOwner) {
             setViewsToCurrentPeriodBundle(it)
 //            sharedViewModel.onPeriodChanged(it.period?.id) // TODO
@@ -73,13 +60,50 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         sharedViewModel.performDashboardUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
+    private fun setUpViewPager(tabs: List<Int>) {
+        val fragmentProviders = tabs.mapNotNull { tab -> getTabFragmentProvider(tab) }
+        val titles = tabs.mapNotNull { tab -> getTabTitle(tab) }
+
+        binding.pager.adapter = ViewPagerFragmentAdapter(
+            parentFragment = this,
+            childFragmentsProviders = fragmentProviders
+        )
+        TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
+            tab.text = titles[position]
+        }.attach()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.pager.registerOnPageChangeCallback()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.pager.unregisterOnPageChangeCallback()
+    }
+
+    private fun getTabFragmentProvider(@IntDashboardTab tab: Int) = when (tab) {
+        IntDashboardTab.TAB_BUDGET -> FragmentProvider { BudgetFragment.newInstance() }
+        IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> FragmentProvider { BudgetTransactionsFragment.newInstance() }
+        IntDashboardTab.TAB_SAVINGS -> FragmentProvider { SavingsFragment.newInstance() }
+        else -> null
+    }
+
+    private fun getTabTitle(@IntDashboardTab tab: Int) = when (tab) {
+        IntDashboardTab.TAB_BUDGET -> getString(R.string.budget)
+        IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> getString(R.string.expenses_and_income)
+        IntDashboardTab.TAB_SAVINGS -> getString(R.string.savings)
+        else -> null
+    }
+
     private fun setViewsToCurrentPeriodBundle(currentPeriodHeaderBundle: CurrentPeriodHeaderBundle) {
         binding.textViewPeriodName.text = currentPeriodHeaderBundle.period?.name
         binding.imageButtonArrowPrevious.isVisible = currentPeriodHeaderBundle.isPreviousAvailable
         binding.imageButtonArrowNext.isVisible = currentPeriodHeaderBundle.isNextAvailable
         binding.imageButtonAddPeriod.isGone = currentPeriodHeaderBundle.isNextAvailable
 
-        binding.textViewPeriodName.isClickable = currentPeriodHeaderBundle.period != null
+        binding.textViewPeriodName.isGone = currentPeriodHeaderBundle.period == null
         binding.pager.isGone = currentPeriodHeaderBundle.period == null
         binding.instructionsLayout.root.isVisible = currentPeriodHeaderBundle.period == null
         binding.instructionsLayout.messageTextView.text = getString(R.string.create_period_instruction)
@@ -135,7 +159,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
 
     private fun onNavigateToCreatePeriod() {
         listenToPeriodsListChangedResult()
-        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(Int.NO_ITEM))
+        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(Int.INVALID, null))
     }
 
     private fun navigateToCreateBudgetTransaction(periodId: Int) {
@@ -144,7 +168,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
             DashboardFragmentDirections
                 .actionNavigationDashboardToBudgetTransactionCreateEditFragment(
                     periodId = periodId,
-                    budgetTransactionId = Int.NO_ITEM
+                    budgetTransactionId = Int.INVALID
                 )
         )
     }
@@ -155,14 +179,14 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
             DashboardFragmentDirections
                 .actionNavigationDashboardToBudgetTransactionCreateEditFragment(
                     periodId = periodId,
-                    budgetTransactionId = Int.NO_ITEM
+                    budgetTransactionId = Int.INVALID
                 )
         )
     }
 
     private fun navigateToEditPeriod(periodId: Int) {
 //        setFragmentResultListener(Keys.KEY_DASHBOARD_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> sharedViewModel.onPeriodicCategoriesChanged() }
-        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(periodId))
+        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(periodId, null /*TODO*/))
     }
 
     private fun listenToPeriodsListChangedResult() {

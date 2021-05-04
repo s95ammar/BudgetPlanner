@@ -4,7 +4,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
-import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.INVALID
 
 class PeriodCreateEditValidator(
     private val periodId: Int,
@@ -24,7 +24,7 @@ class PeriodCreateEditValidator(
     // TODO: add periodic categories to output
     override fun provideOutput(input: PeriodInputBundle): PeriodEntity {
         return PeriodEntity(input.name, input.max?.toIntOrNull()).apply {
-            if (periodId != Int.NO_ITEM) id = periodId
+            if (periodId != Int.INVALID) id = periodId
         }
     }
 

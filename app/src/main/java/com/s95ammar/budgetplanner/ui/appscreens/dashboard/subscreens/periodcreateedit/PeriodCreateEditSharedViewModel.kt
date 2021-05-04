@@ -3,7 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcrea
 import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodFull
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodWithPeriodicCategories
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
@@ -11,7 +11,8 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreat
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
-import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.CalendarUtil
+import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
@@ -20,27 +21,29 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class PeriodCreateEditSharedViewModel @Inject constructor(
     private val repository: PeriodRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val locale: Locale
 ) : ViewModel() {
 
-    private val editedPeriodId = savedStateHandle.get<Int>(PeriodCreateEditFragmentArgs::periodId.name) ?: Int.NO_ITEM
+    private val editedPeriodId = savedStateHandle.get<Int>(PeriodCreateEditFragmentArgs::periodId.name) ?: Int.INVALID
 
     private val _mode = MutableLiveData(CreateEditMode.getById(editedPeriodId))
-    private val _period = LoaderMutableLiveData<PeriodFull> { loadEditedPeriodOrInsertTemplate() }
+    private val _periodWithPeriodicCategories = LoaderMutableLiveData<PeriodWithPeriodicCategories> { loadEditedPeriodOrInsertTemplate() }
 
     private val _name = MediatorLiveData<String>().apply {
-        addSource(_period) { value = it.name }
+        addSource(_periodWithPeriodicCategories) { value = it.periodName ?: CalendarUtil.getNextMonthPeriodName(locale) }
     }
     private val _max = MediatorLiveData<Int>().apply {
-        addSource(_period) { value = it.max }
+        addSource(_periodWithPeriodicCategories) { value = it.max }
     }
     private val _periodicCategories = MediatorLiveData<List<PeriodicCategory>>().apply {
-        addSource(_period) { value = it.periodicCategories }
+        addSource(_periodWithPeriodicCategories) { value = it.periodicCategories }
     }
     private val _allowCategorySelectionForAll = MediatorLiveData<Boolean>().apply {
         addSource(_mode) { value = it == CreateEditMode.CREATE }
@@ -91,10 +94,9 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     private fun loadEditedPeriodOrInsertTemplate() {
         val mode = _mode.value ?: return
 
-/*
         viewModelScope.launch {
             val flowRequest = when (mode) {
-                CreateEditMode.EDIT -> repository.getPeriodicCategoryJoinEntityList(editedPeriodId)
+                CreateEditMode.EDIT -> repository.getPeriodicCategoryJoinEntityListFlow(editedPeriodId)
                 CreateEditMode.CREATE -> repository.getPeriodInsertTemplate()
             }
 
@@ -105,14 +107,16 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
                 .catch { throwable ->
                     _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
-                .collect { periodEntity ->
-                    Period.Mapper.toViewEntity(periodEntity)?.let { periodViewEntity ->
-                        _period.value = periodViewEntity
-                        _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
-                    }
+                .collect { periodicCategoryJoinEntityList ->
+                    _periodWithPeriodicCategories.value = PeriodWithPeriodicCategories(
+                        periodId = editedPeriodId,
+                        periodName = null /*TODO: change editedPeriodId to periodSimple*/,
+                        max = null /*TODO: change editedPeriodId to periodSimple*/,
+                        periodicCategories = periodicCategoryJoinEntityList.mapNotNull(PeriodicCategory.Mapper::fromEntity)
+                    )
+                    _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
                 }
         }
-*/
     }
 
     private fun insertOrUpdatePeriod(period: PeriodEntity) = viewModelScope.launch {

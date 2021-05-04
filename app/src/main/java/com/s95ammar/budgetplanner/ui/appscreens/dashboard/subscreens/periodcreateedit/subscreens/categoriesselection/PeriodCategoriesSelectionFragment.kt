@@ -57,8 +57,8 @@ class PeriodCategoriesSelectionFragment :
         }
     }
 
-    private fun setAllowCategorySelectionForAll(alwaysAllowCategorySelection: Boolean) {
-        adapter.allowCategorySelectionForAll = alwaysAllowCategorySelection
+    private fun setAllowCategorySelectionForAll(allowCategorySelectionForAll: Boolean) {
+        adapter.allowCategorySelectionForAll = allowCategorySelectionForAll
     }
 
     private fun setPeriodicCategories(periodicCategories: List<PeriodicCategory>) {

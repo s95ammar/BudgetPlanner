@@ -5,8 +5,10 @@ import java.util.*
 
 fun Boolean?.orFalse() = this ?: false
 
-val Int.Companion.NO_ITEM
-    get() = -1
+const val INT_INVALID = -1
+
+val Int.Companion.INVALID
+    get() = INT_INVALID
 
 @Suppress("Deprecation")
 val Context.currentLocale: Locale

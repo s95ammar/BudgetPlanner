@@ -1,15 +1,13 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.distinctUntilChanged
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.IntDashboardTab
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.ui.common.LoadingState
-import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.MediatorLiveData
@@ -35,15 +33,23 @@ class DashboardViewModel @Inject constructor(
     }
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
+    val dashboardTabs = MutableLiveData(
+        listOf(IntDashboardTab.TAB_BUDGET, IntDashboardTab.TAB_BUDGET_TRANSACTIONS, IntDashboardTab.TAB_SAVINGS)
+    ).asLiveData()
     val currentPeriodBundle = _currentPeriodBundle.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
+
+
+    fun onTabSelected(position: Int) {
+        // TODO: add a LiveData with position & observe from view to set the correct FAB listener & icon (after replacing 3 FABs with 1)
+    }
 
     fun onNextPeriodClick() {
         val currentPeriod = _currentPeriodBundle.value?.period ?: return
         val allPeriods = _allPeriods.value ?: return
 
         val currentPeriodIndex = allPeriods.indexOf(currentPeriod)
-        if (currentPeriodIndex != Int.NO_ITEM && currentPeriodIndex != allPeriods.lastIndex) {
+        if (currentPeriodIndex != Int.INVALID && currentPeriodIndex != allPeriods.lastIndex) {
             val newCurrentPeriod = allPeriods[currentPeriodIndex + 1]
             _currentPeriodBundle.value = createCurrentPeriodHeaderBundle(newCurrentPeriod)
         }
@@ -54,7 +60,7 @@ class DashboardViewModel @Inject constructor(
         val allPeriods = _allPeriods.value ?: return
 
         val currentPeriodIndex = allPeriods.indexOf(currentPeriod)
-        if (currentPeriodIndex != Int.NO_ITEM && currentPeriodIndex != 0) {
+        if (currentPeriodIndex != Int.INVALID && currentPeriodIndex != 0) {
             val newCurrentPeriod = allPeriods[currentPeriodIndex - 1]
             _currentPeriodBundle.value = createCurrentPeriodHeaderBundle(newCurrentPeriod)
         }

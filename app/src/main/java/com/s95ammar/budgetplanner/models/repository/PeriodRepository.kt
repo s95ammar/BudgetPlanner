@@ -13,11 +13,11 @@ class PeriodRepository @Inject constructor(
 //    private val remoteDataSource: RemoteDataSource,
 ) {
 
-    fun getPeriodJoinEntityListFlow(id: Int) = flowOnDispatcher(Dispatchers.IO) {
-        localDataSource.getPeriodJoinEntityListFlow(id)
-    }
+    fun getPeriodJoinEntityListFlow(id: Int) = localDataSource.getPeriodJoinEntityListFlow(id)
 
-    fun getPeriodicCategoryJoinEntityListFlow(id: Int) = localDataSource.getPeriodicCategoryJoinEntityListFlow(id)
+    fun getPeriodicCategoryJoinEntityListFlow(periodId: Int) = localDataSource.getPeriodicCategoryJoinEntityListFlow(periodId)
+
+    fun getPeriodInsertTemplate() = localDataSource.getPeriodInsertTemplateFlow()
 
     fun getAllUserPeriodsFlow() = localDataSource.getAllPeriodsFlow()
 

@@ -13,20 +13,20 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
         ForeignKey(
             entity = PeriodicCategoryEntity::class,
             parentColumns = [BudgetPlannerDbConfig.COLUMN_NAME_ID],
-            childColumns = [BudgetPlannerDbConfig.COLUMN_NAME_NAME],
+            childColumns = [BudgetPlannerDbConfig.COLUMN_NAME_PERIODIC_CATEGORY_ID],
             onDelete = ForeignKey.CASCADE
         )
     ],
     indices = [
-        Index(value = [BudgetPlannerDbConfig.COLUMN_NAME_NAME])
+        Index(value = [BudgetPlannerDbConfig.COLUMN_NAME_PERIODIC_CATEGORY_ID])
     ]
 )
 data class BudgetTransactionEntity(
     val name: String,
     @IntBudgetTransactionType val type: Int,
     val amount: Int,
-    val creationUnixMs: Long,
-    val periodicCategoryId: Int
+    val periodicCategoryId: Int,
+    val creationUnixMs: Long = System.currentTimeMillis()
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

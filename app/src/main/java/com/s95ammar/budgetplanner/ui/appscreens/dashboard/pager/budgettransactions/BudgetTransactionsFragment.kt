@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budgettransactions
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions
 
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardTransactionsBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budgettransactions.adapter.BudgetTransactionsListAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.adapter.BudgetTransactionsListAdapter
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 import dagger.hilt.android.AndroidEntryPoint

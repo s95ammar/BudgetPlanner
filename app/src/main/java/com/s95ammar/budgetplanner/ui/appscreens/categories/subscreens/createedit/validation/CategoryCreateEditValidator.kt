@@ -4,7 +4,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEnti
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
-import com.s95ammar.budgetplanner.util.NO_ITEM
+import com.s95ammar.budgetplanner.util.INVALID
 
 class CategoryCreateEditValidator(
     private val categoryId: Int,
@@ -21,7 +21,7 @@ class CategoryCreateEditValidator(
     }
 
     override fun provideOutput(input: CategoryInputBundle): CategoryEntity {
-        return CategoryEntity(input.title).apply { if (categoryId != Int.NO_ITEM) id = categoryId }
+        return CategoryEntity(input.title).apply { if (categoryId != Int.INVALID) id = categoryId }
     }
 
     override fun provideViewValidationList(): List<ViewValidation> {

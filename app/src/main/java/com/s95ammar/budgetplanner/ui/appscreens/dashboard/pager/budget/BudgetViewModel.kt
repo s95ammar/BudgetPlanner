@@ -1,4 +1,4 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.childscreens.budget
+package com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

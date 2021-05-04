@@ -66,7 +66,7 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
-            is UiEvent.OnNavigateToEditPeriod -> onNavigateToCreateEditPeriod(uiEvent.periodId)
+            is UiEvent.OnNavigateToEditPeriod -> onNavigateToCreateEditPeriod(uiEvent.period)
             is UiEvent.ShowBottomSheet -> showBottomSheet(uiEvent.period)
             is UiEvent.OnPeriodDeleted -> onPeriodDeleted()
             is UiEvent.Exit -> navController.navigateUp()
@@ -85,17 +85,17 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
         }
     }
 
-    private fun onNavigateToCreateEditPeriod(periodId: Int) {
+    private fun onNavigateToCreateEditPeriod(period: PeriodSimple) {
         setFragmentResultListener(Keys.KEY_ON_PERIOD_CREATE_EDIT) { _, _ -> viewModel.refresh() }
         navController.navigate(
-            PeriodsFragmentDirections.actionPeriodsFragmentToNestedPeriodCreateEdit(periodId)
+            PeriodsFragmentDirections.actionPeriodsFragmentToNestedPeriodCreateEdit(period.id, period.name)
         )
     }
 
     private fun showBottomSheet(period: PeriodSimple) {
         EditDeleteBottomSheetDialogFragment.newInstance(period.name, R.drawable.ic_period).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
-                override fun onEdit() = onNavigateToCreateEditPeriod(period.id)
+                override fun onEdit() = onNavigateToCreateEditPeriod(period)
                 override fun onDelete() = displayDeleteConfirmationDialog(period.name) { viewModel.deletePeriod(period.id) }
             }
         }.show(childFragmentManager, EditDeleteBottomSheetDialogFragment.TAG)
