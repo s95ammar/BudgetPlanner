@@ -9,12 +9,11 @@ import com.s95ammar.budgetplanner.databinding.FragmentDashboardBudgetBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.adapter.PeriodicCategoriesListAdapter
-import com.s95ammar.budgetplanner.ui.base.BaseFragment
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
+import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBinder<FragmentDashboardBudgetBinding> {
+class BudgetFragment : BaseViewBinderFragment<FragmentDashboardBudgetBinding>(R.layout.fragment_dashboard_budget) {
 
     companion object {
         fun newInstance() = BudgetFragment()
@@ -25,16 +24,12 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
 
     private val adapter by lazy { PeriodicCategoriesListAdapter() }
 
-    override val binding: FragmentDashboardBudgetBinding
-        get() = getBinding()
-
     override fun initViewBinding(view: View): FragmentDashboardBudgetBinding {
         return FragmentDashboardBudgetBinding.bind(view)
     }
 
     override fun setUpViews() {
         super.setUpViews()
-        binding.fab.setOnClickListener { sharedViewModel.onEditSelectedPeriod() }
         setUpRecyclerView()
     }
 
@@ -46,12 +41,7 @@ class BudgetFragment : BaseFragment(R.layout.fragment_dashboard_budget), ViewBin
 
     override fun initObservers() {
         super.initObservers()
-        sharedViewModel.isPeriodAvailable.observe(viewLifecycleOwner) { setFabVisibility(it) }
-        sharedViewModel.currentPeriodicRecords.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
-    }
-
-    private fun setFabVisibility(isVisible: Boolean) {
-        if (isVisible) binding.fab.show() else binding.fab.hide()
+        sharedViewModel.currentPeriodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
     }
 
     private fun setPeriodicCategories(periodicCategories: List<PeriodicCategory>) {

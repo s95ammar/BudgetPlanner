@@ -96,4 +96,12 @@ abstract class BaseFragment : Fragment, LoadingManager {
         _binding = null
         super.onDestroyView()
     }
+
+    protected inline fun executeIfViewIsAvailable(action: (View) -> Unit) {
+        try {
+            view?.let { action.invoke(it) }
+        } catch (e: Throwable) {
+        }
+    }
+
 }

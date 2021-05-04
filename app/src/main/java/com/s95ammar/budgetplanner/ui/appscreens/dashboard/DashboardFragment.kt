@@ -1,6 +1,9 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard
 
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -9,6 +12,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardFabState
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.IntDashboardFabType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.IntDashboardTab
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.BudgetFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.BudgetTransactionsFragment
@@ -19,6 +24,7 @@ import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.FragmentProvider
 import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.ViewPagerFragmentAdapter
+import com.s95ammar.budgetplanner.util.FAB_VISIBILITY_ANIMATION_DURATION_MS
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,17 +52,18 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         binding.imageButtonArrowNext.setOnClickListener { viewModel.onNextPeriodClick() }
         binding.textViewPeriodName.setOnClickListener { viewModel.onPeriodNameClick() }
         binding.imageButtonAddPeriod.setOnClickListener { viewModel.onAddPeriodClick() }
-        binding.swipeToRefreshLayout.setOnRefreshListener { sharedViewModel.onRefresh() }
+        binding.swipeToRefreshLayout.setOnRefreshListener { sharedViewModel.refresh() }
     }
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.dashboardTabs.observe(viewLifecycleOwner) { setUpViewPager(it) }
         viewModel.currentPeriodBundle.observe(viewLifecycleOwner) {
             setViewsToCurrentPeriodBundle(it)
-//            sharedViewModel.onPeriodChanged(it.period?.id) // TODO
+            sharedViewModel.onPeriodChanged(it.period?.id) // TODO remove?
         }
+        viewModel.fabState.observe(viewLifecycleOwner) { setFabState(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
+        viewModel.dashboardTabs.observe(viewLifecycleOwner) { setUpViewPager(it) }
         sharedViewModel.performDashboardUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
@@ -73,14 +80,41 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         }.attach()
     }
 
+    private fun setFabState(fabState: DashboardFabState) {
+
+        binding.fab.hide()
+        binding.fab.postDelayed({
+            executeIfViewIsAvailable {
+                when (fabState.type) {
+                    IntDashboardFabType.FAB_NONE -> {
+                    }
+                    IntDashboardFabType.FAB_EDIT -> {
+                        binding.fab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_edit))
+                        binding.fab.show()
+                    }
+                    IntDashboardFabType.FAB_ADD -> {
+                        binding.fab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_add))
+                        binding.fab.show()
+                    }
+                }
+
+                when (fabState.currentTab) {
+                    IntDashboardTab.TAB_BUDGET -> binding.fab.setOnClickListener { sharedViewModel.onEditSelectedPeriod() }
+                    IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> binding.fab.setOnClickListener { /*TODO: add bt*/ }
+                    IntDashboardTab.TAB_SAVINGS -> binding.fab.setOnClickListener { /*TODO: add saving*/ }
+                }
+            }
+        }, FAB_VISIBILITY_ANIMATION_DURATION_MS)
+    }
+
     override fun onStart() {
         super.onStart()
-        binding.pager.registerOnPageChangeCallback()
+        binding.pager.registerOnPageChangeCallback(pagerOnPageChangeCallback)
     }
 
     override fun onStop() {
         super.onStop()
-        binding.pager.unregisterOnPageChangeCallback()
+        binding.pager.unregisterOnPageChangeCallback(pagerOnPageChangeCallback)
     }
 
     private fun getTabFragmentProvider(@IntDashboardTab tab: Int) = when (tab) {

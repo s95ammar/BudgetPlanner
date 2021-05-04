@@ -4,13 +4,14 @@ import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardFabState
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.IntDashboardFabType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.IntDashboardTab
 import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
-import com.s95ammar.budgetplanner.util.lifecycleutil.MediatorLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -27,21 +28,31 @@ class DashboardViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val locale: Locale
 ) : ViewModel() {
+
+    private val _selectedTab = MutableLiveData<@IntDashboardTab Int>()
     private val _allPeriods = LoaderMutableLiveData<List<PeriodSimple>> { loadAllPeriods() }
-    private val _currentPeriodBundle = MediatorLiveData(createCurrentPeriodHeaderBundle(null)).apply {
+    private val _currentPeriodBundle = MediatorLiveData<CurrentPeriodHeaderBundle>().apply {
         addSource(_allPeriods.distinctUntilChanged()) { value = createCurrentPeriodHeaderBundle(it.lastOrNull()) }
     }
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
+
+    val currentPeriodBundle = _currentPeriodBundle.asLiveData()
+    val fabState = MediatorLiveData<DashboardFabState>().apply {
+        fun update() {
+            val isPeriodAvailable = _currentPeriodBundle.value?.period != null
+            value = createDashboardFabState(_selectedTab.value ?: Int.INVALID, isPeriodAvailable)
+        }
+        addSource(_selectedTab) { update() }
+        addSource(_currentPeriodBundle) { update() }
+    }.distinctUntilChanged()
     val dashboardTabs = MutableLiveData(
         listOf(IntDashboardTab.TAB_BUDGET, IntDashboardTab.TAB_BUDGET_TRANSACTIONS, IntDashboardTab.TAB_SAVINGS)
     ).asLiveData()
-    val currentPeriodBundle = _currentPeriodBundle.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
-
     fun onTabSelected(position: Int) {
-        // TODO: add a LiveData with position & observe from view to set the correct FAB listener & icon (after replacing 3 FABs with 1)
+        _selectedTab.value = position
     }
 
     fun onNextPeriodClick() {
@@ -89,6 +100,17 @@ class DashboardViewModel @Inject constructor(
         }
 
         return CurrentPeriodHeaderBundle(currentPeriod, isPreviousAvailable, isNextAvailable)
+    }
+
+    private fun createDashboardFabState(@IntDashboardTab currentTab: Int, isPeriodAvailable: Boolean): DashboardFabState {
+        @IntDashboardFabType val type = if (!isPeriodAvailable) IntDashboardFabType.FAB_NONE else when (currentTab) {
+            IntDashboardTab.TAB_BUDGET -> IntDashboardFabType.FAB_EDIT
+            IntDashboardTab.TAB_BUDGET_TRANSACTIONS,
+            IntDashboardTab.TAB_SAVINGS -> IntDashboardFabType.FAB_ADD
+            else -> IntDashboardFabType.FAB_NONE
+        }
+
+        return DashboardFabState(type, currentTab)
     }
 
     private fun loadAllPeriods() {

@@ -34,7 +34,6 @@ class BudgetTransactionsFragment : BaseFragment(R.layout.fragment_dashboard_tran
 
     override fun setUpViews() {
         super.setUpViews()
-        binding.fab.setOnClickListener { sharedViewModel.onAddBudgetTransaction() }
         setUpRecyclerView()
     }
 
@@ -46,12 +45,7 @@ class BudgetTransactionsFragment : BaseFragment(R.layout.fragment_dashboard_tran
 
     override fun initObservers() {
         super.initObservers()
-        sharedViewModel.isPeriodAvailable.observe(viewLifecycleOwner) { setFabVisibility(it) }
         sharedViewModel.currentBudgetTransactions.observe(viewLifecycleOwner) { setBudgetTransactionViewEntity(it) }
-    }
-
-    private fun setFabVisibility(isVisible: Boolean) {
-        if (isVisible) binding.fab.show() else binding.fab.hide()
     }
 
     private fun setBudgetTransactionViewEntity(budgetTransactions: List<BudgetTransactionViewEntity>) {
