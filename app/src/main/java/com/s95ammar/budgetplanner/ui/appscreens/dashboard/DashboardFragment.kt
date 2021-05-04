@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardFabState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.IntDashboardFabType
@@ -35,6 +36,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
 
     private val viewModel: DashboardViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
+
     private val pagerOnPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
@@ -99,7 +101,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
                 }
 
                 when (fabState.currentTab) {
-                    IntDashboardTab.TAB_BUDGET -> binding.fab.setOnClickListener { sharedViewModel.onEditSelectedPeriod() }
+                    IntDashboardTab.TAB_BUDGET -> binding.fab.setOnClickListener { viewModel.onEditSelectedPeriod() }
                     IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> binding.fab.setOnClickListener { /*TODO: add bt*/ }
                     IntDashboardTab.TAB_SAVINGS -> binding.fab.setOnClickListener { /*TODO: add saving*/ }
                 }
@@ -149,7 +151,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
             is UiEvent.NavigateToCreatePeriod -> onNavigateToCreatePeriod()
             is UiEvent.NavigateToCreateBudgetTransaction -> navigateToCreateBudgetTransaction(uiEvent.periodId)
             is UiEvent.NavigateToEditBudgetTransaction -> navigateToEditBudgetTransaction(uiEvent.periodId, uiEvent.budgetTransactionId)
-            is UiEvent.NavigateToEditPeriod -> navigateToEditPeriod(uiEvent.periodId)
+            is UiEvent.NavigateToEditPeriod -> navigateToEditPeriod(uiEvent.period)
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState, uiEvent.loadingType)
         }
     }
@@ -193,7 +195,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
 
     private fun onNavigateToCreatePeriod() {
         listenToPeriodsListChangedResult()
-        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(Int.INVALID, null))
+        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(null))
     }
 
     private fun navigateToCreateBudgetTransaction(periodId: Int) {
@@ -218,9 +220,9 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         )
     }
 
-    private fun navigateToEditPeriod(periodId: Int) {
+    private fun navigateToEditPeriod(period: PeriodSimple) {
 //        setFragmentResultListener(Keys.KEY_DASHBOARD_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> sharedViewModel.onPeriodicCategoriesChanged() }
-        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(periodId, null /*TODO*/))
+        navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(period))
     }
 
     private fun listenToPeriodsListChangedResult() {

@@ -8,7 +8,6 @@ import com.s95ammar.budgetplanner.util.INVALID
 
 class PeriodCreateEditValidator(
     private val periodId: Int,
-//    private val periodicCategoryUpsertApiRequestListProvider: () -> List<PeriodicCategoryUpsertApiRequest>,
     periodInputBundle: PeriodInputBundle
 ) : Validator<PeriodInputBundle, PeriodEntity>(periodInputBundle) {
 
@@ -21,7 +20,6 @@ class PeriodCreateEditValidator(
         const val VIEW_NAME = 1
     }
 
-    // TODO: add periodic categories to output
     override fun provideOutput(input: PeriodInputBundle): PeriodEntity {
         return PeriodEntity(input.name, input.max?.toIntOrNull()).apply {
             if (periodId != Int.INVALID) id = periodId

@@ -41,11 +41,8 @@
             android:id="@+id/nested_period_create_edit"
             app:startDestination="@id/periodCreateEditFragment">
             <argument
-                android:name="periodId"
-                app:argType="integer" />
-            <argument
-                android:name="periodName"
-                app:argType="string"
+                android:name="period"
+                app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple"
                 app:nullable="true" />
 
         <fragment
@@ -54,11 +51,8 @@
             android:label="fragment_period_create_edit"
             tools:layout="@layout/fragment_period_create_edit">
             <argument
-                android:name="periodId"
-                app:argType="integer" />
-            <argument
-                android:name="periodName"
-                app:argType="string"
+                android:name="period"
+                app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple"
                 app:nullable="true" />
             <action
                 android:id="@+id/action_periodCreateEditFragment_to_periodCategoriesSelectionFragment"

@@ -36,7 +36,6 @@ class DashboardViewModel @Inject constructor(
     }
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
-
     val currentPeriodBundle = _currentPeriodBundle.asLiveData()
     val fabState = MediatorLiveData<DashboardFabState>().apply {
         fun update() {
@@ -46,9 +45,7 @@ class DashboardViewModel @Inject constructor(
         addSource(_selectedTab) { update() }
         addSource(_currentPeriodBundle) { update() }
     }.distinctUntilChanged()
-    val dashboardTabs = MutableLiveData(
-        listOf(IntDashboardTab.TAB_BUDGET, IntDashboardTab.TAB_BUDGET_TRANSACTIONS, IntDashboardTab.TAB_SAVINGS)
-    ).asLiveData()
+    val dashboardTabs = MutableLiveData(IntDashboardTab.values()).asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun onTabSelected(position: Int) {
@@ -87,6 +84,12 @@ class DashboardViewModel @Inject constructor(
 
     fun refresh() {
         loadAllPeriods()
+    }
+
+    fun onEditSelectedPeriod() {
+        _currentPeriodBundle.value?.period?.let { period ->
+            _performUiEvent.call(UiEvent.NavigateToEditPeriod(period))
+        }
     }
 
     private fun createCurrentPeriodHeaderBundle(currentPeriod: PeriodSimple?): CurrentPeriodHeaderBundle {

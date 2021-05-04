@@ -2,7 +2,9 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcrea
 
 import androidx.lifecycle.*
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodWithPeriodicCategories
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent
@@ -17,6 +19,7 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
@@ -31,7 +34,9 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     private val locale: Locale
 ) : ViewModel() {
 
-    private val editedPeriodId = savedStateHandle.get<Int>(PeriodCreateEditFragmentArgs::periodId.name) ?: Int.INVALID
+    private val editedPeriod = savedStateHandle.get<PeriodSimple?>(PeriodCreateEditFragmentArgs::period.name)
+    private val editedPeriodId
+        get() = editedPeriod?.id ?: Int.INVALID
 
     private val _mode = MutableLiveData(CreateEditMode.getById(editedPeriodId))
     private val _periodWithPeriodicCategories = LoaderMutableLiveData<PeriodWithPeriodicCategories> { loadEditedPeriodOrInsertTemplate() }
@@ -82,13 +87,7 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     }
 
     private fun createValidator(periodInputBundle: PeriodInputBundle): PeriodCreateEditValidator {
-        val periodicCategoryUpsertApiRequestListGetter = {
-            _periodicCategories.value.orEmpty()
-                .filter { it.isSelected }
-//                .map { PeriodicCategoryUpsertApiRequest(it.categoryId, it.max) }
-        }
-
-        return PeriodCreateEditValidator(editedPeriodId, /*periodicCategoryUpsertApiRequestListGetter,*/ periodInputBundle)
+        return PeriodCreateEditValidator(editedPeriodId, periodInputBundle)
     }
 
     private fun loadEditedPeriodOrInsertTemplate() {
@@ -110,9 +109,9 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
                 .collect { periodicCategoryJoinEntityList ->
                     _periodWithPeriodicCategories.value = PeriodWithPeriodicCategories(
                         periodId = editedPeriodId,
-                        periodName = null /*TODO: change editedPeriodId to periodSimple*/,
-                        max = null /*TODO: change editedPeriodId to periodSimple*/,
-                        periodicCategories = periodicCategoryJoinEntityList.mapNotNull(PeriodicCategory.Mapper::fromEntity)
+                        periodName = editedPeriod?.name,
+                        max = editedPeriod?.max,
+                        periodicCategories = periodicCategoryJoinEntityList.mapNotNull(PeriodicCategory.JoinEntityMapper::fromEntity)
                     )
                     _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
                 }
@@ -123,8 +122,8 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
         val mode = _mode.value ?: return@launch
 
         val flowRequest = when (mode) {
-            CreateEditMode.CREATE -> repository.insertPeriodFlow(period) // TODO: implement adding/updating/deleting periodic categories
-            CreateEditMode.EDIT -> repository.updatePeriodFlow(period) // TODO: implement adding/updating/deleting periodic categories
+            CreateEditMode.CREATE -> getInsertFlow(period)
+            CreateEditMode.EDIT -> getUpdateFlow(period)
         }
 
         flowRequest
@@ -139,6 +138,54 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
                 _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
                 _performUiEvent.call(PeriodCreateEditUiEvent.Exit)
             }
+    }
+
+    private fun getInsertFlow(period: PeriodEntity) = repository.insertPeriodWithPeriodicCategoriesFlow(
+        period = period,
+        periodicCategories = _periodicCategories.value.orEmpty()
+            .filter { it.isSelected }
+            .mapNotNull(PeriodicCategory.EntityMapper::toEntity)
+    )
+
+    private fun getUpdateFlow(period: PeriodEntity): Flow<Unit> {
+        val initialPcList = _periodWithPeriodicCategories.value?.periodicCategories.orEmpty().filter { it.isSelected }
+        val finalPcList = periodicCategories.value.orEmpty().filter { it.isSelected }
+
+        val initialPcCategoryIdsList = initialPcList.map { it.categoryId }
+        val finalPcCategoryIdsList = finalPcList.map { it.categoryId }
+
+        val pcCategoryIdsToDelete = mutableListOf<Int>()
+        val periodicCategoriesToUpdate = mutableListOf<PeriodicCategoryEntity>()
+        val periodicCategoriesToInsert = mutableListOf<PeriodicCategoryEntity>()
+        val periodicCategoriesIdsUnion = initialPcCategoryIdsList.union(finalPcCategoryIdsList)
+
+        for (categoryId in periodicCategoriesIdsUnion) {
+            
+            if (categoryId in initialPcCategoryIdsList && categoryId !in finalPcCategoryIdsList) {
+                pcCategoryIdsToDelete.add(initialPcList.first { it.categoryId == categoryId }.id)
+                continue
+            }
+
+            if (categoryId !in initialPcCategoryIdsList && categoryId in finalPcCategoryIdsList) {
+                val pc = finalPcList.first { it.categoryId == categoryId }
+                PeriodicCategory.EntityMapper.toEntity(pc)?.let { periodicCategoriesToInsert.add(it) }
+                continue
+            }
+            
+            if (categoryId in initialPcCategoryIdsList && categoryId in finalPcCategoryIdsList) {
+                val pcInitial = initialPcList.first { it.categoryId == categoryId }
+                val pcFinal = finalPcList.first { it.categoryId == categoryId }
+                if (pcInitial != pcFinal)
+                    PeriodicCategory.EntityMapper.toEntity(pcFinal)?.let { periodicCategoriesToUpdate.add(it) }
+            }
+        }
+
+        return repository.updatePeriodWithPeriodicCategoriesFlow(
+            period,
+            pcCategoryIdsToDelete,
+            periodicCategoriesToUpdate,
+            periodicCategoriesToInsert
+        )
     }
 
     private fun displayValidationResults(validationErrors: ValidationErrors) {

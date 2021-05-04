@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PeriodDao {
     @Insert
-    suspend fun insert(period: PeriodEntity)
+    suspend fun insert(period: PeriodEntity): Long
 
     @Update
     suspend fun update(period: PeriodEntity)

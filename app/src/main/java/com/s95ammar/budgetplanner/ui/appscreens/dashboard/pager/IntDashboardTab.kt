@@ -13,5 +13,7 @@ annotation class IntDashboardTab {
         const val TAB_BUDGET = 0
         const val TAB_BUDGET_TRANSACTIONS = 1
         const val TAB_SAVINGS = 2
+
+        fun values() = listOf(TAB_BUDGET, TAB_BUDGET_TRANSACTIONS, TAB_SAVINGS)
     }
 }

@@ -40,12 +40,6 @@ class DashboardSharedViewModel @Inject constructor(
         _selectedPeriodId.value = periodId ?: Int.INVALID
     }
 
-    fun onEditSelectedPeriod() {
-        _selectedPeriodId.value?.takeIf { it != Int.INVALID }?.let { periodId ->
-            _performDashboardUiEvent.call(DashboardUiEvent.NavigateToEditPeriod(periodId))
-        }
-    }
-
     fun onAddBudgetTransaction() {
         _performDashboardUiEvent.call(DashboardUiEvent.NavigateToCreateBudgetTransaction(Int.INVALID))
     }

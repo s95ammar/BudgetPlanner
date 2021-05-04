@@ -1,5 +1,6 @@
 package com.s95ammar.budgetplanner.models.datasource.local
 
+import androidx.room.withTransaction
 import com.s95ammar.budgetplanner.models.IdWrapper
 import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDb
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.BudgetTransactionDao
@@ -24,7 +25,7 @@ class LocalDataSourceImpl @Inject constructor(
     private val budgetTransactionDao: BudgetTransactionDao
 ) : LocalDataSource {
 
-    // Period
+    // Period & PeriodicCategory
     override fun getPeriodJoinEntityListFlow(periodId: Int): Flow<List<PeriodJoinEntity>> {
         TODO("Not yet implemented")
     }
@@ -41,12 +42,25 @@ class LocalDataSourceImpl @Inject constructor(
         return periodDao.getAllPeriodsFlow()
     }
 
-    override suspend fun insertPeriod(period: PeriodEntity) {
-        periodDao.insert(period)
+    override suspend fun insertPeriodWithPeriodicCategories(period: PeriodEntity, periodicCategories: List<PeriodicCategoryEntity>) {
+        db.withTransaction {
+            val periodId = periodDao.insert(period)
+            periodicCategoryDao.insert(periodicCategories.map { it.copy(periodId = periodId.toInt()) })
+        }
     }
 
-    override suspend fun updatePeriod(period: PeriodEntity) {
-        periodDao.update(period)
+    override suspend fun updatePeriodWithPeriodicCategoriesFlow(
+        period: PeriodEntity,
+        periodicCategoriesIdsToDelete: List<Int>,
+        periodicCategoriesToUpdate: List<PeriodicCategoryEntity>,
+        periodicCategoriesToInsert: List<PeriodicCategoryEntity>
+    ) {
+        db.withTransaction {
+            periodDao.update(period)
+            periodicCategoryDao.delete(periodicCategoriesIdsToDelete.map { IdWrapper(it) })
+            periodicCategoryDao.update(periodicCategoriesToUpdate)
+            periodicCategoryDao.insert(periodicCategoriesToInsert.map { it.copy(periodId = period.id) })
+        }
     }
 
     override suspend fun deletePeriod(id: Int) {
@@ -72,27 +86,6 @@ class LocalDataSourceImpl @Inject constructor(
 
     override suspend fun deleteCategory(id: Int) {
         categoryDao.delete(IdWrapper(id))
-    }
-
-    // PeriodicCategory
-    override fun getAllPeriodicCategoriesFlow(): Flow<List<PeriodicCategoryEntity>> {
-        return periodicCategoryDao.getAllPeriodicCategoriesFlow()
-    }
-
-    override fun getPeriodicCategoryFlow(id: Int): Flow<PeriodicCategoryEntity> {
-        return periodicCategoryDao.getPeriodicCategoryByIdFlow(id)
-    }
-
-    override suspend fun insertPeriodicCategory(periodicCategory: PeriodicCategoryEntity) {
-        periodicCategoryDao.insert(periodicCategory)
-    }
-
-    override suspend fun updatePeriodicCategory(periodicCategory: PeriodicCategoryEntity) {
-        periodicCategoryDao.update(periodicCategory)
-    }
-
-    override suspend fun deletePeriodicCategory(id: Int) {
-        periodicCategoryDao.delete(IdWrapper(id))
     }
 
 }

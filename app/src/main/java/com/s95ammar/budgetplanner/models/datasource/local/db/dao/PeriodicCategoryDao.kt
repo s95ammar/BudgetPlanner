@@ -8,16 +8,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PeriodicCategoryDao {
     @Insert
-    suspend fun insert(periodicCategory: PeriodicCategoryEntity)
+    suspend fun insert(periodicCategories: List<PeriodicCategoryEntity>)
 
     @Update
-    suspend fun update(periodicCategory: PeriodicCategoryEntity)
-
-    @Delete
-    suspend fun delete(periodicCategory: PeriodicCategoryEntity)
+    suspend fun update(periodicCategory: List<PeriodicCategoryEntity>)
 
     @Delete(entity = PeriodicCategoryEntity::class)
-    suspend fun delete(id: IdWrapper)
+    suspend fun delete(ids: List<IdWrapper>)
 
     @Query("SELECT * FROM periodicCategory WHERE id=:id")
     fun getPeriodicCategoryByIdFlow(id: Int): Flow<PeriodicCategoryEntity>

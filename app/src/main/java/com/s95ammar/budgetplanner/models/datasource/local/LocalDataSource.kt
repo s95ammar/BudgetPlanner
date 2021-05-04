@@ -13,8 +13,14 @@ interface LocalDataSource {
     fun getPeriodicCategoryJoinEntityListFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
     fun getPeriodInsertTemplateFlow(): Flow<List<PeriodicCategoryJoinEntity>>
     fun getAllPeriodsFlow(): Flow<List<PeriodEntity>>
-    suspend fun insertPeriod(period: PeriodEntity)
-    suspend fun updatePeriod(period: PeriodEntity)
+    suspend fun insertPeriodWithPeriodicCategories(period: PeriodEntity, periodicCategories: List<PeriodicCategoryEntity>)
+    suspend fun updatePeriodWithPeriodicCategoriesFlow(
+        period: PeriodEntity,
+        periodicCategoriesIdsToDelete: List<Int>,
+        periodicCategoriesToUpdate: List<PeriodicCategoryEntity>,
+        periodicCategoriesToInsert: List<PeriodicCategoryEntity>
+
+    )
     suspend fun deletePeriod(id: Int)
 
     fun getAllCategoriesFlow(): Flow<List<CategoryEntity>>
@@ -22,11 +28,5 @@ interface LocalDataSource {
     suspend fun insertCategory(category: CategoryEntity)
     suspend fun updateCategory(category: CategoryEntity)
     suspend fun deleteCategory(id: Int)
-
-    fun getAllPeriodicCategoriesFlow(): Flow<List<PeriodicCategoryEntity>>
-    fun getPeriodicCategoryFlow(id: Int): Flow<PeriodicCategoryEntity>
-    suspend fun insertPeriodicCategory(periodicCategory: PeriodicCategoryEntity)
-    suspend fun updatePeriodicCategory(periodicCategory: PeriodicCategoryEntity)
-    suspend fun deletePeriodicCategory(id: Int)
 
 }
