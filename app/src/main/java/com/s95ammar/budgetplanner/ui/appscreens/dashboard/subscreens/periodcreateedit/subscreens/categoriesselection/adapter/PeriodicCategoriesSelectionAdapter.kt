@@ -2,11 +2,11 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcrea
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DiffUtil
+import com.google.android.material.snackbar.Snackbar
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategorySelectionBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
@@ -61,7 +61,7 @@ class PeriodicCategoriesSelectionAdapter(
             binding.viewDisabled.isGone = isEnabled
 
             binding.viewDisabled.setOnClickListener {
-                Toast.makeText(itemView.context, R.string.category_unselectable, Toast.LENGTH_SHORT).show()
+                Snackbar.make(itemView, R.string.category_unselectable, Snackbar.LENGTH_LONG).show()
             }
 
             binding.inputLayoutMax.isVisible = isChecked

@@ -68,7 +68,7 @@ class BudgetTransactionCategorySelectionFragment : BaseFragment(R.layout.fragmen
             is LoadingState.Loading -> showLoading()
             is LoadingState.Error -> {
                 hideLoading()
-                showErrorToast(loadingState.throwable)
+                showErrorSnackbar(loadingState.throwable)
             }
         }
     }

@@ -71,7 +71,7 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
             is LoadingState.Loading -> showLoading()
             is LoadingState.Error -> {
                 hideLoading()
-                showErrorToast(loadingState.throwable)
+                showErrorSnackbar(loadingState.throwable)
             }
         }
     }

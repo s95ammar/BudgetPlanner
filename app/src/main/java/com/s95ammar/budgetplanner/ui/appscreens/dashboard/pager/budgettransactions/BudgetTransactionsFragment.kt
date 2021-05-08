@@ -69,7 +69,7 @@ class BudgetTransactionsFragment : BaseViewBinderFragment<FragmentDashboardTrans
             is LoadingState.Loading -> showLoading()
             is LoadingState.Error -> {
                 hideLoading()
-                showErrorToast(loadingState.throwable)
+                showErrorSnackbar(loadingState.throwable)
             }
         }
     }

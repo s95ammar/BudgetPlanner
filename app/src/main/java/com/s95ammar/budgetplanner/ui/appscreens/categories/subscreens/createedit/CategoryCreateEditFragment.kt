@@ -70,7 +70,7 @@ class CategoryCreateEditFragment : BaseViewBinderFragment<FragmentCategoryCreate
     private fun handleError(throwable: Throwable) {
         when (throwable) {
             is SQLiteConstraintException -> displayError(Validator.ViewKeys.VIEW_NAME, Validator.Errors.NAME_TAKEN)
-            else -> showErrorToast(throwable)
+            else -> showErrorSnackbar(throwable)
         }
     }
 

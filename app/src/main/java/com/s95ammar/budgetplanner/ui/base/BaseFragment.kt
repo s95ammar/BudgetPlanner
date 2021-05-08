@@ -3,13 +3,13 @@ package com.s95ammar.budgetplanner.ui.base
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
@@ -61,12 +61,12 @@ abstract class BaseFragment : Fragment, LoadingManager {
 
     fun hideKeyboard() = keyboardManager?.hideKeyboard()
 
-    fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    fun showSnackbar(message: String) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
     }
 
-    fun showErrorToast(throwable: Throwable) {
-        Toast.makeText(requireContext(), getString(getErrorStringId(throwable)), Toast.LENGTH_SHORT).show()
+    fun showErrorSnackbar(throwable: Throwable) {
+        Snackbar.make(requireView(), getString(getErrorStringId(throwable)), Snackbar.LENGTH_SHORT).show()
     }
 
     private fun getErrorStringId(throwable: Throwable) = when (throwable) {

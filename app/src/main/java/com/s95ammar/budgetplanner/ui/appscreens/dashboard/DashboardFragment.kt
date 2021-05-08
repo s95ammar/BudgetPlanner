@@ -160,7 +160,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
             is LoadingState.Loading -> showLoading()
             is LoadingState.Error -> {
                 hideLoading()
-                showErrorToast(loadingState.throwable)
+                showErrorSnackbar(loadingState.throwable)
             }
         }
     }

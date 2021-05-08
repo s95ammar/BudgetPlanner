@@ -68,7 +68,7 @@ class CategoriesFragment : BaseViewBinderFragment<FragmentCategoriesBinding>(R.l
             is LoadingState.Loading -> showLoading()
             is LoadingState.Error -> {
                 hideLoading()
-                showErrorToast(loadingState.throwable)
+                showErrorSnackbar(loadingState.throwable)
             }
         }
     }
