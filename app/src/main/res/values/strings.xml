@@ -49,8 +49,6 @@
     <string name="error_something_went_wrong_title">Oops</string>
     <string name="format_error_something_went_wrong_desc">Something went wrong\n\n%s</string>
     <string name="loading">Loading…</string>
-    <string name="make_this_budget_active">Make this budget active</string>
-    <string name="active_budget_warning">Looks like you already have an active budget. Making this budget active will deactivate the current active budget.</string>
 
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>

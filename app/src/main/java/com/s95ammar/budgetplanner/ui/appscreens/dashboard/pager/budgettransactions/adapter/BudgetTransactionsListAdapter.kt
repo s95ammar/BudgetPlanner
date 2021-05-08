@@ -7,31 +7,31 @@ import androidx.recyclerview.widget.DiffUtil
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemBudgetTransactionBinding
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class BudgetTransactionsListAdapter : BaseListAdapter<BudgetTransactionViewEntity, BudgetTransactionsListAdapter.BudgetTransactionsViewHolder>(
+class BudgetTransactionsListAdapter : BaseListAdapter<BudgetTransaction, BudgetTransactionsListAdapter.BudgetTransactionsViewHolder>(
     DiffUtilCallback()
 ) {
 
     companion object {
-        class DiffUtilCallback : DiffUtil.ItemCallback<BudgetTransactionViewEntity>() {
-            override fun areItemsTheSame(oldItem: BudgetTransactionViewEntity, newItem: BudgetTransactionViewEntity): Boolean {
+        class DiffUtilCallback : DiffUtil.ItemCallback<BudgetTransaction>() {
+            override fun areItemsTheSame(oldItem: BudgetTransaction, newItem: BudgetTransaction): Boolean {
                 return (oldItem.id == newItem.id)
             }
 
-            override fun areContentsTheSame(oldItem: BudgetTransactionViewEntity, newItem: BudgetTransactionViewEntity): Boolean {
+            override fun areContentsTheSame(oldItem: BudgetTransaction, newItem: BudgetTransaction): Boolean {
                 return (oldItem == newItem)
             }
 
-            override fun getChangePayload(oldItem: BudgetTransactionViewEntity, newItem: BudgetTransactionViewEntity) = PayloadsHolder().apply {
-                addPayloadIfNotEqual(PayloadType.NAME, oldItem to newItem, BudgetTransactionViewEntity::name)
-                addPayloadIfNotEqual(PayloadType.TYPE, oldItem to newItem, BudgetTransactionViewEntity::type)
-                addPayloadIfNotEqual(PayloadType.AMOUNT, oldItem to newItem, BudgetTransactionViewEntity::amount)
-                addPayloadIfNotEqual(PayloadType.CREATION_UNIX_MS, oldItem to newItem, BudgetTransactionViewEntity::creationUnixMs)
-                addPayloadIfNotEqual(PayloadType.CATEGORY_NAME, oldItem to newItem, BudgetTransactionViewEntity::categoryName)
+            override fun getChangePayload(oldItem: BudgetTransaction, newItem: BudgetTransaction) = PayloadsHolder().apply {
+                addPayloadIfNotEqual(PayloadType.NAME, oldItem to newItem, BudgetTransaction::name)
+                addPayloadIfNotEqual(PayloadType.TYPE, oldItem to newItem, BudgetTransaction::type)
+                addPayloadIfNotEqual(PayloadType.AMOUNT, oldItem to newItem, BudgetTransaction::amount)
+                addPayloadIfNotEqual(PayloadType.CREATION_UNIX_MS, oldItem to newItem, BudgetTransaction::creationUnixMs)
+                addPayloadIfNotEqual(PayloadType.CATEGORY_NAME, oldItem to newItem, BudgetTransaction::categoryName)
             }
         }
     }
@@ -44,9 +44,9 @@ class BudgetTransactionsListAdapter : BaseListAdapter<BudgetTransactionViewEntit
 
     class BudgetTransactionsViewHolder(
         private val binding: ItemBudgetTransactionBinding
-    ) : BaseListAdapter.BaseViewHolder<BudgetTransactionViewEntity>(binding.root) {
+    ) : BaseListAdapter.BaseViewHolder<BudgetTransaction>(binding.root) {
 
-        override fun bind(item: BudgetTransactionViewEntity, payloads: PayloadsHolder) {
+        override fun bind(item: BudgetTransaction, payloads: PayloadsHolder) {
             if (payloads.shouldUpdate(PayloadType.NAME)) setName(item.name)
             if (payloads.shouldUpdate(PayloadType.TYPE)) setType(item.type)
             if (payloads.shouldUpdate(PayloadType.AMOUNT)) setAmount(item.amount, item.type)

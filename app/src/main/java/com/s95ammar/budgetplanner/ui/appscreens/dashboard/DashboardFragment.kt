@@ -19,7 +19,6 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.IntDashboardTab
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.BudgetFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.BudgetTransactionsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.savings.SavingsFragment
-import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
@@ -54,7 +53,6 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         binding.imageButtonArrowNext.setOnClickListener { viewModel.onNextPeriodClick() }
         binding.textViewPeriodName.setOnClickListener { viewModel.onPeriodNameClick() }
         binding.imageButtonAddPeriod.setOnClickListener { viewModel.onAddPeriodClick() }
-        binding.swipeToRefreshLayout.setOnRefreshListener { sharedViewModel.refresh() }
     }
 
     override fun initObservers() {
@@ -151,39 +149,19 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
             is UiEvent.NavigateToCreateBudgetTransaction -> navigateToCreateBudgetTransaction(uiEvent.periodId)
             is UiEvent.NavigateToEditBudgetTransaction -> navigateToEditBudgetTransaction(uiEvent.periodId, uiEvent.budgetTransactionId)
             is UiEvent.NavigateToEditPeriod -> navigateToEditPeriod(uiEvent.period)
-            is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState, uiEvent.loadingType)
+            is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
         }
     }
 
-    private fun handleLoadingState(loadingState: LoadingState, @IntLoadingType loadingType: Int) {
+    private fun handleLoadingState(loadingState: LoadingState) {
         when (loadingState) {
             is LoadingState.Cold,
-            is LoadingState.Success -> hideLoading(loadingType)
-            is LoadingState.Loading -> showLoading(loadingType)
+            is LoadingState.Success -> hideLoading()
+            is LoadingState.Loading -> showLoading()
             is LoadingState.Error -> {
-                hideLoading(loadingType)
-                handleError(loadingState.throwable)
+                hideLoading()
+                showErrorToast(loadingState.throwable)
             }
-        }
-    }
-
-    private fun hideLoading(@IntLoadingType loadingType: Int) {
-        when (loadingType) {
-            IntLoadingType.SWIPE_TO_REFRESH -> binding.swipeToRefreshLayout.isRefreshing = false
-            IntLoadingType.MAIN -> hideLoading()
-        }
-    }
-
-    private fun showLoading(@IntLoadingType loadingType: Int) {
-        when (loadingType) {
-            IntLoadingType.SWIPE_TO_REFRESH -> binding.swipeToRefreshLayout.isRefreshing = true
-            IntLoadingType.MAIN -> showLoading()
-        }
-    }
-
-    private fun handleError(throwable: Throwable) {
-        when (throwable) {
-            else -> showErrorToast(throwable)
         }
     }
 

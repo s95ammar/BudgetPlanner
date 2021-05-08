@@ -11,6 +11,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.dao.PeriodicCategor
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetTransactionJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryJoinEntity
 import kotlinx.coroutines.flow.Flow
@@ -94,4 +95,8 @@ class LocalDataSourceImpl @Inject constructor(
         categoryDao.delete(IdWrapper(id))
     }
 
+    // Budget transaction
+    override fun getBudgetTransactionsFlow(periodId: Int): Flow<List<BudgetTransactionJoinEntity>> {
+        return joinDao.getBudgetTransactionsFlow(periodId)
+    }
 }

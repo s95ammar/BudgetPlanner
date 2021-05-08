@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.models.repository.BudgetTransactionRepository
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransactionViewEntity
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -26,7 +26,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     private val budgetTransactionId = savedStateHandle.get<Int>(BudgetTransactionCreateEditFragmentArgs::budgetTransactionId.name) ?: Int.INVALID
 
     private val _mode = MutableLiveData(CreateEditMode.getById(budgetTransactionId))
-    private val _budgetTransaction = LoaderMutableLiveData<BudgetTransactionViewEntity> {
+    private val _budgetTransaction = LoaderMutableLiveData<BudgetTransaction> {
         if (_mode.value == CreateEditMode.EDIT) loadEditedBudgetTransaction()
     }
 

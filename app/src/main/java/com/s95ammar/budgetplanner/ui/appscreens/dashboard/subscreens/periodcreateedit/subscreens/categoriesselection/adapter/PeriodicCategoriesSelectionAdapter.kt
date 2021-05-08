@@ -7,6 +7,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.DiffUtil
+import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategorySelectionBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesSelectionAdapter.PeriodicCategoriesSelectionViewHolder
@@ -58,14 +59,11 @@ class PeriodicCategoriesSelectionAdapter(
             binding.checkBoxCategoryName.isChecked = isChecked
             binding.checkBoxCategoryName.isEnabled = isEnabled
             binding.viewDisabled.isGone = isEnabled
-            binding.viewDisabled.setOnClickListener {
 
-                Toast.makeText(
-                    itemView.context,
-                    "This category already has budget transactions created during this period",
-                    Toast.LENGTH_SHORT
-                ).show()
+            binding.viewDisabled.setOnClickListener {
+                Toast.makeText(itemView.context, R.string.category_unselectable, Toast.LENGTH_SHORT).show()
             }
+
             binding.inputLayoutMax.isVisible = isChecked
         }
     }

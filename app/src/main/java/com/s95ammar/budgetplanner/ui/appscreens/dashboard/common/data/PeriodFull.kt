@@ -5,5 +5,5 @@ data class PeriodFull(
     val name: String,
     val max: Int?,
     val periodicCategories: List<PeriodicCategory>,
-    val budgetTransactions: List<BudgetTransactionViewEntity>
+    val budgetTransactions: List<BudgetTransaction>
 )

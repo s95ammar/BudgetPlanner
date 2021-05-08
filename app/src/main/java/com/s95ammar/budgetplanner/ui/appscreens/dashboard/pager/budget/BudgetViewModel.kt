@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.PeriodicCategoryRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.BudgetUiEvent
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.INVALID
+import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -22,8 +25,10 @@ class BudgetViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _periodicCategories = MutableLiveData<List<PeriodicCategory>>()
+    private val _performUiEvent = EventMutableLiveData<BudgetUiEvent>()
 
     val periodicCategories = _periodicCategories.asLiveData()
+    val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun onPeriodChanged(periodId: Int) {
         loadPeriodicCategories(periodId)
@@ -34,12 +39,13 @@ class BudgetViewModel @Inject constructor(
 
         repository.getPeriodicCategoriesFlow(periodId)
             .onStart {
-                // TODO: loading
+                _performUiEvent.call(BudgetUiEvent.DisplayLoadingState(LoadingState.Loading))
             }
-            .catch {
-                // TODO: loading
+            .catch { throwable ->
+                _performUiEvent.call(BudgetUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }
             .collect { periodicCategoryJoinEntityList ->
+                _performUiEvent.call(BudgetUiEvent.DisplayLoadingState(LoadingState.Success))
                 _periodicCategories.value = periodicCategoryJoinEntityList.mapNotNull(PeriodicCategory.JoinEntityMapper::fromEntity)
             }
 

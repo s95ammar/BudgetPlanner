@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">@dimen/_16sdp</dimen>
     <dimen name="fab_elevation">@dimen/_10sdp</dimen>
+    <dimen name="recycler_view_fab_bottom_padding">@dimen/_80sdp</dimen>
 </resources>

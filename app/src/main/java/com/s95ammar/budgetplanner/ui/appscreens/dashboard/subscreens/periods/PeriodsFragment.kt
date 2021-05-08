@@ -35,7 +35,6 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
     override fun setUpViews() {
         super.setUpViews()
         binding.toolbar.setNavigationOnClickListener { navController.navigateUp() }
-        binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.refresh() }
         setUpRecyclerView()
     }
 
@@ -49,14 +48,6 @@ class PeriodsFragment : BaseFragment(R.layout.fragment_periods), ViewBinder<Frag
         super.initObservers()
         viewModel.allPeriods.observe(viewLifecycleOwner) { setAllPeriods(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
-    }
-
-    override fun showLoading() {
-        binding.swipeToRefreshLayout.isRefreshing = true
-    }
-
-    override fun hideLoading() {
-        binding.swipeToRefreshLayout.isRefreshing = false
     }
 
     private fun setAllPeriods(periods: List<PeriodSimple>) {

@@ -19,7 +19,6 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCate
         PeriodicCategoryEntity::class,
         BudgetTransactionEntity::class
         /*TODO: Savings entities*/
-        /*TODO: Join entities?*/
     ],
     version = BudgetPlannerDbConfig.DB_VERSION
 )

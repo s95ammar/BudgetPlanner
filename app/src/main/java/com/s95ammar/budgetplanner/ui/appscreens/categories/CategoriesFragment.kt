@@ -31,7 +31,6 @@ class CategoriesFragment : BaseViewBinderFragment<FragmentCategoriesBinding>(R.l
     override fun setUpViews() {
         super.setUpViews()
         binding.fab.setOnClickListener { viewModel.onNavigateToCreateCategory() }
-        binding.swipeToRefreshLayout.setOnRefreshListener { viewModel.refresh() }
         setUpRecyclerView()
     }
 
@@ -45,14 +44,6 @@ class CategoriesFragment : BaseViewBinderFragment<FragmentCategoriesBinding>(R.l
         super.initObservers()
         viewModel.allCategories.observe(viewLifecycleOwner) { setAllCategories(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
-    }
-
-    override fun showLoading() {
-        binding.swipeToRefreshLayout.isRefreshing = true
-    }
-
-    override fun hideLoading() {
-        binding.swipeToRefreshLayout.isRefreshing = false
     }
 
     private fun setAllCategories(categories: List<Category>) {

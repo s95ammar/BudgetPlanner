@@ -8,17 +8,6 @@ import javax.inject.Singleton
 class BudgetTransactionRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) {
-/*
-    fun getBudgetTransactionsForPeriod(periodId: Int?) = flowOnIo {
-        remoteDataSource.getBudgetTransactionsForPeriod(periodId)
-            .parseResponse()
-    }
 
-    fun getBudgetTransaction(id: Int?, periodId: Int?) = flowOnIo {
-        remoteDataSource.getBudgetTransaction(id, periodId)
-            .parseResponse()
-            .map { it.singleOrNull() }
-    }
-*/
-
+    fun getBudgetTransactionsFlow(periodId: Int) = localDataSource.getBudgetTransactionsFlow(periodId)
 }

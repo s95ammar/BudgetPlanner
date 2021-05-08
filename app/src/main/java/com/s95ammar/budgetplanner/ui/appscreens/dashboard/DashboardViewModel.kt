@@ -12,7 +12,6 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHead
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardFabState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.IntDashboardFabType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.IntDashboardTab
-import com.s95ammar.budgetplanner.ui.common.IntLoadingType
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -125,14 +124,14 @@ class DashboardViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getAllUserPeriodsFlow()
                 .onStart {
-                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading, IntLoadingType.MAIN))
+                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
                 }
                 .catch { throwable ->
-                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable), IntLoadingType.MAIN))
+                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
                 .collect { periodsEntityList ->
                     _allPeriods.value = periodsEntityList.mapNotNull(PeriodSimple.Mapper::fromEntity)
-                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success, IntLoadingType.MAIN))
+                    _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
                 }
         }
     }

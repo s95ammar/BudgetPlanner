@@ -1,8 +1,8 @@
-package com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data
+package com.s95ammar.budgetplanner.models.datasource.local.db.entity.join
 
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 
-data class BudgetTransactionViewEntity(
+data class BudgetTransactionJoinEntity(
     val id: Int,
     val name: String,
     @IntBudgetTransactionType val type: Int,
