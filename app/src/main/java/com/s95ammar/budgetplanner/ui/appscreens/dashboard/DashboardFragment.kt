@@ -143,8 +143,8 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
 
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
-            is UiEvent.NavigateToPeriodsList -> onNavigateToPeriodsList()
-            is UiEvent.NavigateToCreatePeriod -> onNavigateToCreatePeriod()
+            is UiEvent.NavigateToPeriodsList -> listenAndNavigateToPeriodsList()
+            is UiEvent.NavigateToCreatePeriod -> listenAndNavigateToCreatePeriod()
             is UiEvent.NavigateToCreateBudgetTransaction -> navigateToCreateBudgetTransaction(uiEvent.periodId)
             is UiEvent.NavigateToEditBudgetTransaction -> navigateToEditBudgetTransaction(uiEvent.periodId, uiEvent.budgetTransactionId)
             is UiEvent.NavigateToEditPeriod -> navigateToEditPeriod(uiEvent.period)
@@ -164,12 +164,12 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         }
     }
 
-    private fun onNavigateToPeriodsList() {
+    private fun listenAndNavigateToPeriodsList() {
         listenToPeriodsListChangedResult()
         navController.navigate(DashboardFragmentDirections.actionNestedNavigationDashboardToPeriodsFragment())
     }
 
-    private fun onNavigateToCreatePeriod() {
+    private fun listenAndNavigateToCreatePeriod() {
         listenToPeriodsListChangedResult()
         navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(null))
     }

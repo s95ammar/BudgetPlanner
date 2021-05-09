@@ -3,7 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetrans
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 
 sealed class BudgetTransactionCreateEditUiEvent {
-    object ChooseCategory: BudgetTransactionCreateEditUiEvent()
+    class ChooseCategory(val periodId: Int): BudgetTransactionCreateEditUiEvent()
     class DisplayValidationResults(val validationErrors: ValidationErrors): BudgetTransactionCreateEditUiEvent()
     object Exit: BudgetTransactionCreateEditUiEvent()
 }

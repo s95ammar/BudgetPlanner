@@ -10,11 +10,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategorySelectionBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesSelectionAdapter.PeriodicCategoriesSelectionViewHolder
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesMultiSelectionAdapter.PeriodicCategoriesSelectionViewHolder
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.util.text
 
-class PeriodicCategoriesSelectionAdapter(
+class PeriodicCategoriesMultiSelectionAdapter(
     private val onClick: (Int, Boolean) -> Unit,
     private val onMaxInputChanged: (Int, String?) -> Unit
 ) : BaseListAdapter<PeriodicCategory, PeriodicCategoriesSelectionViewHolder>(DiffUtilCallback()) {

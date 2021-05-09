@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.s95ammar.budgetplanner.databinding.ItemCategoryBinding
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 
-class CategoriesListAdapter(
+class CategoriesAdapter(
     private val onItemClick: (Int) -> Unit,
     private val onItemLongClick: ((Int) -> Unit)?
-) : ListAdapter<Category, CategoriesListAdapter.CategoriesViewHolder>(DiffUtilCallback()) {
+) : ListAdapter<Category, CategoriesAdapter.CategoriesViewHolder>(DiffUtilCallback()) {
 
     companion object {
         class DiffUtilCallback : DiffUtil.ItemCallback<Category>() {

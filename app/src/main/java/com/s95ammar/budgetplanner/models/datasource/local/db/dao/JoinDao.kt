@@ -3,6 +3,7 @@ package com.s95ammar.budgetplanner.models.datasource.local.db.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetTransactionJoinEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryIdAndNameJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryJoinEntity
 import com.s95ammar.budgetplanner.util.INT_INVALID
 import kotlinx.coroutines.flow.Flow
@@ -41,19 +42,13 @@ interface JoinDao {
            category.id AS categoryId,
            category.name AS categoryName,
            pcOfPeriod.max AS max,
-           IFNULL(btAmountSumGrouped.btAmountSum, 0) AS budgetTransactionsAmountSum
+           0 AS budgetTransactionsAmountSum
     FROM category
     LEFT JOIN (
         SELECT * FROM periodicCategory
     	WHERE periodId = (SELECT MAX(id) FROM period)
     ) AS pcOfPeriod
         ON category.id = pcOfPeriod.categoryId
-    LEFT JOIN (
-    	SELECT periodicCategoryId, SUM(amount) AS btAmountSum
-    	FROM budgetTransaction
-    	GROUP BY periodicCategoryId
-    ) AS btAmountSumGrouped
-        ON pcOfPeriod.id = btAmountSumGrouped.periodicCategoryId
     """
     )
     fun getPeriodInsertTemplateFlow(): Flow<List<PeriodicCategoryJoinEntity>>
@@ -78,6 +73,17 @@ interface JoinDao {
         """
     )
     fun getPeriodicCategoriesFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
+
+    @Query(
+        """
+	SELECT periodicCategory.id AS periodicCategoryId,
+	       category.name AS categoryName
+	FROM category
+	INNER JOIN periodicCategory ON category.id = periodicCategory.categoryId
+	WHERE periodId = :periodId
+        """
+    )
+    fun getPeriodicCategoryIdAndNameListFlow(periodId: Int): Flow<List<PeriodicCategoryIdAndNameJoinEntity>>
 
     @Query(
         """

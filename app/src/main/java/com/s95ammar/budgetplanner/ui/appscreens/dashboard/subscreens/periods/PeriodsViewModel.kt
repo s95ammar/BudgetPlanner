@@ -33,7 +33,7 @@ class PeriodsViewModel @Inject constructor(
 
     fun onPeriodItemClick(position: Int) {
         _allPeriods.value?.getOrNull(position)?.let { period ->
-            _performUiEvent.call(UiEvent.OnNavigateToEditPeriod(period))
+            _performUiEvent.call(UiEvent.ListenAndNavigateToEditPeriod(period))
         }
     }
 

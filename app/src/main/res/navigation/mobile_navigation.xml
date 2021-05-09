@@ -85,7 +85,11 @@
             android:id="@+id/budgetTransactionCategorySelectionFragment"
             android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.categoryselection.BudgetTransactionCategorySelectionFragment"
             android:label="fragment_budget_transaction_category_selection"
-            tools:layout="@layout/fragment_budget_transaction_category_selection" />
+            tools:layout="@layout/fragment_budget_transaction_category_selection" >
+            <argument
+                android:name="periodId"
+                app:argType="integer" />
+        </fragment>
     </navigation>
 
     <fragment

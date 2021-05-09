@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.s95ammar.budgetplanner.databinding.ItemPeriodBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
 
-class PeriodsListAdapter(
+class PeriodsAdapter(
     private val onItemClick: (Int) -> Unit,
     private val onItemLongClick: (Int) -> Unit
-) : ListAdapter<PeriodSimple, PeriodsListAdapter.PeriodsViewHolder>(DiffUtilCallback()) {
+) : ListAdapter<PeriodSimple, PeriodsAdapter.PeriodsViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodsViewHolder {
         return PeriodsViewHolder(

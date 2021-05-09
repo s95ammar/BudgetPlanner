@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodsBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.adapter.PeriodsListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.adapter.PeriodsAdapter
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment
@@ -22,7 +22,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periods.dat
 class PeriodsFragment : BaseViewBinderFragment<FragmentPeriodsBinding>(R.layout.fragment_periods) {
 
     private val viewModel: PeriodsViewModel by viewModels()
-    private val adapter by lazy { PeriodsListAdapter(viewModel::onPeriodItemClick, viewModel::onPeriodItemLongClick) }
+    private val adapter by lazy { PeriodsAdapter(viewModel::onPeriodItemClick, viewModel::onPeriodItemLongClick) }
 
     override fun initViewBinding(view: View): FragmentPeriodsBinding {
         return FragmentPeriodsBinding.bind(view)
@@ -53,7 +53,7 @@ class PeriodsFragment : BaseViewBinderFragment<FragmentPeriodsBinding>(R.layout.
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
-            is UiEvent.OnNavigateToEditPeriod -> onNavigateToCreateEditPeriod(uiEvent.period)
+            is UiEvent.ListenAndNavigateToEditPeriod -> listenAndNavigateToCreateEditPeriod(uiEvent.period)
             is UiEvent.ShowBottomSheet -> showBottomSheet(uiEvent.period)
             is UiEvent.OnPeriodDeleted -> onPeriodDeleted()
             is UiEvent.Exit -> navController.navigateUp()
@@ -72,7 +72,7 @@ class PeriodsFragment : BaseViewBinderFragment<FragmentPeriodsBinding>(R.layout.
         }
     }
 
-    private fun onNavigateToCreateEditPeriod(period: PeriodSimple) {
+    private fun listenAndNavigateToCreateEditPeriod(period: PeriodSimple) {
         setFragmentResultListener(Keys.KEY_ON_PERIOD_CREATE_EDIT) { _, _ -> viewModel.refresh() }
         navController.navigate(
             PeriodsFragmentDirections.actionPeriodsFragmentToNestedPeriodCreateEdit(period)
@@ -82,7 +82,7 @@ class PeriodsFragment : BaseViewBinderFragment<FragmentPeriodsBinding>(R.layout.
     private fun showBottomSheet(period: PeriodSimple) {
         EditDeleteBottomSheetDialogFragment.newInstance(period.name, R.drawable.ic_period).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
-                override fun onEdit() = onNavigateToCreateEditPeriod(period)
+                override fun onEdit() = listenAndNavigateToCreateEditPeriod(period)
                 override fun onDelete() = displayDeleteConfirmationDialog(period.name) { viewModel.deletePeriod(period.id) }
             }
         }.show(childFragmentManager, EditDeleteBottomSheetDialogFragment.TAG)

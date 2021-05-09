@@ -65,7 +65,6 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
 
     fun onPeriodicCategorySelectionStateChanged(position: Int, isSelected: Boolean) {
         _periodicCategories.value = _periodicCategories.value.orEmpty().mapIndexed { i, periodicCategory ->
-//            periodicCategory.copy(isSelected = if (i == position) isSelected else periodicCategory.isSelected)
             if (i == position) periodicCategory.copy(isSelected = isSelected) else periodicCategory
         }
     }

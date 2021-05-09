@@ -8,21 +8,21 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoriesBinding
-import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
-import com.s95ammar.budgetplanner.ui.appscreens.categories.data.CategoriesUiEvent
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
+import com.s95ammar.budgetplanner.ui.appscreens.categories.data.CategoriesUiEvent as UiEvent
 
 @AndroidEntryPoint
 class CategoriesFragment : BaseViewBinderFragment<FragmentCategoriesBinding>(R.layout.fragment_categories) {
 
     private val viewModel: CategoriesViewModel by viewModels()
-    private val adapter by lazy { CategoriesListAdapter(viewModel::onCategoryItemClick, viewModel::onCategoryItemLongClick) }
+    private val adapter by lazy { CategoriesAdapter(viewModel::onCategoryItemClick, viewModel::onCategoryItemLongClick) }
 
     override fun initViewBinding(view: View): FragmentCategoriesBinding {
         return FragmentCategoriesBinding.bind(view)
@@ -53,11 +53,11 @@ class CategoriesFragment : BaseViewBinderFragment<FragmentCategoriesBinding>(R.l
         binding.instructionsLayout.messageTextView.text = getString(R.string.create_category_instruction)
     }
 
-    private fun performUiEvent(uiEvent: CategoriesUiEvent) {
+    private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
-            is CategoriesUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
-            is CategoriesUiEvent.OnNavigateToEditCategory -> onNavigateToCreateEditCategory(uiEvent.categoryId)
-            is CategoriesUiEvent.ShowBottomSheet -> showBottomSheet(uiEvent.category)
+            is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is UiEvent.ListenAndNavigateToEditCategory -> listenAndNavigateToCreateEditCategory(uiEvent.categoryId)
+            is UiEvent.ShowBottomSheet -> showBottomSheet(uiEvent.category)
         }
     }
 
@@ -73,7 +73,7 @@ class CategoriesFragment : BaseViewBinderFragment<FragmentCategoriesBinding>(R.l
         }
     }
 
-    private fun onNavigateToCreateEditCategory(categoryId: Int) {
+    private fun listenAndNavigateToCreateEditCategory(categoryId: Int) {
         setFragmentResultListener(Keys.KEY_ON_CATEGORY_CREATE_EDIT) { _, _ -> viewModel.refresh() }
         navController.navigate(
             CategoriesFragmentDirections.actionNavigationCategoriesToCategoryCreateEditFragment(categoryId)
@@ -83,7 +83,7 @@ class CategoriesFragment : BaseViewBinderFragment<FragmentCategoriesBinding>(R.l
     private fun showBottomSheet(category: Category) {
         EditDeleteBottomSheetDialogFragment.newInstance(category.name, R.drawable.ic_category).apply {
             listener = object : EditDeleteBottomSheetDialogFragment.Listener {
-                override fun onEdit() = onNavigateToCreateEditCategory(category.id)
+                override fun onEdit() = listenAndNavigateToCreateEditCategory(category.id)
                 override fun onDelete() = displayDeleteConfirmationDialog(category.name) { viewModel.deleteCategory(category.id) }
             }
         }.show(childFragmentManager, EditDeleteBottomSheetDialogFragment.TAG)

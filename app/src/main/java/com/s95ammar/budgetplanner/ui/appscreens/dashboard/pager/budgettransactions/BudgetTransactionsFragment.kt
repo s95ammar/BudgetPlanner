@@ -11,7 +11,7 @@ import com.s95ammar.budgetplanner.databinding.FragmentDashboardTransactionsBindi
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.BudgetUiEvent
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.adapter.BudgetTransactionsListAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.adapter.BudgetTransactionsAdapter
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
@@ -27,7 +27,7 @@ class BudgetTransactionsFragment : BaseViewBinderFragment<FragmentDashboardTrans
     private val viewModel: BudgetTransactionsViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
 
-    private val adapter by lazy { BudgetTransactionsListAdapter() }
+    private val adapter by lazy { BudgetTransactionsAdapter() }
 
     override fun initViewBinding(view: View): FragmentDashboardTransactionsBinding {
         return FragmentDashboardTransactionsBinding.bind(view)

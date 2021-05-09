@@ -12,7 +12,7 @@ import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class BudgetTransactionsListAdapter : BaseListAdapter<BudgetTransaction, BudgetTransactionsListAdapter.BudgetTransactionsViewHolder>(
+class BudgetTransactionsAdapter : BaseListAdapter<BudgetTransaction, BudgetTransactionsAdapter.BudgetTransactionsViewHolder>(
     DiffUtilCallback()
 ) {
 

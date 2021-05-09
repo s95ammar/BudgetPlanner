@@ -10,7 +10,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCa
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import kotlin.math.roundToInt
 
-class PeriodicCategoriesListAdapter : BaseListAdapter<PeriodicCategory, PeriodicCategoriesListAdapter.PeriodicCategoriesViewHolder>(DiffUtilCallback()) {
+class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, PeriodicCategoriesProgressAdapter.PeriodicCategoriesViewHolder>(DiffUtilCallback()) {
 
     companion object {
         class DiffUtilCallback : DiffUtil.ItemCallback<PeriodicCategory>() {

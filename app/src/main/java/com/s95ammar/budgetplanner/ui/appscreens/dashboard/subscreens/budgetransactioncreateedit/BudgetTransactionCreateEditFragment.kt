@@ -7,7 +7,7 @@ import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCreateEditBinding
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
-import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.categoryselection.data.PeriodicCategoryIdAndName
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
@@ -58,32 +58,32 @@ class BudgetTransactionCreateEditFragment :
         viewModel.max.observe(viewLifecycleOwner) { setPeriodMax(it) }
         viewModel.periodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
 */
-        viewModel.selectedCategory.observe(viewLifecycleOwner) { setSelectedCategory(it) }
+        viewModel.periodicCategory.observe(viewLifecycleOwner) { setSelectedPeriodicCategory(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
-    private fun setSelectedCategory(category: Category) {
-        binding.textViewPeriodCategoryValue.text = category.name
+    private fun setSelectedPeriodicCategory(periodicCategory: PeriodicCategoryIdAndName) {
+        binding.textViewPeriodCategoryValue.text = periodicCategory.categoryName
         binding.textViewPeriodCategoryValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
     }
 
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
-            is UiEvent.ChooseCategory -> onNavigateToCategorySelection()
+            is UiEvent.ChooseCategory -> listenAndNavigateToCategorySelection(uiEvent.periodId)
             is UiEvent.DisplayValidationResults -> TODO()
             is UiEvent.Exit -> navController.navigateUp()
         }
     }
 
-    private fun onNavigateToCategorySelection() {
-        setFragmentResultListener(Keys.KEY_ON_CATEGORY_SELECTED) { _, bundle ->
-            bundle.getParcelable<Category>(Keys.KEY_CATEGORY)?.let { category ->
-                viewModel.setCategory(category)
+    private fun listenAndNavigateToCategorySelection(periodId: Int) {
+        setFragmentResultListener(Keys.KEY_ON_PERIODIC_CATEGORY_SELECTED) { _, bundle ->
+            bundle.getParcelable<PeriodicCategoryIdAndName>(Keys.KEY_PERIODIC_CATEGORY)?.let { periodicCategory ->
+                viewModel.setPeriodicCategory(periodicCategory)
             }
         }
         navController.navigate(
             BudgetTransactionCreateEditFragmentDirections
-                .actionBudgetTransactionCreateEditFragmentToBudgetTransactionCategorySelectionFragment()
+                .actionBudgetTransactionCreateEditFragmentToBudgetTransactionCategorySelectionFragment(periodId)
         )
     }
 

@@ -5,6 +5,6 @@ import com.s95ammar.budgetplanner.ui.common.LoadingState
 
 sealed class CategoriesUiEvent {
     class DisplayLoadingState(val loadingState: LoadingState): CategoriesUiEvent()
-    class OnNavigateToEditCategory(val categoryId: Int): CategoriesUiEvent()
+    class ListenAndNavigateToEditCategory(val categoryId: Int): CategoriesUiEvent()
     class ShowBottomSheet(val category: Category): CategoriesUiEvent()
 }

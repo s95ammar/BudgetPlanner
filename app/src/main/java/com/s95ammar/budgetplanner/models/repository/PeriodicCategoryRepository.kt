@@ -10,4 +10,6 @@ class PeriodicCategoryRepository @Inject constructor(
 ) {
 
     fun getPeriodicCategoriesFlow(periodId: Int) = localDataSource.getPeriodicCategoriesFlow(periodId)
+
+    fun getPeriodicCategoryIdAndNameListFlow(periodId: Int) = localDataSource.getPeriodicCategoryIdAndNameListFlow(periodId)
 }

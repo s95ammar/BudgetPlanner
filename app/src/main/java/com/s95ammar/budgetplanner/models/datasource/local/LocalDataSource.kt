@@ -5,6 +5,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetTransactionJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodJoinEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryIdAndNameJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryJoinEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -31,6 +32,7 @@ interface LocalDataSource {
     suspend fun deleteCategory(id: Int)
 
     fun getPeriodicCategoriesFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
+    fun getPeriodicCategoryIdAndNameListFlow(periodId: Int): Flow<List<PeriodicCategoryIdAndNameJoinEntity>>
 
     fun getBudgetTransactionsFlow(periodId: Int): Flow<List<BudgetTransactionJoinEntity>>
 }
