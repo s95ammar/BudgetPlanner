@@ -4,23 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.os.bundleOf
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.databinding.DialogEditDeleteBottomSheetBinding
-import com.s95ammar.budgetplanner.ui.base.BaseBottomSheetDialogFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
 
-class EditDeleteBottomSheetDialogFragment : BaseBottomSheetDialogFragment(), ViewBinder<DialogEditDeleteBottomSheetBinding> {
+class EditDeleteBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "EditDeleteBottomSheetDialogFragment"
 
         fun newInstance(title: String, @DrawableRes iconRes: Int = 0) = EditDeleteBottomSheetDialogFragment().apply {
             arguments = bundleOf(
-                Keys.KEY_TITLE to title,
-                Keys.KEY_ICON_RES to iconRes
+                Keys.KEY_NAME to title,
+                Keys.KEY_DRAWABLE_RES to iconRes
             )
         }
     }
@@ -32,27 +31,23 @@ class EditDeleteBottomSheetDialogFragment : BaseBottomSheetDialogFragment(), Vie
 
     var listener: Listener? = null
 
-    private val argTitle
-        get() = requireArguments().getString(Keys.KEY_TITLE)
-    private val argIconRes
-        get() = requireArguments().getInt(Keys.KEY_ICON_RES)
-
-    override val binding: DialogEditDeleteBottomSheetBinding
-        get() = getBinding()
-
-    override fun initViewBinding(view: View): DialogEditDeleteBottomSheetBinding {
-        return DialogEditDeleteBottomSheetBinding.bind(view)
-    }
+    private val argName
+        get() = requireArguments().getString(Keys.KEY_NAME)
+    private val argDrawableRes
+        get() = requireArguments().getInt(Keys.KEY_DRAWABLE_RES)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_edit_delete_bottom_sheet, container, false)
     }
 
-    override fun setUpViews() {
-        binding.textViewTitleEditDeleteBottomSheet.text = argTitle
-        binding.textViewTitleEditDeleteBottomSheet.setCompoundDrawablesWithIntrinsicBounds(argIconRes, 0, 0, 0)
-        binding.textViewEditEditDeleteBottomSheet.setOnClickListener { listener?.onEdit(); dismiss() }
-        binding.textViewDeleteEditDeleteBottomSheet.setOnClickListener { listener?.onDelete(); dismiss() }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<TextView>(R.id.name_text_view).apply {
+            text = argName
+            setCompoundDrawablesWithIntrinsicBounds(argDrawableRes, 0, 0, 0)
+        }
+        view.findViewById<TextView>(R.id.edit_text_view).setOnClickListener { listener?.onEdit(); dismiss() }
+        view.findViewById<TextView>(R.id.delete_text_view).setOnClickListener { listener?.onDelete(); dismiss() }
     }
 
 }

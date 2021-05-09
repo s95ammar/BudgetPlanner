@@ -21,9 +21,8 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactio
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.savings.SavingsFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
+import com.s95ammar.budgetplanner.ui.common.ViewPagerFragmentAdapter
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
-import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.FragmentProvider
-import com.s95ammar.budgetplanner.ui.common.viewpagerhelpers.ViewPagerFragmentAdapter
 import com.s95ammar.budgetplanner.util.FAB_VISIBILITY_ANIMATION_DURATION_MS
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
@@ -59,7 +58,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         super.initObservers()
         viewModel.currentPeriodBundle.observe(viewLifecycleOwner) {
             setViewsToCurrentPeriodBundle(it)
-            sharedViewModel.onPeriodChanged(it.period?.id) // TODO remove?
+            sharedViewModel.onPeriodChanged(it.period?.id)
         }
         viewModel.fabState.observe(viewLifecycleOwner) { setFabState(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
@@ -67,12 +66,12 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
     }
 
     private fun setUpViewPager(tabs: List<Int>) {
-        val fragmentProviders = tabs.mapNotNull { tab -> getTabFragmentProvider(tab) }
+        val fragmentsLazyList = tabs.mapNotNull { tab -> getTabFragmentLazy(tab) }
         val titles = tabs.mapNotNull { tab -> getTabTitle(tab) }
 
         binding.pager.adapter = ViewPagerFragmentAdapter(
             parentFragment = this,
-            childFragmentsProviders = fragmentProviders
+            fragmentsLazyList = fragmentsLazyList
         )
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             tab.text = titles[position]
@@ -99,7 +98,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
 
                 when (fabState.currentTab) {
                     IntDashboardTab.TAB_BUDGET -> binding.fab.setOnClickListener { viewModel.onEditSelectedPeriod() }
-                    IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> binding.fab.setOnClickListener { /*TODO: add bt*/ }
+                    IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> binding.fab.setOnClickListener { viewModel.onAddBudgetTransaction() }
                     IntDashboardTab.TAB_SAVINGS -> binding.fab.setOnClickListener { /*TODO: add saving*/ }
                 }
             }
@@ -116,10 +115,10 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         binding.pager.unregisterOnPageChangeCallback(pagerOnPageChangeCallback)
     }
 
-    private fun getTabFragmentProvider(@IntDashboardTab tab: Int) = when (tab) {
-        IntDashboardTab.TAB_BUDGET -> FragmentProvider { BudgetFragment.newInstance() }
-        IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> FragmentProvider { BudgetTransactionsFragment.newInstance() }
-        IntDashboardTab.TAB_SAVINGS -> FragmentProvider { SavingsFragment.newInstance() }
+    private fun getTabFragmentLazy(@IntDashboardTab tab: Int) = when (tab) {
+        IntDashboardTab.TAB_BUDGET -> lazy { BudgetFragment.newInstance() }
+        IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> lazy { BudgetTransactionsFragment.newInstance() }
+        IntDashboardTab.TAB_SAVINGS -> lazy { SavingsFragment.newInstance() }
         else -> null
     }
 

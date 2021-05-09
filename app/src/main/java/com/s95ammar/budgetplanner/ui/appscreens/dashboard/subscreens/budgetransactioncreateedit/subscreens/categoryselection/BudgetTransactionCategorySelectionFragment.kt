@@ -9,24 +9,20 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCategorySelectionBinding
 import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesListAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
-import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
+import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.categoryselection.data.BudgetTransactionCategorySelectionUiEvent as UiEvent
 
 @AndroidEntryPoint
-class BudgetTransactionCategorySelectionFragment : BaseFragment(R.layout.fragment_budget_transaction_category_selection),
-    ViewBinder<FragmentBudgetTransactionCategorySelectionBinding> {
+class BudgetTransactionCategorySelectionFragment :
+    BaseViewBinderFragment<FragmentBudgetTransactionCategorySelectionBinding>(R.layout.fragment_budget_transaction_category_selection) {
 
     companion object {
         fun newInstance() = BudgetTransactionCategorySelectionFragment()
     }
-
-    override val binding: FragmentBudgetTransactionCategorySelectionBinding
-        get() = getBinding()
 
     override fun initViewBinding(view: View): FragmentBudgetTransactionCategorySelectionBinding {
         return FragmentBudgetTransactionCategorySelectionBinding.bind(view)

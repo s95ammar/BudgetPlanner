@@ -8,23 +8,19 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCreateEditBinding
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
-import com.s95ammar.budgetplanner.ui.base.BaseFragment
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
+import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.doOnTabSelected
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.BudgetTransactionCreateEditUiEvent as UiEvent
 
 @AndroidEntryPoint
-class BudgetTransactionCreateEditFragment : BaseFragment(R.layout.fragment_budget_transaction_create_edit),
-    ViewBinder<FragmentBudgetTransactionCreateEditBinding> {
+class BudgetTransactionCreateEditFragment :
+    BaseViewBinderFragment<FragmentBudgetTransactionCreateEditBinding>(R.layout.fragment_budget_transaction_create_edit) {
 
     private val viewModel: BudgetTransactionCreateEditViewModel by viewModels()
-
-    override val binding: FragmentBudgetTransactionCreateEditBinding
-        get() = getBinding()
 
     override fun initViewBinding(view: View): FragmentBudgetTransactionCreateEditBinding {
         return FragmentBudgetTransactionCreateEditBinding.bind(view)

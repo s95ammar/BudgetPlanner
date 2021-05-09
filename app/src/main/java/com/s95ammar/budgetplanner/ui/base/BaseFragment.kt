@@ -7,14 +7,12 @@ import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.s95ammar.budgetplanner.R
+import com.s95ammar.budgetplanner.logFromHere
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBinder
-import com.s95ammar.budgetplanner.ui.common.viewbinding.ViewBindingException
 
 abstract class BaseFragment : Fragment, LoadingManager {
 
@@ -22,7 +20,6 @@ abstract class BaseFragment : Fragment, LoadingManager {
     constructor(@LayoutRes layoutResId: Int) : super(layoutResId)
 
     val navController by lazy { findNavController() }
-    private var _binding: ViewBinding? = null
 
     private var loadingManager: LoadingManager? = null
     private var keyboardManager: KeyboardManager? = null
@@ -33,14 +30,8 @@ abstract class BaseFragment : Fragment, LoadingManager {
         keyboardManager = context as? KeyboardManager
     }
 
-    internal inline fun <reified VB: ViewBinding> getBinding(): VB {
-        val binding = _binding ?: throw ViewBindingException()
-        return binding as VB
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (this is ViewBinder<*>) _binding = initViewBinding(view)
         setUpViews()
         initObservers()
     }
@@ -92,15 +83,11 @@ abstract class BaseFragment : Fragment, LoadingManager {
             .show()
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
-
     protected inline fun executeIfViewIsAvailable(action: (View) -> Unit) {
         try {
             view?.let { action.invoke(it) }
         } catch (e: Throwable) {
+            logFromHere(e)
         }
     }
 

@@ -96,6 +96,12 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
+    fun onAddBudgetTransaction() {
+        _currentPeriodBundle.value?.period?.id?.let { periodId ->
+            _performUiEvent.call(UiEvent.NavigateToCreateBudgetTransaction(periodId))
+        }
+    }
+
     private fun createCurrentPeriodHeaderBundle(currentPeriod: PeriodSimple?): CurrentPeriodHeaderBundle {
         var isPreviousAvailable = false
         var isNextAvailable = false

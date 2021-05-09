@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_view_title_edit_delete_bottom_sheet"
+        android:id="@+id/name_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/_8sdp"
@@ -18,7 +18,7 @@
         tools:text="Item Title" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/text_view_edit_edit_delete_bottom_sheet"
+        android:id="@+id/edit_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
@@ -31,7 +31,7 @@
         android:textAppearance="@style/TextDescBlack14sdp" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/text_view_delete_edit_delete_bottom_sheet"
+        android:id="@+id/delete_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
