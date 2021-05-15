@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.PeriodicCategoryRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.BudgetUiEvent
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -17,6 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.BudgetUiEvent as UiEvent
 
 @HiltViewModel
 class BudgetViewModel @Inject constructor(
@@ -25,7 +25,7 @@ class BudgetViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _periodicCategories = MutableLiveData<List<PeriodicCategory>>()
-    private val _performUiEvent = EventMutableLiveData<BudgetUiEvent>()
+    private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
     val periodicCategories = _periodicCategories.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
@@ -39,13 +39,13 @@ class BudgetViewModel @Inject constructor(
 
         repository.getPeriodicCategoriesFlow(periodId)
             .onStart {
-                _performUiEvent.call(BudgetUiEvent.DisplayLoadingState(LoadingState.Loading))
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
             }
             .catch { throwable ->
-                _performUiEvent.call(BudgetUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }
             .collect { periodicCategoryJoinEntityList ->
-                _performUiEvent.call(BudgetUiEvent.DisplayLoadingState(LoadingState.Success))
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
                 _periodicCategories.value = periodicCategoryJoinEntityList.mapNotNull(PeriodicCategory.JoinEntityMapper::fromEntity)
             }
 

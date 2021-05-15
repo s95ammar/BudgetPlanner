@@ -12,9 +12,10 @@ import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class BudgetTransactionsAdapter : BaseListAdapter<BudgetTransaction, BudgetTransactionsAdapter.BudgetTransactionsViewHolder>(
-    DiffUtilCallback()
-) {
+class BudgetTransactionsAdapter(
+    private val onItemClick: (Int) -> Unit,
+    private val onItemLongClick: (Int) -> Unit
+) : BaseListAdapter<BudgetTransaction, BudgetTransactionsAdapter.BudgetTransactionsViewHolder>(DiffUtilCallback()) {
 
     companion object {
         class DiffUtilCallback : DiffUtil.ItemCallback<BudgetTransaction>() {
@@ -38,18 +39,27 @@ class BudgetTransactionsAdapter : BaseListAdapter<BudgetTransaction, BudgetTrans
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BudgetTransactionsViewHolder {
         return BudgetTransactionsViewHolder(
+            onItemClick,
+            onItemLongClick,
             ItemBudgetTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
     class BudgetTransactionsViewHolder(
+        private val onItemClick: (Int) -> Unit,
+        private val onItemLongClick: (Int) -> Unit,
         private val binding: ItemBudgetTransactionBinding
     ) : BaseListAdapter.BaseViewHolder<BudgetTransaction>(binding.root) {
 
+        init {
+            itemView.setOnClickListener { onItemClick(adapterPosition) }
+            itemView.setOnLongClickListener { onItemLongClick(adapterPosition); true }
+        }
+
         override fun bind(item: BudgetTransaction, payloads: PayloadsHolder) {
             if (payloads.shouldUpdate(PayloadType.NAME)) setName(item.name)
-            if (payloads.shouldUpdate(PayloadType.TYPE)) setType(item.type)
-            if (payloads.shouldUpdate(PayloadType.AMOUNT)) setAmount(item.amount, item.type)
+            if (payloads.shouldUpdate(PayloadType.TYPE)) setTypeAndAmount(item.amount, item.type)
+            if (payloads.shouldUpdate(PayloadType.AMOUNT)) setTypeAndAmount(item.amount, item.type)
             if (payloads.shouldUpdate(PayloadType.CREATION_UNIX_MS)) setCreationUnixMs(item.creationUnixMs)
             if (payloads.shouldUpdate(PayloadType.CATEGORY_NAME)) setCategoryName(item.categoryName)
         }
@@ -58,28 +68,19 @@ class BudgetTransactionsAdapter : BaseListAdapter<BudgetTransaction, BudgetTrans
             binding.textViewName.text = name
         }
 
-        private fun setType(@IntBudgetTransactionType type: Int) {
-            when (type) {
-                IntBudgetTransactionType.EXPENSE -> {
-                    binding.viewType.setBackgroundColor(getColor(R.color.colorRed))
-                }
-                IntBudgetTransactionType.INCOME -> {
-                    binding.viewType.setBackgroundColor(getColor(R.color.colorGreen))
-                }
-            }
-        }
-
-        private fun setAmount(amount: Int, @IntBudgetTransactionType type: Int) {
+        private fun setTypeAndAmount(amount: Int, @IntBudgetTransactionType type: Int) {
             // TODO: thousands separator
             val amountFormattedString = amount.toString()
             when (type) {
                 IntBudgetTransactionType.EXPENSE -> {
                     binding.textViewAmount.setTextColor(getColor(R.color.colorRed))
                     binding.textViewAmount.text = getString(R.string.format_minus_sign_prefix, amountFormattedString)
+                    binding.viewType.setBackgroundColor(getColor(R.color.colorRed))
                 }
                 IntBudgetTransactionType.INCOME -> {
                     binding.textViewAmount.setTextColor(getColor(R.color.colorGreen))
                     binding.textViewAmount.text = getString(R.string.format_plus_sign_prefix, amountFormattedString)
+                    binding.viewType.setBackgroundColor(getColor(R.color.colorGreen))
                 }
             }
         }
@@ -89,7 +90,11 @@ class BudgetTransactionsAdapter : BaseListAdapter<BudgetTransaction, BudgetTrans
             // TODO: format date properly
 
 
-            val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) itemView.resources.configuration.locales[0] else itemView.resources.configuration.locale
+            val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                itemView.resources.configuration.locales[0]
+            else
+                itemView.resources.configuration.locale
+
             binding.textViewDateTime.text = SimpleDateFormat("MMM dd yyyy HH:mm", locale).format(Date(creationUnixMs))
         }
 

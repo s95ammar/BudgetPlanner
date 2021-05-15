@@ -8,6 +8,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.dao.CategoryDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.JoinDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.PeriodDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.PeriodicCategoryDao
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
@@ -101,7 +102,23 @@ class LocalDataSourceImpl @Inject constructor(
     }
 
     // Budget transaction
-    override fun getBudgetTransactionsFlow(periodId: Int): Flow<List<BudgetTransactionJoinEntity>> {
-        return joinDao.getBudgetTransactionsFlow(periodId)
+    override fun getPeriodBudgetTransactionsFlow(periodId: Int): Flow<List<BudgetTransactionJoinEntity>> {
+        return joinDao.getPeriodBudgetTransactionsFlow(periodId)
+    }
+
+    override fun getBudgetTransactionFlow(id: Int): Flow<BudgetTransactionJoinEntity> {
+        return joinDao.getBudgetTransactionFlow(id)
+    }
+
+    override suspend fun insertBudgetTransaction(budgetTransaction: BudgetTransactionEntity) {
+        budgetTransactionDao.insert(budgetTransaction)
+    }
+
+    override suspend fun updateBudgetTransaction(budgetTransaction: BudgetTransactionEntity) {
+        budgetTransactionDao.update(budgetTransaction)
+    }
+
+    override suspend fun deleteBudgetTransaction(id: Int) {
+        budgetTransactionDao.delete(IdWrapper(id))
     }
 }

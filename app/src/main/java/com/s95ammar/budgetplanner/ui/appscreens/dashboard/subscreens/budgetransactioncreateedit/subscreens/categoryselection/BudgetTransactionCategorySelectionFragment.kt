@@ -2,13 +2,15 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetrans
 
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCategorySelectionBinding
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategoryIdAndName
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.categoryselection.adapter.PeriodicCategoriesSingleSelectionAdapter
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.categoryselection.data.PeriodicCategoryIdAndName
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
@@ -34,6 +36,7 @@ class BudgetTransactionCategorySelectionFragment :
 
     override fun setUpViews() {
         super.setUpViews()
+        binding.toolbar.setNavigationOnClickListener { navController.navigateUp() }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
@@ -47,6 +50,9 @@ class BudgetTransactionCategorySelectionFragment :
 
     private fun setPeriodicCategories(periodicCategories: List<PeriodicCategoryIdAndName>) {
         adapter.submitList(periodicCategories)
+        binding.recyclerView.isGone = periodicCategories.isEmpty()
+        binding.instructionsLayout.root.isVisible = periodicCategories.isEmpty()
+        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_add_periodic_category)
     }
 
     private fun performUiEvent(uiEvent: UiEvent) {

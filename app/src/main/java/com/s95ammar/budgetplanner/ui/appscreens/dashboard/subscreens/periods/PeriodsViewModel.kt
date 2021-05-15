@@ -27,10 +27,6 @@ class PeriodsViewModel @Inject constructor(
     val allPeriods = _allPeriods.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
-    fun refresh() {
-        loadAllPeriods()
-    }
-
     fun onPeriodItemClick(position: Int) {
         _allPeriods.value?.getOrNull(position)?.let { period ->
             _performUiEvent.call(UiEvent.ListenAndNavigateToEditPeriod(period))
@@ -52,7 +48,7 @@ class PeriodsViewModel @Inject constructor(
                 _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }
             .collect {
-                _performUiEvent.call(UiEvent.OnPeriodDeleted)
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
             }
     }
 

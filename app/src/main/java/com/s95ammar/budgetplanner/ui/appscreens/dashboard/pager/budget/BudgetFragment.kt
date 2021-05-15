@@ -11,11 +11,11 @@ import com.s95ammar.budgetplanner.databinding.FragmentDashboardBudgetBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.adapter.PeriodicCategoriesProgressAdapter
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.BudgetUiEvent
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.BudgetUiEvent as UiEvent
 
 @AndroidEntryPoint
 class BudgetFragment : BaseViewBinderFragment<FragmentDashboardBudgetBinding>(R.layout.fragment_dashboard_budget) {
@@ -56,9 +56,10 @@ class BudgetFragment : BaseViewBinderFragment<FragmentDashboardBudgetBinding>(R.
         adapter.submitList(periodicCategories)
     }
 
-    private fun performUiEvent(uiEvent: BudgetUiEvent) {
+    private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
-            is BudgetUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is UiEvent.NavigateToEditBudgetTransaction -> sharedViewModel
         }
     }
 

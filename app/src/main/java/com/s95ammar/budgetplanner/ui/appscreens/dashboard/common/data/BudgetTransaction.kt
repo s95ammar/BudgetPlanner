@@ -10,6 +10,7 @@ data class BudgetTransaction(
     @IntBudgetTransactionType val type: Int,
     val amount: Int,
     val creationUnixMs: Long,
+    val periodId: Int,
     val periodicCategoryId: Int,
     val categoryName: String
 ) {
@@ -23,6 +24,7 @@ data class BudgetTransaction(
                     it.type,
                     it.amount,
                     it.creationUnixMs,
+                    it.periodId,
                     it.periodicCategoryId,
                     it.categoryName
                 )

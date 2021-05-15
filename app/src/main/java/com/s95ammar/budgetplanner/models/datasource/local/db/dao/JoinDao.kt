@@ -93,14 +93,36 @@ interface JoinDao {
 	       budgetTransaction.amount AS amount,
 	       budgetTransaction.creationUnixMs AS creationUnixMs,
 	       periodicCategory.id AS periodicCategoryId,
+           periodicCategory.periodId AS periodId,
 	       category.name AS categoryName
 	FROM budgetTransaction
 	    INNER JOIN periodicCategory
 	        ON budgetTransaction.periodicCategoryId = periodicCategory.id
 	    INNER JOIN category
 	        ON periodicCategory.categoryId = category.id
-	WHERE periodId = :periodId        """
+	WHERE periodId = :periodId
+        """
     )
-    fun getBudgetTransactionsFlow(periodId: Int): Flow<List<BudgetTransactionJoinEntity>>
+    fun getPeriodBudgetTransactionsFlow(periodId: Int): Flow<List<BudgetTransactionJoinEntity>>
+
+    @Query(
+        """
+	SELECT budgetTransaction.id AS id,
+	       budgetTransaction.name AS name,
+	       budgetTransaction.type AS type,
+	       budgetTransaction.amount AS amount,
+	       budgetTransaction.creationUnixMs AS creationUnixMs,
+	       periodicCategory.id AS periodicCategoryId,
+           periodicCategory.periodId AS periodId,
+	       category.name AS categoryName
+	FROM budgetTransaction
+	    INNER JOIN periodicCategory
+	        ON budgetTransaction.periodicCategoryId = periodicCategory.id
+	    INNER JOIN category
+	        ON periodicCategory.categoryId = category.id
+	WHERE budgetTransaction.id = :id
+        """
+    )
+    fun getBudgetTransactionFlow(id: Int): Flow<BudgetTransactionJoinEntity>
 
 }

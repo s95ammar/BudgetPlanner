@@ -16,5 +16,8 @@ annotation class IntBudgetTransactionType {
             EXPENSE,
             INCOME
         )
+
+        fun getByPosition(position: Int) = values()[position]
+        fun getPosition(@IntBudgetTransactionType type: Int) = values().indexOf(type)
     }
 }

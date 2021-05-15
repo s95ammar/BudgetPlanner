@@ -60,11 +60,13 @@
 
     <string name="create_category">Create category</string>
     <string name="edit_category">Edit category</string>
-    <string name="create_category_instruction">You have no categories.\nCreate categories to organize your expenses and income!</string>
+    <string name="instruction_create_category">You have no categories.\nCreate categories to organize your expenses and income!</string>
+    <string name="instruction_create_category_period_screen">You have no categories.\nCreate some categories from the categories tab to organize your expenses and income!</string>
+    <string name="instruction_add_periodic_category">You need to add some categories to this period before creating an expense or an income</string>
 
     <string name="create_period">Create period</string>
     <string name="edit_period">Edit period</string>
-    <string name="create_period_instruction">Create a period to start managing your budget!</string>
+    <string name="instruction_create_period">Create a period to start managing your budget!</string>
 
     <string name="add">Add</string>
 

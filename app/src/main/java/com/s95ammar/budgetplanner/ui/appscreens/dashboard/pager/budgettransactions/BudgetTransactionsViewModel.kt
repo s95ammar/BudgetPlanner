@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.BudgetTransactionRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.BudgetUiEvent
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -17,6 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.data.BudgetTransactionsUiEvent as UiEvent
 
 @HiltViewModel
 class BudgetTransactionsViewModel @Inject constructor(
@@ -25,7 +25,7 @@ class BudgetTransactionsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _budgetTransactions = MutableLiveData<List<BudgetTransaction>>()
-    private val _performUiEvent = EventMutableLiveData<BudgetUiEvent>()
+    private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
     val budgetTransactions = _budgetTransactions.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
@@ -34,19 +34,45 @@ class BudgetTransactionsViewModel @Inject constructor(
         loadBudgetTransactions(periodId)
     }
 
+    fun onBudgetTransactionClick(position: Int) {
+        _budgetTransactions.value?.getOrNull(position)?.let {
+            _performUiEvent.call(UiEvent.NavigateToEditBudgetTransaction(it.periodId, it.id))
+        }
+    }
+
+    fun onBudgetTransactionLongClick(position: Int) {
+        _budgetTransactions.value?.getOrNull(position)?.let {
+            _performUiEvent.call(UiEvent.ShowBottomSheet(it))
+        }
+    }
+
+    fun deleteBudgetTransaction(id: Int) = viewModelScope.launch {
+        repository.deleteBudgetTransactionFlow(id)
+            .onStart {
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
+            }
+            .catch { throwable ->
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
+            }
+            .collect {
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
+            }
+    }
+
     private fun loadBudgetTransactions(periodId: Int) = viewModelScope.launch {
         if (periodId == Int.INVALID) return@launch
 
-        repository.getBudgetTransactionsFlow(periodId)
+        repository.getPeriodBudgetTransactionsFlow(periodId)
             .onStart {
-                _performUiEvent.call(BudgetUiEvent.DisplayLoadingState(LoadingState.Loading))
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
             }
             .catch { throwable ->
-                _performUiEvent.call(BudgetUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }
             .collect { budgetTransactionJoinEntityList ->
-                _performUiEvent.call(BudgetUiEvent.DisplayLoadingState(LoadingState.Success))
+                _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
                 _budgetTransactions.value = budgetTransactionJoinEntityList.mapNotNull(BudgetTransaction.Mapper::fromEntity)
+                    .sortedBy { it.creationUnixMs }
             }
     }
 

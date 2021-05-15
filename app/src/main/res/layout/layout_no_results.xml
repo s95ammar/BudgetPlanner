@@ -19,6 +19,6 @@
         android:layout_marginTop="@dimen/_8sdp"
         android:textAlignment="center"
         android:textAppearance="@style/TextDescBlack14sdp"
-        tools:text="@string/create_period_instruction" />
+        tools:text="@string/instruction_create_period" />
 
 </LinearLayout>

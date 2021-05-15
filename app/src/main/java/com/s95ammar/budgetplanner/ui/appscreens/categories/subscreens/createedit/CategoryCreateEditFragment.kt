@@ -1,15 +1,12 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit
 
 import android.database.sqlite.SQLiteConstraintException
-import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoryCreateEditBinding
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
-import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
@@ -39,7 +36,7 @@ class CategoryCreateEditFragment : BaseViewBinderFragment<FragmentCategoryCreate
         viewModel.name.observe(viewLifecycleOwner) { setCategoryName(it) }
         viewModel.displayLoadingState.observeEvent(viewLifecycleOwner) { handleLoadingState(it) }
         viewModel.displayValidationResults.observeEvent(viewLifecycleOwner) { handleValidationErrors(it) }
-        viewModel.onApplySuccess.observeEvent(viewLifecycleOwner) { onApplySuccess() }
+        viewModel.exit.observeEvent(viewLifecycleOwner) { navController.navigateUp() }
     }
 
     private fun setViewsToMode(mode: CreateEditMode) {
@@ -99,11 +96,6 @@ class CategoryCreateEditFragment : BaseViewBinderFragment<FragmentCategoryCreate
         Validator.Errors.EMPTY_TITLE -> getString(R.string.error_empty_field)
         Validator.Errors.NAME_TAKEN -> getString(R.string.error_category_name_taken)
         else -> null
-    }
-
-    private fun onApplySuccess() {
-        setFragmentResult(Keys.KEY_ON_CATEGORY_CREATE_EDIT, Bundle.EMPTY)
-        navController.navigateUp()
     }
 
     private fun getCategoryInputBundle() = CategoryInputBundle(title = binding.inputLayoutName.text.orEmpty().trim())

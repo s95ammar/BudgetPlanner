@@ -1,6 +1,8 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection
 
 import android.view.View
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -63,6 +65,9 @@ class PeriodCategoriesSelectionFragment :
 
     private fun setPeriodicCategories(periodicCategories: List<PeriodicCategory>) {
         adapter.submitList(periodicCategories)
+        binding.recyclerView.isGone = periodicCategories.isEmpty()
+        binding.instructionsLayout.root.isVisible = periodicCategories.isEmpty()
+        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_create_category_period_screen)
     }
 
 }

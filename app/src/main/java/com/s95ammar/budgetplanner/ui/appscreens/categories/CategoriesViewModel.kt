@@ -28,10 +28,6 @@ class CategoriesViewModel @Inject constructor(
     val allCategories = _allCategories.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
-    fun refresh() {
-        loadAllCategories()
-    }
-
     fun onNavigateToCreateCategory() {
         _performUiEvent.call(UiEvent.ListenAndNavigateToEditCategory(Int.INVALID))
     }
@@ -58,7 +54,6 @@ class CategoriesViewModel @Inject constructor(
             }
             .collect {
                 _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
-                refresh()
             }
     }
 

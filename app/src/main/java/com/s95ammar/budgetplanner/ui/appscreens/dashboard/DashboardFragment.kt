@@ -4,7 +4,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.viewpager2.widget.ViewPager2
@@ -19,7 +18,6 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.IntDashboardTab
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.BudgetFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.BudgetTransactionsFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.savings.SavingsFragment
-import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.ViewPagerFragmentAdapter
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
@@ -63,6 +61,8 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         viewModel.fabState.observe(viewLifecycleOwner) { setFabState(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         viewModel.dashboardTabs.observe(viewLifecycleOwner) { setUpViewPager(it) }
+
+        sharedViewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
     private fun setUpViewPager(tabs: List<Int>) {
@@ -138,7 +138,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
         binding.textViewPeriodName.isGone = currentPeriodHeaderBundle.period == null
         binding.pager.isGone = currentPeriodHeaderBundle.period == null
         binding.instructionsLayout.root.isVisible = currentPeriodHeaderBundle.period == null
-        binding.instructionsLayout.messageTextView.text = getString(R.string.create_period_instruction)
+        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_create_period)
     }
 
     private fun performUiEvent(uiEvent: UiEvent) {
@@ -175,7 +175,6 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
     }
 
     private fun navigateToCreateBudgetTransaction(periodId: Int) {
-//        listenToBudgetTransactionsListChangedResult()
         navController.navigate(
             DashboardFragmentDirections
                 .actionNavigationDashboardToBudgetTransactionCreateEditFragment(
@@ -186,23 +185,21 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
     }
 
     private fun navigateToEditBudgetTransaction(periodId: Int, budgetTransactionId: Int) {
-//        listenToBudgetTransactionsListChangedResult()
         navController.navigate(
             DashboardFragmentDirections
                 .actionNavigationDashboardToBudgetTransactionCreateEditFragment(
                     periodId = periodId,
-                    budgetTransactionId = Int.INVALID
+                    budgetTransactionId = budgetTransactionId
                 )
         )
     }
 
     private fun navigateToEditPeriod(period: PeriodSimple) {
-//        setFragmentResultListener(Keys.KEY_DASHBOARD_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> sharedViewModel.onPeriodicCategoriesChanged() }
         navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(period))
     }
 
     private fun listenToPeriodsListChangedResult() {
-        setFragmentResultListener(Keys.KEY_PERIODIC_CATEGORIES_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> viewModel.refresh() }
+//        setFragmentResultListener(Keys.KEY_DASHBOARD_SCREEN_ON_PERIODS_LIST_CHANGED) { _, _ -> viewModel.refresh() }
     }
 
 }

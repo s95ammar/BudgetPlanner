@@ -81,6 +81,7 @@
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:hint="@string/amount"
                 app:boxBackgroundColor="@null"
+                app:errorIconDrawable="@null"
                 app:errorTextAppearance="@style/TextAppearanceCairo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -90,6 +90,12 @@
         <item name="android:textSize">@dimen/_12sdp</item>
     </style>
 
+    <style name="TextError10sdp">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textColor">@color/colorCarmine</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+
     <style name="TextAppearanceCairo" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/cairo</item>
     </style>

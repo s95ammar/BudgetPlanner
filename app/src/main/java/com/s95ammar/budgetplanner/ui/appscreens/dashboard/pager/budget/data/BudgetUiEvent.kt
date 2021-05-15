@@ -4,4 +4,5 @@ import com.s95ammar.budgetplanner.ui.common.LoadingState
 
 sealed class BudgetUiEvent {
     class DisplayLoadingState(val loadingState: LoadingState): BudgetUiEvent()
+    class NavigateToEditBudgetTransaction(val periodId: Int, val budgetTransactionId: Int) : BudgetUiEvent()
 }

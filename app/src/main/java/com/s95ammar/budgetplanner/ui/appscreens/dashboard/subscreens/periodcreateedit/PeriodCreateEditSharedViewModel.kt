@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditFragmentArgs as FragmentArgs
 
 @HiltViewModel
 class PeriodCreateEditSharedViewModel @Inject constructor(
@@ -34,7 +35,7 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     private val locale: Locale
 ) : ViewModel() {
 
-    private val editedPeriod = savedStateHandle.get<PeriodSimple?>(PeriodCreateEditFragmentArgs::period.name)
+    private val editedPeriod = savedStateHandle.get<PeriodSimple?>(FragmentArgs::period.name)
     private val editedPeriodId
         get() = editedPeriod?.id ?: Int.INVALID
 
@@ -133,7 +134,6 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
                 _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }
             .collect {
-                _performUiEvent.call(PeriodCreateEditUiEvent.SetResult)
                 _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
                 _performUiEvent.call(PeriodCreateEditUiEvent.Exit)
             }

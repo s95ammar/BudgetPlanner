@@ -2,17 +2,24 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetrans
 
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCreateEditBinding
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.categoryselection.data.PeriodicCategoryIdAndName
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.BudgetTransactionInputBundle
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategoryIdAndName
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation.BudgetTransactionCreateEditValidator
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
+import com.s95ammar.budgetplanner.ui.common.LoadingState
+import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.doOnTabSelected
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
+import com.s95ammar.budgetplanner.util.text
+import com.s95ammar.budgetplanner.util.updateTextIfNotEquals
 import dagger.hilt.android.AndroidEntryPoint
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.BudgetTransactionCreateEditUiEvent as UiEvent
 
@@ -30,8 +37,10 @@ class BudgetTransactionCreateEditFragment :
         super.setUpViews()
         binding.toolbar.setNavigationOnClickListener { viewModel.onBack() }
         setUpTabLayout()
-        binding.textViewPeriodCategoryValue.setOnClickListener { viewModel.onChooseCategory() }
-//        binding.buttonApply.setOnClickListener { viewModel.onApply(getPeriodInputBundle()) }
+        binding.textViewPeriodCategoryValue.setOnClickListener { viewModel.onChoosePeriodicCategory() }
+        binding.buttonApply.setOnClickListener { viewModel.onApply(getBudgetTransactionInputBundle()) }
+        binding.inputLayoutName.editText?.doAfterTextChanged { viewModel.setName(it?.toString().orEmpty()) }
+        binding.inputLayoutAmount.editText?.doAfterTextChanged { viewModel.setAmount(it?.toString().orEmpty()) }
     }
 
     private fun setUpTabLayout() {
@@ -45,7 +54,7 @@ class BudgetTransactionCreateEditFragment :
                 addTab(newTab().setText(tabTitle))
             }
             doOnTabSelected { tab ->
-                viewModel.setSelectedBudgetTransactionType(tab.position)
+                viewModel.setType(IntBudgetTransactionType.getByPosition(tab.position))
             }
         }
     }
@@ -53,38 +62,11 @@ class BudgetTransactionCreateEditFragment :
     override fun initObservers() {
         super.initObservers()
         viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
-/*
-        viewModel.name.observe(viewLifecycleOwner) { setPeriodName(it) }
-        viewModel.max.observe(viewLifecycleOwner) { setPeriodMax(it) }
-        viewModel.periodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
-*/
+        viewModel.type.observe(viewLifecycleOwner) { setType(it) }
+        viewModel.name.observe(viewLifecycleOwner) { setName(it) }
+        viewModel.amount.observe(viewLifecycleOwner) { setAmount(it) }
         viewModel.periodicCategory.observe(viewLifecycleOwner) { setSelectedPeriodicCategory(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
-    }
-
-    private fun setSelectedPeriodicCategory(periodicCategory: PeriodicCategoryIdAndName) {
-        binding.textViewPeriodCategoryValue.text = periodicCategory.categoryName
-        binding.textViewPeriodCategoryValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
-    }
-
-    private fun performUiEvent(uiEvent: UiEvent) {
-        when (uiEvent) {
-            is UiEvent.ChooseCategory -> listenAndNavigateToCategorySelection(uiEvent.periodId)
-            is UiEvent.DisplayValidationResults -> TODO()
-            is UiEvent.Exit -> navController.navigateUp()
-        }
-    }
-
-    private fun listenAndNavigateToCategorySelection(periodId: Int) {
-        setFragmentResultListener(Keys.KEY_ON_PERIODIC_CATEGORY_SELECTED) { _, bundle ->
-            bundle.getParcelable<PeriodicCategoryIdAndName>(Keys.KEY_PERIODIC_CATEGORY)?.let { periodicCategory ->
-                viewModel.setPeriodicCategory(periodicCategory)
-            }
-        }
-        navController.navigate(
-            BudgetTransactionCreateEditFragmentDirections
-                .actionBudgetTransactionCreateEditFragmentToBudgetTransactionCategorySelectionFragment(periodId)
-        )
     }
 
     private fun setViewsToMode(mode: CreateEditMode) {
@@ -100,10 +82,31 @@ class BudgetTransactionCreateEditFragment :
         }
     }
 
+    private fun setType(@IntBudgetTransactionType type: Int) {
+        val position = IntBudgetTransactionType.getPosition(type)
+        val tab = binding.tabLayout.getTabAt(position)
+        binding.tabLayout.selectTab(tab)
+    }
 
-/*
-    private fun performUiEvent(uiEvent: PeriodCreateEditUiEvent) {
+    private fun setName(name: String) {
+        binding.inputLayoutName.updateTextIfNotEquals(name)
+    }
+
+    private fun setAmount(amount: Int) {
+        binding.inputLayoutAmount.updateTextIfNotEquals(amount.toString())
+    }
+
+    private fun setSelectedPeriodicCategory(periodicCategory: PeriodicCategoryIdAndName) {
+        binding.textViewPeriodCategoryValue.text = periodicCategory.categoryName
+        binding.textViewPeriodCategoryValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
+    }
+
+    private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
+            is UiEvent.ChoosePeriodicCategory -> listenAndNavigateToPeriodicCategorySelection(uiEvent.periodId)
+            is UiEvent.DisplayValidationResults -> handleValidationErrors(uiEvent.validationErrors)
+            is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is UiEvent.Exit -> navController.navigateUp()
         }
     }
 
@@ -114,9 +117,21 @@ class BudgetTransactionCreateEditFragment :
             is LoadingState.Loading -> showLoading()
             is LoadingState.Error -> {
                 hideLoading()
-                showErrorToast(loadingState.throwable)
+                showErrorSnackbar(loadingState.throwable)
             }
         }
+    }
+
+    private fun listenAndNavigateToPeriodicCategorySelection(periodId: Int) {
+        setFragmentResultListener(Keys.KEY_ON_PERIODIC_CATEGORY_SELECTED) { _, bundle ->
+            bundle.getParcelable<PeriodicCategoryIdAndName>(Keys.KEY_PERIODIC_CATEGORY)?.let { periodicCategory ->
+                viewModel.setPeriodicCategory(periodicCategory)
+            }
+        }
+        navController.navigate(
+            BudgetTransactionCreateEditFragmentDirections
+                .actionBudgetTransactionCreateEditFragmentToBudgetTransactionCategorySelectionFragment(periodId)
+        )
     }
 
     private fun handleValidationErrors(validationErrors: ValidationErrors) {
@@ -128,24 +143,32 @@ class BudgetTransactionCreateEditFragment :
 
     private fun displayError(viewKey: Int, errorId: Int) {
         when (viewKey) {
-            PeriodCreateEditValidator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getErrorStringById(errorId)
+            BudgetTransactionCreateEditValidator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getErrorStringById(errorId)
+            BudgetTransactionCreateEditValidator.ViewKeys.VIEW_AMOUNT -> binding.inputLayoutAmount.error = getErrorStringById(errorId)
+            BudgetTransactionCreateEditValidator.ViewKeys.VIEW_CATEGORY -> {
+                val colorText = ContextCompat.getColor(
+                    requireContext(),
+                    if (errorId == ValidationErrors.ERROR_NONE) R.color.colorBlack else R.color.colorError
+                )
+                val colorDrawable = ContextCompat.getColor(
+                    requireContext(),
+                    if (errorId == ValidationErrors.ERROR_NONE) R.color.colorGray else R.color.colorErrorLight
+                )
+                binding.textViewPeriodCategoryValue.setTextColor(colorText)
+                binding.textViewPeriodCategoryValue.compoundDrawables.forEach { it?.setTint(colorDrawable) }
+            }
         }
     }
 
     private fun getErrorStringById(errorId: Int) = when (errorId) {
-        PeriodCreateEditValidator.Errors.EMPTY_NAME -> getString(R.string.error_empty_field)
+        BudgetTransactionCreateEditValidator.Errors.EMPTY_NAME,
+        BudgetTransactionCreateEditValidator.Errors.EMPTY_AMOUNT -> getString(R.string.error_empty_field)
         else -> null
     }
 
-    private fun setResult() {
-        setFragmentResult(Keys.KEY_PERIODIC_CATEGORIES_SCREEN_ON_PERIODS_LIST_CHANGED, Bundle.EMPTY)
-        setFragmentResult(Keys.KEY_ON_PERIOD_CREATE_EDIT, Bundle.EMPTY)
-    }
-
-    private fun getPeriodInputBundle() = PeriodInputBundle(
-        name = binding.inputLayoutName.inputText.orEmpty().trim(),
-        max = binding.inputLayoutMax.inputText?.trim()
+    private fun getBudgetTransactionInputBundle() = BudgetTransactionInputBundle(
+        name = binding.inputLayoutName.text?.trim().orEmpty(),
+        amount = binding.inputLayoutAmount.text?.trim().orEmpty()
     )
-*/
 
 }

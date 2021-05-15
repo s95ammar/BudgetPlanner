@@ -1,5 +1,6 @@
 package com.s95ammar.budgetplanner.models.datasource.local
 
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
@@ -34,5 +35,10 @@ interface LocalDataSource {
     fun getPeriodicCategoriesFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
     fun getPeriodicCategoryIdAndNameListFlow(periodId: Int): Flow<List<PeriodicCategoryIdAndNameJoinEntity>>
 
-    fun getBudgetTransactionsFlow(periodId: Int): Flow<List<BudgetTransactionJoinEntity>>
+    fun getPeriodBudgetTransactionsFlow(periodId: Int): Flow<List<BudgetTransactionJoinEntity>>
+    fun getBudgetTransactionFlow(id: Int): Flow<BudgetTransactionJoinEntity>
+    suspend fun insertBudgetTransaction(budgetTransaction: BudgetTransactionEntity)
+    suspend fun updateBudgetTransaction(budgetTransaction: BudgetTransactionEntity)
+    suspend fun deleteBudgetTransaction(id: Int)
+
 }

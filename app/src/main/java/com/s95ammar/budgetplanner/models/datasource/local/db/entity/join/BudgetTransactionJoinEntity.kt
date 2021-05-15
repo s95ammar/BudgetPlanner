@@ -8,6 +8,7 @@ data class BudgetTransactionJoinEntity(
     @IntBudgetTransactionType val type: Int,
     val amount: Int,
     val creationUnixMs: Long,
+    val periodId: Int,
     val periodicCategoryId: Int,
     val categoryName: String
 )

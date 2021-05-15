@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.CategoryCreateEditFragmentArgs as FragmentArgs
 
 @HiltViewModel
 class CategoryCreateEditViewModel @Inject constructor(
@@ -27,7 +28,7 @@ class CategoryCreateEditViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val editedCategoryId = savedStateHandle.get<Int>(CategoryCreateEditFragmentArgs::categoryId.name) ?: Int.INVALID
+    private val editedCategoryId = savedStateHandle.get<Int>(FragmentArgs::categoryId.name) ?: Int.INVALID
 
     private val _mode = MutableLiveData(CreateEditMode.getById(editedCategoryId))
     private val _editedCategory = LoaderMutableLiveData<Category> { if (_mode.value == CreateEditMode.EDIT) loadEditedCategory() }
@@ -36,14 +37,14 @@ class CategoryCreateEditViewModel @Inject constructor(
     }
     // TODO: move events to a sealed class
     private val _displayLoadingState = EventMutableLiveData<LoadingState>(LoadingState.Cold)
-    private val _onApplySuccess = EventMutableLiveDataVoid()
     private val _displayValidationResults = EventMutableLiveData<ValidationErrors>()
+    private val _exit = EventMutableLiveDataVoid()
 
     val mode = _mode.asLiveData()
     val name = _name.asLiveData()
     val displayLoadingState = _displayLoadingState.asEventLiveData()
-    val onApplySuccess = _onApplySuccess.asEventLiveData()
     val displayValidationResults = _displayValidationResults.asEventLiveData()
+    val exit = _exit.asEventLiveData()
 
     fun onApply(categoryInputBundle: CategoryInputBundle) {
         val validator = CategoryCreateEditValidator(editedCategoryId, categoryInputBundle)
@@ -91,7 +92,7 @@ class CategoryCreateEditViewModel @Inject constructor(
             }
             .collect {
                 _displayLoadingState.call(LoadingState.Success)
-                _onApplySuccess.call()
+                _exit.call()
             }
     }
 

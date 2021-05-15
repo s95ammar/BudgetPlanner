@@ -1,10 +1,8 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit
 
 import android.database.sqlite.SQLiteConstraintException
-import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.s95ammar.budgetplanner.R
@@ -12,7 +10,6 @@ import com.s95ammar.budgetplanner.databinding.FragmentPeriodCreateEditBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
-import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
@@ -95,7 +92,6 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
-            is UiEvent.SetResult -> setResult()
             is UiEvent.DisplayValidationResults -> handleValidationErrors(uiEvent.validationErrors)
             is UiEvent.Exit -> navController.navigateUp()
             is UiEvent.ChooseCategories -> navigateToCategoriesSelection()
@@ -138,11 +134,6 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
         Validator.Errors.NAME_TAKEN -> getString(R.string.error_period_name_taken)
         Validator.Errors.EMPTY_NAME -> getString(R.string.error_empty_field)
         else -> null
-    }
-
-    private fun setResult() {
-        setFragmentResult(Keys.KEY_PERIODIC_CATEGORIES_SCREEN_ON_PERIODS_LIST_CHANGED, Bundle.EMPTY)
-        setFragmentResult(Keys.KEY_ON_PERIOD_CREATE_EDIT, Bundle.EMPTY)
     }
 
     private fun navigateToCategoriesSelection() {

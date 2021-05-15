@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">@color/colorPurple100</color>
+    <color name="colorError">@color/colorCarmine</color>
+    <color name="colorErrorLight">@color/colorCardinal</color>
+
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorBlack">#000000</color>
@@ -9,6 +12,8 @@
 
     <color name="colorDivider">#C3C3C3</color>
     <color name="colorRed">#F21E0F</color>
+    <color name="colorCarmine">#AC001F</color>
+    <color name="colorCardinal">#B31431</color>
     <color name="colorGreen">#0DB337</color>
     <color name="colorTransparent">@android:color/transparent</color>
 
