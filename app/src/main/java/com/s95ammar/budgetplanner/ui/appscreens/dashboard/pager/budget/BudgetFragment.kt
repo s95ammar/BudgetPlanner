@@ -54,6 +54,10 @@ class BudgetFragment : BaseViewBinderFragment<FragmentDashboardBudgetBinding>(R.
 
     private fun setPeriodicCategories(periodicCategories: List<PeriodicCategory>) {
         adapter.submitList(periodicCategories)
+        binding.recyclerView.isGone = periodicCategories.isEmpty()
+        binding.instructionsLayout.root.isVisible = periodicCategories.isEmpty()
+        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_budget_screen_no_data)
+
     }
 
     private fun performUiEvent(uiEvent: UiEvent) {

@@ -48,7 +48,7 @@ class CategoriesFragment : BaseViewBinderFragment<FragmentCategoriesBinding>(R.l
         adapter.submitList(categories)
         binding.recyclerView.isGone = categories.isEmpty()
         binding.instructionsLayout.root.isVisible = categories.isEmpty()
-        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_create_category)
+        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_category_screen_create_category)
     }
 
     private fun performUiEvent(uiEvent: UiEvent) {

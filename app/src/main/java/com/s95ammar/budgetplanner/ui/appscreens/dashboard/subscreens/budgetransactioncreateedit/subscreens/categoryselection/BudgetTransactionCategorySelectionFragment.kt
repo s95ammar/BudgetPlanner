@@ -52,7 +52,7 @@ class BudgetTransactionCategorySelectionFragment :
         adapter.submitList(periodicCategories)
         binding.recyclerView.isGone = periodicCategories.isEmpty()
         binding.instructionsLayout.root.isVisible = periodicCategories.isEmpty()
-        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_add_periodic_category)
+        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_budget_transaction_create_edit_screen_add_periodic_category)
     }
 
     private fun performUiEvent(uiEvent: UiEvent) {

@@ -55,6 +55,10 @@ class BudgetTransactionsFragment : BaseViewBinderFragment<FragmentDashboardTrans
 
     private fun setBudgetTransactions(budgetTransactions: List<BudgetTransaction>) {
         adapter.submitList(budgetTransactions)
+        binding.recyclerView.isGone = budgetTransactions.isEmpty()
+        binding.instructionsLayout.root.isVisible = budgetTransactions.isEmpty()
+        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_budget_transactions_screen_no_data)
+
     }
 
     private fun performUiEvent(uiEvent: BudgetTransactionsUiEvent) {

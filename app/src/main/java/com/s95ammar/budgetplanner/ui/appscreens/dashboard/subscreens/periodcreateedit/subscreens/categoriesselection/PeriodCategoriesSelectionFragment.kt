@@ -67,7 +67,7 @@ class PeriodCategoriesSelectionFragment :
         adapter.submitList(periodicCategories)
         binding.recyclerView.isGone = periodicCategories.isEmpty()
         binding.instructionsLayout.root.isVisible = periodicCategories.isEmpty()
-        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_create_category_period_screen)
+        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_period_create_edit_screen_create_category)
     }
 
 }
