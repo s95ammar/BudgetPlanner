@@ -1,31 +1,13 @@
 <resources>
     <string name="app_name">Budget Planner</string>
 
-    <string name="register">Register</string>
-    <string name="login">Login</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="confirm_password">Confirm password</string>
-
     <string name="error_empty_field">Required field</string>
-
-    <string name="error_invalid_email">Invalid email</string>
-    <string name="error_email_taken">This email is already registered</string>
-    <string name="error_email_not_registered">This email is not registered</string>
-    <string name="error_login_password_length">Password is at least 8 characters</string>
-    <string name="error_registration_password_length">Password must be at least 8 characters</string>
-    <string name="error_invalid_password">Password contains invalid characters</string>
-    <string name="error_incorrect_password">Incorrect password</string>
-    <string name="error_passwords_do_not_match">Passwords do not match</string>
 
     <string name="error_period_name_taken">A period with this name already exists</string>
     <string name="error_category_name_taken">A category with this name already exists</string>
 
-    <string name="error_internal_server">Internal server error</string>
-    <string name="error_unauthorized">Unauthorized</string>
     <string name="error_occurred">An error has occurred</string>
 
-    <string name="settings">Settings</string>
     <string name="categories">Categories</string>
     <string name="periods">Periods</string>
     <string name="dashboard">Dashboard</string>
@@ -35,26 +17,18 @@
     <string name="savings">Savings</string>
     <string name="choose_a_category">Choose a category</string>
 
-    <string name="key_total_balance">Total balance:</string>
-    <string name="key_total_spending_estimate">Total spending estimate:</string>
-    <string name="key_total_savings">Total savings:</string>
-
-    <string name="title">Title</string>
     <string name="name">Name</string>
     <string name="create">Create</string>
     <string name="save">Save</string>
     <string name="total_expenses_estimate_optional">Total expenses estimate (optional)</string>
 
-    <string name="error_invalid_total_balance">Invalid total balance</string>
     <string name="error_something_went_wrong_title">Oops</string>
     <string name="format_error_something_went_wrong_desc">Something went wrong\n\n%s</string>
-    <string name="loading">Loading…</string>
 
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="format_delete_confirmation">Please confirm if you really want to delete %s</string>
-    <string name="logout_confirmation">Please confirm that you would like to log out</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -72,8 +46,6 @@
     <string name="instruction_create_period">Create a period to start managing your budget!</string>
 
     <string name="add">Add</string>
-
-    <string name="log_out">Log out</string>
 
     <string name="format_value_out_of">%d / %d</string>
     <string name="categories_for_this_period">Categories for this period:</string>
