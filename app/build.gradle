@@ -23,6 +23,16 @@ android {
         viewBinding true
     }
 
+    flavorDimensions "mocking"
+    productFlavors {
+        real {
+
+        }
+        mock {
+            applicationIdSuffix ".mock"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
