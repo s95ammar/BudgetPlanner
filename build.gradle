@@ -16,6 +16,8 @@ buildscript {
         // in the individual module build.gradle files
         classpath "com.google.dagger:hilt-android-gradle-plugin:${depVersions.hilt}"
 
+        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
+
     }
 }
 

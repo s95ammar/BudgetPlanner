@@ -4,6 +4,7 @@ apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 
 android {
     compileSdkVersion 30
@@ -75,7 +76,6 @@ dependencies {
     implementation "com.google.dagger:hilt-android:${depVersions.hilt}"
     kapt "com.google.dagger:hilt-android-compiler:${depVersions.hilt}"
 
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:${depVersions.hiltLifecycle}"
     kapt "androidx.hilt:hilt-compiler:${depVersions.hiltLifecycle}"
     implementation "androidx.hilt:hilt-navigation-fragment:${depVersions.hiltLifecycle}"
 

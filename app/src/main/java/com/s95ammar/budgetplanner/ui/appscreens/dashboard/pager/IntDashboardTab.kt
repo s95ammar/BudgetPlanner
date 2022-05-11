@@ -2,6 +2,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager
 
 import androidx.annotation.IntDef
 
+@Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPE)
 @IntDef(
     IntDashboardTab.TAB_BUDGET,
     IntDashboardTab.TAB_BUDGET_TRANSACTIONS,
