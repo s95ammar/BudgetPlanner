@@ -76,7 +76,7 @@ class BudgetTransactionCategorySelectionFragment :
     }
 
     private fun setResult(periodicCategory: PeriodicCategoryIdAndName) {
-        setFragmentResult(Keys.KEY_ON_PERIODIC_CATEGORY_SELECTED, bundleOf(Keys.KEY_PERIODIC_CATEGORY to periodicCategory))
+        setFragmentResult(Keys.KEY_PERIODIC_CATEGORY_REQUEST, bundleOf(Keys.KEY_PERIODIC_CATEGORY to periodicCategory))
     }
 
 }

@@ -1,10 +1,12 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit
 
+import android.net.Uri
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import com.google.android.gms.maps.model.LatLng
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCreateEditBinding
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
@@ -38,6 +40,7 @@ class BudgetTransactionCreateEditFragment :
         binding.toolbar.setNavigationOnClickListener { viewModel.onBack() }
         setUpTabLayout()
         binding.textViewPeriodCategoryValue.setOnClickListener { viewModel.onChoosePeriodicCategory() }
+        binding.textViewLocationValue.setOnClickListener { viewModel.onChooseLocation() }
         binding.buttonApply.setOnClickListener { viewModel.onApply(getBudgetTransactionInputBundle()) }
         binding.inputLayoutName.editText?.doAfterTextChanged { viewModel.setName(it?.toString().orEmpty()) }
         binding.inputLayoutAmount.editText?.doAfterTextChanged { viewModel.setAmount(it?.toString().orEmpty()) }
@@ -66,6 +69,7 @@ class BudgetTransactionCreateEditFragment :
         viewModel.name.observe(viewLifecycleOwner) { setName(it) }
         viewModel.amount.observe(viewLifecycleOwner) { setAmount(it) }
         viewModel.periodicCategory.observe(viewLifecycleOwner) { setSelectedPeriodicCategory(it) }
+        viewModel.location.observe(viewLifecycleOwner) { setSelectedLocation(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
@@ -101,9 +105,18 @@ class BudgetTransactionCreateEditFragment :
         binding.textViewPeriodCategoryValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
     }
 
+    private fun setSelectedLocation(latLng: LatLng?) {
+        binding.textViewLocationValue.text = latLng?.let {
+            getString(R.string.format_lat_lng, it.latitude, it.longitude)
+        } ?: getString(R.string.choose_a_location)
+        val textColorRes = if (latLng == null) R.color.colorGray else R.color.colorBlack
+        binding.textViewLocationValue.setTextColor(ContextCompat.getColor(requireContext(), textColorRes))
+    }
+
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.ChoosePeriodicCategory -> listenAndNavigateToPeriodicCategorySelection(uiEvent.periodId)
+            is UiEvent.ChooseLocation -> listenAndNavigateToLocationSelection()
             is UiEvent.DisplayValidationResults -> handleValidationErrors(uiEvent.validationErrors)
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
             is UiEvent.Exit -> navController.navigateUp()
@@ -123,7 +136,7 @@ class BudgetTransactionCreateEditFragment :
     }
 
     private fun listenAndNavigateToPeriodicCategorySelection(periodId: Int) {
-        setFragmentResultListener(Keys.KEY_ON_PERIODIC_CATEGORY_SELECTED) { _, bundle ->
+        setFragmentResultListener(Keys.KEY_PERIODIC_CATEGORY_REQUEST) { _, bundle ->
             bundle.getParcelable<PeriodicCategoryIdAndName>(Keys.KEY_PERIODIC_CATEGORY)?.let { periodicCategory ->
                 viewModel.setPeriodicCategory(periodicCategory)
             }
@@ -131,6 +144,17 @@ class BudgetTransactionCreateEditFragment :
         navController.navigate(
             BudgetTransactionCreateEditFragmentDirections
                 .actionBudgetTransactionCreateEditFragmentToBudgetTransactionCategorySelectionFragment(periodId)
+        )
+    }
+
+    private fun listenAndNavigateToLocationSelection() {
+        setFragmentResultListener(Keys.KEY_LOCATION_REQUEST) { _, bundle ->
+            bundle.getParcelable<LatLng>(Keys.KEY_LOCATION)?.let { latLng ->
+                viewModel.setLocation(latLng)
+            }
+        }
+        navController.navigate(
+            TODO() as Uri
         )
     }
 

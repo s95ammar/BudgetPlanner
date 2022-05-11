@@ -16,6 +16,7 @@
     <string name="savings_jars">Savings Jars</string>
     <string name="savings">Savings</string>
     <string name="choose_a_category">Choose a category</string>
+    <string name="choose_a_location">Choose a location (optional)</string>
 
     <string name="name">Name</string>
     <string name="create">Create</string>
@@ -61,4 +62,6 @@
     <string name="expense">Expense</string>
     <string name="income">Income</string>
     <string name="amount">amount</string>
+
+    <string name="format_lat_lng">(%f, %f)</string>
 </resources>

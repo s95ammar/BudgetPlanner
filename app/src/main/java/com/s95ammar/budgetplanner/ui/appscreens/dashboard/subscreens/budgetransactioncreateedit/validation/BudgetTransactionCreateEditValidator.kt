@@ -1,6 +1,7 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation
 
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.LatLngEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
 import com.s95ammar.budgetplanner.ui.common.validation.UnhandledValidationException
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
@@ -35,7 +36,7 @@ class BudgetTransactionCreateEditValidator(
                 type = input.type,
                 amount = amount,
                 periodicCategoryId = input.periodicCategoryId,
-                latLng = input.latLng
+                latLng = LatLngEntity.EntityMapper.toEntity(input.latLng)
             )
         } else {
             BudgetTransactionEntity(
@@ -43,7 +44,7 @@ class BudgetTransactionCreateEditValidator(
                 type = input.type,
                 amount = amount,
                 periodicCategoryId = input.periodicCategoryId,
-                latLng = input.latLng,
+                latLng = LatLngEntity.EntityMapper.toEntity(input.latLng),
                 creationUnixMs = editedBudgetTransaction.creationUnixMs
             ).apply {
                 id = editedBudgetTransaction.id

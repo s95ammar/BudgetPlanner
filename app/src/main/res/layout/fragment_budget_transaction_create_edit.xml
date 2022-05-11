@@ -101,7 +101,7 @@
                 android:id="@+id/text_view_period_category_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:drawableEnd="@drawable/ic_arrow_right_narrow"
@@ -116,6 +116,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/input_layout_amount" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_location_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:clickable="true"
+                android:drawableEnd="@drawable/ic_arrow_right_narrow"
+                android:focusable="true"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:text="@string/choose_a_location"
+                android:textAppearance="@style/TextDescGray12sdp"
+                app:drawableTint="@color/colorGray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_period_category_value" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_apply"
                 android:layout_width="match_parent"
@@ -128,7 +147,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_period_category_value"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_location_value"
                 app:layout_constraintVertical_bias="1.0"
                 tools:text="@string/create" />
 

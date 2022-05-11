@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
 import com.s95ammar.budgetplanner.models.repository.BudgetTransactionRepository
@@ -57,14 +58,17 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     private val _periodicCategory = MediatorLiveData<PeriodicCategoryIdAndName>().apply {
         addSource(_editedBudgetTransaction) { value = PeriodicCategoryIdAndName(it.periodicCategoryId, it.categoryName) }
     }
+    private val _location = MediatorLiveData<LatLng?>(null).apply {
+        addSource(_editedBudgetTransaction) { value = it.latLng }
+    }
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
+    val mode = _mode.asLiveData()
     val type = _type.distinctUntilChanged()
     val name = _name.distinctUntilChanged()
     val amount = _amount.distinctUntilChanged()
-    val mode = _mode.asLiveData()
-
-    val periodicCategory = _periodicCategory.asLiveData()
+    val periodicCategory = _periodicCategory.distinctUntilChanged()
+    val location = _location.distinctUntilChanged()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun setType(@IntBudgetTransactionType type: Int) {
@@ -83,8 +87,16 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
         _periodicCategory.value = periodicCategory
     }
 
+    fun setLocation(location: LatLng?) {
+        _location.value = location
+    }
+
     fun onChoosePeriodicCategory() {
         _performUiEvent.call(UiEvent.ChoosePeriodicCategory(periodId))
+    }
+
+    fun onChooseLocation() {
+        _performUiEvent.call(UiEvent.ChooseLocation)
     }
 
     fun onApply(budgetTransactionInputBundle: BudgetTransactionInputBundle) {
@@ -105,7 +117,8 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
             type = _type.value ?: IntBudgetTransactionType.EXPENSE,
             name = budgetTransactionInputBundle.name,
             amount = budgetTransactionInputBundle.amount,
-            periodicCategoryId = _periodicCategory.value?.periodicCategoryId ?: Int.INVALID
+            periodicCategoryId = _periodicCategory.value?.periodicCategoryId ?: Int.INVALID,
+            latLng = _location.value
         )
 
         return BudgetTransactionCreateEditValidator(_editedBudgetTransaction.value, validationBundle)
