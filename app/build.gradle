@@ -17,6 +17,12 @@ android {
         versionName appVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     
     buildFeatures {
@@ -98,4 +104,8 @@ dependencies {
     implementation "com.intuit.sdp:sdp-android:${depVersions.dimen}"
     implementation "com.intuit.ssp:ssp-android:${depVersions.dimen}"
 
+    // Google Maps & Location Services
+    implementation "com.google.android.gms:play-services-location:${depVersions.google_maps}"
+    implementation "com.google.android.gms:play-services-maps:${depVersions.google_maps}"
+    implementation "com.google.maps.android:android-maps-utils:${depVersions.google_maps_utils}"
 }

@@ -34,7 +34,8 @@ class BudgetTransactionCreateEditValidator(
                 name = input.name,
                 type = input.type,
                 amount = amount,
-                periodicCategoryId = input.periodicCategoryId
+                periodicCategoryId = input.periodicCategoryId,
+                latLng = input.latLng
             )
         } else {
             BudgetTransactionEntity(
@@ -42,6 +43,7 @@ class BudgetTransactionCreateEditValidator(
                 type = input.type,
                 amount = amount,
                 periodicCategoryId = input.periodicCategoryId,
+                latLng = input.latLng,
                 creationUnixMs = editedBudgetTransaction.creationUnixMs
             ).apply {
                 id = editedBudgetTransaction.id

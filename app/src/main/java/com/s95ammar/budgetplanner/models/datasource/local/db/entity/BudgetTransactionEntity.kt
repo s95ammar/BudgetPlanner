@@ -1,5 +1,7 @@
 package com.s95ammar.budgetplanner.models.datasource.local.db.entity
 
+import androidx.annotation.Nullable
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -26,6 +28,7 @@ data class BudgetTransactionEntity(
     @IntBudgetTransactionType val type: Int,
     val amount: Int,
     val periodicCategoryId: Int,
+    @Nullable @Embedded val latLng: LatLngEntity?,
     val creationUnixMs: Long = System.currentTimeMillis()
 ) {
     @PrimaryKey(autoGenerate = true)
