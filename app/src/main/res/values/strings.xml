@@ -69,4 +69,8 @@
     <string name="no_location_selected">No location selected</string>
     <string name="choose_location_instruction">Tap and hold on the map to choose a location</string>
     <string name="unknown_location">Unknown location</string>
+    <string name="permission_required_title">Permission required</string>
+    <string name="location_permission_required_description">The app needs location permissions to zoom in to your location</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>

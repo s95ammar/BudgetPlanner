@@ -27,6 +27,7 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.MediatorLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
+import com.s95ammar.budgetplanner.util.optionalValue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -114,7 +115,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     }
 
     fun onChooseLocation() {
-        _performUiEvent.call(UiEvent.ChooseLocation(_locationOptional.value?.value))
+        _performUiEvent.call(UiEvent.ChooseLocation(_locationOptional.optionalValue))
     }
 
     fun onApply(budgetTransactionInputBundle: BudgetTransactionInputBundle) {
@@ -136,7 +137,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
             name = budgetTransactionInputBundle.name,
             amount = budgetTransactionInputBundle.amount,
             periodicCategoryId = _periodicCategory.value?.periodicCategoryId ?: Int.INVALID,
-            latLng = _locationOptional.value?.value?.latLng
+            latLng = _locationOptional.optionalValue?.latLng
         )
 
         return BudgetTransactionCreateEditValidator(_editedBudgetTransaction.value, validationBundle)
