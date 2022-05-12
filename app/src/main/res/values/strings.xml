@@ -21,6 +21,7 @@
     <string name="name">Name</string>
     <string name="create">Create</string>
     <string name="save">Save</string>
+    <string name="remove">Remove</string>
     <string name="total_expenses_estimate_optional">Total expenses estimate (optional)</string>
 
     <string name="error_something_went_wrong_title">Oops</string>
@@ -64,4 +65,5 @@
     <string name="amount">amount</string>
 
     <string name="format_lat_lng">(%f, %f)</string>
+    <string name="choose_location">Choose location</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit
 
-import android.net.Uri
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
@@ -69,7 +68,7 @@ class BudgetTransactionCreateEditFragment :
         viewModel.name.observe(viewLifecycleOwner) { setName(it) }
         viewModel.amount.observe(viewLifecycleOwner) { setAmount(it) }
         viewModel.periodicCategory.observe(viewLifecycleOwner) { setSelectedPeriodicCategory(it) }
-        viewModel.location.observe(viewLifecycleOwner) { setSelectedLocation(it) }
+        viewModel.locationOptional.observe(viewLifecycleOwner) { setSelectedLocation(it?.value) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
@@ -116,7 +115,7 @@ class BudgetTransactionCreateEditFragment :
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.ChoosePeriodicCategory -> listenAndNavigateToPeriodicCategorySelection(uiEvent.periodId)
-            is UiEvent.ChooseLocation -> listenAndNavigateToLocationSelection()
+            is UiEvent.ChooseLocation -> listenAndNavigateToLocationSelection(uiEvent.currentLatLng)
             is UiEvent.DisplayValidationResults -> handleValidationErrors(uiEvent.validationErrors)
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
             is UiEvent.Exit -> navController.navigateUp()
@@ -147,14 +146,13 @@ class BudgetTransactionCreateEditFragment :
         )
     }
 
-    private fun listenAndNavigateToLocationSelection() {
+    private fun listenAndNavigateToLocationSelection(latLng: LatLng?) {
         setFragmentResultListener(Keys.KEY_LOCATION_REQUEST) { _, bundle ->
-            bundle.getParcelable<LatLng>(Keys.KEY_LOCATION)?.let { latLng ->
-                viewModel.setLocation(latLng)
-            }
+            viewModel.setLocation(bundle.getParcelable(Keys.KEY_LOCATION))
         }
         navController.navigate(
-            TODO() as Uri
+            BudgetTransactionCreateEditFragmentDirections
+                .actionBudgetTransactionCreateEditFragmentToLocationSelectionFragment(latLng)
         )
     }
 

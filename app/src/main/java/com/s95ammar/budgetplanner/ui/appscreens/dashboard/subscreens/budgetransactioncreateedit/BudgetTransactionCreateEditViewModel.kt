@@ -19,6 +19,8 @@ import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.util.INVALID
+import com.s95ammar.budgetplanner.util.Optional
+import com.s95ammar.budgetplanner.util.asOptional
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.MediatorLiveData
@@ -58,8 +60,8 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     private val _periodicCategory = MediatorLiveData<PeriodicCategoryIdAndName>().apply {
         addSource(_editedBudgetTransaction) { value = PeriodicCategoryIdAndName(it.periodicCategoryId, it.categoryName) }
     }
-    private val _location = MediatorLiveData<LatLng?>(null).apply {
-        addSource(_editedBudgetTransaction) { value = it.latLng }
+    private val _locationOptional = MediatorLiveData<Optional<LatLng>>(Optional.empty()).apply {
+        addSource(_editedBudgetTransaction) { value = it.latLng.asOptional() }
     }
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
@@ -68,7 +70,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     val name = _name.distinctUntilChanged()
     val amount = _amount.distinctUntilChanged()
     val periodicCategory = _periodicCategory.distinctUntilChanged()
-    val location = _location.distinctUntilChanged()
+    val locationOptional = _locationOptional.distinctUntilChanged()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun setType(@IntBudgetTransactionType type: Int) {
@@ -88,7 +90,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     }
 
     fun setLocation(location: LatLng?) {
-        _location.value = location
+        _locationOptional.value = location.asOptional()
     }
 
     fun onChoosePeriodicCategory() {
@@ -96,7 +98,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     }
 
     fun onChooseLocation() {
-        _performUiEvent.call(UiEvent.ChooseLocation)
+        _performUiEvent.call(UiEvent.ChooseLocation(_locationOptional.value?.value))
     }
 
     fun onApply(budgetTransactionInputBundle: BudgetTransactionInputBundle) {
@@ -118,7 +120,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
             name = budgetTransactionInputBundle.name,
             amount = budgetTransactionInputBundle.amount,
             periodicCategoryId = _periodicCategory.value?.periodicCategoryId ?: Int.INVALID,
-            latLng = _location.value
+            latLng = _locationOptional.value?.value
         )
 
         return BudgetTransactionCreateEditValidator(_editedBudgetTransaction.value, validationBundle)

@@ -1,6 +1,7 @@
 package com.s95ammar.budgetplanner.ui.base
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
@@ -73,13 +74,29 @@ abstract class BaseFragment : Fragment, LoadingManager {
     }
 
     protected fun displayDeleteConfirmationDialog(deletedItemTitle: String, onConfirmed: () -> Unit) {
+        displayConfirmationDialog(
+            message = getString(R.string.format_delete_confirmation, deletedItemTitle),
+            onConfirmed = onConfirmed
+        )
+    }
+
+    protected fun displayConfirmationDialog(
+        message: String,
+        isCancelable: Boolean = false,
+        title: String = getString(R.string.are_you_sure),
+        icon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.ic_info),
+        negativeButtonText: String = getString(R.string.no),
+        positiveButtonText: String = getString(R.string.yes),
+        onDismissed: (() -> Unit)? = null,
+        onConfirmed: () -> Unit
+    ) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.are_you_sure))
-            .setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_info))
-            .setMessage(getString(R.string.format_delete_confirmation, deletedItemTitle))
-            .setPositiveButton(R.string.yes) { _, _ -> onConfirmed() }
-            .setCancelable(false)
-            .setNegativeButton(R.string.no, null)
+            .setTitle(title)
+            .setIcon(icon)
+            .setMessage(message)
+            .setPositiveButton(positiveButtonText) { _, _ -> onConfirmed() }
+            .setCancelable(isCancelable)
+            .setNegativeButton(negativeButtonText, onDismissed?.let { { _, _ -> it() } })
             .show()
     }
 

@@ -80,6 +80,9 @@
             <action
                 android:id="@+id/action_budgetTransactionCreateEditFragment_to_budgetTransactionCategorySelectionFragment"
                 app:destination="@id/budgetTransactionCategorySelectionFragment" />
+            <action
+                android:id="@+id/action_budgetTransactionCreateEditFragment_to_locationSelectionFragment"
+                app:destination="@id/locationSelectionFragment" />
         </fragment>
         <fragment
             android:id="@+id/budgetTransactionCategorySelectionFragment"
@@ -89,6 +92,16 @@
             <argument
                 android:name="periodId"
                 app:argType="integer" />
+        </fragment>
+        <fragment
+            android:id="@+id/locationSelectionFragment"
+            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.LocationSelectionFragment"
+            android:label="location_selection_fragment"
+            tools:layout="@layout/location_selection_fragment" >
+            <argument
+                android:name="currentLatLng"
+                app:argType="com.google.android.gms.maps.model.LatLng"
+                app:nullable="true" />
         </fragment>
     </navigation>
 
