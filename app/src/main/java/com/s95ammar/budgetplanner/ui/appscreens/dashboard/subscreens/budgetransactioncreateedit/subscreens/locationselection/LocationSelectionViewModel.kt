@@ -2,41 +2,55 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetrans
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
+import com.s95ammar.budgetplanner.models.repository.LocationRepository
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress
 import com.s95ammar.budgetplanner.util.Optional
 import com.s95ammar.budgetplanner.util.asOptional
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.MediatorLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.LocationSelectionFragmentArgs as FragmentArgs
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationSelectionUiEvent as UiEvent
 
+@HiltViewModel
 class LocationSelectionViewModel @Inject constructor(
-    val savedStateHandle: SavedStateHandle
+    val savedStateHandle: SavedStateHandle,
+    val repository: LocationRepository
 ) : ViewModel() {
 
-    private val _latLngOptional = MediatorLiveData(
-        savedStateHandle.get<LatLng>(FragmentArgs::currentLatLng.name).asOptional()
+    private val _locationOptional = MediatorLiveData(
+        savedStateHandle.get<LocationWithAddress>(FragmentArgs::currentLocation.name).asOptional()
     ).apply {
-        addSource(this) { savedStateHandle.set(FragmentArgs::currentLatLng.name, it.value) }
+        addSource(this) { savedStateHandle.set(FragmentArgs::currentLocation.name, it.value) }
     }
 
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
-    val latLngOptional = _latLngOptional.asLiveData()
+    val locationOptional = _locationOptional.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
-    fun setLocation(latLng: LatLng?) {
-        _latLngOptional.value = latLng.asOptional()
+    fun setLocationByCoordinates(latLng: LatLng?) {
+        if (latLng == null) {
+            _locationOptional.value = Optional.empty()
+        } else {
+            viewModelScope.launch {
+                val address = repository.getAddressByCoordinates(latLng.latitude, latLng.longitude)
+                _locationOptional.value = LocationWithAddress(latLng, address).asOptional()
+            }
+        }
     }
 
     fun onRemoveLocation() {
-        _latLngOptional.value = Optional.empty()
+        _locationOptional.value = Optional.empty()
     }
 
     fun onConfirmLocation() {
-        _performUiEvent.call(UiEvent.SetResult(_latLngOptional.value?.value))
+        _performUiEvent.call(UiEvent.SetResult(_locationOptional.value?.value))
         _performUiEvent.call(UiEvent.Exit)
     }
 

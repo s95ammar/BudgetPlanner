@@ -10,9 +10,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
 import com.s95ammar.budgetplanner.models.repository.BudgetTransactionRepository
+import com.s95ammar.budgetplanner.models.repository.LocationRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.BudgetTransactionInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategoryIdAndName
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation.BudgetTransactionCreateEditValidator
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation.BudgetTransactionValidationBundle
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
@@ -37,6 +39,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransa
 @HiltViewModel
 class BudgetTransactionCreateEditViewModel @Inject constructor(
     private val repository: BudgetTransactionRepository,
+    private val locationRepository: LocationRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -60,8 +63,8 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     private val _periodicCategory = MediatorLiveData<PeriodicCategoryIdAndName>().apply {
         addSource(_editedBudgetTransaction) { value = PeriodicCategoryIdAndName(it.periodicCategoryId, it.categoryName) }
     }
-    private val _locationOptional = MediatorLiveData<Optional<LatLng>>(Optional.empty()).apply {
-        addSource(_editedBudgetTransaction) { value = it.latLng.asOptional() }
+    private val _locationOptional = MediatorLiveData<Optional<LocationWithAddress>>(Optional.empty()).apply {
+        addSource(_editedBudgetTransaction) { setLocationOptionalValue(it.latLng) }
     }
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
@@ -70,7 +73,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     val name = _name.distinctUntilChanged()
     val amount = _amount.distinctUntilChanged()
     val periodicCategory = _periodicCategory.distinctUntilChanged()
-    val locationOptional = _locationOptional.distinctUntilChanged()
+    val locationOptional = _locationOptional.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun setType(@IntBudgetTransactionType type: Int) {
@@ -89,8 +92,21 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
         _periodicCategory.value = periodicCategory
     }
 
-    fun setLocation(location: LatLng?) {
+    fun setLocation(location: LocationWithAddress?) {
         _locationOptional.value = location.asOptional()
+    }
+
+    private fun setLocationOptionalValue(latLng: LatLng?) {
+        if (latLng != null) {
+            viewModelScope.launch {
+                _locationOptional.value = LocationWithAddress(
+                    latLng,
+                    locationRepository.getAddressByCoordinates(latLng.latitude, latLng.longitude)
+                ).asOptional()
+            }
+        } else {
+            _locationOptional.value = Optional.empty()
+        }
     }
 
     fun onChoosePeriodicCategory() {
@@ -120,7 +136,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
             name = budgetTransactionInputBundle.name,
             amount = budgetTransactionInputBundle.amount,
             periodicCategoryId = _periodicCategory.value?.periodicCategoryId ?: Int.INVALID,
-            latLng = _locationOptional.value?.value
+            latLng = _locationOptional.value?.value?.latLng
         )
 
         return BudgetTransactionCreateEditValidator(_editedBudgetTransaction.value, validationBundle)

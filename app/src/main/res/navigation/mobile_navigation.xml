@@ -99,8 +99,8 @@
             android:label="location_selection_fragment"
             tools:layout="@layout/location_selection_fragment" >
             <argument
-                android:name="currentLatLng"
-                app:argType="com.google.android.gms.maps.model.LatLng"
+                android:name="currentLocation"
+                app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress"
                 app:nullable="true" />
         </fragment>
     </navigation>

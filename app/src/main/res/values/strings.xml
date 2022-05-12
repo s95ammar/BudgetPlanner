@@ -66,4 +66,7 @@
 
     <string name="format_lat_lng">(%f, %f)</string>
     <string name="choose_location">Choose location</string>
+    <string name="no_location_selected">No location selected</string>
+    <string name="choose_location_instruction">Tap and hold on the map to choose a location</string>
+    <string name="unknown_location">Unknown location</string>
 </resources>

@@ -5,12 +5,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import com.google.android.gms.maps.model.LatLng
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCreateEditBinding
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.BudgetTransactionInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategoryIdAndName
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation.BudgetTransactionCreateEditValidator
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.Keys
@@ -104,18 +104,16 @@ class BudgetTransactionCreateEditFragment :
         binding.textViewPeriodCategoryValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
     }
 
-    private fun setSelectedLocation(latLng: LatLng?) {
-        binding.textViewLocationValue.text = latLng?.let {
-            getString(R.string.format_lat_lng, it.latitude, it.longitude)
-        } ?: getString(R.string.choose_a_location)
-        val textColorRes = if (latLng == null) R.color.colorGray else R.color.colorBlack
+    private fun setSelectedLocation(location: LocationWithAddress?) {
+        binding.textViewLocationValue.text = location?.address ?: getString(R.string.choose_a_location)
+        val textColorRes = if (location == null) R.color.colorGray else R.color.colorBlack
         binding.textViewLocationValue.setTextColor(ContextCompat.getColor(requireContext(), textColorRes))
     }
 
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.ChoosePeriodicCategory -> listenAndNavigateToPeriodicCategorySelection(uiEvent.periodId)
-            is UiEvent.ChooseLocation -> listenAndNavigateToLocationSelection(uiEvent.currentLatLng)
+            is UiEvent.ChooseLocation -> listenAndNavigateToLocationSelection(uiEvent.currentLocation)
             is UiEvent.DisplayValidationResults -> handleValidationErrors(uiEvent.validationErrors)
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
             is UiEvent.Exit -> navController.navigateUp()
@@ -146,13 +144,13 @@ class BudgetTransactionCreateEditFragment :
         )
     }
 
-    private fun listenAndNavigateToLocationSelection(latLng: LatLng?) {
+    private fun listenAndNavigateToLocationSelection(location: LocationWithAddress?) {
         setFragmentResultListener(Keys.KEY_LOCATION_REQUEST) { _, bundle ->
             viewModel.setLocation(bundle.getParcelable(Keys.KEY_LOCATION))
         }
         navController.navigate(
             BudgetTransactionCreateEditFragmentDirections
-                .actionBudgetTransactionCreateEditFragmentToLocationSelectionFragment(latLng)
+                .actionBudgetTransactionCreateEditFragmentToLocationSelectionFragment(location)
         )
     }
 

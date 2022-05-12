@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -52,6 +53,10 @@ abstract class BaseFragment : Fragment, LoadingManager {
     fun showKeyboard() = keyboardManager?.showKeyboard()
 
     fun hideKeyboard() = keyboardManager?.hideKeyboard()
+
+    fun showSnackbar(@StringRes messageResId: Int) {
+        Snackbar.make(requireView(), messageResId, Snackbar.LENGTH_SHORT).show()
+    }
 
     fun showSnackbar(message: String) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
