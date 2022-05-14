@@ -23,6 +23,9 @@
             <action
                 android:id="@+id/action_navigation_dashboard_to_nested_period_create_edit"
                 app:destination="@id/nested_period_create_edit" />
+            <action
+                android:id="@+id/action_navigation_dashboard_to_budgetTransactionsMapFragment"
+                app:destination="@id/budgetTransactionsMapFragment" />
 
         </fragment>
 
@@ -102,6 +105,15 @@
                 android:name="currentLocation"
                 app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress"
                 app:nullable="true" />
+        </fragment>
+        <fragment
+            android:id="@+id/budgetTransactionsMapFragment"
+            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.BudgetTransactionsMapFragment"
+            android:label="budget_transactions_map_fragment"
+            tools:layout="@layout/budget_transactions_map_fragment" >
+            <argument
+                android:name="periodId"
+                app:argType="integer" />
         </fragment>
     </navigation>
 

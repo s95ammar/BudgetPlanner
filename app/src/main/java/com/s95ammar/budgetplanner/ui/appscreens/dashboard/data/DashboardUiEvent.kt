@@ -10,4 +10,5 @@ sealed class DashboardUiEvent {
     class NavigateToCreateBudgetTransaction(val periodId: Int) : DashboardUiEvent()
     class NavigateToEditBudgetTransaction(val periodId: Int, val budgetTransactionId: Int) : DashboardUiEvent()
     class DisplayLoadingState(val loadingState: LoadingState): DashboardUiEvent()
+    class NavigateToBudgetTransactionsMap(val periodId: Int) : DashboardUiEvent()
 }

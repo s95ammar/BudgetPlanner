@@ -148,6 +148,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
             is UiEvent.NavigateToCreateBudgetTransaction -> navigateToCreateBudgetTransaction(uiEvent.periodId)
             is UiEvent.NavigateToEditBudgetTransaction -> navigateToEditBudgetTransaction(uiEvent.periodId, uiEvent.budgetTransactionId)
             is UiEvent.NavigateToEditPeriod -> navigateToEditPeriod(uiEvent.period)
+            is UiEvent.NavigateToBudgetTransactionsMap -> navigateToBudgetTransactionsMap(uiEvent.periodId)
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
         }
     }
@@ -196,6 +197,12 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
 
     private fun navigateToEditPeriod(period: PeriodSimple) {
         navController.navigate(DashboardFragmentDirections.actionNavigationDashboardToNestedPeriodCreateEdit(period))
+    }
+
+    private fun navigateToBudgetTransactionsMap(periodId: Int) {
+        navController.navigate(
+            DashboardFragmentDirections.actionNavigationDashboardToBudgetTransactionsMapFragment(periodId)
+        )
     }
 
     private fun listenToPeriodsListChangedResult() {

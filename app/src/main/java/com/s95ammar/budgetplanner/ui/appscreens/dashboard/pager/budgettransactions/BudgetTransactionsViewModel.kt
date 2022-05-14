@@ -29,10 +29,10 @@ class BudgetTransactionsViewModel @Inject constructor(
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
     val budgetTransactionItems = _budgetTransactions.map { list ->
-        if (list.isNotEmpty()) {
+        if (list.any { it.latLng != null }) {
             buildList {
-                add(BudgetTransactionsItemType.ViewOnMap(list.first().periodId))
                 addAll(list.map { BudgetTransactionsItemType.ListItem(it) })
+                add(BudgetTransactionsItemType.ViewOnMap(list.first().periodId))
             }
         } else {
             emptyList()

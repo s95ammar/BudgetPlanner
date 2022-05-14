@@ -109,8 +109,7 @@ class BudgetTransactionsFragment : BaseViewBinderFragment<FragmentDashboardTrans
     }
 
     private fun showOnMap() {
-        // TODO
-        showSnackbar("to be implemented")
+        sharedViewModel.onNavigateToBudgetTransactionsMap()
     }
 
     override fun showLoading() {

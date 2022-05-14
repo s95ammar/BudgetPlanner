@@ -30,4 +30,10 @@ class DashboardSharedViewModel @Inject constructor(
     fun onNavigateToEditBudgetTransaction(periodId: Int, budgetTransactionId: Int) {
         _performUiEvent.call(UiEvent.NavigateToEditBudgetTransaction(periodId, budgetTransactionId))
     }
+
+    fun onNavigateToBudgetTransactionsMap() {
+        _selectedPeriodId.value?.let { periodId ->
+            _performUiEvent.call(UiEvent.NavigateToBudgetTransactionsMap(periodId))
+        }
+    }
 }

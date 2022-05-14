@@ -2,6 +2,7 @@ package com.s95ammar.budgetplanner.ui.common.viewbinding
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.viewbinding.ViewBinding
 import com.s95ammar.budgetplanner.ui.base.BaseFragment
@@ -17,6 +18,7 @@ abstract class BaseViewBinderFragment<VB : ViewBinding> : BaseFragment {
 
     abstract fun initViewBinding(view: View): VB
 
+    @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = initViewBinding(view)
         super.onViewCreated(view, savedInstanceState)

@@ -5,6 +5,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import com.s95ammar.budgetplanner.util.flowOnDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,13 +14,14 @@ class PeriodRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) {
 
-    fun getPeriodJoinEntityListFlow(id: Int) = localDataSource.getPeriodJoinEntityListFlow(id)
-
     fun getPeriodEditDataFlow(periodId: Int) = localDataSource.getPeriodEditDataFlow(periodId)
+        .flowOn(Dispatchers.IO)
 
     fun getPeriodInsertTemplateFlow() = localDataSource.getPeriodInsertTemplateFlow()
+        .flowOn(Dispatchers.IO)
 
     fun getAllUserPeriodsFlow() = localDataSource.getAllPeriodsFlow()
+        .flowOn(Dispatchers.IO)
 
     fun insertPeriodWithPeriodicCategoriesFlow(
         period: PeriodEntity,
@@ -34,7 +36,7 @@ class PeriodRepository @Inject constructor(
         periodicCategoriesToUpdate: List<PeriodicCategoryEntity>,
         periodicCategoriesToInsert: List<PeriodicCategoryEntity>
     ) = flowOnDispatcher(Dispatchers.IO) {
-        localDataSource.updatePeriodWithPeriodicCategoriesFlow(
+        localDataSource.updatePeriodWithPeriodicCategories(
             period,
             periodicCategoriesIdsToDelete,
             periodicCategoriesToUpdate,

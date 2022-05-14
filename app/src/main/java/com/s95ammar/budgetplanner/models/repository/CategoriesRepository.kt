@@ -4,6 +4,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.LocalDataSource
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
 import com.s95ammar.budgetplanner.util.flowOnDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,8 +13,10 @@ class CategoriesRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) {
     fun getAllUserCategoriesFlow() = localDataSource.getAllCategoriesFlow()
+        .flowOn(Dispatchers.IO)
 
     fun getCategoryFlow(id: Int) = localDataSource.getCategoryFlow(id)
+        .flowOn(Dispatchers.IO)
 
     fun insertCategoryFlow(category: CategoryEntity) = flowOnDispatcher(Dispatchers.IO) {
         localDataSource.insertCategory(category)
