@@ -3,7 +3,7 @@ package com.s95ammar.budgetplanner.models.repository
 import com.s95ammar.budgetplanner.models.datasource.local.LocalDataSource
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
-import com.s95ammar.budgetplanner.util.flowOnDispatcher
+import com.s95ammar.budgetplanner.util.flowOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -26,26 +26,26 @@ class PeriodRepository @Inject constructor(
     fun insertPeriodWithPeriodicCategoriesFlow(
         period: PeriodEntity,
         periodicCategories: List<PeriodicCategoryEntity>
-    ) = flowOnDispatcher(Dispatchers.IO) {
+    ) = flowOf {
         localDataSource.insertPeriodWithPeriodicCategories(period, periodicCategories)
-    }
+    }.flowOn(Dispatchers.IO)
 
     fun updatePeriodWithPeriodicCategoriesFlow(
         period: PeriodEntity,
         periodicCategoriesIdsToDelete: List<Int>,
         periodicCategoriesToUpdate: List<PeriodicCategoryEntity>,
         periodicCategoriesToInsert: List<PeriodicCategoryEntity>
-    ) = flowOnDispatcher(Dispatchers.IO) {
+    ) = flowOf {
         localDataSource.updatePeriodWithPeriodicCategories(
             period,
             periodicCategoriesIdsToDelete,
             periodicCategoriesToUpdate,
             periodicCategoriesToInsert
         )
-    }
+    }.flowOn(Dispatchers.IO)
 
-    fun deletePeriodFlow(id: Int) = flowOnDispatcher(Dispatchers.IO) {
+    fun deletePeriodFlow(id: Int) = flowOf {
         localDataSource.deletePeriod(id)
-    }
+    }.flowOn(Dispatchers.IO)
 
 }
