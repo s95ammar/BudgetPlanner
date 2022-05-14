@@ -11,6 +11,7 @@ import com.s95ammar.budgetplanner.databinding.FragmentDashboardTransactionsBindi
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.adapter.BudgetTransactionsAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.adapter.BudgetTransactionsItemType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.data.BudgetTransactionsUiEvent
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment
@@ -28,7 +29,13 @@ class BudgetTransactionsFragment : BaseViewBinderFragment<FragmentDashboardTrans
     private val viewModel: BudgetTransactionsViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
 
-    private val adapter by lazy { BudgetTransactionsAdapter(viewModel::onBudgetTransactionClick, viewModel::onBudgetTransactionLongClick) }
+    private val adapter by lazy {
+        BudgetTransactionsAdapter(
+            viewModel::onShowOnMap,
+            viewModel::onBudgetTransactionClick,
+            viewModel::onBudgetTransactionLongClick
+        )
+    }
 
     override fun initViewBinding(view: View): FragmentDashboardTransactionsBinding {
         return FragmentDashboardTransactionsBinding.bind(view)
@@ -47,16 +54,18 @@ class BudgetTransactionsFragment : BaseViewBinderFragment<FragmentDashboardTrans
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.budgetTransactions.observe(viewLifecycleOwner) { setBudgetTransactions(it) }
+        viewModel.budgetTransactionItems.observe(viewLifecycleOwner) { setBudgetTransactions(it) }
         sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.onPeriodChanged(it) }
 
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
-    private fun setBudgetTransactions(budgetTransactions: List<BudgetTransaction>) {
-        adapter.submitList(budgetTransactions)
-        binding.recyclerView.isGone = budgetTransactions.isEmpty()
-        binding.instructionsLayout.root.isVisible = budgetTransactions.isEmpty()
+    private fun setBudgetTransactions(items: List<BudgetTransactionsItemType>) {
+        adapter.submitList(items) {
+            if (items.isNotEmpty()) binding.recyclerView.layoutManager?.scrollToPosition(0)
+        }
+        binding.recyclerView.isGone = items.isEmpty()
+        binding.instructionsLayout.root.isVisible = items.isEmpty()
         binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_budget_transactions_screen_no_data)
 
     }
@@ -69,6 +78,7 @@ class BudgetTransactionsFragment : BaseViewBinderFragment<FragmentDashboardTrans
                 uiEvent.budgetTransactionId
             )
             is BudgetTransactionsUiEvent.ShowBottomSheet -> showBottomSheet(uiEvent.budgetTransaction)
+            is BudgetTransactionsUiEvent.ShowOnMap -> showOnMap()
         }
     }
 
@@ -96,6 +106,11 @@ class BudgetTransactionsFragment : BaseViewBinderFragment<FragmentDashboardTrans
                 }
             }
         }.show(childFragmentManager, EditDeleteBottomSheetDialogFragment.TAG)
+    }
+
+    private fun showOnMap() {
+        // TODO
+        showSnackbar("to be implemented")
     }
 
     override fun showLoading() {

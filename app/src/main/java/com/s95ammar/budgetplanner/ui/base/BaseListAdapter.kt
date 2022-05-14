@@ -29,7 +29,7 @@ abstract class BaseListAdapter<T, VH : BaseListAdapter.BaseViewHolder<T>>(diffCa
     }
 
     abstract class BaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        abstract fun bind(item: T, payloads: PayloadsHolder)
+        open fun bind(item: T, payloads: PayloadsHolder) {}
         protected fun getColor(@ColorRes colorResId: Int) = ContextCompat.getColor(itemView.context, colorResId)
         protected fun getString(@StringRes stringResId: Int) = itemView.resources.getString(stringResId)
         protected fun getString(@StringRes stringResId: Int, vararg formatArgs: Any) = itemView.resources.getString(stringResId, *formatArgs)

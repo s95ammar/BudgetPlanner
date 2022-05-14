@@ -3,6 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.data
 import androidx.annotation.IntDef
 
 @IntDef(
+    IntDashboardFabType.FAB_NONE,
     IntDashboardFabType.FAB_EDIT,
     IntDashboardFabType.FAB_ADD
 )

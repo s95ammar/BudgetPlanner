@@ -1,67 +1,124 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.adapter
 
-import android.os.Build
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemBudgetTransactionBinding
+import com.s95ammar.budgetplanner.databinding.ItemViewOnMapBinding
+import com.s95ammar.budgetplanner.databinding.LayoutEmptyBinding
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
+import com.s95ammar.budgetplanner.util.currentLocale
 import java.text.SimpleDateFormat
 import java.util.Date
 
 class BudgetTransactionsAdapter(
-    private val onItemClick: (Int) -> Unit,
-    private val onItemLongClick: (Int) -> Unit
-) : BaseListAdapter<BudgetTransaction, BudgetTransactionsAdapter.BudgetTransactionsViewHolder>(DiffUtilCallback()) {
+    private val onMapClick: () -> Unit,
+    private val onItemClick: (BudgetTransaction) -> Unit,
+    private val onItemLongClick: (BudgetTransaction) -> Unit,
+) : BaseListAdapter<BudgetTransactionsItemType, BudgetTransactionsAdapter.ViewHolder>(DiffUtilCallback()) {
 
     companion object {
-        class DiffUtilCallback : DiffUtil.ItemCallback<BudgetTransaction>() {
-            override fun areItemsTheSame(oldItem: BudgetTransaction, newItem: BudgetTransaction): Boolean {
-                return (oldItem.id == newItem.id)
+        class DiffUtilCallback : DiffUtil.ItemCallback<BudgetTransactionsItemType>() {
+            override fun areItemsTheSame(oldItem: BudgetTransactionsItemType, newItem: BudgetTransactionsItemType): Boolean {
+                return when (oldItem) {
+                    is BudgetTransactionsItemType.ViewOnMap -> {
+                        oldItem.periodId == (newItem as? BudgetTransactionsItemType.ViewOnMap)?.periodId
+                    }
+                    is BudgetTransactionsItemType.ListItem -> {
+                        oldItem.budgetTransaction.id == (newItem as? BudgetTransactionsItemType.ListItem)?.budgetTransaction?.id
+                    }
+                }
             }
 
-            override fun areContentsTheSame(oldItem: BudgetTransaction, newItem: BudgetTransaction): Boolean {
+            override fun areContentsTheSame(oldItem: BudgetTransactionsItemType, newItem: BudgetTransactionsItemType): Boolean {
                 return (oldItem == newItem)
             }
 
-            override fun getChangePayload(oldItem: BudgetTransaction, newItem: BudgetTransaction) = PayloadsHolder().apply {
-                addPayloadIfNotEqual(PayloadType.NAME, oldItem to newItem, BudgetTransaction::name)
-                addPayloadIfNotEqual(PayloadType.TYPE, oldItem to newItem, BudgetTransaction::type)
-                addPayloadIfNotEqual(PayloadType.AMOUNT, oldItem to newItem, BudgetTransaction::amount)
-                addPayloadIfNotEqual(PayloadType.CREATION_UNIX_MS, oldItem to newItem, BudgetTransaction::creationUnixMs)
-                addPayloadIfNotEqual(PayloadType.CATEGORY_NAME, oldItem to newItem, BudgetTransaction::categoryName)
+            override fun getChangePayload(
+                oldItem: BudgetTransactionsItemType,
+                newItem: BudgetTransactionsItemType
+            ): PayloadsHolder {
+                return when (oldItem) {
+                    is BudgetTransactionsItemType.ViewOnMap -> PayloadsHolder()
+                    is BudgetTransactionsItemType.ListItem -> {
+                        PayloadsHolder().apply {
+                            if (newItem is BudgetTransactionsItemType.ListItem) {
+                                val oldBtItem = oldItem.budgetTransaction
+                                val newBtItem = newItem.budgetTransaction
+                                addPayloadIfNotEqual(PayloadType.NAME, oldBtItem to newBtItem, BudgetTransaction::name)
+                                addPayloadIfNotEqual(PayloadType.TYPE, oldBtItem to newBtItem, BudgetTransaction::type)
+                                addPayloadIfNotEqual(PayloadType.AMOUNT, oldBtItem to newBtItem, BudgetTransaction::amount)
+                                addPayloadIfNotEqual(
+                                    PayloadType.CREATION_UNIX_MS,
+                                    oldBtItem to newBtItem,
+                                    BudgetTransaction::creationUnixMs
+                                )
+                                addPayloadIfNotEqual(PayloadType.CATEGORY_NAME, oldBtItem to newBtItem, BudgetTransaction::categoryName)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BudgetTransactionsViewHolder {
-        return BudgetTransactionsViewHolder(
-            onItemClick,
-            onItemLongClick,
-            ItemBudgetTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is BudgetTransactionsItemType.ViewOnMap -> R.layout.item_view_on_map
+            is BudgetTransactionsItemType.ListItem -> R.layout.item_budget_transaction
+        }
     }
 
-    class BudgetTransactionsViewHolder(
-        private val onItemClick: (Int) -> Unit,
-        private val onItemLongClick: (Int) -> Unit,
-        private val binding: ItemBudgetTransactionBinding
-    ) : BaseListAdapter.BaseViewHolder<BudgetTransaction>(binding.root) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return when (viewType) {
+            R.layout.item_view_on_map -> ViewOnMapViewHolder(
+                onMapClick,
+                ItemViewOnMapBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+            R.layout.item_budget_transaction -> BudgetTransactionListItemViewHolder(
+                onItemClick,
+                onItemLongClick,
+                ItemBudgetTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+            else -> EmptyViewHolder(
+                LayoutEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+        }
+    }
+
+    sealed class ViewHolder(view: View) : BaseViewHolder<BudgetTransactionsItemType>(view)
+
+    class EmptyViewHolder(binding: LayoutEmptyBinding) : ViewHolder(binding.root)
+
+    class ViewOnMapViewHolder(
+        private val onItemClick: () -> Unit,
+        private val binding: ItemViewOnMapBinding
+    ) : ViewHolder(binding.root) {
 
         init {
-            itemView.setOnClickListener { onItemClick(adapterPosition) }
-            itemView.setOnLongClickListener { onItemLongClick(adapterPosition); true }
+            binding.viewOnMapButton.setOnClickListener { onItemClick() }
         }
+    }
 
-        override fun bind(item: BudgetTransaction, payloads: PayloadsHolder) {
-            if (payloads.shouldUpdate(PayloadType.NAME)) setName(item.name)
-            if (payloads.shouldUpdate(PayloadType.TYPE)) setTypeAndAmount(item.amount, item.type)
-            if (payloads.shouldUpdate(PayloadType.AMOUNT)) setTypeAndAmount(item.amount, item.type)
-            if (payloads.shouldUpdate(PayloadType.CREATION_UNIX_MS)) setCreationUnixMs(item.creationUnixMs)
-            if (payloads.shouldUpdate(PayloadType.CATEGORY_NAME)) setCategoryName(item.categoryName)
+    class BudgetTransactionListItemViewHolder(
+        private val onItemClick: (BudgetTransaction) -> Unit,
+        private val onItemLongClick: (BudgetTransaction) -> Unit,
+        private val binding: ItemBudgetTransactionBinding
+    ) : ViewHolder(binding.root) {
+
+        override fun bind(item: BudgetTransactionsItemType, payloads: PayloadsHolder) {
+            val bt = (item as BudgetTransactionsItemType.ListItem).budgetTransaction
+            itemView.setOnClickListener { onItemClick(bt) }
+            itemView.setOnLongClickListener { onItemLongClick(bt); true }
+            if (payloads.shouldUpdate(PayloadType.NAME)) setName(bt.name)
+            if (payloads.shouldUpdate(PayloadType.TYPE)) setTypeAndAmount(bt.amount, bt.type)
+            if (payloads.shouldUpdate(PayloadType.AMOUNT)) setTypeAndAmount(bt.amount, bt.type)
+            if (payloads.shouldUpdate(PayloadType.CREATION_UNIX_MS)) setCreationUnixMs(bt.creationUnixMs)
+            if (payloads.shouldUpdate(PayloadType.CATEGORY_NAME)) setCategoryName(bt.categoryName)
         }
 
         private fun setName(name: String) {
@@ -69,8 +126,7 @@ class BudgetTransactionsAdapter(
         }
 
         private fun setTypeAndAmount(amount: Int, @IntBudgetTransactionType type: Int) {
-            // TODO: thousands separator
-            val amountFormattedString = amount.toString()
+            val amountFormattedString = getString(R.string.format_with_thousands_separator, amount)
             when (type) {
                 IntBudgetTransactionType.EXPENSE -> {
                     binding.textViewAmount.setTextColor(getColor(R.color.colorRed))
@@ -85,15 +141,10 @@ class BudgetTransactionsAdapter(
             }
         }
 
-        @Suppress("Deprecation")
         private fun setCreationUnixMs(creationUnixMs: Long) {
             // TODO: format date properly
 
-
-            val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                itemView.resources.configuration.locales[0]
-            else
-                itemView.resources.configuration.locale
+            val locale = itemView.context.currentLocale
 
             binding.textViewDateTime.text = SimpleDateFormat("MMM dd yyyy HH:mm", locale).format(Date(creationUnixMs))
         }
