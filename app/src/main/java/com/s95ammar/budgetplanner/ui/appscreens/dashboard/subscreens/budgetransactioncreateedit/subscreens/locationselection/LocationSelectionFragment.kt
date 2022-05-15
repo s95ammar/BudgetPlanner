@@ -21,6 +21,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransa
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
+import com.s95ammar.budgetplanner.util.GOOGLE_MAPS_DEFAULT_ZOOM
 import com.s95ammar.budgetplanner.util.Optional
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,10 +30,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class LocationSelectionFragment : BaseViewBinderFragment<LocationSelectionFragmentBinding>(
     R.layout.location_selection_fragment
 ), OnMapReadyCallback {
-
-    companion object {
-        const val GOOGLE_MAPS_DEFAULT_ZOOM = 16f
-    }
 
     private val viewModel: LocationSelectionViewModel by viewModels()
     private lateinit var googleMap: GoogleMap

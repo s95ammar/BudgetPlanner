@@ -18,7 +18,7 @@
         tools:background="@color/colorRed" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/text_view_category_name"
+        android:id="@+id/text_view_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_8sdp"
@@ -31,10 +31,10 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/view_type"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Out with friends test long long " />
+        tools:text="At Satori with Friends test long long long long long long long long" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/text_view_name"
+        android:id="@+id/text_view_category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_4sdp"
@@ -46,9 +46,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/text_view_category_name"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_category_name"
-        tools:text="At Satori with Friends test long long long long long long long long" />
+        app:layout_constraintStart_toStartOf="@+id/text_view_name"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_name"
+        tools:text="Out with friends test long long long long long" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_view_amount"
@@ -62,7 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/text_view_category_name"
+        app:layout_constraintTop_toTopOf="@+id/text_view_name"
         tools:text="-1,500"
         tools:textColor="@color/colorRed" />
 
@@ -70,14 +70,15 @@
         android:id="@+id/text_view_date_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
         android:ellipsize="marquee"
         android:singleLine="true"
         android:textAppearance="@style/TextDescGray12sdp"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="@+id/text_view_amount"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/text_view_name"
-        app:layout_constraintTop_toTopOf="@+id/text_view_name"
+        app:layout_constraintStart_toEndOf="@+id/text_view_category_name"
+        app:layout_constraintTop_toTopOf="@+id/text_view_category_name"
         tools:text="Oct 23, 8:30 PM" />
 
     <androidx.constraintlayout.widget.Guideline

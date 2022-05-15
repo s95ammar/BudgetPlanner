@@ -29,13 +29,11 @@ class BudgetTransactionsViewModel @Inject constructor(
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
     val budgetTransactionItems = _budgetTransactions.map { list ->
-        if (list.any { it.latLng != null }) {
-            buildList {
-                addAll(list.map { BudgetTransactionsItemType.ListItem(it) })
+        buildList {
+            addAll(list.map { BudgetTransactionsItemType.ListItem(it) })
+            if (list.any { it.latLng != null }) {
                 add(BudgetTransactionsItemType.ViewOnMap(list.first().periodId))
             }
-        } else {
-            emptyList()
         }
     }
     val performUiEvent = _performUiEvent.asEventLiveData()

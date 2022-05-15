@@ -8,7 +8,9 @@ data class BudgetTransactionClusterItem(
     val name: String,
     @IntBudgetTransactionType val type: Int,
     val latLng: LatLng,
-    val amount: Int
+    val amount: Int,
+    val creationUnixMs: Long,
+    val categoryName: String
 ) : ClusterItem {
 
     override fun getPosition(): LatLng {

@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="@string/expenses_map"
+            app:title="@string/transactions_map"
             app:titleTextAppearance="@style/TextTitleWhiteBold16sdp" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />

@@ -126,16 +126,15 @@ class BudgetTransactionsAdapter(
         }
 
         private fun setTypeAndAmount(amount: Int, @IntBudgetTransactionType type: Int) {
-            val amountFormattedString = getString(R.string.format_with_thousands_separator, amount)
             when (type) {
                 IntBudgetTransactionType.EXPENSE -> {
+                    binding.textViewAmount.text = getString(R.string.format_budget_transaction_amount, -amount)
                     binding.textViewAmount.setTextColor(getColor(R.color.colorRed))
-                    binding.textViewAmount.text = getString(R.string.format_minus_sign_prefix, amountFormattedString)
                     binding.viewType.setBackgroundColor(getColor(R.color.colorRed))
                 }
                 IntBudgetTransactionType.INCOME -> {
+                    binding.textViewAmount.text = getString(R.string.format_budget_transaction_amount, amount)
                     binding.textViewAmount.setTextColor(getColor(R.color.colorGreen))
-                    binding.textViewAmount.text = getString(R.string.format_plus_sign_prefix, amountFormattedString)
                     binding.viewType.setBackgroundColor(getColor(R.color.colorGreen))
                 }
             }
