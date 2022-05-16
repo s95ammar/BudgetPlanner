@@ -3,7 +3,6 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data
 import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
 import com.s95ammar.budgetplanner.models.BaseEntityMapper
-import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetTransactionJoinEntity
 import kotlinx.parcelize.Parcelize
 
@@ -11,8 +10,7 @@ import kotlinx.parcelize.Parcelize
 data class BudgetTransaction(
     val id: Int,
     val name: String,
-    @IntBudgetTransactionType val type: Int,
-    val amount: Int,
+    val amount: Double,
     val latLng: LatLng?,
     val creationUnixMs: Long,
     val periodId: Int,
@@ -26,7 +24,6 @@ data class BudgetTransaction(
                 BudgetTransaction(
                     it.id,
                     it.name,
-                    it.type,
                     it.amount,
                     it.latLng?.let { latLng -> LatLng(latLng.lat, latLng.lng) },
                     it.creationUnixMs,

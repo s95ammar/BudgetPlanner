@@ -1,5 +1,6 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation
 
+import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.LatLngEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
@@ -7,6 +8,7 @@ import com.s95ammar.budgetplanner.ui.common.validation.UnhandledValidationExcept
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
 import com.s95ammar.budgetplanner.util.INVALID
+import com.s95ammar.budgetplanner.util.roundToTwoDecimals
 
 class BudgetTransactionCreateEditValidator(
     private val editedBudgetTransaction: BudgetTransaction?,
@@ -26,14 +28,11 @@ class BudgetTransactionCreateEditValidator(
     }
 
     override fun provideOutput(input: BudgetTransactionValidationBundle): BudgetTransactionEntity {
-        val amount = input.amount.toIntOrNull() ?: throw UnhandledValidationException(
-            "${BudgetTransactionValidationBundle::amount.name} is not a valid Int. Actual value = ${input.amount}"
-        )
+        val amount = getActualAmountFromInput(input)
 
         return if (editedBudgetTransaction == null) {
             BudgetTransactionEntity(
                 name = input.name,
-                type = input.type,
                 amount = amount,
                 periodicCategoryId = input.periodicCategoryId,
                 latLng = LatLngEntity.EntityMapper.toEntity(input.latLng)
@@ -41,7 +40,6 @@ class BudgetTransactionCreateEditValidator(
         } else {
             BudgetTransactionEntity(
                 name = input.name,
-                type = input.type,
                 amount = amount,
                 periodicCategoryId = input.periodicCategoryId,
                 latLng = LatLngEntity.EntityMapper.toEntity(input.latLng),
@@ -52,7 +50,7 @@ class BudgetTransactionCreateEditValidator(
         }
     }
 
-    override fun provideViewValidationList(): List<ViewValidation> {
+    override fun provideViewValidationList(input: BudgetTransactionValidationBundle): List<ViewValidation> {
         val caseEmptyName = ViewValidation.Case(Errors.EMPTY_NAME) { input.name.isEmpty() }
         val caseEmptyAmount = ViewValidation.Case(Errors.EMPTY_AMOUNT) { input.amount.isEmpty() }
         val casePeriodicCategoryNotSelected =
@@ -63,5 +61,15 @@ class BudgetTransactionCreateEditValidator(
             ViewValidation(ViewKeys.VIEW_AMOUNT, listOf(caseEmptyAmount)),
             ViewValidation(ViewKeys.VIEW_CATEGORY, listOf(casePeriodicCategoryNotSelected))
         )
+    }
+
+    private fun getActualAmountFromInput(input: BudgetTransactionValidationBundle): Double {
+        return input.amount
+            .toDoubleOrNull()
+            ?.let { if (input.type == IntBudgetTransactionType.EXPENSE) -it else it }
+            ?.roundToTwoDecimals()
+            ?: throw UnhandledValidationException(
+                "${BudgetTransactionValidationBundle::amount.name} is not a valid Double value. Actual value = ${input.amount}"
+            )
     }
 }

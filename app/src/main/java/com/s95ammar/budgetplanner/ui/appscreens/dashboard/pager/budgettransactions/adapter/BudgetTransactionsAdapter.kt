@@ -3,6 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransacti
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemBudgetTransactionBinding
@@ -12,6 +13,7 @@ import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.util.currentLocale
+import com.s95ammar.budgetplanner.util.getAmountFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -50,7 +52,6 @@ class BudgetTransactionsAdapter(
                                 val oldBtItem = oldItem.budgetTransaction
                                 val newBtItem = newItem.budgetTransaction
                                 addPayloadIfNotEqual(PayloadType.NAME, oldBtItem to newBtItem, BudgetTransaction::name)
-                                addPayloadIfNotEqual(PayloadType.TYPE, oldBtItem to newBtItem, BudgetTransaction::type)
                                 addPayloadIfNotEqual(PayloadType.AMOUNT, oldBtItem to newBtItem, BudgetTransaction::amount)
                                 addPayloadIfNotEqual(
                                     PayloadType.CREATION_UNIX_MS,
@@ -115,8 +116,7 @@ class BudgetTransactionsAdapter(
             itemView.setOnClickListener { onItemClick(bt) }
             itemView.setOnLongClickListener { onItemLongClick(bt); true }
             if (payloads.shouldUpdate(PayloadType.NAME)) setName(bt.name)
-            if (payloads.shouldUpdate(PayloadType.TYPE)) setTypeAndAmount(bt.amount, bt.type)
-            if (payloads.shouldUpdate(PayloadType.AMOUNT)) setTypeAndAmount(bt.amount, bt.type)
+            if (payloads.shouldUpdate(PayloadType.AMOUNT)) setTypeAndAmount(bt.amount)
             if (payloads.shouldUpdate(PayloadType.CREATION_UNIX_MS)) setCreationUnixMs(bt.creationUnixMs)
             if (payloads.shouldUpdate(PayloadType.CATEGORY_NAME)) setCategoryName(bt.categoryName)
         }
@@ -125,19 +125,12 @@ class BudgetTransactionsAdapter(
             binding.textViewName.text = name
         }
 
-        private fun setTypeAndAmount(amount: Int, @IntBudgetTransactionType type: Int) {
-            when (type) {
-                IntBudgetTransactionType.EXPENSE -> {
-                    binding.textViewAmount.text = getString(R.string.format_budget_transaction_amount, -amount)
-                    binding.textViewAmount.setTextColor(getColor(R.color.colorRed))
-                    binding.viewType.setBackgroundColor(getColor(R.color.colorRed))
-                }
-                IntBudgetTransactionType.INCOME -> {
-                    binding.textViewAmount.text = getString(R.string.format_budget_transaction_amount, amount)
-                    binding.textViewAmount.setTextColor(getColor(R.color.colorGreen))
-                    binding.viewType.setBackgroundColor(getColor(R.color.colorGreen))
-                }
-            }
+        private fun setTypeAndAmount(amount: Double) {
+            val type = IntBudgetTransactionType.getByAmount(amount)
+            val color = ContextCompat.getColor(itemView.context, IntBudgetTransactionType.getColorRes(type))
+            binding.textViewAmount.text = getString(getAmountFormat(amount), amount)
+            binding.textViewAmount.setTextColor(color)
+            binding.viewType.setBackgroundColor(color)
         }
 
         private fun setCreationUnixMs(creationUnixMs: Long) {
@@ -155,10 +148,9 @@ class BudgetTransactionsAdapter(
 
     object PayloadType {
         const val NAME = 1
-        const val TYPE = 2
-        const val AMOUNT = 3
-        const val CREATION_UNIX_MS = 4
-        const val CATEGORY_NAME = 5
+        const val AMOUNT = 2
+        const val CREATION_UNIX_MS = 3
+        const val CATEGORY_NAME = 4
     }
 
 }

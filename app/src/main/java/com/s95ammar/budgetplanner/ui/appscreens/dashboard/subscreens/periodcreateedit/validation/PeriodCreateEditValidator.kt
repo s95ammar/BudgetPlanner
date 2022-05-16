@@ -21,12 +21,12 @@ class PeriodCreateEditValidator(
     }
 
     override fun provideOutput(input: PeriodInputBundle): PeriodEntity {
-        return PeriodEntity(input.name, input.max?.toIntOrNull()).apply {
+        return PeriodEntity(input.name).apply {
             if (periodId != Int.INVALID) id = periodId
         }
     }
 
-    override fun provideViewValidationList(): List<ViewValidation> {
+    override fun provideViewValidationList(input: PeriodInputBundle): List<ViewValidation> {
         val caseEmptyTitle = ViewValidation.Case(Errors.EMPTY_NAME) { input.name.isEmpty() }
 
         return listOf(

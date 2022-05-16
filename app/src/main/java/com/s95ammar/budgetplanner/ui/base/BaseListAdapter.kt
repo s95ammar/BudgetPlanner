@@ -45,6 +45,12 @@ abstract class BaseListAdapter<T, VH : BaseListAdapter.BaseViewHolder<T>>(diffCa
             }
         }
 
+        fun <T> addPayloadIfNot(payloadType: Int, itemPair: Pair<T, T>, predicate: () -> Boolean) {
+            itemPair.let {
+                if (!predicate()) payloadTypes.add(payloadType)
+            }
+        }
+
         fun shouldUpdate(payloadType: Int): Boolean {
             return payloadTypes.isEmpty() || payloadTypes.contains(payloadType)
         }

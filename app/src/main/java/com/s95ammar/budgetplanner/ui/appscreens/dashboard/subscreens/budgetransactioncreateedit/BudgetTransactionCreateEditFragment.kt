@@ -18,6 +18,7 @@ import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.doOnTabSelected
+import com.s95ammar.budgetplanner.util.getAmountFormat
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.text
 import com.s95ammar.budgetplanner.util.updateTextIfNotEquals
@@ -66,7 +67,7 @@ class BudgetTransactionCreateEditFragment :
         viewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
         viewModel.type.observe(viewLifecycleOwner) { setType(it) }
         viewModel.name.observe(viewLifecycleOwner) { setName(it) }
-        viewModel.amount.observe(viewLifecycleOwner) { setAmount(it) }
+        viewModel.amountInput.observe(viewLifecycleOwner) { setAmount(it) }
         viewModel.periodicCategory.observe(viewLifecycleOwner) { setSelectedPeriodicCategory(it) }
         viewModel.locationOptional.observe(viewLifecycleOwner) { setSelectedLocation(it?.value) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
@@ -95,8 +96,12 @@ class BudgetTransactionCreateEditFragment :
         binding.inputLayoutName.updateTextIfNotEquals(name)
     }
 
-    private fun setAmount(amount: Int) {
-        binding.inputLayoutAmount.updateTextIfNotEquals(amount.toString())
+    private fun setAmount(amount: Double) {
+        if (amount != binding.inputLayoutAmount.text?.toDoubleOrNull()) {
+            binding.inputLayoutAmount.updateTextIfNotEquals(
+                getString(getAmountFormat(amount, isForEditText = true), amount)
+            )
+        }
     }
 
     private fun setSelectedPeriodicCategory(periodicCategory: PeriodicCategoryIdAndName) {

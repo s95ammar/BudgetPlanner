@@ -12,7 +12,6 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
 )
 data class PeriodEntity(
     @ColumnInfo(collate = ColumnInfo.NOCASE) val name: String,
-    val max: Int?,
     val creationUnixMs: Long = System.currentTimeMillis()
 ) {
     @PrimaryKey(autoGenerate = true)

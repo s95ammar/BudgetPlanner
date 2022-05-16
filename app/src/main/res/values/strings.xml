@@ -22,7 +22,7 @@
     <string name="create">Create</string>
     <string name="save">Save</string>
     <string name="remove">Remove</string>
-    <string name="total_expenses_estimate_optional">Total expenses estimate (optional)</string>
+    <string name="estimate_optional">Estimate (optional)</string>
 
     <string name="error_something_went_wrong_title">Oops</string>
     <string name="format_error_something_went_wrong_desc">Something went wrong\n\n%s</string>
@@ -54,7 +54,10 @@
     <string name="choose_categories">Choose categories</string>
     <string name="category_unselectable">This category already has expenses/income created during this period</string>
 
-    <string name="format_budget_transaction_amount">%+,d</string>
+    <string name="format_budget_transaction_amount_no_decimals">%+,.0f</string>
+    <string name="format_budget_transaction_amount_two_decimals">%+,.2f</string>
+    <string name="format_budget_transaction_amount_no_decimals_edit_text">%.0f</string>
+    <string name="format_budget_transaction_amount_two_decimals_edit_text">%.2f</string>
 
     <string name="create_budget_transaction">Create expense or income</string>
     <string name="edit_budget_transaction">Edit expense or income</string>

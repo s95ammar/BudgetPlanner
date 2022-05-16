@@ -7,10 +7,10 @@ import androidx.core.view.isVisible
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.clustering.Cluster
-import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.LayoutBudgetTransactionsClusterInfoWindowBinding
-import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
+import com.s95ammar.budgetplanner.models.isExpense
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.data.BudgetTransactionClusterItem
+import com.s95ammar.budgetplanner.util.getAmountFormat
 
 
 class BudgetTransactionClusterInfoWindowAdapter(
@@ -28,19 +28,19 @@ class BudgetTransactionClusterInfoWindowAdapter(
     }
 
     fun updateWindowForItem(cluster: Cluster<BudgetTransactionClusterItem>) {
-        val (expenses, income) = cluster.items.partition { it.type == IntBudgetTransactionType.EXPENSE }
+        val (expenses, income) = cluster.items.partition { it.amount.isExpense() }
 
         val expensesSum = expenses.sumOf { it.amount }
-        binding.totalExpensesTextView.text = context.getString(R.string.format_budget_transaction_amount, -expensesSum)
+        binding.totalExpensesTextView.text = context.getString(getAmountFormat(expensesSum), expensesSum)
 
         val incomeSum = income.sumOf { it.amount }
-        binding.totalIncomeTextView.text = context.getString(R.string.format_budget_transaction_amount, incomeSum)
+        binding.totalIncomeTextView.text = context.getString(getAmountFormat(incomeSum), incomeSum)
 
-        val areExpenseViewsVisible = expensesSum > 0
+        val areExpenseViewsVisible = expenses.isNotEmpty()
         binding.totalExpensesKeyTextView.isVisible = areExpenseViewsVisible
         binding.totalExpensesTextView.isVisible = areExpenseViewsVisible
 
-        val areIncomeViewsVisible = incomeSum > 0
+        val areIncomeViewsVisible = income.isNotEmpty()
         binding.totalIncomeKeyTextView.isVisible = areIncomeViewsVisible
         binding.totalIncomeTextView.isVisible = areIncomeViewsVisible
     }

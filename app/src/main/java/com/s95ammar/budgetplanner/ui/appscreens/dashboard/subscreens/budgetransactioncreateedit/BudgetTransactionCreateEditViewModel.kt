@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.BudgetTransactionCreateEditFragmentArgs as FragmentArgs
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.BudgetTransactionCreateEditUiEvent as UiEvent
 
@@ -53,13 +54,13 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     }
 
     private val _type = MediatorLiveData(IntBudgetTransactionType.EXPENSE).apply {
-        addSource(_editedBudgetTransaction) { value = it.type }
+        addSource(_editedBudgetTransaction) { value = IntBudgetTransactionType.getByAmount(it.amount) }
     }
     private val _name = MediatorLiveData<String>().apply {
         addSource(_editedBudgetTransaction) { value = it.name }
     }
-    private val _amount = MediatorLiveData<Int>().apply {
-        addSource(_editedBudgetTransaction) { value = it.amount }
+    private val _amountInput = MediatorLiveData<Double>().apply {
+        addSource(_editedBudgetTransaction) { value = getDisplayedAmount(it.amount) }
     }
     private val _periodicCategory = MediatorLiveData<PeriodicCategoryIdAndName>().apply {
         addSource(_editedBudgetTransaction) { value = PeriodicCategoryIdAndName(it.periodicCategoryId, it.categoryName) }
@@ -72,9 +73,9 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     val mode = _mode.asLiveData()
     val type = _type.distinctUntilChanged()
     val name = _name.distinctUntilChanged()
-    val amount = _amount.distinctUntilChanged()
+    val amountInput = _amountInput.distinctUntilChanged()
     val periodicCategory = _periodicCategory.distinctUntilChanged()
-    val locationOptional = _locationOptional.asLiveData()
+    val locationOptional = _locationOptional.distinctUntilChanged()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun setType(@IntBudgetTransactionType type: Int) {
@@ -86,7 +87,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     }
 
     fun setAmount(amount: String) {
-        amount.toIntOrNull()?.let { _amount.value = it }
+        amount.toDoubleOrNull()?.let { _amountInput.value = it }
     }
 
     fun setPeriodicCategory(periodicCategory: PeriodicCategoryIdAndName) {
@@ -129,6 +130,10 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
 
     fun onBack() {
         _performUiEvent.call(UiEvent.Exit)
+    }
+
+    private fun getDisplayedAmount(actualAmount: Double): Double {
+        return actualAmount.absoluteValue
     }
 
     private fun createValidator(budgetTransactionInputBundle: BudgetTransactionInputBundle): BudgetTransactionCreateEditValidator {

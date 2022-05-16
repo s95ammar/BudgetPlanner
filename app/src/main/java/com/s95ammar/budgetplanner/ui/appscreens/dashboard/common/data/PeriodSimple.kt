@@ -8,14 +8,13 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PeriodSimple(
     val id: Int,
-    val name: String,
-    val max: Int?
+    val name: String
 ) : Parcelable {
     object Mapper : BaseEntityMapper<PeriodSimple, PeriodEntity> {
 
         override fun fromEntity(entity: PeriodEntity?): PeriodSimple? {
             return entity?.let {
-                PeriodSimple(it.id, it.name, it.max)
+                PeriodSimple(it.id, it.name)
             }
         }
 

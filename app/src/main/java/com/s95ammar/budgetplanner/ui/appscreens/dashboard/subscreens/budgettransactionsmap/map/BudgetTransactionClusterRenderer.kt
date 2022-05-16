@@ -10,7 +10,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
-import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
+import com.s95ammar.budgetplanner.models.isExpense
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.data.BudgetTransactionClusterItem
 import com.s95ammar.budgetplanner.util.COLOR_PRIMARY_HEX
 
@@ -42,10 +42,10 @@ class BudgetTransactionClusterRenderer(
 
     private fun getMarkerIconDescriptor(item: BudgetTransactionClusterItem): BitmapDescriptor {
         return BitmapDescriptorFactory.defaultMarker(
-            if (item.type == IntBudgetTransactionType.INCOME) {
-                BitmapDescriptorFactory.HUE_GREEN
-            } else {
+            if (item.amount.isExpense()) {
                 BitmapDescriptorFactory.HUE_RED
+            } else {
+                BitmapDescriptorFactory.HUE_GREEN
             }
         )
     }

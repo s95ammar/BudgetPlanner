@@ -3,7 +3,6 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettran
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.maps.model.LatLng
 import com.s95ammar.budgetplanner.models.repository.BudgetTransactionRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.data.BudgetTransactionClusterItem
 import com.s95ammar.budgetplanner.ui.common.LoadingState
@@ -47,16 +46,7 @@ class BudgetTransactionsMapViewModel @Inject constructor(
                 .collect { budgetTransactionJoinEntityList ->
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
                     _budgetTransactionClusterItems.value = budgetTransactionJoinEntityList
-                        .mapNotNull {
-                            BudgetTransactionClusterItem(
-                                it.name,
-                                it.type,
-                                it.latLng?.let { (lat, lng) -> LatLng(lat, lng) } ?: return@mapNotNull null,
-                                it.amount,
-                                it.creationUnixMs,
-                                it.categoryName
-                            )
-                        }
+                        .mapNotNull(BudgetTransactionClusterItem.EntityMapper::fromEntity)
                 }
         }
     }

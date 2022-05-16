@@ -7,11 +7,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
-import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.LayoutBudgetTransactionInfoWindowBinding
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.data.BudgetTransactionClusterItem
 import com.s95ammar.budgetplanner.util.currentLocale
+import com.s95ammar.budgetplanner.util.getAmountFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -31,7 +31,7 @@ class BudgetTransactionInfoWindowAdapter(
 
     fun updateWindowForItem(item: BudgetTransactionClusterItem) {
         setName(item.name)
-        setTypeAndAmount(item.amount, item.type)
+        setTypeAndAmount(item.amount)
         setCreationUnixMs(item.creationUnixMs)
         setCategoryName(item.categoryName)
     }
@@ -40,19 +40,12 @@ class BudgetTransactionInfoWindowAdapter(
         binding.layoutItem.textViewName.text = name
     }
 
-    private fun setTypeAndAmount(amount: Int, @IntBudgetTransactionType type: Int) {
-        when (type) {
-            IntBudgetTransactionType.EXPENSE -> {
-                binding.layoutItem.textViewAmount.text = context.getString(R.string.format_budget_transaction_amount, -amount)
-                binding.layoutItem.textViewAmount.setTextColor(ContextCompat.getColor(context, R.color.colorRed))
-                binding.layoutItem.viewType.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed))
-            }
-            IntBudgetTransactionType.INCOME -> {
-                binding.layoutItem.textViewAmount.text = context.getString(R.string.format_budget_transaction_amount, amount)
-                binding.layoutItem.textViewAmount.setTextColor(ContextCompat.getColor(context, R.color.colorGreen))
-                binding.layoutItem.viewType.setBackgroundColor(ContextCompat.getColor(context, R.color.colorGreen))
-            }
-        }
+    private fun setTypeAndAmount(amount: Double) {
+        val type = IntBudgetTransactionType.getByAmount(amount)
+        val color = ContextCompat.getColor(context, IntBudgetTransactionType.getColorRes(type))
+        binding.layoutItem.textViewAmount.text = context.getString(getAmountFormat(amount), amount)
+        binding.layoutItem.textViewAmount.setTextColor(color)
+        binding.layoutItem.viewType.setBackgroundColor(color)
         binding.layoutItem.viewType.isVisible = false // bugging out :/
     }
 

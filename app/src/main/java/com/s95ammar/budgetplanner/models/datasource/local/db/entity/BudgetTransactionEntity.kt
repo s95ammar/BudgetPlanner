@@ -6,7 +6,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConfig
 
 @Entity(
@@ -25,8 +24,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
 )
 data class BudgetTransactionEntity(
     val name: String,
-    @IntBudgetTransactionType val type: Int,
-    val amount: Int,
+    val amount: Double,
     val periodicCategoryId: Int,
     @Nullable @Embedded val latLng: LatLngEntity?,
     val creationUnixMs: Long = System.currentTimeMillis()

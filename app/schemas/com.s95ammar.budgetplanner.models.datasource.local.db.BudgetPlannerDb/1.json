@@ -2,18 +2,12 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "68c0ef1952900ec7efc45955e5a273b4",
+    "identityHash": "cb5c876634c064dbd1b22b353c940c6d",
     "entities": [
       {
         "tableName": "period",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL COLLATE NOCASE, `max` INTEGER, `creationUnixMs` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL COLLATE NOCASE, `creationUnixMs` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "name",
             "columnName": "name",
@@ -21,14 +15,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "max",
-            "columnName": "max",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
             "fieldPath": "creationUnixMs",
             "columnName": "creationUnixMs",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -53,18 +47,18 @@
       },
       {
         "tableName": "category",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL COLLATE NOCASE)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL COLLATE NOCASE, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -88,14 +82,8 @@
       },
       {
         "tableName": "periodicCategory",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `max` INTEGER, `categoryId` INTEGER NOT NULL, `periodId` INTEGER NOT NULL, FOREIGN KEY(`categoryId`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`periodId`) REFERENCES `period`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`max` INTEGER, `categoryId` INTEGER NOT NULL, `periodId` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`categoryId`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`periodId`) REFERENCES `period`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "max",
             "columnName": "max",
@@ -111,6 +99,12 @@
           {
             "fieldPath": "periodId",
             "columnName": "periodId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -166,14 +160,8 @@
       },
       {
         "tableName": "budgetTransaction",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `type` INTEGER NOT NULL, `amount` INTEGER NOT NULL, `periodicCategoryId` INTEGER NOT NULL, `creationUnixMs` INTEGER NOT NULL, `lat` REAL, `lng` REAL, FOREIGN KEY(`periodicCategoryId`) REFERENCES `periodicCategory`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `amount` REAL NOT NULL, `periodicCategoryId` INTEGER NOT NULL, `creationUnixMs` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lat` REAL, `lng` REAL, FOREIGN KEY(`periodicCategoryId`) REFERENCES `periodicCategory`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "name",
             "columnName": "name",
@@ -181,15 +169,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "type",
-            "columnName": "type",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "amount",
             "columnName": "amount",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
@@ -201,6 +183,12 @@
           {
             "fieldPath": "creationUnixMs",
             "columnName": "creationUnixMs",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -251,7 +239,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '68c0ef1952900ec7efc45955e5a273b4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cb5c876634c064dbd1b22b353c940c6d')"
     ]
   }
 }

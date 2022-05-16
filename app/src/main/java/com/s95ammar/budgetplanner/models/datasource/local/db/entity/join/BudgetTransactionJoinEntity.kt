@@ -2,14 +2,12 @@ package com.s95ammar.budgetplanner.models.datasource.local.db.entity.join
 
 import androidx.annotation.Nullable
 import androidx.room.Embedded
-import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.LatLngEntity
 
 data class BudgetTransactionJoinEntity(
     val id: Int,
     val name: String,
-    @IntBudgetTransactionType val type: Int,
-    val amount: Int,
+    val amount: Double,
     @Nullable @Embedded val latLng: LatLngEntity?,
     val creationUnixMs: Long,
     val periodId: Int,

@@ -1,6 +1,11 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
@@ -24,7 +29,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditFragmentArgs as FragmentArgs
 
@@ -45,9 +50,6 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     private val _name = MediatorLiveData<String>().apply {
         addSource(_periodWithPeriodicCategories) { value = it.periodName ?: CalendarUtil.getNextMonthPeriodName(locale) }
     }
-    private val _max = MediatorLiveData<Int>().apply {
-        addSource(_periodWithPeriodicCategories) { value = it.max }
-    }
     private val _periodicCategories = MediatorLiveData<List<PeriodicCategory>>().apply {
         addSource(_periodWithPeriodicCategories) { value = it.periodicCategories }
     }
@@ -58,7 +60,6 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
 
     val mode = _mode.asLiveData()
     val name = _name.asLiveData()
-    val max = _max.asLiveData()
     val periodicCategories = _periodicCategories.asLiveData()
     val selectedPeriodicCategories = _periodicCategories.map { list -> list.filter { it.isSelected } }
     val allowCategorySelectionForAll = _allowCategorySelectionForAll.asLiveData()
@@ -110,7 +111,6 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
                     _periodWithPeriodicCategories.value = PeriodWithPeriodicCategories(
                         periodId = editedPeriodId,
                         periodName = editedPeriod?.name,
-                        max = editedPeriod?.max,
                         periodicCategories = periodicCategoryJoinEntityList.mapNotNull(PeriodicCategory.JoinEntityMapper::fromEntity)
                     )
                     _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))

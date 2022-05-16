@@ -2,13 +2,13 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettran
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
-import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
+import com.s95ammar.budgetplanner.models.BaseEntityMapper
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetTransactionJoinEntity
 
 data class BudgetTransactionClusterItem(
     val name: String,
-    @IntBudgetTransactionType val type: Int,
     val latLng: LatLng,
-    val amount: Int,
+    val amount: Double,
     val creationUnixMs: Long,
     val categoryName: String
 ) : ClusterItem {
@@ -23,5 +23,19 @@ data class BudgetTransactionClusterItem(
 
     override fun getSnippet(): String {
         return name
+    }
+
+    object EntityMapper : BaseEntityMapper<BudgetTransactionClusterItem, BudgetTransactionJoinEntity> {
+        override fun fromEntity(entity: BudgetTransactionJoinEntity?): BudgetTransactionClusterItem? {
+            return entity?.let {
+                BudgetTransactionClusterItem(
+                    entity.name,
+                    entity.latLng?.let { (lat, lng) -> LatLng(lat, lng) } ?: return null,
+                    entity.amount,
+                    entity.creationUnixMs,
+                    entity.categoryName
+                )
+            }
+        }
     }
 }

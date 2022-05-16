@@ -89,7 +89,6 @@ interface JoinDao {
         """
 	SELECT budgetTransaction.id AS id,
 	       budgetTransaction.name AS name,
-	       budgetTransaction.type AS type,
 	       budgetTransaction.amount AS amount,
 	       budgetTransaction.lat AS lat,
 	       budgetTransaction.lng AS lng,
@@ -111,7 +110,6 @@ interface JoinDao {
         """
 	SELECT budgetTransaction.id AS id,
 	       budgetTransaction.name AS name,
-	       budgetTransaction.type AS type,
 	       budgetTransaction.amount AS amount,
 	       budgetTransaction.lat AS lat,
 	       budgetTransaction.lng AS lng,

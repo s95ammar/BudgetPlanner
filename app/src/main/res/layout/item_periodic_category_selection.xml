@@ -34,7 +34,7 @@
         android:id="@+id/input_layout_max"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/total_expenses_estimate_optional"
+        android:hint="@string/estimate_optional"
         app:boxBackgroundColor="@null"
         app:errorTextAppearance="@style/TextAppearanceCairo"
         app:layout_constraintEnd_toEndOf="parent"

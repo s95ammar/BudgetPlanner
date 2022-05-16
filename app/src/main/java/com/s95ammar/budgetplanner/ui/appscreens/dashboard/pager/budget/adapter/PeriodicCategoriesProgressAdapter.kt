@@ -8,6 +8,7 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategoryBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, PeriodicCategoriesProgressAdapter.PeriodicCategoriesViewHolder>(DiffUtilCallback()) {
@@ -40,7 +41,7 @@ class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, Peri
 
         override fun bind(item: PeriodicCategory, payloads: PayloadsHolder) {
             if (payloads.shouldUpdate(PayloadType.CATEGORY_NAME)) setCategoryName(item.categoryName)
-            if (payloads.shouldUpdate(PayloadType.AMOUNT_MAX)) setAmountAndMax(item.budgetTransactionsAmountSum, item.max)
+            if (payloads.shouldUpdate(PayloadType.AMOUNT_MAX)) setAmountAndMax(item.budgetTransactionsAmountSum.absoluteValue, item.max)
         }
 
         private fun setCategoryName(categoryName: String) {

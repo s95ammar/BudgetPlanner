@@ -40,7 +40,6 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
         super.initObservers()
         sharedViewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
         sharedViewModel.name.observe(viewLifecycleOwner) { setPeriodName(it) }
-        sharedViewModel.max.observe(viewLifecycleOwner) { setPeriodMax(it) }
         sharedViewModel.selectedPeriodicCategories.observe(viewLifecycleOwner) { setCategoriesNamesStringValue(it) }
 
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
@@ -65,10 +64,6 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
             setText(name)
             setSelection(name.length)
         }
-    }
-
-    private fun setPeriodMax(max: Int?) {
-        binding.inputLayoutMax.text = max?.toString()
     }
 
     private fun setCategoriesNamesStringValue(items: List<PeriodicCategory>) {
@@ -141,8 +136,7 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
     }
 
     private fun createPeriodInputBundle() = PeriodInputBundle(
-        name = binding.inputLayoutName.text.orEmpty().trim(),
-        max = binding.inputLayoutMax.text?.trim()
+        name = binding.inputLayoutName.text.orEmpty().trim()
     )
 
 }

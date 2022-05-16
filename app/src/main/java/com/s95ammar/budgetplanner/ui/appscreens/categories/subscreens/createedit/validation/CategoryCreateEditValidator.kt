@@ -24,7 +24,7 @@ class CategoryCreateEditValidator(
         return CategoryEntity(input.title).apply { if (categoryId != Int.INVALID) id = categoryId }
     }
 
-    override fun provideViewValidationList(): List<ViewValidation> {
+    override fun provideViewValidationList(input: CategoryInputBundle): List<ViewValidation> {
         val caseEmptyTitle = ViewValidation.Case(Errors.EMPTY_TITLE) { input.title.isEmpty() }
 
         return listOf(
