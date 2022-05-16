@@ -20,7 +20,7 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:title="@string/category_estimate"
-            app:titleTextAppearance="@style/TextTitleWhiteBold16sdp" />
+            app:titleTextAppearance="@style/TextTitleWhiteBold16ssp" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
 
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginHorizontal="@dimen/_16sdp"
-                android:textAppearance="@style/TextDescBlack14sdp"
+                android:textAppearance="@style/TextDescBlack14ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,7 @@
                 app:tabIndicatorColor="@null"
                 app:tabRippleColor="@color/colorPurple50"
                 app:tabSelectedTextColor="@color/colorWhite"
-                app:tabTextAppearance="@style/TextDescBlack14sdp"
+                app:tabTextAppearance="@style/TextDescBlack14ssp"
                 app:tabUnboundedRipple="true" />
 
 
@@ -97,7 +97,7 @@
                 android:drawableStart="@drawable/ic_info"
                 android:drawablePadding="@dimen/_8sdp"
                 android:text="@string/category_estimate_tip"
-                android:textAppearance="@style/TextDescGray12sdp"
+                android:textAppearance="@style/TextDescGray12ssp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/estimate_input_layout"
                 app:layout_constraintStart_toStartOf="@+id/estimate_input_layout"
@@ -111,7 +111,7 @@
                 android:layout_marginVertical="@dimen/_8sdp"
                 android:text="@string/save"
                 android:textAllCaps="true"
-                android:textAppearance="@style/TextTitleWhiteBold14sdp"
+                android:textAppearance="@style/TextTitleWhiteBold14ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

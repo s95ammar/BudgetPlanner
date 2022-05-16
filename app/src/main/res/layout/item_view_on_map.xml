@@ -9,6 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_16sdp"
         android:text="@string/view_on_map"
-        android:textAppearance="@style/TextTitleWhiteBold14sdp" />
+        android:textAppearance="@style/TextTitleWhiteBold14ssp" />
 
 </FrameLayout>

@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:titleTextAppearance="@style/TextTitleWhiteBold16sdp"
+            app:titleTextAppearance="@style/TextTitleWhiteBold16ssp"
             tools:title="@string/create_budget_transaction" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
@@ -46,7 +46,7 @@
                 app:tabRippleColor="@color/colorPurple50"
                 app:tabUnboundedRipple="true"
                 app:tabIndicatorColor="@null"
-                app:tabTextAppearance="@style/TextDescBlack14sdp"
+                app:tabTextAppearance="@style/TextDescBlack14ssp"
                 app:tabSelectedTextColor="@color/colorWhite"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -109,7 +109,7 @@
                 android:paddingHorizontal="@dimen/_16sdp"
                 android:paddingVertical="@dimen/_8sdp"
                 android:text="@string/choose_a_category"
-                android:textAppearance="@style/TextDescGray12sdp"
+                android:textAppearance="@style/TextDescGray12ssp"
                 app:drawableTint="@color/colorGray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -128,7 +128,7 @@
                 android:paddingHorizontal="@dimen/_16sdp"
                 android:paddingVertical="@dimen/_8sdp"
                 android:text="@string/choose_a_location"
-                android:textAppearance="@style/TextDescGray12sdp"
+                android:textAppearance="@style/TextDescGray12ssp"
                 app:drawableTint="@color/colorGray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -142,7 +142,7 @@
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginVertical="@dimen/_8sdp"
                 android:textAllCaps="true"
-                android:textAppearance="@style/TextTitleWhiteBold14sdp"
+                android:textAppearance="@style/TextTitleWhiteBold14ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -19,52 +19,52 @@
         <item name="titleTextColor">@color/colorWhite</item>
     </style>
 
-    <style name="TextTitleWhiteBold16sdp">
+    <style name="TextTitleWhiteBold16ssp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/_16sdp</item>
+        <item name="android:textSize">@dimen/_16ssp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextTitleWhiteBold14sdp">
+    <style name="TextTitleWhiteBold14ssp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/_14sdp</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextTitleWhite14sdp">
+    <style name="TextTitleWhite14ssp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/_14sdp</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
     </style>
 
-    <style name="TextTitleBlackBold16sdp">
+    <style name="TextTitleBlackBold16ssp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:textSize">@dimen/_16sdp</item>
+        <item name="android:textSize">@dimen/_16ssp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextDescBlack14sdp">
+    <style name="TextDescBlack14ssp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:textSize">@dimen/_14sdp</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
     </style>
 
-    <style name="TextDescGray12sdp">
+    <style name="TextDescGray12ssp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@color/colorGray</item>
-        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
     </style>
 
     <style name="TextAppearanceCairo" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/cairo</item>
     </style>
 
-    <style name="TextAppearanceCairo10sdp" parent="@android:style/TextAppearance">
+    <style name="TextAppearanceCairo10ssp" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/cairo</item>
-        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
     </style>
 
 

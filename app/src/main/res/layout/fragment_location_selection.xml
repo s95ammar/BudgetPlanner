@@ -20,7 +20,7 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:title="@string/choose_location"
-            app:titleTextAppearance="@style/TextTitleWhiteBold16sdp" />
+            app:titleTextAppearance="@style/TextTitleWhiteBold16ssp" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
 
@@ -75,7 +75,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:paddingHorizontal="@dimen/_8sdp"
-                    android:textAppearance="@style/TextDescBlack14sdp"
+                    android:textAppearance="@style/TextDescBlack14ssp"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/button_remove"
@@ -96,7 +96,7 @@
             android:layout_weight="1"
             android:text="@string/save"
             android:textAllCaps="true"
-            android:textAppearance="@style/TextTitleWhiteBold14sdp"
+            android:textAppearance="@style/TextTitleWhiteBold14ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

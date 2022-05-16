@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/_8sdp"
         android:padding="@dimen/_8sdp"
-        android:textAppearance="@style/TextTitleBlackBold16sdp"
+        android:textAppearance="@style/TextTitleBlackBold16ssp"
         app:drawableTint="@color/colorPrimary"
         tools:drawableStart="@drawable/ic_savings_jar"
         tools:text="Item Title" />
@@ -28,7 +28,7 @@
         android:focusable="true"
         android:padding="@dimen/_8sdp"
         android:text="@string/edit"
-        android:textAppearance="@style/TextDescBlack14sdp" />
+        android:textAppearance="@style/TextDescBlack14ssp" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/delete_text_view"
@@ -41,6 +41,6 @@
         android:focusable="true"
         android:padding="@dimen/_8sdp"
         android:text="@string/delete"
-        android:textAppearance="@style/TextDescBlack14sdp" />
+        android:textAppearance="@style/TextDescBlack14ssp" />
 
 </LinearLayout>

@@ -20,7 +20,7 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:title="@string/choose_a_category"
-            app:titleTextAppearance="@style/TextTitleWhiteBold16sdp" />
+            app:titleTextAppearance="@style/TextTitleWhiteBold16ssp" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
 

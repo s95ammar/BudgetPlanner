@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
         android:textAlignment="center"
-        android:textAppearance="@style/TextDescBlack14sdp"
+        android:textAppearance="@style/TextDescBlack14ssp"
         tools:text="Instruction message goes here" />
 
 </LinearLayout>
