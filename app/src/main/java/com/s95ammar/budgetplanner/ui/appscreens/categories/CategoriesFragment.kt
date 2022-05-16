@@ -54,7 +54,7 @@ class CategoriesFragment : BaseViewBinderFragment<FragmentCategoriesBinding>(R.l
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
-            is UiEvent.ListenAndNavigateToEditCategory -> navigateToCreateEditCategory(uiEvent.categoryId)
+            is UiEvent.NavigateToCreateEditCategory -> navigateToCreateEditCategory(uiEvent.categoryId)
             is UiEvent.ShowBottomSheet -> showBottomSheet(uiEvent.category)
         }
     }

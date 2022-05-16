@@ -15,7 +15,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.databinding.LocationSelectionFragmentBinding
+import com.s95ammar.budgetplanner.databinding.FragmentLocationSelectionBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationSelectionUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationUpdate
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress
@@ -27,16 +27,16 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LocationSelectionFragment : BaseViewBinderFragment<LocationSelectionFragmentBinding>(
-    R.layout.location_selection_fragment
+class LocationSelectionFragment : BaseViewBinderFragment<FragmentLocationSelectionBinding>(
+    R.layout.fragment_location_selection
 ), OnMapReadyCallback {
 
     private val viewModel: LocationSelectionViewModel by viewModels()
     private lateinit var googleMap: GoogleMap
     private var selectedLocationMarker: Marker? = null
 
-    override fun initViewBinding(view: View): LocationSelectionFragmentBinding {
-        return LocationSelectionFragmentBinding.bind(view)
+    override fun initViewBinding(view: View): FragmentLocationSelectionBinding {
+        return FragmentLocationSelectionBinding.bind(view)
     }
 
     override fun setUpViews() {

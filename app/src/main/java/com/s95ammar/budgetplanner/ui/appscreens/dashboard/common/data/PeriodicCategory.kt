@@ -13,8 +13,8 @@ data class PeriodicCategory(
     val periodId: Int,
     val categoryId: Int,
     val categoryName: String,
-    var max: Int?,
-    val budgetTransactionsAmountSum: Int,
+    var estimate: Double?,
+    val budgetTransactionsAmountSum: Double,
     val isSelected: Boolean
 ) : Parcelable {
     object JoinEntityMapper : BaseEntityMapper<PeriodicCategory, PeriodicCategoryJoinEntity> {
@@ -26,7 +26,7 @@ data class PeriodicCategory(
                     it.periodId,
                     it.categoryId,
                     it.categoryName,
-                    it.max,
+                    it.estimate,
                     it.budgetTransactionsAmountSum,
                     isSelected = it.periodicCategoryId != Int.INVALID
                 )
@@ -38,7 +38,7 @@ data class PeriodicCategory(
 
         override fun toEntity(domainObj: PeriodicCategory?): PeriodicCategoryEntity? {
             return domainObj?.let {
-                PeriodicCategoryEntity(it.max, it.categoryId, it.periodId).apply { id = it.id }
+                PeriodicCategoryEntity(it.estimate, it.categoryId, it.periodId).apply { id = it.id }
             }
 
         }

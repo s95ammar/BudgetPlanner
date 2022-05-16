@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "cb5c876634c064dbd1b22b353c940c6d",
+    "identityHash": "21aefda2b5545621da3e3a74c6a9e3cf",
     "entities": [
       {
         "tableName": "period",
@@ -82,12 +82,12 @@
       },
       {
         "tableName": "periodicCategory",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`max` INTEGER, `categoryId` INTEGER NOT NULL, `periodId` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`categoryId`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`periodId`) REFERENCES `period`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`estimate` REAL, `categoryId` INTEGER NOT NULL, `periodId` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`categoryId`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`periodId`) REFERENCES `period`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "max",
-            "columnName": "max",
-            "affinity": "INTEGER",
+            "fieldPath": "estimate",
+            "columnName": "estimate",
+            "affinity": "REAL",
             "notNull": false
           },
           {
@@ -239,7 +239,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cb5c876634c064dbd1b22b353c940c6d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '21aefda2b5545621da3e3a74c6a9e3cf')"
     ]
   }
 }

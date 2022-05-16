@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.subscreens.PeriodCategoryEstimateCreateEditFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/BudgetPlannerAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/BudgetPlannerMaterialToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/category_estimate"
+            app:titleTextAppearance="@style/TextTitleWhiteBold16sdp" />
+
+        <include layout="@layout/layout_view_toolbar_shadow" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/category_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:textAppearance="@style/TextDescBlack14sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Groceries" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/shape_budget_transaction_tabs_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/category_name_text_view"
+                app:tabBackground="@drawable/selector_budget_transaction_tabs"
+                app:tabIndicatorColor="@null"
+                app:tabRippleColor="@color/colorPurple50"
+                app:tabSelectedTextColor="@color/colorWhite"
+                app:tabTextAppearance="@style/TextDescBlack14sdp"
+                app:tabUnboundedRipple="true" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/estimate_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:hint="@string/estimate"
+                app:boxBackgroundColor="@null"
+                app:errorIconDrawable="@null"
+                app:errorTextAppearance="@style/TextAppearanceCairo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tab_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:maxLength="10"
+                    android:textAppearance="@style/TextAppearanceCairo" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tip_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:drawableStart="@drawable/ic_info"
+                android:drawablePadding="@dimen/_8sdp"
+                android:text="@string/category_estimate_tip"
+                android:textAppearance="@style/TextDescGray12sdp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="@id/estimate_input_layout"
+                app:layout_constraintStart_toStartOf="@+id/estimate_input_layout"
+                app:layout_constraintTop_toBottomOf="@+id/estimate_input_layout" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_apply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:text="@string/save"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextTitleWhiteBold14sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tip_text_view"
+                app:layout_constraintVertical_bias="1.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
+</LinearLayout>

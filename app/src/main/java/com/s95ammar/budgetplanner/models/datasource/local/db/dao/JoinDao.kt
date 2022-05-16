@@ -17,8 +17,8 @@ interface JoinDao {
            IFNULL(pcOfPeriod.periodId, $INT_INVALID) AS periodId,
            category.id AS categoryId,
            category.name AS categoryName,
-           pcOfPeriod.max AS max,
-           IFNULL(btAmountSumGrouped.btAmountSum, 0) AS budgetTransactionsAmountSum
+           pcOfPeriod.estimate AS estimate,
+           IFNULL(btAmountSumGrouped.btAmountSum, 0.0) AS budgetTransactionsAmountSum
     FROM category
     LEFT JOIN (
         SELECT * FROM periodicCategory
@@ -41,8 +41,8 @@ interface JoinDao {
            IFNULL(pcOfPeriod.periodId, $INT_INVALID) AS periodId,
            category.id AS categoryId,
            category.name AS categoryName,
-           pcOfPeriod.max AS max,
-           0 AS budgetTransactionsAmountSum
+           pcOfPeriod.estimate AS estimate,
+           0.0 AS budgetTransactionsAmountSum
     FROM category
     LEFT JOIN (
         SELECT * FROM periodicCategory
@@ -60,7 +60,7 @@ interface JoinDao {
 	       category.id AS categoryId,
 	       category.name AS categoryName,
 	       btAmountSumGrouped.btAmountSum AS budgetTransactionsAmountSum,
-	       periodicCategory.max AS max
+	       periodicCategory.estimate AS estimate
 	FROM category
 	INNER JOIN periodicCategory ON category.id = periodicCategory.categoryId
 	LEFT JOIN (

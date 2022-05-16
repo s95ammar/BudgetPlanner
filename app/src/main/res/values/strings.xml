@@ -22,7 +22,9 @@
     <string name="create">Create</string>
     <string name="save">Save</string>
     <string name="remove">Remove</string>
-    <string name="estimate_optional">Estimate (optional)</string>
+    <string name="add_estimate_optional">Add estimate (optional)</string>
+    <string name="format_estimate_expenses">Estimate expenses: %s</string>
+    <string name="format_estimate_income">Estimate income: %s</string>
 
     <string name="error_something_went_wrong_title">Oops</string>
     <string name="format_error_something_went_wrong_desc">Something went wrong\n\n%s</string>
@@ -49,13 +51,16 @@
 
     <string name="add">Add</string>
 
-    <string name="format_value_out_of">%d / %d</string>
+    <string name="format_value_out_of">%s / %s</string>
     <string name="categories_for_this_period">Categories for this period:</string>
     <string name="choose_categories">Choose categories</string>
-    <string name="category_unselectable">This category already has expenses/income created during this period</string>
+    <string name="category_not_selectable">This category cannot be unselected because it already has transactions created during this period</string>
 
-    <string name="format_budget_transaction_amount_no_decimals">%+,.0f</string>
-    <string name="format_budget_transaction_amount_two_decimals">%+,.2f</string>
+    <!--use `fun getAmountFormatResId` to get the right format-->
+    <string name="format_budget_transaction_amount_no_decimals">%,.0f</string>
+    <string name="format_budget_transaction_amount_two_decimals">%,.2f</string>
+    <string name="format_budget_transaction_amount_no_decimals_signed">%+,.0f</string>
+    <string name="format_budget_transaction_amount_two_decimals_signed">%+,.2f</string>
     <string name="format_budget_transaction_amount_no_decimals_edit_text">%.0f</string>
     <string name="format_budget_transaction_amount_two_decimals_edit_text">%.2f</string>
 
@@ -81,4 +86,9 @@
     <string name="total_expenses">Total expenses</string>
     <string name="total_income">Total income</string>
     <string name="tap_to_zoom_in">Tap to zoom in</string>
+
+    <string name="category_estimate">Category estimate</string>
+    <string name="estimate">Estimate</string>
+    <string name="category_estimate_tip">This information will only be used to properly display your progress for this category.
+        You\'ll still be able to create both income and expense transactions regardless of what you choose here.</string>
 </resources>

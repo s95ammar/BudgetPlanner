@@ -10,7 +10,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.clustering.ClusterManager
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.databinding.BudgetTransactionsMapFragmentBinding
+import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionsMapBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.data.BudgetTransactionClusterItem
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.map.BudgetTransactionClusterInfoWindowAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.map.BudgetTransactionClusterRenderer
@@ -20,8 +20,8 @@ import com.s95ammar.budgetplanner.util.LAT_LNG_BOUNDS_PADDING
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BudgetTransactionsMapFragment : BaseViewBinderFragment<BudgetTransactionsMapFragmentBinding>(
-    R.layout.budget_transactions_map_fragment
+class BudgetTransactionsMapFragment : BaseViewBinderFragment<FragmentBudgetTransactionsMapBinding>(
+    R.layout.fragment_budget_transactions_map
 ), OnMapReadyCallback {
 
     private val viewModel: BudgetTransactionsMapViewModel by viewModels()
@@ -32,8 +32,8 @@ class BudgetTransactionsMapFragment : BaseViewBinderFragment<BudgetTransactionsM
         (childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?)?.getMapAsync(this)
     }
 
-    override fun initViewBinding(view: View): BudgetTransactionsMapFragmentBinding {
-        return BudgetTransactionsMapFragmentBinding.bind(view)
+    override fun initViewBinding(view: View): FragmentBudgetTransactionsMapBinding {
+        return FragmentBudgetTransactionsMapBinding.bind(view)
     }
 
     override fun setUpViews() {

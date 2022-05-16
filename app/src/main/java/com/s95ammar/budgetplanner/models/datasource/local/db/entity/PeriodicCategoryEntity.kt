@@ -28,7 +28,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
     ]
 )
 data class PeriodicCategoryEntity(
-    val max: Int?,
+    val estimate: Double?,
     val categoryId: Int,
     val periodId: Int
 ) {

@@ -11,7 +11,7 @@ import com.s95ammar.budgetplanner.databinding.LayoutBudgetTransactionInfoWindowB
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.data.BudgetTransactionClusterItem
 import com.s95ammar.budgetplanner.util.currentLocale
-import com.s95ammar.budgetplanner.util.getAmountFormat
+import com.s95ammar.budgetplanner.util.getAmountFormatResId
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -43,7 +43,7 @@ class BudgetTransactionInfoWindowAdapter(
     private fun setTypeAndAmount(amount: Double) {
         val type = IntBudgetTransactionType.getByAmount(amount)
         val color = ContextCompat.getColor(context, IntBudgetTransactionType.getColorRes(type))
-        binding.layoutItem.textViewAmount.text = context.getString(getAmountFormat(amount), amount)
+        binding.layoutItem.textViewAmount.text = context.getString(getAmountFormatResId(amount), amount)
         binding.layoutItem.textViewAmount.setTextColor(color)
         binding.layoutItem.viewType.setBackgroundColor(color)
         binding.layoutItem.viewType.isVisible = false // bugging out :/

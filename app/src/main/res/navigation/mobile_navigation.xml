@@ -65,7 +65,20 @@
             android:id="@+id/periodCategoriesSelectionFragment"
             android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.PeriodCategoriesSelectionFragment"
             android:label="period_categories_selection_fragment"
-            tools:layout="@layout/fragment_period_categories_selection" />
+            tools:layout="@layout/fragment_period_categories_selection" >
+            <action
+                android:id="@+id/action_periodCategoriesSelectionFragment_to_periodCategoryEstimateCreateEditFragment"
+                app:destination="@id/periodCategoryEstimateCreateEditFragment" />
+        </fragment>
+            <fragment
+                android:id="@+id/periodCategoryEstimateCreateEditFragment"
+                android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.subscreens.PeriodCategoryEstimateCreateEditFragment"
+                android:label="fragment_period_category_estimate_create_edit"
+                tools:layout="@layout/fragment_period_category_estimate_create_edit" >
+                <argument
+                    android:name="periodicCategory"
+                    app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory" />
+            </fragment>
         </navigation>
 
 
@@ -100,7 +113,7 @@
             android:id="@+id/locationSelectionFragment"
             android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.LocationSelectionFragment"
             android:label="location_selection_fragment"
-            tools:layout="@layout/location_selection_fragment" >
+            tools:layout="@layout/fragment_location_selection" >
             <argument
                 android:name="currentLocation"
                 app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress"
@@ -110,7 +123,7 @@
             android:id="@+id/budgetTransactionsMapFragment"
             android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.BudgetTransactionsMapFragment"
             android:label="budget_transactions_map_fragment"
-            tools:layout="@layout/budget_transactions_map_fragment" >
+            tools:layout="@layout/fragment_budget_transactions_map" >
             <argument
                 android:name="periodId"
                 app:argType="integer" />

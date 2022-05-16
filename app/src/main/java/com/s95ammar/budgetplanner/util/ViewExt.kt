@@ -1,5 +1,7 @@
 package com.s95ammar.budgetplanner.util
 
+import android.widget.TextView
+import androidx.annotation.ColorInt
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputLayout
 
@@ -24,4 +26,8 @@ fun TabLayout.doOnTabSelected(action: (tab: TabLayout.Tab) -> Unit) {
 
         override fun onTabReselected(tab: TabLayout.Tab?) {}
     })
+}
+
+fun TextView.setDrawableTint(@ColorInt color: Int) {
+    compoundDrawables.filterNotNull().firstOrNull()?.setTint(color)
 }

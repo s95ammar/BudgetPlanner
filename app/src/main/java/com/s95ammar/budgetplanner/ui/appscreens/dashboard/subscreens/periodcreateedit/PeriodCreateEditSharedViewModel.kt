@@ -65,15 +65,15 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     val allowCategorySelectionForAll = _allowCategorySelectionForAll.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
-    fun onPeriodicCategorySelectionStateChanged(position: Int, isSelected: Boolean) {
-        _periodicCategories.value = _periodicCategories.value.orEmpty().mapIndexed { i, periodicCategory ->
-            if (i == position) periodicCategory.copy(isSelected = isSelected) else periodicCategory
+    fun onPeriodicCategorySelectionStateChanged(periodicCategory: PeriodicCategory, isSelected: Boolean) {
+        _periodicCategories.value = _periodicCategories.value.orEmpty().map { listItem ->
+            if (listItem.id == periodicCategory.id) listItem.copy(isSelected = isSelected) else listItem
         }
     }
 
-    fun onPeriodicCategoryMaxChanged(position: Int, maxInput: String?) {
-        _periodicCategories.value?.getOrNull(position)?.let { periodicCategory ->
-            periodicCategory.max = maxInput?.toIntOrNull()
+    fun onPeriodicCategoryEstimateChanged(periodicCategory: PeriodicCategory, estimate: Double?) {
+        _periodicCategories.value = _periodicCategories.value.orEmpty().map { listItem ->
+            if (listItem.id == periodicCategory.id) listItem.copy(estimate = estimate) else listItem
         }
     }
 

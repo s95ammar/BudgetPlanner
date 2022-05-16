@@ -8,6 +8,7 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategoryBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
+import com.s95ammar.budgetplanner.util.getAmountFormatResId
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
@@ -24,7 +25,12 @@ class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, Peri
 
             override fun getChangePayload(oldItem: PeriodicCategory, newItem: PeriodicCategory) = PayloadsHolder().apply {
                 addPayloadIfNotEqual(PayloadType.CATEGORY_NAME, oldItem to newItem, PeriodicCategory::categoryName)
-                addPayloadIfNotEqual(PayloadType.AMOUNT_MAX, oldItem to newItem, PeriodicCategory::max, PeriodicCategory::budgetTransactionsAmountSum)
+                addPayloadIfNotEqual(
+                    PayloadType.ESTIMATE,
+                    oldItem to newItem,
+                    PeriodicCategory::estimate,
+                    PeriodicCategory::budgetTransactionsAmountSum
+                )
             }
         }
     }
@@ -41,23 +47,37 @@ class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, Peri
 
         override fun bind(item: PeriodicCategory, payloads: PayloadsHolder) {
             if (payloads.shouldUpdate(PayloadType.CATEGORY_NAME)) setCategoryName(item.categoryName)
-            if (payloads.shouldUpdate(PayloadType.AMOUNT_MAX)) setAmountAndMax(item.budgetTransactionsAmountSum.absoluteValue, item.max)
+            if (payloads.shouldUpdate(PayloadType.ESTIMATE)) setAmountAndEstimate(item.budgetTransactionsAmountSum, item.estimate)
         }
 
         private fun setCategoryName(categoryName: String) {
             binding.textViewCategoryName.text = categoryName
         }
 
-        private fun setAmountAndMax(amount: Int, max: Int?) {
-            binding.progressBar.isGone = max == null
+        private fun setAmountAndEstimate(amountSum: Double, estimate: Double?) {
+            binding.progressBar.isGone = estimate == null
 
-            if (max != null) {
-                binding.progressBar.progress = (amount * 100.0 / max).roundToInt()
+            if (estimate != null) {
+                binding.progressBar.progress = (amountSum * 100.0 / estimate).roundToInt()
+
+                val areSumAndEstimateOfDifferentSigns = amountSum * estimate < 0
+                val sumFormatted = getString(
+                    getAmountFormatResId(amountSum, includePlusSign = areSumAndEstimateOfDifferentSigns),
+                    if (areSumAndEstimateOfDifferentSigns) amountSum else amountSum.absoluteValue
+                )
+                val estimateFormatted = getString(
+                    getAmountFormatResId(estimate, includePlusSign = areSumAndEstimateOfDifferentSigns),
+                    if (areSumAndEstimateOfDifferentSigns) estimate else estimate.absoluteValue
+                )
                 binding.textViewBudgetPeriodEntryValues.text = getString(
-                    R.string.format_value_out_of, amount, max
+                    R.string.format_value_out_of,
+                    sumFormatted,
+                    estimateFormatted
                 )
             } else {
-                binding.textViewBudgetPeriodEntryValues.text = amount.toString()
+                binding.textViewBudgetPeriodEntryValues.text = getString(
+                    getAmountFormatResId(amountSum, includePlusSign = false), amountSum.absoluteValue
+                )
             }
 
         }
@@ -65,6 +85,6 @@ class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, Peri
 
     object PayloadType {
         const val CATEGORY_NAME = 1
-        const val AMOUNT_MAX = 2
+        const val ESTIMATE = 2
     }
 }

@@ -3,6 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcrea
 import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -12,6 +13,7 @@ import com.s95ammar.budgetplanner.databinding.FragmentPeriodCategoriesSelectionB
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesMultiSelectionAdapter
+import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.data.PeriodCategoriesSelectionUiEvent as UiEvent
@@ -24,8 +26,8 @@ class PeriodCategoriesSelectionFragment :
 
     private val adapter by lazy {
         PeriodicCategoriesMultiSelectionAdapter(
-            onClick = sharedViewModel::onPeriodicCategorySelectionStateChanged,
-            onMaxInputChanged = sharedViewModel::onPeriodicCategoryMaxChanged
+            onSelectionStateChanged = sharedViewModel::onPeriodicCategorySelectionStateChanged,
+            onCreateEditEstimate = viewModel::onCreateEditEstimate
         )
     }
 
@@ -55,8 +57,20 @@ class PeriodCategoriesSelectionFragment :
 
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
-            UiEvent.Exit -> navController.navigateUp()
+            is UiEvent.NavigateToCreateEditEstimate -> listenAndNavigateToEstimateCreateEdit(uiEvent.periodicCategory)
+            is UiEvent.Exit -> navController.navigateUp()
         }
+    }
+
+    private fun listenAndNavigateToEstimateCreateEdit(periodicCategory: PeriodicCategory) {
+        setFragmentResultListener(Keys.KEY_ESTIMATE_REQUEST) { _, bundle ->
+            val estimateOrNull = bundle.getDouble(Keys.KEY_ESTIMATE, 0.0)
+            sharedViewModel.onPeriodicCategoryEstimateChanged(periodicCategory, estimateOrNull)
+        }
+        navController.navigate(
+            PeriodCategoriesSelectionFragmentDirections
+                .actionPeriodCategoriesSelectionFragmentToPeriodCategoryEstimateCreateEditFragment(periodicCategory)
+        )
     }
 
     private fun setAllowCategorySelectionForAll(allowCategorySelectionForAll: Boolean) {

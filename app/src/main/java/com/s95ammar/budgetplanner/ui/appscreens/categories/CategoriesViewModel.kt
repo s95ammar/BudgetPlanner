@@ -29,12 +29,12 @@ class CategoriesViewModel @Inject constructor(
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun onNavigateToCreateCategory() {
-        _performUiEvent.call(UiEvent.ListenAndNavigateToEditCategory(Int.INVALID))
+        _performUiEvent.call(UiEvent.NavigateToCreateEditCategory(Int.INVALID))
     }
 
     fun onCategoryItemClick(position: Int) {
         _allCategories.value?.getOrNull(position)?.let { category ->
-            _performUiEvent.call(UiEvent.ListenAndNavigateToEditCategory(category.id))
+            _performUiEvent.call(UiEvent.NavigateToCreateEditCategory(category.id))
         }
     }
 

@@ -63,7 +63,6 @@ class BudgetFragment : BaseViewBinderFragment<FragmentDashboardBudgetBinding>(R.
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
-            is UiEvent.NavigateToEditBudgetTransaction -> sharedViewModel
         }
     }
 
