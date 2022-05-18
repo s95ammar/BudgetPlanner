@@ -8,6 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -15,13 +16,15 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.logFromHere
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
+import com.s95ammar.budgetplanner.ui.main.MainViewModel
 
 abstract class BaseFragment : Fragment, LoadingManager {
 
     constructor() : super()
     constructor(@LayoutRes layoutResId: Int) : super(layoutResId)
 
-    val navController by lazy { findNavController() }
+    protected val navController by lazy { findNavController() }
+    protected val activityViewModel: MainViewModel by activityViewModels()
 
     private var loadingManager: LoadingManager? = null
     private var keyboardManager: KeyboardManager? = null

@@ -150,4 +150,17 @@
             app:argType="integer" />
     </fragment>
 
+    <action android:id="@+id/action_to_currencySelectionFragmentFragment"
+        app:destination="@id/currencySelectionFragment" />
+
+    <fragment
+        android:id="@+id/currencySelectionFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.currencyprompt.CurrencySelectionFragment"
+        android:label="fragment_currency_selection"
+        tools:layout="@layout/fragment_currency_selection" >
+
+        <argument android:name="currentCurrencyCode"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
 </navigation>

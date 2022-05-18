@@ -2,6 +2,7 @@ package com.s95ammar.budgetplanner.models.datasource.local
 
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CurrencyEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetTransactionJoinEntity
@@ -38,4 +39,7 @@ interface LocalDataSource {
     suspend fun updateBudgetTransaction(budgetTransaction: BudgetTransactionEntity)
     suspend fun deleteBudgetTransaction(id: Int)
 
+    suspend fun setMainCurrencyCode(code: String)
+    fun getMainCurrencyCode(): String
+    fun getMainCurrencyFlow(): Flow<CurrencyEntity?>
 }

@@ -8,6 +8,7 @@ object BudgetPlannerDbConfig {
     const val TABLE_NAME_CATEGORY = "category"
     const val TABLE_NAME_PERIODIC_CATEGORY = "periodicCategory"
     const val TABLE_NAME_BUDGET_TRANSACTION = "budgetTransaction"
+    const val TABLE_NAME_CURRENCY = "currency"
 
     const val COLUMN_NAME_ID = "id"
     const val COLUMN_NAME_PERIOD_ID = "periodId"
