@@ -2,8 +2,6 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard
 
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.viewpager2.widget.ViewPager2
@@ -17,6 +15,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.IntDashboardFabTy
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.IntDashboardTab
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.BudgetFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.BudgetTransactionsFragment
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.savings.SavingsFragment
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.ViewPagerFragmentAdapter
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
@@ -98,6 +97,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
                 when (fabState.currentTab) {
                     IntDashboardTab.TAB_BUDGET -> binding.fab.setOnClickListener { viewModel.onEditSelectedPeriod() }
                     IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> binding.fab.setOnClickListener { viewModel.onAddBudgetTransaction() }
+                    IntDashboardTab.TAB_SAVINGS -> binding.fab.setOnClickListener { /*TODO: add saving*/ }
                 }
             }
         }, FAB_VISIBILITY_ANIMATION_DURATION_MS)
@@ -116,12 +116,14 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
     private fun getTabFragmentLazy(@IntDashboardTab tab: Int) = when (tab) {
         IntDashboardTab.TAB_BUDGET -> lazy { BudgetFragment.newInstance() }
         IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> lazy { BudgetTransactionsFragment.newInstance() }
+        IntDashboardTab.TAB_SAVINGS -> lazy { SavingsFragment.newInstance() }
         else -> null
     }
 
     private fun getTabTitle(@IntDashboardTab tab: Int) = when (tab) {
         IntDashboardTab.TAB_BUDGET -> getString(R.string.budget)
         IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> getString(R.string.expenses_and_income)
+        IntDashboardTab.TAB_SAVINGS -> getString(R.string.savings)
         else -> null
     }
 

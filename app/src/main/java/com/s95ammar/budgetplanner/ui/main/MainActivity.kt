@@ -24,7 +24,8 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
 
     private val bottomNavItems = listOf(
         R.id.navigation_dashboard,
-        R.id.navigation_categories
+        R.id.navigation_categories,
+        R.id.navigation_saving_jars
     )
 
     private val navController: NavController by lazy {
