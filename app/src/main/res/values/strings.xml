@@ -13,8 +13,6 @@
     <string name="dashboard">Dashboard</string>
     <string name="budget">Budget</string>
     <string name="expenses_and_income">Expenses and income</string>
-    <string name="savings_jars">Savings Jars</string>
-    <string name="savings">Savings</string>
     <string name="choose_a_category">Choose a category</string>
     <string name="choose_a_location">Choose a location (optional)</string>
 
