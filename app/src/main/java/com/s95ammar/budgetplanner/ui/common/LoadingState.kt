@@ -6,3 +6,5 @@ sealed class LoadingState {
     object Success: LoadingState()
     class Error(val throwable: Throwable): LoadingState()
 }
+
+fun LoadingState?.orCold() = this ?: LoadingState.Cold

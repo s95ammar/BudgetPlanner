@@ -1,6 +1,8 @@
 package com.s95ammar.budgetplanner.models.datasource.local.db
 
 object BudgetPlannerDbConfig {
+    const val DATABASE_FILE_PATH = "database/budgetPlanner.db"
+
     const val DB_NAME = "budgetPlanner"
     const val DB_VERSION = 1
 

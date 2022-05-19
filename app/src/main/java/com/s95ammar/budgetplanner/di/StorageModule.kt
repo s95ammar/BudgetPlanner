@@ -24,12 +24,10 @@ object StorageModule {
         @ApplicationContext applicationContext: Context,
         flavorConfig: FlavorConfig
     ): BudgetPlannerDb {
-        return with(flavorConfig) {
-            Room.databaseBuilder(applicationContext, BudgetPlannerDb::class.java, BudgetPlannerDbConfig.DB_NAME)
-                .configureDbPrepopulation()
-                .fallbackToDestructiveMigration()
-                .build()
-        }
+        return Room.databaseBuilder(applicationContext, BudgetPlannerDb::class.java, BudgetPlannerDbConfig.DB_NAME)
+            .createFromAsset(BudgetPlannerDbConfig.DATABASE_FILE_PATH)
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Singleton

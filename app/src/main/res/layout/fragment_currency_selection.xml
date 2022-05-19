@@ -1,13 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.appscreens.currencyprompt.CurrencySelectionFragment">
+    android:orientation="vertical"
+    tools:context=".ui.appscreens.currencyselection.CurrencySelectionFragment">
 
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/BudgetPlannerAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/BudgetPlannerMaterialToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:title="@string/select_a_currency"
+            app:titleTextAppearance="@style/TextTitleWhiteBold16ssp" />
+
+        <include layout="@layout/layout_view_toolbar_shadow" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tip_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_info"
+        android:drawablePadding="@dimen/_8sdp"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/select_main_currency_tip"
+        android:textAppearance="@style/TextDescGray12ssp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="10"
+        tools:listitem="@layout/item_currency_selection" />
 
-</FrameLayout>
+</LinearLayout>

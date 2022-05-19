@@ -42,4 +42,6 @@ interface LocalDataSource {
     suspend fun setMainCurrencyCode(code: String)
     fun getMainCurrencyCode(): String
     fun getMainCurrencyFlow(): Flow<CurrencyEntity?>
+    fun getAllCurrenciesFlow(): Flow<List<CurrencyEntity>>
+    suspend fun insertCurrency(currencyEntity: CurrencyEntity)
 }

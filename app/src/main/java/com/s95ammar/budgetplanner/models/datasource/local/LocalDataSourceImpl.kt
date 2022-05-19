@@ -125,6 +125,7 @@ class LocalDataSourceImpl @Inject constructor(
         budgetTransactionDao.delete(IdWrapper(id))
     }
 
+    // Currency
     override suspend fun setMainCurrencyCode(code: String) {
         currencyPrefs.edit(commit = true) {
             putString(BudgetPlannerPrefsConfig.KEY_MAIN_CURRENCY_CODE, code)
@@ -142,5 +143,13 @@ class LocalDataSourceImpl @Inject constructor(
         } else {
             flowOf(null)
         }
+    }
+
+    override fun getAllCurrenciesFlow(): Flow<List<CurrencyEntity>> {
+        return currencyDao.getAllCurrencies()
+    }
+
+    override suspend fun insertCurrency(currencyEntity: CurrencyEntity) {
+        currencyDao.insert(currencyEntity)
     }
 }

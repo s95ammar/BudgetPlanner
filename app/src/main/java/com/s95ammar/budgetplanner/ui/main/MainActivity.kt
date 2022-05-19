@@ -17,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.s95ammar.budgetplanner.MobileNavigationDirections
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
+import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingDialog
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
 import com.s95ammar.budgetplanner.ui.main.data.MainUiEvent
@@ -51,12 +52,25 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
 
     private fun performUiEvent(uiEvent: MainUiEvent) {
         when (uiEvent) {
-            MainUiEvent.NavigateToCurrencySelection -> navigateToCurrencySelection()
-            MainUiEvent.FinishActivity -> finish()
+            is MainUiEvent.NavigateToMainCurrencySelection -> navigateToMainCurrencySelection()
+            is MainUiEvent.FinishActivity -> finish()
+            is MainUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
         }
     }
 
-    private fun navigateToCurrencySelection() {
+    // TODO: move to interface and remove from fragments
+    private fun handleLoadingState(loadingState: LoadingState) {
+        when (loadingState) {
+            is LoadingState.Cold,
+            is LoadingState.Success -> hideLoading()
+            is LoadingState.Loading -> showLoading()
+            is LoadingState.Error -> {
+                hideLoading()
+            }
+        }
+    }
+
+    private fun navigateToMainCurrencySelection() {
         navController.navigate(MobileNavigationDirections.actionToCurrencySelectionFragmentFragment())
     }
 

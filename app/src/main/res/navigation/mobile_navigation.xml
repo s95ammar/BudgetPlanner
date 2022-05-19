@@ -155,12 +155,12 @@
 
     <fragment
         android:id="@+id/currencySelectionFragment"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.currencyprompt.CurrencySelectionFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.currencyselection.CurrencySelectionFragment"
         android:label="fragment_currency_selection"
         tools:layout="@layout/fragment_currency_selection" >
 
         <argument android:name="currentCurrencyCode"
             app:argType="string"
-            android:defaultValue='""' />
+            android:defaultValue="" />
     </fragment>
 </navigation>
