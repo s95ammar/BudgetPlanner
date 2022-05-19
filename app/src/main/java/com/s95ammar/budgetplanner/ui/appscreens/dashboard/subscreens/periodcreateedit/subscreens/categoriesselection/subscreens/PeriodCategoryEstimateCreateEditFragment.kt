@@ -66,7 +66,7 @@ class PeriodCategoryEstimateCreateEditFragment
     }
 
     private fun setEstimate(estimateOptional: Optional<Double>) {
-        estimateOptional.value?.let { estimate ->
+        estimateOptional.value?.takeIf { it != 0.0 }?.let { estimate ->
             if (estimate != binding.estimateInputLayout.text?.toDoubleOrNull()) {
                 binding.estimateInputLayout.updateTextIfNotEquals(
                     getString(getAmountFormatResId(estimate, isForEditText = true), estimate)

@@ -67,13 +67,13 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
 
     fun onPeriodicCategorySelectionStateChanged(periodicCategory: PeriodicCategory, isSelected: Boolean) {
         _periodicCategories.value = _periodicCategories.value.orEmpty().map { listItem ->
-            if (listItem.id == periodicCategory.id) listItem.copy(isSelected = isSelected) else listItem
+            if (listItem.categoryId == periodicCategory.categoryId) listItem.copy(isSelected = isSelected) else listItem
         }
     }
 
     fun onPeriodicCategoryEstimateChanged(periodicCategory: PeriodicCategory, estimate: Double?) {
         _periodicCategories.value = _periodicCategories.value.orEmpty().map { listItem ->
-            if (listItem.id == periodicCategory.id) listItem.copy(estimate = estimate) else listItem
+            if (listItem.categoryId == periodicCategory.categoryId) listItem.copy(estimate = estimate) else listItem
         }
     }
 
