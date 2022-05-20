@@ -20,6 +20,7 @@ import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.doOnTabSelected
 import com.s95ammar.budgetplanner.util.getAmountFormatResId
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
+import com.s95ammar.budgetplanner.util.setDrawableTint
 import com.s95ammar.budgetplanner.util.text
 import com.s95ammar.budgetplanner.util.updateTextIfNotEquals
 import dagger.hilt.android.AndroidEntryPoint
@@ -111,7 +112,7 @@ class BudgetTransactionCreateEditFragment :
 
     private fun setSelectedLocation(location: LocationWithAddress?) {
         binding.textViewLocationValue.text = location?.address ?: getString(R.string.choose_a_location)
-        val textColorRes = if (location == null) R.color.colorGray else R.color.colorBlack
+        val textColorRes = if (location == null) R.color.colorDarkGray else R.color.colorBlack
         binding.textViewLocationValue.setTextColor(ContextCompat.getColor(requireContext(), textColorRes))
     }
 
@@ -177,10 +178,10 @@ class BudgetTransactionCreateEditFragment :
                 )
                 val colorDrawable = ContextCompat.getColor(
                     requireContext(),
-                    if (errorId == ValidationErrors.ERROR_NONE) R.color.colorGray else R.color.colorErrorLight
+                    if (errorId == ValidationErrors.ERROR_NONE) R.color.colorDarkGray else R.color.colorErrorLight
                 )
                 binding.textViewPeriodCategoryValue.setTextColor(colorText)
-                binding.textViewPeriodCategoryValue.compoundDrawables.forEach { it?.setTint(colorDrawable) }
+                binding.textViewPeriodCategoryValue.setDrawableTint(colorDrawable)
             }
         }
     }

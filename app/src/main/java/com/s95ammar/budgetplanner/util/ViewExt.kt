@@ -1,9 +1,14 @@
 package com.s95ammar.budgetplanner.util
 
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.util.TypedValue
+import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputLayout
+
 
 var TextInputLayout.text: String?
     get() = editText?.text?.toString()
@@ -29,5 +34,11 @@ fun TabLayout.doOnTabSelected(action: (tab: TabLayout.Tab) -> Unit) {
 }
 
 fun TextView.setDrawableTint(@ColorInt color: Int) {
-    compoundDrawables.filterNotNull().firstOrNull()?.setTint(color)
+    compoundDrawablesRelative.filterNotNull().firstOrNull()?.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
+}
+
+fun View.setSelectableItemBackground(isEnabled: Boolean) {
+    val typedValue = TypedValue()
+    context.theme.resolveAttribute(android.R.attr.selectableItemBackground, typedValue, isEnabled)
+    setBackgroundResource(typedValue.resourceId)
 }

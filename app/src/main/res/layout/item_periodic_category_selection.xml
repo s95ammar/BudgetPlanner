@@ -20,7 +20,7 @@
         tools:text="Food" />
 
     <View
-        android:id="@+id/view_disabled"
+        android:id="@+id/selection_disabled_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/colorTransparent"
@@ -31,6 +31,24 @@
         app:layout_constraintTop_toTopOf="@+id/check_box_category_name" />
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/currency_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableEnd="@drawable/ic_arrow_right_narrow"
+        android:focusable="true"
+        android:paddingStart="@dimen/_48sdp"
+        android:paddingEnd="@dimen/_8sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textAppearance="@style/TextBlack12ssp"
+        app:drawableTint="@color/colorDarkGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/check_box_category_name"
+        tools:text="EUR" />
+
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/add_estimates_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,13 +56,14 @@
         android:clickable="true"
         android:drawableEnd="@drawable/ic_arrow_right_narrow"
         android:focusable="true"
-        android:paddingHorizontal="@dimen/_16sdp"
+        android:paddingStart="@dimen/_48sdp"
+        android:paddingEnd="@dimen/_8sdp"
         android:paddingVertical="@dimen/_8sdp"
         android:text="@string/add_estimate_optional"
-        android:textAppearance="@style/TextDescGray12ssp"
-        app:drawableTint="@color/colorGray"
+        android:textAppearance="@style/TextDarkGray12ssp"
+        app:drawableTint="@color/colorDarkGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/check_box_category_name" />
+        app:layout_constraintTop_toBottomOf="@+id/currency_text_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

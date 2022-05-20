@@ -3,6 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcrea
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 
 sealed class PeriodCategoriesSelectionUiEvent {
+    class NavigateToCurrencySelection(val periodicCategory: PeriodicCategory) : PeriodCategoriesSelectionUiEvent()
     class NavigateToCreateEditEstimate(val periodicCategory: PeriodicCategory) : PeriodCategoriesSelectionUiEvent()
     object Exit : PeriodCategoriesSelectionUiEvent()
 }

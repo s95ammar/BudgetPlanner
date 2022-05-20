@@ -15,6 +15,10 @@ class PeriodCategoriesSelectionViewModel : ViewModel() {
         _performUiEvent.call(UiEvent.NavigateToCreateEditEstimate(periodicCategory))
     }
 
+    fun onChangeCurrency(periodicCategory: PeriodicCategory) {
+        _performUiEvent.call(UiEvent.NavigateToCurrencySelection(periodicCategory))
+    }
+
     fun onBack() {
         _performUiEvent.call(UiEvent.Exit)
     }

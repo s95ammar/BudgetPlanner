@@ -66,6 +66,7 @@ abstract class BaseFragment : Fragment, LoadingManager {
     }
 
     fun showErrorSnackbar(throwable: Throwable) {
+        logFromHere(throwable)
         Snackbar.make(requireView(), getString(getErrorStringId(throwable)), Snackbar.LENGTH_SHORT).show()
     }
 

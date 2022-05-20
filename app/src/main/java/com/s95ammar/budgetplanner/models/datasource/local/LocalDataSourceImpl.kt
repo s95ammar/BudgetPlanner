@@ -39,11 +39,11 @@ class LocalDataSourceImpl @Inject constructor(
 
     // Period & PeriodicCategory
     override fun getPeriodEditDataFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>> {
-        return joinDao.getPeriodEditData(periodId)
+        return joinDao.getPeriodEditData(periodId, getMainCurrencyCode())
     }
 
     override fun getPeriodInsertTemplateFlow(): Flow<List<PeriodicCategoryJoinEntity>> {
-        return joinDao.getPeriodInsertTemplateFlow()
+        return joinDao.getPeriodInsertTemplateFlow(getMainCurrencyCode())
     }
 
     override fun getAllPeriodsFlow(): Flow<List<PeriodEntity>> {

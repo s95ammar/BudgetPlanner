@@ -81,8 +81,8 @@
                 android:focusable="true"
                 android:paddingVertical="@dimen/_8sdp"
                 android:text="@string/choose_categories"
-                android:textAppearance="@style/TextDescGray12ssp"
-                app:drawableTint="@color/colorGray"
+                android:textAppearance="@style/TextDarkGray12ssp"
+                app:drawableTint="@color/colorDarkGray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_period_categories" />

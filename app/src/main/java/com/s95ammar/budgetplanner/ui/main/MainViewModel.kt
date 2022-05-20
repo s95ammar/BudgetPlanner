@@ -8,6 +8,7 @@ import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.main.data.Currency
 import com.s95ammar.budgetplanner.ui.main.data.MainUiEvent
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
+import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -25,6 +26,7 @@ class MainViewModel @Inject constructor(
     private val _mainCurrency = MutableLiveData<Currency>()
     private val _performUiEvent = EventMutableLiveData<MainUiEvent>()
 
+    val mainCurrency = _mainCurrency.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     init {
@@ -51,6 +53,7 @@ class MainViewModel @Inject constructor(
                 _performUiEvent.call(MainUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }.collect {
                 _performUiEvent.call(MainUiEvent.DisplayLoadingState(LoadingState.Success))
+                _mainCurrency.value = currency
             }
         }
     }

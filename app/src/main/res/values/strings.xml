@@ -53,14 +53,16 @@
     <string name="categories_for_this_period">Categories for this period:</string>
     <string name="choose_categories">Choose categories</string>
     <string name="category_not_selectable">This category cannot be unselected because it already has transactions created during this period</string>
+    <string name="currency_not_changeable">This currency cannot be changed because the category already has transactions created during this period</string>
 
     <!--use `fun getAmountFormatResId` to get the right format-->
-    <string name="format_budget_transaction_amount_no_decimals">%,.0f</string>
-    <string name="format_budget_transaction_amount_two_decimals">%,.2f</string>
-    <string name="format_budget_transaction_amount_no_decimals_signed">%+,.0f</string>
-    <string name="format_budget_transaction_amount_two_decimals_signed">%+,.2f</string>
-    <string name="format_budget_transaction_amount_no_decimals_edit_text">%.0f</string>
-    <string name="format_budget_transaction_amount_two_decimals_edit_text">%.2f</string>
+    <string name="format_amount_no_decimals_with_thousand_separator">%,.0f</string>
+    <string name="format_amount_two_decimals_with_thousand_separator">%,.2f</string>
+    <string name="format_amount_no_decimals_signed_with_thousand_separator">%+,.0f</string>
+    <string name="format_amount_two_decimals_signed_with_thousand_separator">%+,.2f</string>
+    <string name="format_amount_no_decimals_edit_text">%.0f</string>
+    <string name="format_amount_two_decimals_edit_text">%.2f</string>
+    <string name="format_amount_string_with_currency">%s %s</string>
 
     <string name="create_budget_transaction">Create expense or income</string>
     <string name="edit_budget_transaction">Edit expense or income</string>
@@ -90,8 +92,11 @@
     <string name="category_estimate_tip">This information will only be used to properly display your progress for this category.
         You\'ll still be able to create both income and expense transactions regardless of what you choose here.</string>
 
-    <string name="format_currency_code_name">%s - %s</string>
+    <string name="format_currency_code_and_name">%s - %s</string>
     <string name="load_more">Load more</string>
     <string name="select_a_currency">Select a currency</string>
     <string name="select_main_currency_tip">Please select the currency you\'ll be using the most from the options below.</string>
+    <string name="select_periodic_category_currency_tip">Please keep in mind that all transactions for this category will have to be
+        made in the selected currency during this period.</string>
+    <string name="format_currency">Currency: %s</string>
 </resources>

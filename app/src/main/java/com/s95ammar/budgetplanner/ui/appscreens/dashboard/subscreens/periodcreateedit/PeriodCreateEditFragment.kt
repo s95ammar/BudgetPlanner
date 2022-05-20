@@ -80,7 +80,7 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
             }
         }
         binding.textViewPeriodCategoriesValue.setTextColor(
-            ContextCompat.getColor(requireContext(), if (isEmpty) R.color.colorGray else R.color.colorBlack)
+            ContextCompat.getColor(requireContext(), if (isEmpty) R.color.colorDarkGray else R.color.colorBlack)
         )
     }
 

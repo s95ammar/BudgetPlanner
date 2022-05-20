@@ -14,5 +14,5 @@ fun <T : Any> T.logThreadNameFromHere(message: String = "") {
 }
 
 fun<T: Any> T.logFromHere(throwable: Throwable) {
-    Log.e(LOG_TAG, "${this::class.java.simpleName}: ${throwable.stackTrace}")
+    Log.e(LOG_TAG, "${this::class.java.simpleName}: ${throwable.stackTraceToString()}")
 }

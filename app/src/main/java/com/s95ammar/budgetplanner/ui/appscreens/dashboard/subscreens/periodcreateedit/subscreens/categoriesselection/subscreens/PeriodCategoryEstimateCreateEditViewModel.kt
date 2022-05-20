@@ -40,6 +40,7 @@ class PeriodCategoryEstimateCreateEditViewModel @Inject constructor(
 
     val categoryName = _periodicCategory.map { it.categoryName }
     val estimateInput = _estimateInput.asLiveData()
+    val currencyCode = _periodicCategory.map { it.currencyCode }
     val type = _type.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 

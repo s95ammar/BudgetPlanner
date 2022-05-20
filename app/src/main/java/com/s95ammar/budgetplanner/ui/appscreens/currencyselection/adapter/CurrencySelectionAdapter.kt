@@ -103,7 +103,7 @@ class CurrencySelectionAdapter(
             val selectableCurrency = (item as CurrencySelectionItemType.ListItem).selectableCurrency
             binding.root.setOnClickListener { onCurrencyClick(selectableCurrency.value) }
             binding.nameTextView.text = itemView.context.getString(
-                R.string.format_currency_code_name,
+                R.string.format_currency_code_and_name,
                 selectableCurrency.value.code,
                 selectableCurrency.value.name
             )

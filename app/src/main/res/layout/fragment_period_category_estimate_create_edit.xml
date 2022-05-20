@@ -33,14 +33,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_16sdp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/category_name_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:textAppearance="@style/TextDescBlack14ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -52,7 +52,6 @@
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/shape_budget_transaction_tabs_background"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -65,18 +64,18 @@
                 app:tabTextAppearance="@style/TextDescBlack14ssp"
                 app:tabUnboundedRipple="true" />
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/estimate_input_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
                 android:hint="@string/estimate"
                 app:boxBackgroundColor="@null"
                 app:errorIconDrawable="@null"
                 app:errorTextAppearance="@style/TextAppearanceCairo"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/currency_text_view"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tab_layout">
 
@@ -90,6 +89,20 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/currency_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:textAppearance="@style/TextDescBlack14ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/estimate_input_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/estimate_input_layout"
+                tools:text="EUR" />
+
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tip_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,15 +112,14 @@
                 android:text="@string/category_estimate_tip"
                 android:textAppearance="@style/TextDescGray12ssp"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toEndOf="@id/estimate_input_layout"
-                app:layout_constraintStart_toStartOf="@+id/estimate_input_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/estimate_input_layout" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_apply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginVertical="@dimen/_8sdp"
                 android:text="@string/save"
                 android:textAllCaps="true"

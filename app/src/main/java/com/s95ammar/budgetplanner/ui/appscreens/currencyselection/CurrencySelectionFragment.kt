@@ -4,7 +4,6 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.s95ammar.budgetplanner.R
@@ -20,8 +19,7 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CurrencySelectionFragment
-    : BaseViewBinderFragment<FragmentCurrencySelectionBinding>(
+class CurrencySelectionFragment : BaseViewBinderFragment<FragmentCurrencySelectionBinding>(
     R.layout.fragment_currency_selection
 ) {
 
@@ -85,12 +83,17 @@ class CurrencySelectionFragment
     }
 
     private fun setViewsToIsMainCurrencySelection(isMainCurrencySelection: Boolean) {
-        setUpTipPreview(isVisible = isMainCurrencySelection)
+        setUpTipPreview(isMainCurrencySelection)
         setUpToolbarAndBackFunctionality(isBackAvailable = !isMainCurrencySelection)
     }
 
-    private fun setUpTipPreview(isVisible: Boolean) {
-        binding.tipTextView.isVisible = isVisible
+    private fun setUpTipPreview(isMainCurrencySelection: Boolean) {
+        binding.tipTextView.text = getString(
+            if (isMainCurrencySelection)
+                R.string.select_main_currency_tip
+            else
+                R.string.select_periodic_category_currency_tip
+        )
     }
 
     private fun setUpToolbarAndBackFunctionality(isBackAvailable: Boolean) {

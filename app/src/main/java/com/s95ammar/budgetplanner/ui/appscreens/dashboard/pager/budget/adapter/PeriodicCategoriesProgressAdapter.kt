@@ -26,7 +26,7 @@ class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, Peri
             override fun getChangePayload(oldItem: PeriodicCategory, newItem: PeriodicCategory) = PayloadsHolder().apply {
                 addPayloadIfNotEqual(PayloadType.CATEGORY_NAME, oldItem to newItem, PeriodicCategory::categoryName)
                 addPayloadIfNotEqual(
-                    PayloadType.ESTIMATE,
+                    PayloadType.AMOUNT_AND_ESTIMATE,
                     oldItem to newItem,
                     PeriodicCategory::estimate,
                     PeriodicCategory::budgetTransactionsAmountSum
@@ -47,19 +47,30 @@ class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, Peri
 
         override fun bind(item: PeriodicCategory, payloads: PayloadsHolder) {
             if (payloads.shouldUpdate(PayloadType.CATEGORY_NAME)) setCategoryName(item.categoryName)
-            if (payloads.shouldUpdate(PayloadType.ESTIMATE)) setAmountAndEstimate(item.budgetTransactionsAmountSum, item.estimate)
+            if (payloads.shouldUpdate(PayloadType.AMOUNT_AND_ESTIMATE)) setAmountAndEstimate(item)
         }
 
         private fun setCategoryName(categoryName: String) {
             binding.textViewCategoryName.text = categoryName
         }
 
-        private fun setAmountAndEstimate(amountSum: Double, estimate: Double?) {
+        private fun setAmountAndEstimate(periodicCategory: PeriodicCategory) {
+            val amountSum = periodicCategory.budgetTransactionsAmountSum
+            val estimate = periodicCategory.estimate
             binding.progressBar.isGone = estimate == null
 
             if (estimate != null) {
                 binding.progressBar.progress = (amountSum * 100.0 / estimate).roundToInt()
+            }
 
+            binding.textViewBudgetPeriodEntryValues.text = getAmountAndEstimateString(periodicCategory)
+        }
+
+        private fun getAmountAndEstimateString(periodicCategory: PeriodicCategory): String {
+            val amountSum = periodicCategory.budgetTransactionsAmountSum
+            val estimate = periodicCategory.estimate
+
+            return if (estimate != null) {
                 val areSumAndEstimateOfDifferentSigns = amountSum * estimate < 0
                 val sumFormatted = getString(
                     getAmountFormatResId(amountSum, includePlusSign = areSumAndEstimateOfDifferentSigns),
@@ -69,22 +80,32 @@ class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, Peri
                     getAmountFormatResId(estimate, includePlusSign = areSumAndEstimateOfDifferentSigns),
                     if (areSumAndEstimateOfDifferentSigns) estimate else estimate.absoluteValue
                 )
-                binding.textViewBudgetPeriodEntryValues.text = getString(
+                val progressFormatted = getString(
                     R.string.format_value_out_of,
                     sumFormatted,
                     estimateFormatted
                 )
+                getString(
+                    R.string.format_amount_string_with_currency,
+                    progressFormatted,
+                    periodicCategory.currencyCode
+                )
             } else {
-                binding.textViewBudgetPeriodEntryValues.text = getString(
-                    getAmountFormatResId(amountSum, includePlusSign = false), amountSum.absoluteValue
+                val sumFormatted = getString(
+                    getAmountFormatResId(amountSum, includePlusSign = false),
+                    amountSum.absoluteValue
+                )
+                getString(
+                    R.string.format_amount_string_with_currency,
+                    sumFormatted,
+                    periodicCategory.currencyCode
                 )
             }
-
         }
     }
 
     object PayloadType {
         const val CATEGORY_NAME = 1
-        const val ESTIMATE = 2
+        const val AMOUNT_AND_ESTIMATE = 2
     }
 }

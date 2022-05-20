@@ -16,22 +16,22 @@ fun getAmountFormatResId(
     val isWhole = amount == amount.roundToInt().toDouble()
     return if (removeDecimalsIfWhole && isWhole) {
         if (isForEditText) {
-            R.string.format_budget_transaction_amount_no_decimals_edit_text
+            R.string.format_amount_no_decimals_edit_text
         } else {
             if (includePlusSign) {
-                R.string.format_budget_transaction_amount_no_decimals_signed
+                R.string.format_amount_no_decimals_signed_with_thousand_separator
             } else {
-                R.string.format_budget_transaction_amount_no_decimals
+                R.string.format_amount_no_decimals_with_thousand_separator
             }
         }
     } else {
         if (isForEditText) {
-            R.string.format_budget_transaction_amount_two_decimals_edit_text
+            R.string.format_amount_two_decimals_edit_text
         } else {
             if (includePlusSign) {
-                R.string.format_budget_transaction_amount_two_decimals_signed
+                R.string.format_amount_two_decimals_signed_with_thousand_separator
             } else {
-                R.string.format_budget_transaction_amount_two_decimals
+                R.string.format_amount_two_decimals_with_thousand_separator
             }
         }
     }

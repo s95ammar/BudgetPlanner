@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
     }
 
     private fun navigateToMainCurrencySelection() {
-        navController.navigate(MobileNavigationDirections.actionToCurrencySelectionFragmentFragment())
+        navController.navigate(MobileNavigationDirections.actionToMainCurrencySelectionFragmentFragment())
     }
 
     private fun onNavigationItemSelected(item: MenuItem): Boolean {

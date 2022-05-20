@@ -58,6 +58,18 @@
         <item name="android:textSize">@dimen/_12ssp</item>
     </style>
 
+    <style name="TextDarkGray12ssp">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+
+    <style name="TextBlack12ssp">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+
     <style name="TextAppearanceCairo" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/cairo</item>
     </style>

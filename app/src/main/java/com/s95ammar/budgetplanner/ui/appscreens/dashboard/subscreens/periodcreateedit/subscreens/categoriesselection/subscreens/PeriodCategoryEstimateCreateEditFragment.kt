@@ -57,6 +57,7 @@ class PeriodCategoryEstimateCreateEditFragment
     override fun initObservers() {
         viewModel.categoryName.observe(viewLifecycleOwner) { setCategoryName(it) }
         viewModel.estimateInput.observe(viewLifecycleOwner) { setEstimate(it) }
+        viewModel.currencyCode.observe(viewLifecycleOwner) { setCurrencyCode(it) }
         viewModel.type.observe(viewLifecycleOwner) { setType(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
@@ -73,6 +74,10 @@ class PeriodCategoryEstimateCreateEditFragment
                 )
             }
         }
+    }
+
+    private fun setCurrencyCode(currencyCode: String) {
+        binding.currencyTextView.text = currencyCode
     }
 
     private fun setType(@IntBudgetTransactionType type: Int) {

@@ -20,7 +20,7 @@ interface JoinDao {
            category.id AS categoryId,
            category.name AS categoryName,
            pcOfPeriod.estimate AS estimate,
-           IFNULL(pcOfPeriod.currencyCode, "") AS currencyCode,
+           IFNULL(pcOfPeriod.currencyCode, :mainCurrencyCode) AS currencyCode,
            IFNULL(btAmountSumGrouped.btAmountSum, 0.0) AS budgetTransactionsAmountSum
     FROM category
     LEFT JOIN (
@@ -36,10 +36,10 @@ interface JoinDao {
         ON pcOfPeriod.id = btAmountSumGrouped.periodicCategoryId
     """
     )
-    fun getPeriodEditData(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
+    fun getPeriodEditData(periodId: Int, mainCurrencyCode: String): Flow<List<PeriodicCategoryJoinEntity>>
 
-    // load all categories to allow to add them to the period
-    // values, which are not yet added to the period, will have a null value
+    // load data from last period as a template
+    // values, which were not added to the last period, will have a null value
     @Query(
         """
     SELECT IFNULL(pcOfPeriod.id, $INT_INVALID) AS periodicCategoryId,
@@ -47,7 +47,7 @@ interface JoinDao {
            category.id AS categoryId,
            category.name AS categoryName,
            pcOfPeriod.estimate AS estimate,
-           "" AS currencyCode,
+           IFNULL(pcOfPeriod.currencyCode, :mainCurrencyCode) AS currencyCode,
            0.0 AS budgetTransactionsAmountSum
     FROM category
     LEFT JOIN (
@@ -57,7 +57,7 @@ interface JoinDao {
         ON category.id = pcOfPeriod.categoryId
     """
     )
-    fun getPeriodInsertTemplateFlow(): Flow<List<PeriodicCategoryJoinEntity>>
+    fun getPeriodInsertTemplateFlow(mainCurrencyCode: String): Flow<List<PeriodicCategoryJoinEntity>>
 
     @Query(
         """

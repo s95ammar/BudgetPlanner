@@ -105,11 +105,17 @@
         android:layout_height="wrap_content"
         app:tabGravity="center"
         app:tabIndicatorColor="@color/colorPrimary"
+        app:tabIndicatorHeight="@dimen/_2sdp"
         app:tabMaxWidth="0dp"
         app:tabMode="auto"
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextAppearance="@style/TextTitleWhite14ssp"
         app:tabTextColor="@color/colorBlack" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/colorDivider" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

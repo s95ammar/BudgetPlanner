@@ -32,10 +32,9 @@
         android:drawableStart="@drawable/ic_info"
         android:drawablePadding="@dimen/_8sdp"
         android:padding="@dimen/_8sdp"
-        android:text="@string/select_main_currency_tip"
         android:textAppearance="@style/TextDescGray12ssp"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        android:visibility="visible"
+        tools:text="@string/select_main_currency_tip" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

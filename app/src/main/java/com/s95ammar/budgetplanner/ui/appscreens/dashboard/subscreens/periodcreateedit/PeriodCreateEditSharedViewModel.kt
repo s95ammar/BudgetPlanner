@@ -18,6 +18,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreat
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
+import com.s95ammar.budgetplanner.ui.main.data.Currency
 import com.s95ammar.budgetplanner.util.CalendarUtil
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -65,6 +66,12 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     val allowCategorySelectionForAll = _allowCategorySelectionForAll.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
+    fun onPeriodicCategoryCurrencyChanged(periodicCategory: PeriodicCategory, currency: Currency) {
+        _periodicCategories.value = _periodicCategories.value.orEmpty().map { listItem ->
+            if (listItem.categoryId == periodicCategory.categoryId) listItem.copy(currencyCode = currency.code) else listItem
+        }
+    }
+
     fun onPeriodicCategorySelectionStateChanged(periodicCategory: PeriodicCategory, isSelected: Boolean) {
         _periodicCategories.value = _periodicCategories.value.orEmpty().map { listItem ->
             if (listItem.categoryId == periodicCategory.categoryId) listItem.copy(isSelected = isSelected) else listItem
@@ -84,7 +91,6 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
         validator.getValidationResult()
             .onSuccess { insertOrUpdatePeriod(it) }
             .onError { displayValidationResults(it) }
-
     }
 
     private fun createValidator(periodInputBundle: PeriodInputBundle): PeriodCreateEditValidator {

@@ -15,6 +15,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreat
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesMultiSelectionAdapter
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
+import com.s95ammar.budgetplanner.ui.main.data.Currency
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.data.PeriodCategoriesSelectionUiEvent as UiEvent
 
@@ -26,8 +27,10 @@ class PeriodCategoriesSelectionFragment :
 
     private val adapter by lazy {
         PeriodicCategoriesMultiSelectionAdapter(
+            mainCurrencyCode = activityViewModel.mainCurrency.value?.code.orEmpty(),
             onSelectionStateChanged = sharedViewModel::onPeriodicCategorySelectionStateChanged,
-            onCreateEditEstimate = viewModel::onCreateEditEstimate
+            onCreateEditEstimate = viewModel::onCreateEditEstimate,
+            onChangeCurrency = viewModel::onChangeCurrency
         )
     }
 
@@ -57,9 +60,22 @@ class PeriodCategoriesSelectionFragment :
 
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
+            is UiEvent.NavigateToCurrencySelection -> listenAndNavigateToCurrencySelection(uiEvent.periodicCategory)
             is UiEvent.NavigateToCreateEditEstimate -> listenAndNavigateToEstimateCreateEdit(uiEvent.periodicCategory)
             is UiEvent.Exit -> navController.navigateUp()
         }
+    }
+
+    private fun listenAndNavigateToCurrencySelection(periodicCategory: PeriodicCategory) {
+        setFragmentResultListener(Keys.KEY_CURRENCY_REQUEST) { _, bundle ->
+            bundle.getParcelable<Currency>(Keys.KEY_CURRENCY)?.let { currency ->
+                sharedViewModel.onPeriodicCategoryCurrencyChanged(periodicCategory, currency)
+            }
+        }
+        navController.navigate(
+            PeriodCategoriesSelectionFragmentDirections
+                .actionPeriodCategoriesSelectionFragmentToCurrencySelectionFragment(periodicCategory.currencyCode)
+        )
     }
 
     private fun listenAndNavigateToEstimateCreateEdit(periodicCategory: PeriodicCategory) {

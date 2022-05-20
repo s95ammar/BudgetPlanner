@@ -11,7 +11,6 @@ import com.s95ammar.budgetplanner.ui.appscreens.currencyselection.adapter.Curren
 import com.s95ammar.budgetplanner.ui.appscreens.currencyselection.data.CurrencySelectionUiEvent
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.data.Selectable
-import com.s95ammar.budgetplanner.ui.common.orCold
 import com.s95ammar.budgetplanner.ui.main.data.Currency
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
@@ -42,7 +41,7 @@ class CurrencySelectionViewModel @Inject constructor(
     val isMainCurrencySelection = MutableLiveData(mainCurrencyCode.isEmpty()).asLiveData()
     val currenciesItems = MediatorLiveData<List<CurrencySelectionItemType>>().apply {
         fun update() {
-            value = createCurrencyItems(_currencies.value.orEmpty(), _loadMoreLoadingState.value.orCold())
+            value = createCurrencyItems(_currencies.value, _loadMoreLoadingState.value)
         }
         addSource(_currencies) { update() }
         addSource(_loadMoreLoadingState) { update() }
@@ -100,9 +99,11 @@ class CurrencySelectionViewModel @Inject constructor(
     }
 
     private fun createCurrencyItems(
-        currencies: List<Currency>,
-        loadingState: LoadingState
+        currencies: List<Currency>?,
+        loadingState: LoadingState?
     ): List<CurrencySelectionItemType> {
+        if (currencies == null || loadingState == null) return emptyList()
+
         val currencyItems = currencies.map { currency ->
             CurrencySelectionItemType.ListItem(Selectable(currency, isSelected = currency.code == mainCurrencyCode))
         }
@@ -111,5 +112,6 @@ class CurrencySelectionViewModel @Inject constructor(
             addAll(currencyItems.sortedBy { it.selectableCurrency.value.code })
             add(CurrencySelectionItemType.LoadMore(loadingState))
         }
+
     }
 }
