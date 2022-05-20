@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3cae2f438115a647a9fe33fa98d093aa",
+    "identityHash": "4f5221068c0e1d3ef7107edf85c056da",
     "entities": [
       {
         "tableName": "period",
@@ -82,7 +82,7 @@
       },
       {
         "tableName": "periodicCategory",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`estimate` REAL, `categoryId` INTEGER NOT NULL, `periodId` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`categoryId`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`periodId`) REFERENCES `period`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`estimate` REAL, `categoryId` INTEGER NOT NULL, `periodId` INTEGER NOT NULL, `currencyCode` TEXT NOT NULL DEFAULT '', `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`categoryId`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`periodId`) REFERENCES `period`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`currencyCode`) REFERENCES `currency`(`code`) ON UPDATE NO ACTION ON DELETE SET DEFAULT )",
         "fields": [
           {
             "fieldPath": "estimate",
@@ -101,6 +101,13 @@
             "columnName": "periodId",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "currencyCode",
+            "columnName": "currencyCode",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "id",
@@ -131,6 +138,14 @@
               "periodId"
             ],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_periodicCategory_periodId` ON `${TABLE_NAME}` (`periodId`)"
+          },
+          {
+            "name": "index_periodicCategory_currencyCode",
+            "unique": false,
+            "columnNames": [
+              "currencyCode"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_periodicCategory_currencyCode` ON `${TABLE_NAME}` (`currencyCode`)"
           }
         ],
         "foreignKeys": [
@@ -154,6 +169,17 @@
             ],
             "referencedColumns": [
               "id"
+            ]
+          },
+          {
+            "table": "currency",
+            "onDelete": "SET DEFAULT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "currencyCode"
+            ],
+            "referencedColumns": [
+              "code"
             ]
           }
         ]
@@ -265,7 +291,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3cae2f438115a647a9fe33fa98d093aa')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4f5221068c0e1d3ef7107edf85c056da')"
     ]
   }
 }

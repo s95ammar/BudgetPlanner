@@ -14,6 +14,7 @@ data class PeriodicCategory(
     val categoryId: Int,
     val categoryName: String,
     var estimate: Double?,
+    val currencyCode: String,
     val budgetTransactionsAmountSum: Double,
     val isSelected: Boolean
 ) : Parcelable {
@@ -27,6 +28,7 @@ data class PeriodicCategory(
                     it.categoryId,
                     it.categoryName,
                     it.estimate,
+                    it.currencyCode,
                     it.budgetTransactionsAmountSum,
                     isSelected = it.periodicCategoryId != Int.INVALID
                 )
@@ -38,7 +40,12 @@ data class PeriodicCategory(
 
         override fun toEntity(domainObj: PeriodicCategory?): PeriodicCategoryEntity? {
             return domainObj?.let {
-                PeriodicCategoryEntity(it.estimate, it.categoryId, it.periodId).apply { id = it.id }
+                PeriodicCategoryEntity(
+                    estimate = it.estimate,
+                    categoryId = it.categoryId,
+                    periodId = it.periodId,
+                    currencyCode = it.currencyCode
+                ).apply { id = it.id }
             }
 
         }

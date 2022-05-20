@@ -6,5 +6,6 @@ data class PeriodicCategoryJoinEntity(
     val categoryId: Int,
     val categoryName: String,
     val estimate: Double?,
+    val currencyCode: String,
     val budgetTransactionsAmountSum: Double
 )

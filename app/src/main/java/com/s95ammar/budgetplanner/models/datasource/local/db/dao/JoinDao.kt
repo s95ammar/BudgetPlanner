@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface JoinDao {
 
+    // load all categories (not just the ones already added) to allow to add them to the period
+    // values, which are not yet added to the period, will have a null value
     @Query(
         """
     SELECT IFNULL(pcOfPeriod.id, $INT_INVALID) AS periodicCategoryId,
@@ -18,6 +20,7 @@ interface JoinDao {
            category.id AS categoryId,
            category.name AS categoryName,
            pcOfPeriod.estimate AS estimate,
+           IFNULL(pcOfPeriod.currencyCode, "") AS currencyCode,
            IFNULL(btAmountSumGrouped.btAmountSum, 0.0) AS budgetTransactionsAmountSum
     FROM category
     LEFT JOIN (
@@ -35,6 +38,8 @@ interface JoinDao {
     )
     fun getPeriodEditData(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
 
+    // load all categories to allow to add them to the period
+    // values, which are not yet added to the period, will have a null value
     @Query(
         """
     SELECT IFNULL(pcOfPeriod.id, $INT_INVALID) AS periodicCategoryId,
@@ -42,6 +47,7 @@ interface JoinDao {
            category.id AS categoryId,
            category.name AS categoryName,
            pcOfPeriod.estimate AS estimate,
+           "" AS currencyCode,
            0.0 AS budgetTransactionsAmountSum
     FROM category
     LEFT JOIN (
@@ -60,7 +66,8 @@ interface JoinDao {
 	       category.id AS categoryId,
 	       category.name AS categoryName,
 	       btAmountSumGrouped.btAmountSum AS budgetTransactionsAmountSum,
-	       periodicCategory.estimate AS estimate
+	       periodicCategory.estimate AS estimate,
+           periodicCategory.currencyCode AS currencyCode 
 	FROM category
 	INNER JOIN periodicCategory ON category.id = periodicCategory.categoryId
 	LEFT JOIN (

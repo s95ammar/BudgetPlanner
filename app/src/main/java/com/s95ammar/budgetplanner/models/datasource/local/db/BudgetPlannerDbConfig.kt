@@ -17,4 +17,6 @@ object BudgetPlannerDbConfig {
     const val COLUMN_NAME_CATEGORY_ID = "categoryId"
     const val COLUMN_NAME_PERIODIC_CATEGORY_ID = "periodicCategoryId"
     const val COLUMN_NAME_NAME = "name"
+    const val COLUMN_NAME_CODE = "code"
+    const val COLUMN_NAME_CURRENCY_CODE = "currencyCode"
 }
