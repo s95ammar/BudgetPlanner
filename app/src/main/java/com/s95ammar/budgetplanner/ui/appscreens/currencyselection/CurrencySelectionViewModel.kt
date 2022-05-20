@@ -104,7 +104,7 @@ class CurrencySelectionViewModel @Inject constructor(
         loadingState: LoadingState
     ): List<CurrencySelectionItemType> {
         val currencyItems = currencies.map { currency ->
-            CurrencySelectionItemType.ListItem(Selectable(currency, currency.code == mainCurrencyCode))
+            CurrencySelectionItemType.ListItem(Selectable(currency, isSelected = currency.code == mainCurrencyCode))
         }
 
         return buildList {

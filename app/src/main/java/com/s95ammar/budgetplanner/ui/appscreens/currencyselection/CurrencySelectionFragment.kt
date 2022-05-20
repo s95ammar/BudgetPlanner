@@ -7,7 +7,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCurrencySelectionBinding
 import com.s95ammar.budgetplanner.ui.appscreens.currencyselection.adapter.CurrencySelectionAdapter
@@ -50,7 +49,6 @@ class CurrencySelectionFragment
     private fun setUpRecyclerView() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.setHasFixedSize(true)
-        binding.recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
     private fun setCurrenciesList(items: List<CurrencySelectionItemType>) {
