@@ -11,8 +11,9 @@ import com.s95ammar.budgetplanner.models.repository.CurrencyRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.anothercurrency.data.ConversionResult
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.anothercurrency.data.CurrencyConversionUiEvent
 import com.s95ammar.budgetplanner.ui.common.LoadingState
+import com.s95ammar.budgetplanner.util.CurrencyRatesMap
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
-import com.s95ammar.budgetplanner.util.lifecycleutil.MediatorLiveData
+import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -31,11 +32,18 @@ class CurrencyConversionViewModel @Inject constructor(
         CurrencyConversionFragmentArgs::toCurrencyCode.name
     ).orEmpty()
     private val _toCurrencyCode = MutableLiveData(toCurrencyCodeStr)
-    private val _fromCurrencyCode = MediatorLiveData(toCurrencyCodeStr).apply {
-        addSource(this) { handleFromCurrencyChanged(it) }
+    private val _fromCurrencyCode = MutableLiveData(toCurrencyCodeStr)
+    private val _toCurrencyRates = LoaderMutableLiveData<CurrencyRatesMap> { loadToCurrencyRates() }
+    private val _conversionRate = MediatorLiveData<Double>().apply {
+        fun update() {
+            val rates = _toCurrencyRates.value.takeUnless { it.isNullOrEmpty() } ?: return
+            val from = _fromCurrencyCode.value ?: return
+            value = rates.getOrElse(from) { 1.0 }
+        }
+        addSource(_toCurrencyRates) { update() }
+        addSource(_fromCurrencyCode) { update() }
     }
     private val _fromAmount = MutableLiveData<Double>()
-    private val _conversionRate = MutableLiveData<Double>()
     private val _toAmount = MediatorLiveData<Double>().apply {
         fun update() {
             value = _fromAmount.value.orZero() * _conversionRate.value.orZero()
@@ -43,7 +51,6 @@ class CurrencyConversionViewModel @Inject constructor(
         addSource(_fromAmount) { update() }
         addSource(_conversionRate) { update() }
     }
-
     private val _performUiEvent = EventMutableLiveData<CurrencyConversionUiEvent>()
 
     val fromCurrencyCode = _fromCurrencyCode.distinctUntilChanged()
@@ -80,29 +87,19 @@ class CurrencyConversionViewModel @Inject constructor(
         _performUiEvent.call(CurrencyConversionUiEvent.Exit)
     }
 
-    private fun handleFromCurrencyChanged(fromCode: String) {
-        if (fromCode != toCurrencyCodeStr) {
-            loadConversionRate(fromCode)
-        } else {
-            _conversionRate.value = 1.0
-        }
-    }
-
-    private fun loadConversionRate(fromCode: String) {
+    private fun loadToCurrencyRates() {
         viewModelScope.launch {
-            _toCurrencyCode.value?.let { toCode ->
-                repository.loadConversionRate(fromCode, toCode)
-                    .onStart {
-                        _performUiEvent.call(CurrencyConversionUiEvent.DisplayLoadingState(LoadingState.Loading))
-                    }
-                    .catch { throwable ->
-                        _performUiEvent.call(CurrencyConversionUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
-                    }
-                    .collect { conversionRate ->
-                        _performUiEvent.call(CurrencyConversionUiEvent.DisplayLoadingState(LoadingState.Success))
-                        _conversionRate.value = conversionRate
-                    }
-            }
+            repository.loadConversionRates(toCurrencyCodeStr)
+                .onStart {
+                    _performUiEvent.call(CurrencyConversionUiEvent.DisplayLoadingState(LoadingState.Loading))
+                }
+                .catch { throwable ->
+                    _performUiEvent.call(CurrencyConversionUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
+                }
+                .collect { ratesMap ->
+                    _performUiEvent.call(CurrencyConversionUiEvent.DisplayLoadingState(LoadingState.Success))
+                    _toCurrencyRates.value = ratesMap
+                }
         }
     }
 }
