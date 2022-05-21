@@ -8,7 +8,7 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategoryBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
-import com.s95ammar.budgetplanner.util.getAmountFormatResId
+import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
@@ -72,33 +72,25 @@ class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, Peri
 
             return if (estimate != null) {
                 val areSumAndEstimateOfDifferentSigns = amountSum * estimate < 0
-                val sumFormatted = getString(
-                    getAmountFormatResId(amountSum, includePlusSign = areSumAndEstimateOfDifferentSigns),
-                    if (areSumAndEstimateOfDifferentSigns) amountSum else amountSum.absoluteValue
+                val sumFormatted = getAmountStringFormatted(
+                    if (areSumAndEstimateOfDifferentSigns) amountSum else amountSum.absoluteValue,
+                    includePlusSign = areSumAndEstimateOfDifferentSigns
                 )
-                val estimateFormatted = getString(
-                    getAmountFormatResId(estimate, includePlusSign = areSumAndEstimateOfDifferentSigns),
-                    if (areSumAndEstimateOfDifferentSigns) estimate else estimate.absoluteValue
+                val estimateFormattedWithCurrency = getAmountStringFormatted(
+                    if (areSumAndEstimateOfDifferentSigns) estimate else estimate.absoluteValue,
+                    includePlusSign = areSumAndEstimateOfDifferentSigns,
+                    currencyCode = periodicCategory.currencyCode
                 )
-                val progressFormatted = getString(
+                getString(
                     R.string.format_value_out_of,
                     sumFormatted,
-                    estimateFormatted
-                )
-                getString(
-                    R.string.format_amount_string_with_currency,
-                    progressFormatted,
-                    periodicCategory.currencyCode
+                    estimateFormattedWithCurrency
                 )
             } else {
-                val sumFormatted = getString(
-                    getAmountFormatResId(amountSum, includePlusSign = false),
-                    amountSum.absoluteValue
-                )
-                getString(
-                    R.string.format_amount_string_with_currency,
-                    sumFormatted,
-                    periodicCategory.currencyCode
+                getAmountStringFormatted(
+                    amountSum.absoluteValue,
+                    includePlusSign = false,
+                    currencyCode = periodicCategory.currencyCode
                 )
             }
         }

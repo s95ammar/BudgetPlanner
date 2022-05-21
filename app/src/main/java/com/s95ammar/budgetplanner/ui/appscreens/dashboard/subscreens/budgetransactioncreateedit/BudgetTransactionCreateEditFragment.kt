@@ -19,7 +19,7 @@ import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.doOnTabSelected
-import com.s95ammar.budgetplanner.util.getAmountFormatResId
+import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.setDrawableTint
 import com.s95ammar.budgetplanner.util.text
@@ -104,7 +104,7 @@ class BudgetTransactionCreateEditFragment :
     private fun setAmount(amount: Double) {
         if (amount != binding.inputLayoutAmount.text?.toDoubleOrNull()) {
             binding.inputLayoutAmount.updateTextIfNotEquals(
-                getString(getAmountFormatResId(amount, isForEditText = true), amount)
+                getAmountStringFormatted(amount, isForEditText = true)
             )
         }
     }

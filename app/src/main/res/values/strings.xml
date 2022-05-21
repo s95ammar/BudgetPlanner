@@ -55,7 +55,7 @@
     <string name="category_not_selectable">This category cannot be unselected because it already has transactions created during this period</string>
     <string name="currency_not_changeable">This currency cannot be changed because the category already has transactions created during this period</string>
 
-    <!--use `fun getAmountFormatResId` to get the right format-->
+    <!--use `fun Context.getAmountStringFormatted` to get a string by the suitable format-->
     <string name="format_amount_no_decimals_with_thousand_separator">%,.0f</string>
     <string name="format_amount_two_decimals_with_thousand_separator">%,.2f</string>
     <string name="format_amount_no_decimals_signed_with_thousand_separator">%+,.0f</string>

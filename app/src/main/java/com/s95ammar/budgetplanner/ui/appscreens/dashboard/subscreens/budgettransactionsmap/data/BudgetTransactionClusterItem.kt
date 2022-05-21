@@ -9,6 +9,7 @@ data class BudgetTransactionClusterItem(
     val name: String,
     val latLng: LatLng,
     val amount: Double,
+    val currencyCode: String,
     val creationUnixMs: Long,
     val categoryName: String
 ) : ClusterItem {
@@ -32,6 +33,7 @@ data class BudgetTransactionClusterItem(
                     entity.name,
                     entity.latLng?.let { (lat, lng) -> LatLng(lat, lng) } ?: return null,
                     entity.amount,
+                    entity.currencyCode,
                     entity.creationUnixMs,
                     entity.categoryName
                 )

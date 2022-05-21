@@ -11,7 +11,7 @@ import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategorySelectionBindi
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesMultiSelectionAdapter.PeriodicCategoriesSelectionViewHolder
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
-import com.s95ammar.budgetplanner.util.getAmountFormatResId
+import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import com.s95ammar.budgetplanner.util.setDrawableTint
 import com.s95ammar.budgetplanner.util.setSelectableItemBackground
 import kotlin.math.absoluteValue
@@ -82,7 +82,7 @@ class PeriodicCategoriesMultiSelectionAdapter(
             if (estimate != null && estimate != 0.0) {
                 binding.addEstimatesTextView.text = getString(
                     if (estimate < 0) R.string.format_estimate_expenses else R.string.format_estimate_income,
-                    getString(getAmountFormatResId(estimate, includePlusSign = false), estimate.absoluteValue)
+                    getAmountStringFormatted(estimate.absoluteValue, includePlusSign = false)
                 )
                 binding.addEstimatesTextView.setTextColor(getColor(R.color.colorBlack))
             } else {

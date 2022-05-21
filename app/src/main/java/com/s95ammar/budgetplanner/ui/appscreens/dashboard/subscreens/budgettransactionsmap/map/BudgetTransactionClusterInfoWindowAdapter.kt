@@ -10,8 +10,7 @@ import com.google.maps.android.clustering.Cluster
 import com.s95ammar.budgetplanner.databinding.LayoutBudgetTransactionsClusterInfoWindowBinding
 import com.s95ammar.budgetplanner.models.isExpense
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.data.BudgetTransactionClusterItem
-import com.s95ammar.budgetplanner.util.getAmountFormatResId
-
+import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 
 class BudgetTransactionClusterInfoWindowAdapter(
     val context: Context
@@ -31,10 +30,10 @@ class BudgetTransactionClusterInfoWindowAdapter(
         val (expenses, income) = cluster.items.partition { it.amount.isExpense() }
 
         val expensesSum = expenses.sumOf { it.amount }
-        binding.totalExpensesTextView.text = context.getString(getAmountFormatResId(expensesSum), expensesSum)
+        binding.totalExpensesTextView.text = context.getAmountStringFormatted(expensesSum)
 
         val incomeSum = income.sumOf { it.amount }
-        binding.totalIncomeTextView.text = context.getString(getAmountFormatResId(incomeSum), incomeSum)
+        binding.totalIncomeTextView.text = context.getAmountStringFormatted(incomeSum)
 
         val areExpenseViewsVisible = expenses.isNotEmpty()
         binding.totalExpensesKeyTextView.isVisible = areExpenseViewsVisible

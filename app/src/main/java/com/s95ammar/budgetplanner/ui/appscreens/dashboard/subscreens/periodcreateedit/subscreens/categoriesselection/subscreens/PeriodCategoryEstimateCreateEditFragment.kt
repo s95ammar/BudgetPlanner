@@ -13,7 +13,7 @@ import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.Optional
 import com.s95ammar.budgetplanner.util.doOnTabSelected
-import com.s95ammar.budgetplanner.util.getAmountFormatResId
+import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.text
 import com.s95ammar.budgetplanner.util.updateTextIfNotEquals
@@ -70,7 +70,7 @@ class PeriodCategoryEstimateCreateEditFragment
         estimateOptional.value?.takeIf { it != 0.0 }?.let { estimate ->
             if (estimate != binding.estimateInputLayout.text?.toDoubleOrNull()) {
                 binding.estimateInputLayout.updateTextIfNotEquals(
-                    getString(getAmountFormatResId(estimate, isForEditText = true), estimate)
+                    getAmountStringFormatted(estimate, isForEditText = true)
                 )
             }
         }

@@ -13,7 +13,7 @@ import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.util.currentLocale
-import com.s95ammar.budgetplanner.util.getAmountFormatResId
+import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -133,8 +133,7 @@ class BudgetTransactionsAdapter(
         private fun setTypeAndAmount(amount: Double, currencyCode: String) {
             val type = IntBudgetTransactionType.getByAmount(amount)
             val color = ContextCompat.getColor(itemView.context, IntBudgetTransactionType.getColorRes(type))
-            val amountFormatted = getString(getAmountFormatResId(amount), amount)
-            binding.textViewAmount.text = getString(R.string.format_amount_string_with_currency, amountFormatted, currencyCode)
+            binding.textViewAmount.text = getAmountStringFormatted(amount, currencyCode = currencyCode)
             binding.textViewAmount.setTextColor(color)
             binding.viewType.setBackgroundColor(color)
         }

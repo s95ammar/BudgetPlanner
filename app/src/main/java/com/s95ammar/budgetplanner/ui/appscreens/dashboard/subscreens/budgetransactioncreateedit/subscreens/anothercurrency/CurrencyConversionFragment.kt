@@ -15,7 +15,7 @@ import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.data.IntCurrencySelectionType
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.ui.main.data.Currency
-import com.s95ammar.budgetplanner.util.getAmountFormatResId
+import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.orZero
 import com.s95ammar.budgetplanner.util.text
@@ -72,7 +72,7 @@ class CurrencyConversionFragment : BaseViewBinderFragment<FragmentCurrencyConver
         if (from != binding.fromCurrencyInputLayout.text?.toDoubleOrNull()) {
             binding.fromCurrencyInputLayout.updateTextIfNotEquals(
                 from.takeIf { it != 0.0 }?.let { amount ->
-                    getString(getAmountFormatResId(amount, isForEditText = true), amount)
+                    getAmountStringFormatted(amount, isForEditText = true)
                 }
             )
         }
@@ -82,16 +82,14 @@ class CurrencyConversionFragment : BaseViewBinderFragment<FragmentCurrencyConver
         if (rate != binding.conversionRateInputLayout.text?.toDoubleOrNull()) {
             binding.conversionRateInputLayout.updateTextIfNotEquals(
                 rate.takeIf { it != 0.0 }?.let { amount ->
-                    getString(getAmountFormatResId(amount, isForEditText = true), amount)
+                    getAmountStringFormatted(amount, isForEditText = true)
                 }
             )
         }
     }
 
     private fun setConversionResult(conversionResult: ConversionResult) {
-        val amountFormatted = getString(
-            getAmountFormatResId(conversionResult.amount, includePlusSign = false), conversionResult.amount
-        )
+        val amountFormatted = getAmountStringFormatted(conversionResult.amount, includePlusSign = false)
         binding.conversionResultTextView.text = getString(
             R.string.format_conversion_result,
             conversionResult.currencyCode,
