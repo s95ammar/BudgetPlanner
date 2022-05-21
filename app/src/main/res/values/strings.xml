@@ -109,4 +109,8 @@
     <string name="convert_currency">Convert currency</string>
     <string name="format_conversion_rate_desc_from">1 %s = </string>
     <string name="format_conversion_result">Result (%s): %s</string>
+    <string name="multiple_currencies_tip">*Approximate sum (multiple currencies found)</string>
+    <string name="format_approximate_sum">%s*</string>
+    <string name="unknown_total">Unknown total</string>
+
 </resources>

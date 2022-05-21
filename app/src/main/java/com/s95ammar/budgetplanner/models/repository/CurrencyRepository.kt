@@ -2,6 +2,7 @@ package com.s95ammar.budgetplanner.models.repository
 
 import com.s95ammar.budgetplanner.models.datasource.local.LocalDataSource
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CurrencyEntity
+import com.s95ammar.budgetplanner.util.CurrencyRatesMap
 import com.s95ammar.budgetplanner.util.flowOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -49,5 +50,21 @@ class CurrencyRepository @Inject constructor(
     // TODO (temp)
     fun loadConversionRate(fromCode: String, toCode: String): Flow<Double> {
         return flowOf(29.25).onStart { delay(2000) }.flowOn(Dispatchers.IO)
+    }
+
+    // TODO (temp)
+    fun loadConversionRates(fromCode: String): Flow<CurrencyRatesMap> {
+        return flowOf(
+            mapOf(
+                "USD" to 10.0,
+                "EUR" to 20.0,
+                "GBP" to 30.0,
+                "CAD" to 40.0,
+                "AUD" to 50.0,
+                "UAH" to 60.0,
+                "CZK" to 70.0,
+                "NZD" to 80.0
+            )
+        ).onStart { delay(2000) }.flowOn(Dispatchers.IO)
     }
 }

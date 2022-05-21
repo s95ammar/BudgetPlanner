@@ -3,6 +3,8 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettran
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,6 +18,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettrans
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.map.BudgetTransactionClusterRenderer
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.map.BudgetTransactionInfoWindowAdapter
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
+import com.s95ammar.budgetplanner.ui.main.data.CurrencyDetails
 import com.s95ammar.budgetplanner.util.LAT_LNG_BOUNDS_PADDING
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,14 +45,18 @@ class BudgetTransactionsMapFragment : BaseViewBinderFragment<FragmentBudgetTrans
 
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap?.let { map ->
-            setUpClusterManager(map)
             initMapObservers(map)
         }
     }
 
     private fun initMapObservers(map: GoogleMap) {
-        viewModel.budgetTransactionClusterItems.observe(viewLifecycleOwner) {
-            setClusterItems(it, map)
+        activityViewModel.mainCurrencyDetails.switchMap { mainCurrencyDetails ->
+            viewModel.budgetTransactionClusterItems.map { budgetTransactionClusterItems ->
+                mainCurrencyDetails to budgetTransactionClusterItems
+            }
+        }.observe(viewLifecycleOwner) { (mainCurrencyDetails, budgetTransactionClusterItems) ->
+            setUpClusterManager(mainCurrencyDetails, map)
+            setClusterItems(budgetTransactionClusterItems, map)
         }
     }
 
@@ -58,10 +65,10 @@ class BudgetTransactionsMapFragment : BaseViewBinderFragment<FragmentBudgetTrans
         zoomIntoClusterItems(clusterItems, map)
     }
 
-    private fun setUpClusterManager(map: GoogleMap) {
+    private fun setUpClusterManager(mainCurrencyDetails: CurrencyDetails, map: GoogleMap) {
         clusterManager = ClusterManager(requireContext(), map)
         val itemInfoWindowAdapter = BudgetTransactionInfoWindowAdapter(requireContext())
-        val clusterInfoWindowAdapter = BudgetTransactionClusterInfoWindowAdapter(requireContext())
+        val clusterInfoWindowAdapter = BudgetTransactionClusterInfoWindowAdapter(requireContext(), mainCurrencyDetails)
         val clusterRenderer = BudgetTransactionClusterRenderer(requireContext().applicationContext, map, clusterManager)
         clusterManager.renderer = clusterRenderer
         clusterManager.markerCollection.setInfoWindowAdapter(itemInfoWindowAdapter)

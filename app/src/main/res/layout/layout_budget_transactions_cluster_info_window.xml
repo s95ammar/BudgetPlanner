@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
     app:cardCornerRadius="@dimen/_16sdp">
@@ -49,7 +49,8 @@
             android:id="@+id/total_expenses_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_16sdp"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:textAppearance="@style/TextDescBlack14ssp"
@@ -57,13 +58,14 @@
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toEndOf="@+id/total_expenses_key_text_view"
             app:layout_constraintTop_toTopOf="@+id/total_expenses_key_text_view"
             tools:text="-1,500" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/total_income_text_view"
             android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:singleLine="true"
@@ -72,7 +74,7 @@
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="@+id/total_expenses_text_view"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintStart_toEndOf="@+id/total_income_key_text_view"
             app:layout_constraintTop_toTopOf="@+id/total_income_key_text_view"
             tools:text="+1,500" />
 
@@ -84,16 +86,31 @@
             app:layout_constraintGuide_percent="0.66" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/zoom_in_button"
+            android:id="@+id/multiple_currencies_tip_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_8sdp"
+            android:drawableStart="@drawable/ic_info"
+            android:drawablePadding="@dimen/_8sdp"
+            android:text="@string/multiple_currencies_tip"
+            android:textAppearance="@style/TextDescGray12ssp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="@+id/total_income_text_view"
+            app:layout_constraintStart_toStartOf="@+id/total_income_key_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/total_income_key_text_view" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/zoom_in_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="@dimen/_4sdp"
             android:text="@string/tap_to_zoom_in"
             android:textAppearance="@style/TextDescGray12ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/total_income_key_text_view" />
+            app:layout_constraintTop_toBottomOf="@+id/multiple_currencies_tip_text_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
