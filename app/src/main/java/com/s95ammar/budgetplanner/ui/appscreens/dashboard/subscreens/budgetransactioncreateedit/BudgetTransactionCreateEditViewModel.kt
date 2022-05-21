@@ -165,6 +165,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
             type = _type.value ?: IntBudgetTransactionType.EXPENSE,
             name = budgetTransactionInputBundle.name,
             amount = budgetTransactionInputBundle.amount,
+            currencyCode = currencyCode.value,
             periodicCategoryId = _periodicCategory.value?.id ?: Int.INVALID,
             latLng = _locationOptional.optionalValue?.latLng
         )

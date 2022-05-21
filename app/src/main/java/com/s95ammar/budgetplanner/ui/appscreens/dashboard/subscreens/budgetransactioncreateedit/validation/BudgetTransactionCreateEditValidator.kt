@@ -29,11 +29,15 @@ class BudgetTransactionCreateEditValidator(
 
     override fun provideOutput(input: BudgetTransactionValidationBundle): BudgetTransactionEntity {
         val amount = getActualAmountFromInput(input)
+        val currencyCode = input.currencyCode ?: throw UnhandledValidationException(
+            "${BudgetTransactionValidationBundle::currencyCode.name} cannot be null"
+        )
 
         return if (editedBudgetTransaction == null) {
             BudgetTransactionEntity(
                 name = input.name,
                 amount = amount,
+                currencyCode = currencyCode,
                 periodicCategoryId = input.periodicCategoryId,
                 latLng = LatLngEntity.EntityMapper.toEntity(input.latLng)
             )
@@ -41,6 +45,7 @@ class BudgetTransactionCreateEditValidator(
             BudgetTransactionEntity(
                 name = input.name,
                 amount = amount,
+                currencyCode = currencyCode,
                 periodicCategoryId = input.periodicCategoryId,
                 latLng = LatLngEntity.EntityMapper.toEntity(input.latLng),
                 creationUnixMs = editedBudgetTransaction.creationUnixMs

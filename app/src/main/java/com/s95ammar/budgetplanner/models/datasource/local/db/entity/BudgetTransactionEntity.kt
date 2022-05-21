@@ -1,6 +1,7 @@
 package com.s95ammar.budgetplanner.models.datasource.local.db.entity
 
 import androidx.annotation.Nullable
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -16,6 +17,12 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
             parentColumns = [BudgetPlannerDbConfig.COLUMN_NAME_ID],
             childColumns = [BudgetPlannerDbConfig.COLUMN_NAME_PERIODIC_CATEGORY_ID],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = CurrencyEntity::class,
+            parentColumns = [BudgetPlannerDbConfig.COLUMN_NAME_CODE],
+            childColumns = [BudgetPlannerDbConfig.COLUMN_NAME_CURRENCY_CODE],
+            onDelete = ForeignKey.SET_DEFAULT
         )
     ],
     indices = [
@@ -25,6 +32,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
 data class BudgetTransactionEntity(
     val name: String,
     val amount: Double,
+    @ColumnInfo(defaultValue = "") val currencyCode: String,
     val periodicCategoryId: Int,
     @Nullable @Embedded val latLng: LatLngEntity?,
     val creationUnixMs: Long = System.currentTimeMillis()

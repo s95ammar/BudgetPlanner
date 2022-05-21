@@ -98,12 +98,12 @@ interface JoinDao {
 	SELECT budgetTransaction.id AS id,
 	       budgetTransaction.name AS name,
 	       budgetTransaction.amount AS amount,
+           budgetTransaction.currencyCode AS currencyCode,
 	       budgetTransaction.lat AS lat,
 	       budgetTransaction.lng AS lng,
 	       budgetTransaction.creationUnixMs AS creationUnixMs,
 	       periodicCategory.id AS periodicCategoryId,
            periodicCategory.periodId AS periodId,
-           periodicCategory.currencyCode AS currencyCode,
 	       category.name AS categoryName
 	FROM budgetTransaction
 	    INNER JOIN periodicCategory
@@ -120,12 +120,12 @@ interface JoinDao {
 	SELECT budgetTransaction.id AS id,
 	       budgetTransaction.name AS name,
 	       budgetTransaction.amount AS amount,
+           budgetTransaction.currencyCode AS currencyCode,
 	       budgetTransaction.lat AS lat,
 	       budgetTransaction.lng AS lng,
 	       budgetTransaction.creationUnixMs AS creationUnixMs,
 	       periodicCategory.id AS periodicCategoryId,
            periodicCategory.periodId AS periodId,
-           periodicCategory.currencyCode AS currencyCode,
 	       category.name AS categoryName
 	FROM budgetTransaction
 	    INNER JOIN periodicCategory

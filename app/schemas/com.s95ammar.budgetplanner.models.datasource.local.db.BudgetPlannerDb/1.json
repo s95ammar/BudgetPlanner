@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4f5221068c0e1d3ef7107edf85c056da",
+    "identityHash": "914016d2c24677b33866b30279a498d7",
     "entities": [
       {
         "tableName": "period",
@@ -186,7 +186,7 @@
       },
       {
         "tableName": "budgetTransaction",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `amount` REAL NOT NULL, `periodicCategoryId` INTEGER NOT NULL, `creationUnixMs` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lat` REAL, `lng` REAL, FOREIGN KEY(`periodicCategoryId`) REFERENCES `periodicCategory`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `amount` REAL NOT NULL, `currencyCode` TEXT NOT NULL DEFAULT '', `periodicCategoryId` INTEGER NOT NULL, `creationUnixMs` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lat` REAL, `lng` REAL, FOREIGN KEY(`periodicCategoryId`) REFERENCES `periodicCategory`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`currencyCode`) REFERENCES `currency`(`code`) ON UPDATE NO ACTION ON DELETE SET DEFAULT )",
         "fields": [
           {
             "fieldPath": "name",
@@ -199,6 +199,13 @@
             "columnName": "amount",
             "affinity": "REAL",
             "notNull": true
+          },
+          {
+            "fieldPath": "currencyCode",
+            "columnName": "currencyCode",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "periodicCategoryId",
@@ -258,6 +265,17 @@
             "referencedColumns": [
               "id"
             ]
+          },
+          {
+            "table": "currency",
+            "onDelete": "SET DEFAULT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "currencyCode"
+            ],
+            "referencedColumns": [
+              "code"
+            ]
           }
         ]
       },
@@ -291,7 +309,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4f5221068c0e1d3ef7107edf85c056da')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '914016d2c24677b33866b30279a498d7')"
     ]
   }
 }
