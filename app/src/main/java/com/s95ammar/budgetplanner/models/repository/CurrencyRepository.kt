@@ -21,6 +21,8 @@ class CurrencyRepository @Inject constructor(
         localDataSource.setMainCurrencyCode(code)
     }.flowOn(Dispatchers.IO)
 
+    fun getMainCurrencyCode() = localDataSource.getMainCurrencyCode()
+
     fun getMainCurrencyFlow() = localDataSource.getMainCurrencyFlow()
         .flowOn(Dispatchers.IO)
 
@@ -43,4 +45,9 @@ class CurrencyRepository @Inject constructor(
     fun insertCurrency(currencyEntity: CurrencyEntity) = flowOf {
         localDataSource.insertCurrency(currencyEntity)
     }.flowOn(Dispatchers.IO)
+
+    // TODO (temp)
+    fun loadConversionRate(fromCode: String, toCode: String): Flow<Double> {
+        return flowOf(29.25).onStart { delay(2000) }.flowOn(Dispatchers.IO)
+    }
 }

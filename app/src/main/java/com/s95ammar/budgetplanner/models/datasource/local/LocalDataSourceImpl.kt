@@ -17,8 +17,8 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CurrencyEnti
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetTransactionJoinEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryIdAndNameJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryJoinEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategorySimpleJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.prefs.BudgetPlannerPrefsConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -79,8 +79,8 @@ class LocalDataSourceImpl @Inject constructor(
         return joinDao.getPeriodicCategoriesFlow(periodId)
     }
 
-    override fun getPeriodicCategoryIdAndNameListFlow(periodId: Int): Flow<List<PeriodicCategoryIdAndNameJoinEntity>> {
-        return joinDao.getPeriodicCategoryIdAndNameListFlow(periodId)
+    override fun getPeriodicCategorySimple(periodId: Int): Flow<List<PeriodicCategorySimpleJoinEntity>> {
+        return joinDao.getPeriodicCategorySimple(periodId)
     }
 
     // Category
@@ -150,6 +150,6 @@ class LocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun insertCurrency(currencyEntity: CurrencyEntity) {
-        currencyDao.insert(currencyEntity)
+        currencyDao.insertIfDoesNotExist(currencyEntity)
     }
 }

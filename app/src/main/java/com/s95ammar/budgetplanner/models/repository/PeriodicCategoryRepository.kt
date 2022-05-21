@@ -14,6 +14,6 @@ class PeriodicCategoryRepository @Inject constructor(
     fun getPeriodicCategoriesFlow(periodId: Int) = localDataSource.getPeriodicCategoriesFlow(periodId)
         .flowOn(Dispatchers.IO)
 
-    fun getPeriodicCategoryIdAndNameListFlow(periodId: Int) = localDataSource.getPeriodicCategoryIdAndNameListFlow(periodId)
+    fun getPeriodicCategorySimple(periodId: Int) = localDataSource.getPeriodicCategorySimple(periodId)
         .flowOn(Dispatchers.IO)
 }

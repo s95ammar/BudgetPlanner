@@ -6,19 +6,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.s95ammar.budgetplanner.databinding.ItemCategoryBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategoryIdAndName
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategorySimple
 
 class PeriodicCategoriesSingleSelectionAdapter(
     private val onItemClick: (Int) -> Unit
-) : ListAdapter<PeriodicCategoryIdAndName, PeriodicCategoriesSingleSelectionAdapter.CategoriesViewHolder>(DiffUtilCallback()) {
+) : ListAdapter<PeriodicCategorySimple, PeriodicCategoriesSingleSelectionAdapter.CategoriesViewHolder>(DiffUtilCallback()) {
 
     companion object {
-        class DiffUtilCallback : DiffUtil.ItemCallback<PeriodicCategoryIdAndName>() {
-            override fun areItemsTheSame(oldItem: PeriodicCategoryIdAndName, newItem: PeriodicCategoryIdAndName): Boolean {
-                return (oldItem.periodicCategoryId == newItem.periodicCategoryId)
+        class DiffUtilCallback : DiffUtil.ItemCallback<PeriodicCategorySimple>() {
+            override fun areItemsTheSame(oldItem: PeriodicCategorySimple, newItem: PeriodicCategorySimple): Boolean {
+                return (oldItem.id == newItem.id)
             }
 
-            override fun areContentsTheSame(oldItem: PeriodicCategoryIdAndName, newItem: PeriodicCategoryIdAndName): Boolean {
+            override fun areContentsTheSame(oldItem: PeriodicCategorySimple, newItem: PeriodicCategorySimple): Boolean {
                 return (oldItem.categoryName == newItem.categoryName)
             }
         }
@@ -44,7 +44,7 @@ class PeriodicCategoriesSingleSelectionAdapter(
             itemView.setOnClickListener { onItemClick(adapterPosition) }
         }
 
-        fun bind(item: PeriodicCategoryIdAndName) {
+        fun bind(item: PeriodicCategorySimple) {
             binding.textViewTitle.text = item.categoryName
         }
 

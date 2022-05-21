@@ -48,47 +48,36 @@
                 app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple"
                 app:nullable="true" />
 
-        <fragment
-            android:id="@+id/periodCreateEditFragment"
-            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditFragment"
-            android:label="fragment_period_create_edit"
-            tools:layout="@layout/fragment_period_create_edit">
-            <argument
-                android:name="period"
-                app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple"
-                app:nullable="true" />
-            <action
-                android:id="@+id/action_periodCreateEditFragment_to_periodCategoriesSelectionFragment"
-                app:destination="@id/periodCategoriesSelectionFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/periodCategoriesSelectionFragment"
-            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.PeriodCategoriesSelectionFragment"
-            android:label="period_categories_selection_fragment"
-            tools:layout="@layout/fragment_period_categories_selection" >
-            <action
-                android:id="@+id/action_periodCategoriesSelectionFragment_to_periodCategoryEstimateCreateEditFragment"
-                app:destination="@id/periodCategoryEstimateCreateEditFragment" />
-            <action
-                android:id="@+id/action_periodCategoriesSelectionFragment_to_currencySelectionFragment"
-                app:destination="@id/currencySelectionFragment" />
-        </fragment>
+            <fragment
+                android:id="@+id/periodCreateEditFragment"
+                android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditFragment"
+                android:label="fragment_period_create_edit"
+                tools:layout="@layout/fragment_period_create_edit">
+                <argument
+                    android:name="period"
+                    app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple"
+                    app:nullable="true" />
+                <action
+                    android:id="@+id/action_periodCreateEditFragment_to_periodCategoriesSelectionFragment"
+                    app:destination="@id/periodCategoriesSelectionFragment" />
+            </fragment>
+            <fragment
+                android:id="@+id/periodCategoriesSelectionFragment"
+                android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.PeriodCategoriesSelectionFragment"
+                android:label="period_categories_selection_fragment"
+                tools:layout="@layout/fragment_period_categories_selection">
+                <action
+                    android:id="@+id/action_periodCategoriesSelectionFragment_to_periodCategoryEstimateCreateEditFragment"
+                    app:destination="@id/periodCategoryEstimateCreateEditFragment" />
+            </fragment>
             <fragment
                 android:id="@+id/periodCategoryEstimateCreateEditFragment"
                 android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.subscreens.PeriodCategoryEstimateCreateEditFragment"
                 android:label="fragment_period_category_estimate_create_edit"
-                tools:layout="@layout/fragment_period_category_estimate_create_edit" >
+                tools:layout="@layout/fragment_period_category_estimate_create_edit">
                 <argument
                     android:name="periodicCategory"
                     app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory" />
-            </fragment>
-            <fragment
-                android:id="@+id/currencySelectionFragment"
-                android:name="com.s95ammar.budgetplanner.ui.appscreens.currencyselection.CurrencySelectionFragment"
-                android:label="fragment_currency_selection"
-                tools:layout="@layout/fragment_currency_selection" >
-                <argument android:name="currentCurrencyCode"
-                    app:argType="string" />
             </fragment>
         </navigation>
 
@@ -110,12 +99,15 @@
             <action
                 android:id="@+id/action_budgetTransactionCreateEditFragment_to_locationSelectionFragment"
                 app:destination="@id/locationSelectionFragment" />
+            <action
+                android:id="@+id/action_budgetTransactionCreateEditFragment_to_currencyConversionFragment"
+                app:destination="@id/currencyConversionFragment" />
         </fragment>
         <fragment
             android:id="@+id/budgetTransactionCategorySelectionFragment"
             android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.categoryselection.BudgetTransactionCategorySelectionFragment"
             android:label="fragment_budget_transaction_category_selection"
-            tools:layout="@layout/fragment_budget_transaction_category_selection" >
+            tools:layout="@layout/fragment_budget_transaction_category_selection">
             <argument
                 android:name="periodId"
                 app:argType="integer" />
@@ -124,7 +116,7 @@
             android:id="@+id/locationSelectionFragment"
             android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.LocationSelectionFragment"
             android:label="location_selection_fragment"
-            tools:layout="@layout/fragment_location_selection" >
+            tools:layout="@layout/fragment_location_selection">
             <argument
                 android:name="currentLocation"
                 app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress"
@@ -134,10 +126,19 @@
             android:id="@+id/budgetTransactionsMapFragment"
             android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgettransactionsmap.BudgetTransactionsMapFragment"
             android:label="budget_transactions_map_fragment"
-            tools:layout="@layout/fragment_budget_transactions_map" >
+            tools:layout="@layout/fragment_budget_transactions_map">
             <argument
                 android:name="periodId"
                 app:argType="integer" />
+        </fragment>
+        <fragment
+            android:id="@+id/currencyConversionFragment"
+            android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.anothercurrency.CurrencyConversionFragment"
+            android:label="fragment_currency_conversion"
+            tools:layout="@layout/fragment_currency_conversion">
+            <argument
+                android:name="toCurrencyCode"
+                app:argType="string" />
         </fragment>
     </navigation>
 
@@ -161,13 +162,23 @@
             app:argType="integer" />
     </fragment>
 
-    <action android:id="@+id/action_to_mainCurrencySelectionFragmentFragment"
-        app:destination="@id/mainCurrencySelectionFragment" />
+    <action
+        android:id="@+id/action_global_CurrencySelectionFragment"
+        app:destination="@id/CurrencySelectionFragment" />
 
     <fragment
-        android:id="@+id/mainCurrencySelectionFragment"
+        android:id="@+id/CurrencySelectionFragment"
         android:name="com.s95ammar.budgetplanner.ui.appscreens.currencyselection.CurrencySelectionFragment"
         android:label="fragment_currency_selection"
-        tools:layout="@layout/fragment_currency_selection" >
+        tools:layout="@layout/fragment_currency_selection">
+        <argument
+            android:name="currentCurrencyCode"
+            app:argType="string"
+            app:nullable="true" />
+        <!-- @IntCurrencySelectionType -->
+        <argument
+            android:name="currencySelectionType"
+            app:argType="integer" />
     </fragment>
+
 </navigation>

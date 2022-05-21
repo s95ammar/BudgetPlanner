@@ -18,6 +18,7 @@ import com.s95ammar.budgetplanner.MobileNavigationDirections
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.ui.common.KeyboardManager
 import com.s95ammar.budgetplanner.ui.common.LoadingState
+import com.s95ammar.budgetplanner.ui.common.data.IntCurrencySelectionType
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingDialog
 import com.s95ammar.budgetplanner.ui.common.loading.LoadingManager
 import com.s95ammar.budgetplanner.ui.main.data.MainUiEvent
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
         }
     }
 
-    // TODO: move to interface and remove from fragments
+    // TODO: remove from fragments & call by activityViewModel.setLoadingState
     private fun handleLoadingState(loadingState: LoadingState) {
         when (loadingState) {
             is LoadingState.Cold,
@@ -71,7 +72,12 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
     }
 
     private fun navigateToMainCurrencySelection() {
-        navController.navigate(MobileNavigationDirections.actionToMainCurrencySelectionFragmentFragment())
+        navController.navigate(
+            MobileNavigationDirections.actionGlobalCurrencySelectionFragment(
+                currentCurrencyCode = null,
+                currencySelectionType = IntCurrencySelectionType.MAIN_CURRENCY
+            )
+        )
     }
 
     private fun onNavigationItemSelected(item: MenuItem): Boolean {

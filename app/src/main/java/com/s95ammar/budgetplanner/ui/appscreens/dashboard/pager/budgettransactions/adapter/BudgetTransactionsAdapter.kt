@@ -52,7 +52,12 @@ class BudgetTransactionsAdapter(
                                 val oldBtItem = oldItem.budgetTransaction
                                 val newBtItem = newItem.budgetTransaction
                                 addPayloadIfNotEqual(PayloadType.NAME, oldBtItem to newBtItem, BudgetTransaction::name)
-                                addPayloadIfNotEqual(PayloadType.AMOUNT, oldBtItem to newBtItem, BudgetTransaction::amount)
+                                addPayloadIfNotEqual(
+                                    PayloadType.AMOUNT,
+                                    oldBtItem to newBtItem,
+                                    BudgetTransaction::amount,
+                                    BudgetTransaction::currencyCode,
+                                )
                                 addPayloadIfNotEqual(
                                     PayloadType.CREATION_UNIX_MS,
                                     oldBtItem to newBtItem,
@@ -116,7 +121,7 @@ class BudgetTransactionsAdapter(
             itemView.setOnClickListener { onItemClick(bt) }
             itemView.setOnLongClickListener { onItemLongClick(bt); true }
             if (payloads.shouldUpdate(PayloadType.NAME)) setName(bt.name)
-            if (payloads.shouldUpdate(PayloadType.AMOUNT)) setTypeAndAmount(bt.amount)
+            if (payloads.shouldUpdate(PayloadType.AMOUNT)) setTypeAndAmount(bt.amount, bt.currencyCode)
             if (payloads.shouldUpdate(PayloadType.CREATION_UNIX_MS)) setCreationUnixMs(bt.creationUnixMs)
             if (payloads.shouldUpdate(PayloadType.CATEGORY_NAME)) setCategoryName(bt.categoryName)
         }
@@ -125,10 +130,11 @@ class BudgetTransactionsAdapter(
             binding.textViewName.text = name
         }
 
-        private fun setTypeAndAmount(amount: Double) {
+        private fun setTypeAndAmount(amount: Double, currencyCode: String) {
             val type = IntBudgetTransactionType.getByAmount(amount)
             val color = ContextCompat.getColor(itemView.context, IntBudgetTransactionType.getColorRes(type))
-            binding.textViewAmount.text = getString(getAmountFormatResId(amount), amount)
+            val amountFormatted = getString(getAmountFormatResId(amount), amount)
+            binding.textViewAmount.text = getString(R.string.format_amount_string_with_currency, amountFormatted, currencyCode)
             binding.textViewAmount.setTextColor(color)
             binding.viewType.setBackgroundColor(color)
         }

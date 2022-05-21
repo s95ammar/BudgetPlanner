@@ -58,6 +58,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun setMainLoadingState(loadingState: LoadingState) {
+        _performUiEvent.call(MainUiEvent.DisplayLoadingState(loadingState))
+    }
+
     private fun loadMainCurrency() {
         viewModelScope.launch {
             currencyRepository.getMainCurrencyFlow()

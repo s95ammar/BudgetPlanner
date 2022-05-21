@@ -98,5 +98,15 @@
     <string name="select_main_currency_tip">Please select the currency you\'ll be using the most from the options below.</string>
     <string name="select_periodic_category_currency_tip">Please keep in mind that all transactions for this category will have to be
         made in the selected currency during this period.</string>
+    <string name="select_budget_transaction_currency_tip">The result currency must be the same as the currency of the chosen category
+    and therefore cannot be changed.</string>
     <string name="format_currency">Currency: %s</string>
+    <string name="calculate_by_another_currency">Calculate by another currency</string>
+    <string name="select_another_currency">Select another currency</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="conversion_rate">Conversion rate</string>
+    <string name="convert_currency">Convert currency</string>
+    <string name="format_conversion_rate_desc_from">1 %s = </string>
+    <string name="format_conversion_result">Result (%s): %s</string>
 </resources>

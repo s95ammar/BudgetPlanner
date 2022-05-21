@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCategorySelectionBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategoryIdAndName
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategorySimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.categoryselection.adapter.PeriodicCategoriesSingleSelectionAdapter
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
@@ -48,7 +48,7 @@ class BudgetTransactionCategorySelectionFragment :
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
-    private fun setPeriodicCategories(periodicCategories: List<PeriodicCategoryIdAndName>) {
+    private fun setPeriodicCategories(periodicCategories: List<PeriodicCategorySimple>) {
         adapter.submitList(periodicCategories)
         binding.recyclerView.isGone = periodicCategories.isEmpty()
         binding.instructionsLayout.root.isVisible = periodicCategories.isEmpty()
@@ -75,7 +75,7 @@ class BudgetTransactionCategorySelectionFragment :
         }
     }
 
-    private fun setResult(periodicCategory: PeriodicCategoryIdAndName) {
+    private fun setResult(periodicCategory: PeriodicCategorySimple) {
         setFragmentResult(Keys.KEY_PERIODIC_CATEGORY_REQUEST, bundleOf(Keys.KEY_PERIODIC_CATEGORY to periodicCategory))
     }
 

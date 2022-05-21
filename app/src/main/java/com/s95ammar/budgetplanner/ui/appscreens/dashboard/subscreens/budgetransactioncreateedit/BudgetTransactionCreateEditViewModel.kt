@@ -10,10 +10,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
 import com.s95ammar.budgetplanner.models.repository.BudgetTransactionRepository
+import com.s95ammar.budgetplanner.models.repository.CurrencyRepository
 import com.s95ammar.budgetplanner.models.repository.LocationRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.BudgetTransactionInputBundle
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategoryIdAndName
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategorySimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation.BudgetTransactionCreateEditValidator
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation.BudgetTransactionValidationBundle
@@ -40,7 +41,8 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransa
 
 @HiltViewModel
 class BudgetTransactionCreateEditViewModel @Inject constructor(
-    private val repository: BudgetTransactionRepository,
+    private val budgetTransactionRepository: BudgetTransactionRepository,
+    private val currencyRepository: CurrencyRepository,
     private val locationRepository: LocationRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -62,8 +64,14 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     private val _amountInput = MediatorLiveData<Double>().apply {
         addSource(_editedBudgetTransaction) { value = getDisplayedAmount(it.amount) }
     }
-    private val _periodicCategory = MediatorLiveData<PeriodicCategoryIdAndName>().apply {
-        addSource(_editedBudgetTransaction) { value = PeriodicCategoryIdAndName(it.periodicCategoryId, it.categoryName) }
+    private val _periodicCategory = MediatorLiveData<PeriodicCategorySimple>().apply {
+        addSource(_editedBudgetTransaction) { value = PeriodicCategorySimple(it.periodicCategoryId, it.currencyCode, it.categoryName) }
+    }
+    private val _isCurrencyAvailable = MediatorLiveData(false).apply {
+        addSource(_periodicCategory) { value = true }
+    }
+    private val _currencyCode = MediatorLiveData(getMainCurrency()).apply {
+        addSource(_periodicCategory) { value = it.currencyCode }
     }
     private val _locationOptional = MediatorLiveData<Optional<LocationWithAddress>>(Optional.empty()).apply {
         addSource(_editedBudgetTransaction) { setLocationOptionalValue(it.latLng) }
@@ -74,6 +82,8 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     val type = _type.distinctUntilChanged()
     val name = _name.distinctUntilChanged()
     val amountInput = _amountInput.distinctUntilChanged()
+    val isCurrencyAvailable = _isCurrencyAvailable.distinctUntilChanged()
+    val currencyCode = _currencyCode.distinctUntilChanged()
     val periodicCategory = _periodicCategory.distinctUntilChanged()
     val locationOptional = _locationOptional.distinctUntilChanged()
     val performUiEvent = _performUiEvent.asEventLiveData()
@@ -90,25 +100,12 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
         amount.toDoubleOrNull()?.let { _amountInput.value = it }
     }
 
-    fun setPeriodicCategory(periodicCategory: PeriodicCategoryIdAndName) {
+    fun setPeriodicCategory(periodicCategory: PeriodicCategorySimple) {
         _periodicCategory.value = periodicCategory
     }
 
     fun setLocation(location: LocationWithAddress?) {
         _locationOptional.value = location.asOptional()
-    }
-
-    private fun setLocationOptionalValue(latLng: LatLng?) {
-        if (latLng != null) {
-            viewModelScope.launch {
-                _locationOptional.value = LocationWithAddress(
-                    latLng,
-                    locationRepository.getAddressByCoordinates(latLng.latitude, latLng.longitude)
-                ).asOptional()
-            }
-        } else {
-            _locationOptional.value = Optional.empty()
-        }
     }
 
     fun onChoosePeriodicCategory() {
@@ -128,8 +125,35 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
             .onError { displayValidationResults(it) }
     }
 
+    fun onCalculateByAnotherCurrency() {
+        _currencyCode.value?.let { toCurrency ->
+            _performUiEvent.call(UiEvent.NavigateToCurrencyConversion(toCurrency))
+        }
+    }
+
+    fun onAmountCalculated(amount: Double) {
+        _amountInput.value = amount
+    }
+
     fun onBack() {
         _performUiEvent.call(UiEvent.Exit)
+    }
+
+    private fun getMainCurrency(): String {
+        return currencyRepository.getMainCurrencyCode()
+    }
+
+    private fun setLocationOptionalValue(latLng: LatLng?) {
+        if (latLng != null) {
+            viewModelScope.launch {
+                _locationOptional.value = LocationWithAddress(
+                    latLng,
+                    locationRepository.getAddressByCoordinates(latLng.latitude, latLng.longitude)
+                ).asOptional()
+            }
+        } else {
+            _locationOptional.value = Optional.empty()
+        }
     }
 
     private fun getDisplayedAmount(actualAmount: Double): Double {
@@ -141,7 +165,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
             type = _type.value ?: IntBudgetTransactionType.EXPENSE,
             name = budgetTransactionInputBundle.name,
             amount = budgetTransactionInputBundle.amount,
-            periodicCategoryId = _periodicCategory.value?.periodicCategoryId ?: Int.INVALID,
+            periodicCategoryId = _periodicCategory.value?.id ?: Int.INVALID,
             latLng = _locationOptional.optionalValue?.latLng
         )
 
@@ -154,7 +178,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
 
     private fun loadEditedBudgetTransaction() {
         viewModelScope.launch {
-            repository.getBudgetTransactionFlow(editedBudgetTransactionId)
+            budgetTransactionRepository.getBudgetTransactionFlow(editedBudgetTransactionId)
                 .onStart {
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
                 }
@@ -172,8 +196,8 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
         val mode = _mode.value ?: return@launch
 
         val flowRequest = when (mode) {
-            CreateEditMode.CREATE -> repository.insertBudgetTransactionFlow(budgetTransaction)
-            CreateEditMode.EDIT -> repository.updateBudgetTransactionFlow(budgetTransaction)
+            CreateEditMode.CREATE -> budgetTransactionRepository.insertBudgetTransactionFlow(budgetTransaction)
+            CreateEditMode.EDIT -> budgetTransactionRepository.updateBudgetTransactionFlow(budgetTransaction)
         }
 
         flowRequest

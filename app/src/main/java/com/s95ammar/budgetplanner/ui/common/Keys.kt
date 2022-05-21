@@ -9,6 +9,8 @@ object Keys {
     const val KEY_ESTIMATE_REQUEST = "KEY_ESTIMATE_REQUEST"
     const val KEY_CURRENCY = "KEY_CURRENCY"
     const val KEY_CURRENCY_REQUEST = "KEY_CURRENCY_REQUEST"
+    const val KEY_AMOUNT = "KEY_AMOUNT"
+    const val KEY_AMOUNT_REQUEST = "KEY_AMOUNT_REQUEST"
 
     const val KEY_NAME = "KEY_NAME"
     const val KEY_DRAWABLE_RES = "KEY_DRAWABLE_RES"

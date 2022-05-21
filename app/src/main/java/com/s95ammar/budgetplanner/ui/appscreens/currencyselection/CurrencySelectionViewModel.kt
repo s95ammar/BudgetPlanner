@@ -10,12 +10,12 @@ import com.s95ammar.budgetplanner.models.repository.CurrencyRepository
 import com.s95ammar.budgetplanner.ui.appscreens.currencyselection.adapter.CurrencySelectionItemType
 import com.s95ammar.budgetplanner.ui.appscreens.currencyselection.data.CurrencySelectionUiEvent
 import com.s95ammar.budgetplanner.ui.common.LoadingState
+import com.s95ammar.budgetplanner.ui.common.data.IntCurrencySelectionType
 import com.s95ammar.budgetplanner.ui.common.data.Selectable
 import com.s95ammar.budgetplanner.ui.main.data.Currency
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
-import com.s95ammar.budgetplanner.util.orFalse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -29,16 +29,21 @@ class CurrencySelectionViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val mainCurrencyCode = savedStateHandle.get<String>(
+    private val currentCurrencyCode = savedStateHandle.get<String?>(
         CurrencySelectionFragmentArgs::currentCurrencyCode.name
-    ).orEmpty()
+    )
+    private val _currencySelectionType = savedStateHandle.getLiveData<@IntCurrencySelectionType Int>(
+        CurrencySelectionFragmentArgs::currencySelectionType.name
+    )
     private val _currencies = LoaderMutableLiveData<List<Currency>> {
         loadCachedCurrencies()
     }
     private val _loadMoreLoadingState = MutableLiveData<LoadingState>(LoadingState.Cold)
     private val _performUiEvent = EventMutableLiveData<CurrencySelectionUiEvent>()
 
-    val isMainCurrencySelection = MutableLiveData(mainCurrencyCode.isEmpty()).asLiveData()
+    private val isMainCurrencySelection = _currencySelectionType.value == IntCurrencySelectionType.MAIN_CURRENCY
+
+    val currencySelectionType = _currencySelectionType.asLiveData()
     val currenciesItems = MediatorLiveData<List<CurrencySelectionItemType>>().apply {
         fun update() {
             value = createCurrencyItems(_currencies.value, _loadMoreLoadingState.value)
@@ -50,7 +55,12 @@ class CurrencySelectionViewModel @Inject constructor(
 
     fun onCurrencyClick(currency: Currency) {
         viewModelScope.launch {
-            _performUiEvent.call(CurrencySelectionUiEvent.SetResult(currency, isMainCurrencySelection = mainCurrencyCode.isEmpty()))
+            _performUiEvent.call(
+                CurrencySelectionUiEvent.SetResult(
+                    currency = currency,
+                    isMainCurrencySelection = isMainCurrencySelection
+                )
+            )
             _performUiEvent.call(CurrencySelectionUiEvent.Exit)
         }
     }
@@ -75,7 +85,7 @@ class CurrencySelectionViewModel @Inject constructor(
     }
 
     fun onBack() {
-        if (isMainCurrencySelection.value.orFalse()) {
+        if (isMainCurrencySelection) {
             _performUiEvent.call(CurrencySelectionUiEvent.FinishActivity)
         } else {
             _performUiEvent.call(CurrencySelectionUiEvent.Exit)
@@ -105,7 +115,7 @@ class CurrencySelectionViewModel @Inject constructor(
         if (currencies == null || loadingState == null) return emptyList()
 
         val currencyItems = currencies.map { currency ->
-            CurrencySelectionItemType.ListItem(Selectable(currency, isSelected = currency.code == mainCurrencyCode))
+            CurrencySelectionItemType.ListItem(Selectable(currency, isSelected = currency.code == currentCurrencyCode))
         }
 
         return buildList {

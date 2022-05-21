@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.PeriodicCategoryRepository
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategoryIdAndName
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategorySimple
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -27,7 +27,7 @@ class BudgetTransactionCategorySelectionViewModel @Inject constructor(
 
     private val periodId = savedStateHandle.get<Int>(FragmentArgs::periodId.name) ?: Int.INVALID
 
-    private val _periodicCategories = LoaderMutableLiveData<List<PeriodicCategoryIdAndName>> { loadPeriodicCategories() }
+    private val _periodicCategories = LoaderMutableLiveData<List<PeriodicCategorySimple>> { loadPeriodicCategories() }
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
     val periodicCategories = _periodicCategories.asLiveData()
@@ -42,16 +42,16 @@ class BudgetTransactionCategorySelectionViewModel @Inject constructor(
 
     private fun loadPeriodicCategories() {
         viewModelScope.launch {
-            repository.getPeriodicCategoryIdAndNameListFlow(periodId)
+            repository.getPeriodicCategorySimple(periodId)
                 .onStart {
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
                 }
                 .catch {
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(it)))
                 }
-                .collect { PeriodicCategoryIdAndNameJoinEntityList ->
-                    _periodicCategories.value = PeriodicCategoryIdAndNameJoinEntityList.mapNotNull { entity ->
-                        PeriodicCategoryIdAndName.Mapper.fromEntity(entity)
+                .collect { periodicCategorySimple ->
+                    _periodicCategories.value = periodicCategorySimple.mapNotNull { entity ->
+                        PeriodicCategorySimple.Mapper.fromEntity(entity)
                     }
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
                 }

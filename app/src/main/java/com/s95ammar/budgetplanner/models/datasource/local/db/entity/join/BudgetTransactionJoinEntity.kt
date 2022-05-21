@@ -8,6 +8,7 @@ data class BudgetTransactionJoinEntity(
     val id: Int,
     val name: String,
     val amount: Double,
+    val currencyCode: String,
     @Nullable @Embedded val latLng: LatLngEntity?,
     val creationUnixMs: Long,
     val periodId: Int,

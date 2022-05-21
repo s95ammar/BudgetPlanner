@@ -17,7 +17,6 @@ import com.s95ammar.budgetplanner.util.setSelectableItemBackground
 import kotlin.math.absoluteValue
 
 class PeriodicCategoriesMultiSelectionAdapter(
-    private val mainCurrencyCode: String,
     private val onSelectionStateChanged: (PeriodicCategory, Boolean) -> Unit,
     private val onCreateEditEstimate: (PeriodicCategory) -> Unit,
     private val onChangeCurrency: (PeriodicCategory) -> Unit
@@ -27,7 +26,6 @@ class PeriodicCategoriesMultiSelectionAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodicCategoriesSelectionViewHolder {
         return PeriodicCategoriesSelectionViewHolder(
-            mainCurrencyCode = mainCurrencyCode,
             onSelectionStateChanged = onSelectionStateChanged,
             onCreateEditEstimate = onCreateEditEstimate,
             onChangeCurrency = onChangeCurrency,
@@ -37,7 +35,6 @@ class PeriodicCategoriesMultiSelectionAdapter(
     }
 
     class PeriodicCategoriesSelectionViewHolder(
-        private val mainCurrencyCode: String,
         private val onSelectionStateChanged: (PeriodicCategory, Boolean) -> Unit,
         private val onCreateEditEstimate: (PeriodicCategory) -> Unit,
         private val onChangeCurrency: (PeriodicCategory) -> Unit,

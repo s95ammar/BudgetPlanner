@@ -3,8 +3,8 @@ package com.s95ammar.budgetplanner.models.datasource.local.db.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetTransactionJoinEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryIdAndNameJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryJoinEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategorySimpleJoinEntity
 import com.s95ammar.budgetplanner.util.INT_INVALID
 import kotlinx.coroutines.flow.Flow
 
@@ -83,14 +83,15 @@ interface JoinDao {
 
     @Query(
         """
-	SELECT periodicCategory.id AS periodicCategoryId,
+	SELECT periodicCategory.id AS id,
+           periodicCategory.currencyCode AS currencyCode,
 	       category.name AS categoryName
 	FROM category
 	INNER JOIN periodicCategory ON category.id = periodicCategory.categoryId
 	WHERE periodId = :periodId
         """
     )
-    fun getPeriodicCategoryIdAndNameListFlow(periodId: Int): Flow<List<PeriodicCategoryIdAndNameJoinEntity>>
+    fun getPeriodicCategorySimple(periodId: Int): Flow<List<PeriodicCategorySimpleJoinEntity>>
 
     @Query(
         """
@@ -102,6 +103,7 @@ interface JoinDao {
 	       budgetTransaction.creationUnixMs AS creationUnixMs,
 	       periodicCategory.id AS periodicCategoryId,
            periodicCategory.periodId AS periodId,
+           periodicCategory.currencyCode AS currencyCode,
 	       category.name AS categoryName
 	FROM budgetTransaction
 	    INNER JOIN periodicCategory
@@ -123,6 +125,7 @@ interface JoinDao {
 	       budgetTransaction.creationUnixMs AS creationUnixMs,
 	       periodicCategory.id AS periodicCategoryId,
            periodicCategory.periodId AS periodId,
+           periodicCategory.currencyCode AS currencyCode,
 	       category.name AS categoryName
 	FROM budgetTransaction
 	    INNER JOIN periodicCategory

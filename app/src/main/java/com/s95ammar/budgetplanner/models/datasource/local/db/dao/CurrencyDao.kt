@@ -16,6 +16,6 @@ interface CurrencyDao {
     @Query("SELECT * FROM currency WHERE code=:code")
     fun getCurrency(code: String): Flow<CurrencyEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(currencyEntity: CurrencyEntity)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertIfDoesNotExist(currencyEntity: CurrencyEntity)
 }

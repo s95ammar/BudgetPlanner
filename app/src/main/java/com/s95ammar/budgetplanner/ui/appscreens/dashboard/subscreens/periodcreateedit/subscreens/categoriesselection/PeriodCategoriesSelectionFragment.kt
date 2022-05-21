@@ -8,12 +8,14 @@ import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.s95ammar.budgetplanner.MobileNavigationDirections
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodCategoriesSelectionBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.PeriodCreateEditSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesMultiSelectionAdapter
 import com.s95ammar.budgetplanner.ui.common.Keys
+import com.s95ammar.budgetplanner.ui.common.data.IntCurrencySelectionType
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.ui.main.data.Currency
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
@@ -27,7 +29,6 @@ class PeriodCategoriesSelectionFragment :
 
     private val adapter by lazy {
         PeriodicCategoriesMultiSelectionAdapter(
-            mainCurrencyCode = activityViewModel.mainCurrency.value?.code.orEmpty(),
             onSelectionStateChanged = sharedViewModel::onPeriodicCategorySelectionStateChanged,
             onCreateEditEstimate = viewModel::onCreateEditEstimate,
             onChangeCurrency = viewModel::onChangeCurrency
@@ -73,8 +74,11 @@ class PeriodCategoriesSelectionFragment :
             }
         }
         navController.navigate(
-            PeriodCategoriesSelectionFragmentDirections
-                .actionPeriodCategoriesSelectionFragmentToCurrencySelectionFragment(periodicCategory.currencyCode)
+            MobileNavigationDirections
+                .actionGlobalCurrencySelectionFragment(
+                    currentCurrencyCode = periodicCategory.currencyCode,
+                    currencySelectionType = IntCurrencySelectionType.PERIODIC_CATEGORY_CURRENCY
+                )
         )
     }
 
