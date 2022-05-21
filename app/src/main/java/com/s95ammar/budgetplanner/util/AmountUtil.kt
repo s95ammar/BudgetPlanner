@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.s95ammar.budgetplanner.R
-import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 fun Context.getAmountStringFormatted(
     amount: Double,
@@ -14,7 +14,7 @@ fun Context.getAmountStringFormatted(
     currencyCode: String? = null
 ) : String {
 
-    val isWhole = amount == amount.roundToInt().toDouble()
+    val isWhole = amount == amount.roundToLong().toDouble()
     val amountFormatResId = if (removeDecimalsIfWhole && isWhole) {
         if (isForEditText) {
             R.string.format_amount_no_decimals_edit_text

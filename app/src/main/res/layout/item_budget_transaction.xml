@@ -61,7 +61,7 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@+id/text_view_name"
         app:layout_constraintTop_toTopOf="@+id/text_view_name"
         tools:text="-1,500"
         tools:textColor="@color/colorRed" />
