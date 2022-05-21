@@ -3,7 +3,6 @@ package com.s95ammar.budgetplanner.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
-import com.s95ammar.budgetplanner.flavor.FlavorConfig
 import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDb
 import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConfig
 import com.s95ammar.budgetplanner.models.datasource.local.prefs.BudgetPlannerPrefsConfig
@@ -21,8 +20,7 @@ object StorageModule {
     @Singleton
     @Provides
     fun provideDatabaseInstance(
-        @ApplicationContext applicationContext: Context,
-        flavorConfig: FlavorConfig
+        @ApplicationContext applicationContext: Context
     ): BudgetPlannerDb {
         return Room.databaseBuilder(applicationContext, BudgetPlannerDb::class.java, BudgetPlannerDbConfig.DB_NAME)
             .createFromAsset(BudgetPlannerDbConfig.DATABASE_FILE_PATH)
