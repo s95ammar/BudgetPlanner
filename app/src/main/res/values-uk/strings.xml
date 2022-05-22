@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Планувальник бюджету</string>
+    <string name="error_empty_field">Обов\'язкове поле</string>
+    <string name="error_period_name_taken">Період з такою назвою вже існує</string>
+    <string name="error_category_name_taken">Категорія з такою назвою вже існує</string>
+    <string name="error_occurred">Сталася помилка</string>
+    <string name="categories">Категорії</string>
+    <string name="periods">Періоди</string>
+    <string name="dashboard">Панель управління</string>
+    <string name="budget">Бюджет</string>
+    <string name="expenses_and_income">Витрати та доходи</string>
+    <string name="choose_a_category">Виберіть категорію</string>
+    <string name="choose_a_location">Виберіть локацію (опціонально)</string>
+    <string name="name">Ім\'я</string>
+    <string name="create">Створити</string>
+    <string name="save">Зберегти</string>
+    <string name="add_estimate_optional">Додати орієнтовну сумму (опціонально)</string>
+    <string name="format_estimate_expenses">Орієнтовні витрати: %s</string>
+    <string name="format_estimate_income">Орієнтовний дохід: %s</string>
+    <string name="error_something_went_wrong_title">Ой</string>
+    <string name="format_error_something_went_wrong_desc">Сталася помилка\n\n%s</string>
+    <string name="edit">Редагувати</string>
+    <string name="delete">Видалити</string>
+    <string name="are_you_sure">Ви впевнені?</string>
+    <string name="format_delete_confirmation">Будь ласка, підтвердьте, чи дійсно ви хочете видалити %s</string>
+    <string name="yes">Так</string>
+    <string name="no">Ні</string>
+    <string name="create_category">Створити категорію</string>
+    <string name="edit_category">Редагувати категорію</string>
+    <string name="instruction_category_screen_create_category">Створіть категорії, щоб організувати свої витрати та доходи!</string>
+    <string name="instruction_period_create_edit_screen_create_category">Створіть категорії на вкладці категорій, щоб додати їх до цього періоду!\n
+        Ви можете це зробити після створення періоду</string>
+    <string name="instruction_budget_transaction_create_edit_screen_add_periodic_category">Вам потрібно додати деякі категорії до цього періоду, перш ніж створювати витрати або дохід</string>
+    <string name="instruction_budget_screen_no_data">Після створення категорій ви можете додати їх до цього періоду!</string>
+    <string name="instruction_budget_transactions_screen_no_data">Витрат або доходів за цей період поки немає</string>
+    <string name="create_period">Створити період</string>
+    <string name="edit_period">Редагувати період</string>
+    <string name="instruction_create_period">Створіть період, щоб почати керувати своїм бюджетом!</string>
+    <string name="add">Додати</string>
+    <string name="categories_for_this_period">Категорії на цей період:</string>
+    <string name="choose_categories">Виберіть категорії</string>
+    <string name="category_not_selectable">Цю категорію не можна скасувати, оскільки в ній вже є трансакції, створені протягом цього періоду</string>
+    <string name="currency_not_changeable">Цю валюту не можна змінити, оскільки в категорії вже є трансакції, створені протягом цього періоду</string>
+    <string name="create_budget_transaction">Створити витрату або дохід</string>
+    <string name="edit_budget_transaction">Редагувати витрату або дохід</string>
+    <string name="expense">Витрата</string>
+    <string name="income">Дохід</string>
+    <string name="amount">сума</string>
+    <string name="choose_location">Вибір локації</string>
+    <string name="no_location_selected">Локацію не вибрано</string>
+    <string name="choose_location_instruction">Натисніть та тримайте на карті, щоб вибрати локацію</string>
+    <string name="unknown_location">Невідома локація</string>
+    <string name="permission_required_title">Потрібен дозвіл</string>
+    <string name="cancel">Скасувати</string>
+    <string name="ok">добре</string>
+    <string name="view_on_map">Переглянути на карті</string>
+    <string name="transactions_map">Карта транзакцій</string>
+    <string name="total_expenses">Всього витрат</string>
+    <string name="total_income">Всього дохідів</string>
+    <string name="tap_to_zoom_in">Торкніться, щоб наблизити</string>
+    <string name="category_estimate">Орієнтовна сума категорії</string>
+    <string name="estimate">Орієнтовна сума</string>
+    <string name="category_estimate_tip">Ця інформація буде використовуватися лише для правильного відображення вашого прогресу в цій категорії.\n
+        Ви все одно зможете створювати як доходи, так і витрати, незалежно від того, що ви тут оберете.</string>
+    <string name="load_more">Завантажити ще</string>
+    <string name="select_a_currency">Вибрати валюту</string>
+    <string name="select_main_currency_tip">Будь ласка, виберіть валюту, яку ви будете використовувати найбільше з наведених нижче варіантів.</string>
+    <string name="select_periodic_category_currency_tip">Будь ласка, майте на увазі, що всі транзакції для цієї категорії потрібно буде\n
+        створювати у вибраній валюті протягом цього періоду.</string>
+    <string name="select_budget_transaction_currency_tip">Вихідна валюта має збігатися з валютою вибраної категорії\n
+        і тому не може бути змінена</string>
+    <string name="format_currency">Валюта: %s</string>
+    <string name="from">Від</string>
+    <string name="conversion_rate">Курс валюти</string>
+    <string name="convert_currency">Конвертувати валюту</string>
+    <string name="format_conversion_result">Результат (%s): %s</string>
+    <string name="multiple_currencies_tip">*Приблизна сума (знайдено кілька валют)</string>
+    <string name="unknown_total">Невідома сума</string>
+
+</resources>

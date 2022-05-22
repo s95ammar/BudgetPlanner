@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Планировщик бюджета</string>
+    <string name="error_empty_field">Обязательное поле</string>
+    <string name="error_period_name_taken">Период с таким названием уже существует</string>
+    <string name="error_category_name_taken">Категория с таким названием уже существует</string>
+    <string name="error_occurred">Произошла ошибка</string>
+    <string name="categories">Категории</string>
+    <string name="periods">Периоды</string>
+    <string name="dashboard">Панель управления</string>
+    <string name="budget">Бюджет</string>
+    <string name="expenses_and_income">Расходы и доходы</string>
+    <string name="choose_a_category">Выберите категорию</string>
+    <string name="choose_a_location">Выберите локацию (опционально)</string>
+    <string name="name">Имя</string>
+    <string name="create">Создать</string>
+    <string name="save">Сохранить</string>
+    <string name="add_estimate_optional">Добавить ориентировочную сумму (опционально)</string>
+    <string name="format_estimate_expenses">Ориентировочные расходы: %s</string>
+    <string name="format_estimate_income">Ориентировочный доход: %s</string>
+    <string name="error_something_went_wrong_title">Ой</string>
+    <string name="format_error_something_went_wrong_desc">Произошла ошибка\n\n%s</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete">Удалить</string>
+    <string name="are_you_sure">Вы уверены?</string>
+    <string name="format_delete_confirmation">Пожалуйста, подтвердите, действительно ли вы хотите удалить %s</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="create_category">Создать категорию</string>
+    <string name="edit_category">Редактировать категорию</string>
+    <string name="instruction_category_screen_create_category">Создайте категории, чтобы организовать свои расходы и доходы!</string>
+    <string name="instruction_period_create_edit_screen_create_category">Создайте категории на вкладке категорий, чтобы добавить их в этот период!\n
+         Вы можете это сделать после создания периода</string>
+    <string name="instruction_budget_transaction_create_edit_screen_add_periodic_category">Вам нужно добавить некоторые категории к этому периоду, прежде чем создавать расходы или доход</string>
+    <string name="instruction_budget_screen_no_data">После создания категорий вы можете добавить их в этот период!</string>
+    <string name="instruction_budget_transactions_screen_no_data">Расходов или доходов за этот период пока нет</string>
+    <string name="create_period">Создать период</string>
+    <string name="edit_period">Редактировать период</string>
+    <string name="instruction_create_period">Создайте период, чтобы начать управлять своим бюджетом!</string>
+    <string name="add">Добавить</string>
+    <string name="categories_for_this_period">Категории на этот период:</string>
+    <string name="choose_categories">Выберите категории</string>
+    <string name="category_not_selectable">Эту категорию нельзя отменить, поскольку в ней уже есть трансакции, созданные в течение этого периода</string>
+    <string name="currency_not_changeable">Эту валюту нельзя изменить, поскольку в категории уже есть трансакции, созданные в течение этого периода</string>
+    <string name="create_budget_transaction">Создать расход или доход</string>
+    <string name="edit_budget_transaction">Редактировать расход или доход</string>
+    <string name="expense">Расход</string>
+    <string name="income">Доход</string>
+    <string name="amount">сумма</string>
+    <string name="choose_location">Выбор локации</string>
+    <string name="no_location_selected">Локация не выбрана</string>
+    <string name="choose_location_instruction">Нажмите и держите на карте, чтобы выбрать локацию</string>
+    <string name="unknown_location">Неизвестная локация</string>
+    <string name="permission_required_title">Требуется разрешение</string>
+    <string name="cancel">Отменить</string>
+    <string name="ok">хорошо</string>
+    <string name="view_on_map">Посмотреть на карте</string>
+    <string name="transactions_map">Карта транзакций</string>
+    <string name="total_expenses">Всего расходов</string>
+    <string name="total_income">Всего доходов</string>
+    <string name="tap_to_zoom_in">Коснитесь, чтобы приблизить</string>
+    <string name="category_estimate">Ориентировочная сумма категории</string>
+    <string name="estimate">Ориентировочная сумма</string>
+    <string name="category_estimate_tip">Эта информация будет использоваться только для правильного отображения вашего прогресса в этой категории.\n
+         Вы все равно сможете создавать как доходы, так и расходы, вне зависимости от того, что вы здесь выберете.</string>
+    <string name="load_more">Загрузить еще</string>
+    <string name="select_a_currency">Выбрать валюту</string>
+    <string name="select_main_currency_tip">Пожалуйста, выберите валюту, которую вы будете использовать наиболее из следующих вариантов.</string>
+    <string name="select_periodic_category_currency_tip">Пожалуйста, учтите, что все транзакции для этой категории нужно будет\n
+         создавать в выбранной валюте в течение этого периода.</string>
+    <string name="select_budget_transaction_currency_tip">Выходная валюта должна совпадать с валютой выбранной категории\n
+          и потому не может быть изменена</string>
+    <string name="format_currency">Валюта: %s</string>
+    <string name="from">от</string>
+    <string name="conversion_rate">Курс валюты</string>
+    <string name="convert_currency">Конвертировать валюту</string>
+    <string name="format_conversion_result">Результат (%s): %s</string>
+    <string name="multiple_currencies_tip">*Примерная сумма (найдено несколько валют)</string>
+    <string name="unknown_total">Неизвестная сумма</string>
+
+</resources>
