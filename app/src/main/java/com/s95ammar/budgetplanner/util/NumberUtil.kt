@@ -7,6 +7,10 @@ fun Double.roundToTwoDecimals(): Double {
     return BigDecimal(toString()).setScale(2, RoundingMode.HALF_UP).toDouble()
 }
 
-fun Int?.orZero(): Int = this ?: 0
-fun Double?.orZero(): Double = this ?: 0.0
-fun Float?.orZero(): Float = this ?: 0.0f
+fun Int?.orDefault(defaultValue: Int): Int = this ?: defaultValue
+fun Double?.orDefault(defaultValue: Double): Double = this ?: defaultValue
+fun Float?.orDefault(defaultValue: Float): Float = this ?: defaultValue
+
+fun Int?.orZero(): Int = this.orDefault(0)
+fun Double?.orZero(): Double = this.orDefault(0.0)
+fun Float?.orZero(): Float = this.orDefault(0.0f)

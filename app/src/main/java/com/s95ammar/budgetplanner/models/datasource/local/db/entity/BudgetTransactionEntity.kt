@@ -26,7 +26,8 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
         )
     ],
     indices = [
-        Index(value = [BudgetPlannerDbConfig.COLUMN_NAME_PERIODIC_CATEGORY_ID])
+        Index(value = [BudgetPlannerDbConfig.COLUMN_NAME_PERIODIC_CATEGORY_ID]),
+        Index(value = [BudgetPlannerDbConfig.COLUMN_NAME_CURRENCY_CODE])
     ]
 )
 data class BudgetTransactionEntity(

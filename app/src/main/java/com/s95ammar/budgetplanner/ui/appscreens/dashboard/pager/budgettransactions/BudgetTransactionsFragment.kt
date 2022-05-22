@@ -62,7 +62,9 @@ class BudgetTransactionsFragment : BaseViewBinderFragment<FragmentDashboardTrans
 
     private fun setBudgetTransactions(items: List<BudgetTransactionsItemType>) {
         adapter.submitList(items) {
-            if (items.isNotEmpty()) binding.recyclerView.layoutManager?.scrollToPosition(0)
+            executeIfViewIsAvailable {
+                if (items.isNotEmpty()) binding.recyclerView.layoutManager?.scrollToPosition(0)
+            }
         }
         binding.recyclerView.isGone = items.isEmpty()
         binding.instructionsLayout.root.isVisible = items.isEmpty()

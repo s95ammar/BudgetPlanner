@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "914016d2c24677b33866b30279a498d7",
+    "identityHash": "58bc7a3adf22e24137f56013c1ab4ca3",
     "entities": [
       {
         "tableName": "period",
@@ -252,6 +252,14 @@
               "periodicCategoryId"
             ],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_budgetTransaction_periodicCategoryId` ON `${TABLE_NAME}` (`periodicCategoryId`)"
+          },
+          {
+            "name": "index_budgetTransaction_currencyCode",
+            "unique": false,
+            "columnNames": [
+              "currencyCode"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_budgetTransaction_currencyCode` ON `${TABLE_NAME}` (`currencyCode`)"
           }
         ],
         "foreignKeys": [
@@ -309,7 +317,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '914016d2c24677b33866b30279a498d7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '58bc7a3adf22e24137f56013c1ab4ca3')"
     ]
   }
 }

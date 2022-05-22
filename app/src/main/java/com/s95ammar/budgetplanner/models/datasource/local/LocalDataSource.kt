@@ -43,5 +43,5 @@ interface LocalDataSource {
     fun getMainCurrencyCode(): String
     fun getMainCurrencyFlow(): Flow<CurrencyEntity?>
     fun getAllCurrenciesFlow(): Flow<List<CurrencyEntity>>
-    suspend fun insertCurrency(currencyEntity: CurrencyEntity)
+    suspend fun insertCurrencyIfDoesNotExist(currencyEntity: CurrencyEntity)
 }

@@ -63,6 +63,7 @@
     <string name="format_amount_no_decimals_edit_text">%.0f</string>
     <string name="format_amount_two_decimals_edit_text">%.2f</string>
     <string name="format_amount_string_with_currency">%s %s</string>
+    <string name="format_conversion_rate">%.4f</string>
 
     <string name="create_budget_transaction">Create expense or income</string>
     <string name="edit_budget_transaction">Edit expense or income</string>

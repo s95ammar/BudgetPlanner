@@ -149,7 +149,7 @@ class LocalDataSourceImpl @Inject constructor(
         return currencyDao.getAllCurrencies()
     }
 
-    override suspend fun insertCurrency(currencyEntity: CurrencyEntity) {
+    override suspend fun insertCurrencyIfDoesNotExist(currencyEntity: CurrencyEntity) {
         currencyDao.insertIfDoesNotExist(currencyEntity)
     }
 }

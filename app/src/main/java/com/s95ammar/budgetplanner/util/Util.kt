@@ -25,5 +25,3 @@ const val WARNING_UNCHECKED_CAST = "UNCHECKED_CAST"
 const val FAB_VISIBILITY_ANIMATION_DURATION_MS = 150L
 
 const val COLOR_PRIMARY_HEX = "#6200Ee"
-
-typealias CurrencyRatesMap = Map<String, Double>

@@ -19,6 +19,7 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -54,7 +55,7 @@ class CurrencySelectionViewModel @Inject constructor(
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun onCurrencyClick(currency: Currency) {
-        viewModelScope.launch {
+        saveCurrencyIfNeeded(currency) {
             _performUiEvent.call(
                 CurrencySelectionUiEvent.SetResult(
                     currency = currency,
@@ -62,6 +63,29 @@ class CurrencySelectionViewModel @Inject constructor(
                 )
             )
             _performUiEvent.call(CurrencySelectionUiEvent.Exit)
+        }
+    }
+
+    private inline fun saveCurrencyIfNeeded(
+        currency: Currency,
+        crossinline onComplete: () -> Unit
+    ) {
+        viewModelScope.launch {
+            Currency.EntityMapper.toEntity(currency)?.let { currencyEntity ->
+                repository.insertCurrencyIfDoesNotExist(currencyEntity).let { insertionFlow ->
+                    if (isMainCurrencySelection)
+                        insertionFlow.flatMapConcat { repository.setMainCurrencyCode(currency.code) }
+                    else
+                        insertionFlow
+                }.onStart {
+                    _performUiEvent.call(CurrencySelectionUiEvent.DisplayLoadingState(LoadingState.Loading))
+                }.catch { throwable ->
+                    _performUiEvent.call(CurrencySelectionUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
+                }.collect {
+                    _performUiEvent.call(CurrencySelectionUiEvent.DisplayLoadingState(LoadingState.Success))
+                    onComplete()
+                }
+            }
         }
     }
 
@@ -74,10 +98,10 @@ class CurrencySelectionViewModel @Inject constructor(
                 .catch { throwable ->
                     _loadMoreLoadingState.value = LoadingState.Error(throwable)
                 }
-                .collect { currencyDtoList ->
+                .collect { currenciesListResponse ->
                     _loadMoreLoadingState.value = LoadingState.Success
                     _currencies.value = buildSet {
-                        addAll(currencyDtoList.mapNotNull(Currency.EntityMapper::fromEntity))
+                        addAll(currenciesListResponse.currencies.mapNotNull(Currency.DtoMapper::fromDto))
                         addAll(_currencies.value.orEmpty())
                     }.toList()
                 }

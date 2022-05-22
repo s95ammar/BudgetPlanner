@@ -82,7 +82,7 @@ class CurrencyConversionFragment : BaseViewBinderFragment<FragmentCurrencyConver
         if (rate != binding.conversionRateInputLayout.text?.toDoubleOrNull()) {
             binding.conversionRateInputLayout.updateTextIfNotEquals(
                 rate.takeIf { it != 0.0 }?.let { amount ->
-                    getAmountStringFormatted(amount, isForEditText = true)
+                    getString(R.string.format_conversion_rate, amount)
                 }
             )
         }

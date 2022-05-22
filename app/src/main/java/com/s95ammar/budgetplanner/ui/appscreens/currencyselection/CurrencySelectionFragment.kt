@@ -52,7 +52,11 @@ class CurrencySelectionFragment : BaseViewBinderFragment<FragmentCurrencySelecti
     }
 
     private fun setCurrenciesList(items: List<CurrencySelectionItemType>) {
-        adapter.submitList(items)
+        adapter.submitList(items) {
+            executeIfViewIsAvailable {
+                if (items.isNotEmpty()) binding.recyclerView.layoutManager?.scrollToPosition(0)
+            }
+        }
     }
 
     private fun performUiEvent(uiEvent: CurrencySelectionUiEvent) {
@@ -78,7 +82,7 @@ class CurrencySelectionFragment : BaseViewBinderFragment<FragmentCurrencySelecti
 
     private fun setResult(currency: Currency, isMainCurrencySelection: Boolean) {
         if (isMainCurrencySelection) {
-            activityViewModel.saveNewMainCurrency(currency)
+            activityViewModel.onMainCurrencyChanged(currency)
         } else {
             setFragmentResult(Keys.KEY_CURRENCY_REQUEST, bundleOf(Keys.KEY_CURRENCY to currency))
         }

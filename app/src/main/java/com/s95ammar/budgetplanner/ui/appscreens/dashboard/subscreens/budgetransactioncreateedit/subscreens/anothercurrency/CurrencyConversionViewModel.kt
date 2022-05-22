@@ -10,8 +10,9 @@ import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.repository.CurrencyRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.anothercurrency.data.ConversionResult
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.anothercurrency.data.CurrencyConversionUiEvent
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.anothercurrency.data.CurrencyRatesMap
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.anothercurrency.data.CurrencyRatesMapDtoMapper
 import com.s95ammar.budgetplanner.ui.common.LoadingState
-import com.s95ammar.budgetplanner.util.CurrencyRatesMap
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.orZero
@@ -96,9 +97,9 @@ class CurrencyConversionViewModel @Inject constructor(
                 .catch { throwable ->
                     _performUiEvent.call(CurrencyConversionUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
-                .collect { ratesMap ->
+                .collect { conversionResponse ->
                     _performUiEvent.call(CurrencyConversionUiEvent.DisplayLoadingState(LoadingState.Success))
-                    _toCurrencyRates.value = ratesMap
+                    _toCurrencyRates.value = CurrencyRatesMapDtoMapper.fromDto(conversionResponse)
                 }
         }
     }

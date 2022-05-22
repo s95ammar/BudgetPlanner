@@ -6,20 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.logFromHere
 import com.s95ammar.budgetplanner.models.repository.CurrencyRepository
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.anothercurrency.data.CurrencyRatesMap
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.anothercurrency.data.CurrencyRatesMapDtoMapper
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.main.data.Currency
 import com.s95ammar.budgetplanner.ui.main.data.CurrencyDetails
 import com.s95ammar.budgetplanner.ui.main.data.MainUiEvent
-import com.s95ammar.budgetplanner.util.CurrencyRatesMap
 import com.s95ammar.budgetplanner.util.asOptional
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -55,25 +53,8 @@ class MainViewModel @Inject constructor(
         _performUiEvent.call(MainUiEvent.FinishActivity)
     }
 
-    fun saveNewMainCurrency(
-        currency: Currency
-    ) {
-        viewModelScope.launch {
-            val cachingRequestFlow = Currency.EntityMapper.toEntity(currency)?.let { currencyEntity ->
-                currencyRepository.insertCurrency(currencyEntity)
-            } ?: emptyFlow()
-
-            cachingRequestFlow.flatMapConcat {
-                currencyRepository.setMainCurrencyCode(currency.code)
-            }.onStart {
-                _performUiEvent.call(MainUiEvent.DisplayLoadingState(LoadingState.Loading))
-            }.catch { throwable ->
-                _performUiEvent.call(MainUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
-            }.collect {
-                _performUiEvent.call(MainUiEvent.DisplayLoadingState(LoadingState.Success))
-                _mainCurrency.value = currency
-            }
-        }
+    fun onMainCurrencyChanged(currency: Currency) {
+        _mainCurrency.value = currency
     }
 
     fun setMainLoadingState(loadingState: LoadingState) {
@@ -103,8 +84,8 @@ class MainViewModel @Inject constructor(
                     logFromHere(throwable)
                     _mainCurrencyRates.value = emptyMap()
                 }
-                .collect { ratesMap ->
-                    _mainCurrencyRates.value = ratesMap
+                .collect { conversionResponse ->
+                    _mainCurrencyRates.value = CurrencyRatesMapDtoMapper.fromDto(conversionResponse)
                 }
         }
     }
