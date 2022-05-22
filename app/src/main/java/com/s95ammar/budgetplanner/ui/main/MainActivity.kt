@@ -2,7 +2,6 @@ package com.s95ammar.budgetplanner.ui.main
 
 import android.content.Context
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
@@ -11,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.s95ammar.budgetplanner.MobileNavigationDirections
@@ -47,7 +45,6 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
 
         viewModel.performUiEvent.observeEvent(this) { performUiEvent(it) }
         bottomNavView.setupWithNavController(navController)
-        bottomNavView.setOnNavigationItemSelectedListener { item -> onNavigationItemSelected(item) }
         navController.addOnDestinationChangedListener { _, destination, _ -> onDestinationChanged(destination) }
     }
 
@@ -80,11 +77,6 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
         )
     }
 
-    private fun onNavigationItemSelected(item: MenuItem): Boolean {
-        if (item.itemId in bottomNavItems) navController.popBackStack()
-        return NavigationUI.onNavDestinationSelected(item, navController)
-    }
-
     private fun onDestinationChanged(destination: NavDestination) {
         hideLoading()
         bottomNavView.isVisible = (destination.id in bottomNavItems)
@@ -112,5 +104,13 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
         supportFragmentManager.executePendingTransactions()
         val loadingDialog = supportFragmentManager.findFragmentByTag(LoadingDialog.TAG) as? LoadingDialog
         loadingDialog?.dismiss()
+    }
+
+    override fun onBackPressed() {
+        if (navController.currentDestination?.id in bottomNavItems) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
     }
 }
