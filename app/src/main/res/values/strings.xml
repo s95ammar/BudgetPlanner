@@ -19,7 +19,6 @@
     <string name="name">Name</string>
     <string name="create">Create</string>
     <string name="save">Save</string>
-    <string name="remove">Remove</string>
     <string name="add_estimate_optional">Add estimate (optional)</string>
     <string name="format_estimate_expenses">Estimate expenses: %s</string>
     <string name="format_estimate_income">Estimate income: %s</string>
@@ -72,17 +71,14 @@
     <string name="income">Income</string>
     <string name="amount">amount</string>
 
-    <string name="format_lat_lng">(%f, %f)</string>
     <string name="choose_location">Choose location</string>
     <string name="no_location_selected">No location selected</string>
     <string name="choose_location_instruction">Tap and hold on the map to choose a location</string>
     <string name="unknown_location">Unknown location</string>
     <string name="permission_required_title">Permission required</string>
-    <string name="location_permission_required_description">The app needs location permissions to zoom in to your location</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="view_on_map">View on map</string>
-    <string name="format_with_thousands_separator">%,d</string>
     <string name="transactions_map">Transactions map</string>
     <string name="total_expenses">Total expenses</string>
     <string name="total_income">Total income</string>
@@ -102,10 +98,7 @@
     <string name="select_budget_transaction_currency_tip">The result currency must be the same as the currency of the chosen category
     and therefore cannot be changed.</string>
     <string name="format_currency">Currency: %s</string>
-    <string name="calculate_by_another_currency">Calculate by another currency</string>
-    <string name="select_another_currency">Select another currency</string>
     <string name="from">From</string>
-    <string name="to">To</string>
     <string name="conversion_rate">Conversion rate</string>
     <string name="convert_currency">Convert currency</string>
     <string name="format_conversion_rate_desc_from">1 %s = </string>
