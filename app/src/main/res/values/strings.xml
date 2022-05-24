@@ -11,7 +11,7 @@
     <string name="categories">Categories</string>
     <string name="periods">Periods</string>
     <string name="dashboard">Dashboard</string>
-    <string name="budget">Budget</string>
+    <string name="overview">Overview</string>
     <string name="expenses_and_income">Expenses and income</string>
     <string name="choose_a_category">Choose a category</string>
     <string name="choose_a_location">Choose a location (optional)</string>

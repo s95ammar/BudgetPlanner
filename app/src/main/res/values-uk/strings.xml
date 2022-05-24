@@ -8,7 +8,7 @@
     <string name="categories">Категорії</string>
     <string name="periods">Періоди</string>
     <string name="dashboard">Панель управління</string>
-    <string name="budget">Бюджет</string>
+    <string name="overview">Огляд</string>
     <string name="expenses_and_income">Витрати та доходи</string>
     <string name="choose_a_category">Виберіть категорію</string>
     <string name="choose_a_location">Виберіть локацію (опціонально)</string>

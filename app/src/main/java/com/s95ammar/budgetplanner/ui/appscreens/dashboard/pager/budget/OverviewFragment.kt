@@ -7,7 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.databinding.FragmentDashboardBudgetBinding
+import com.s95ammar.budgetplanner.databinding.FragmentDashboardOverviewBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.adapter.PeriodicCategoriesProgressAdapter
@@ -18,19 +18,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.BudgetUiEvent as UiEvent
 
 @AndroidEntryPoint
-class BudgetFragment : BaseViewBinderFragment<FragmentDashboardBudgetBinding>(R.layout.fragment_dashboard_budget) {
+class OverviewFragment : BaseViewBinderFragment<FragmentDashboardOverviewBinding>(R.layout.fragment_dashboard_overview) {
 
     companion object {
-        fun newInstance() = BudgetFragment()
+        fun newInstance() = OverviewFragment()
     }
 
-    private val viewModel: BudgetViewModel by viewModels()
+    private val viewModel: OverviewViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
 
     private val adapter by lazy { PeriodicCategoriesProgressAdapter() }
 
-    override fun initViewBinding(view: View): FragmentDashboardBudgetBinding {
-        return FragmentDashboardBudgetBinding.bind(view)
+    override fun initViewBinding(view: View): FragmentDashboardOverviewBinding {
+        return FragmentDashboardOverviewBinding.bind(view)
     }
 
     override fun setUpViews() {
@@ -57,7 +57,6 @@ class BudgetFragment : BaseViewBinderFragment<FragmentDashboardBudgetBinding>(R.
         binding.recyclerView.isGone = periodicCategories.isEmpty()
         binding.instructionsLayout.root.isVisible = periodicCategories.isEmpty()
         binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_budget_screen_no_data)
-
     }
 
     private fun performUiEvent(uiEvent: UiEvent) {

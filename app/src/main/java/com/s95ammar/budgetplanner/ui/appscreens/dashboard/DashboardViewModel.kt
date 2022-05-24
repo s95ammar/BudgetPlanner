@@ -117,7 +117,7 @@ class DashboardViewModel @Inject constructor(
 
     private fun createDashboardFabState(@IntDashboardTab currentTab: Int, isPeriodAvailable: Boolean): DashboardFabState {
         @IntDashboardFabType val type = if (!isPeriodAvailable) IntDashboardFabType.FAB_NONE else when (currentTab) {
-            IntDashboardTab.TAB_BUDGET -> IntDashboardFabType.FAB_EDIT
+            IntDashboardTab.TAB_OVERVIEW -> IntDashboardFabType.FAB_EDIT
             IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> IntDashboardFabType.FAB_ADD
             else -> IntDashboardFabType.FAB_NONE
         }

@@ -15,7 +15,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHead
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardFabState
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.IntDashboardFabType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.IntDashboardTab
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.BudgetFragment
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.OverviewFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.BudgetTransactionsFragment
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.ViewPagerFragmentAdapter
@@ -96,7 +96,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
                 }
 
                 when (fabState.currentTab) {
-                    IntDashboardTab.TAB_BUDGET -> binding.fab.setOnClickListener { viewModel.onEditSelectedPeriod() }
+                    IntDashboardTab.TAB_OVERVIEW -> binding.fab.setOnClickListener { viewModel.onEditSelectedPeriod() }
                     IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> binding.fab.setOnClickListener { viewModel.onAddBudgetTransaction() }
                 }
             }
@@ -114,13 +114,13 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
     }
 
     private fun getTabFragmentLazy(@IntDashboardTab tab: Int) = when (tab) {
-        IntDashboardTab.TAB_BUDGET -> lazy { BudgetFragment.newInstance() }
+        IntDashboardTab.TAB_OVERVIEW -> lazy { OverviewFragment.newInstance() }
         IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> lazy { BudgetTransactionsFragment.newInstance() }
         else -> null
     }
 
     private fun getTabTitle(@IntDashboardTab tab: Int) = when (tab) {
-        IntDashboardTab.TAB_BUDGET -> getString(R.string.budget)
+        IntDashboardTab.TAB_OVERVIEW -> getString(R.string.overview)
         IntDashboardTab.TAB_BUDGET_TRANSACTIONS -> getString(R.string.expenses_and_income)
         else -> null
     }

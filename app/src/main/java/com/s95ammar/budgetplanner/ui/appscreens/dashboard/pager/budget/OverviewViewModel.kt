@@ -19,7 +19,7 @@ import javax.inject.Inject
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.BudgetUiEvent as UiEvent
 
 @HiltViewModel
-class BudgetViewModel @Inject constructor(
+class OverviewViewModel @Inject constructor(
     private val repository: PeriodicCategoryRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
