@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Budget Planner</string>
+    <string name="app_name">Budget Tracker</string>
 
     <string name="error_empty_field">Required field</string>
 
