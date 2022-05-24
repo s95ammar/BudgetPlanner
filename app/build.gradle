@@ -35,8 +35,8 @@ android {
         real {
 
         }
-        mock {
-            applicationIdSuffix ".mock"
+        demo {
+            applicationIdSuffix ".demo"
         }
     }
 
