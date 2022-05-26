@@ -6,4 +6,7 @@ import javax.inject.Singleton
 @Singleton
 class FlavorConfigImpl @Inject constructor() : FlavorConfig {
 
+    override fun shouldAutoCreatePeriodOnFirstLaunch(): Boolean {
+        return false
+    }
 }

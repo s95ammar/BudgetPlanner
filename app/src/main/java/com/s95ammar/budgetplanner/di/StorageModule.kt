@@ -5,12 +5,14 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDb
 import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConfig
-import com.s95ammar.budgetplanner.models.datasource.local.prefs.BudgetPlannerPrefsConfig
+import com.s95ammar.budgetplanner.models.datasource.local.prefs.BudgetPlannerPrefsConfig.CURRENCY_PREFS
+import com.s95ammar.budgetplanner.models.datasource.local.prefs.BudgetPlannerPrefsConfig.GENERAL_PREFS
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -52,11 +54,21 @@ object StorageModule {
     @Provides
     fun provideCurrencyDao(db: BudgetPlannerDb) = db.currencyDao
 
+    @Named(GENERAL_PREFS)
+    @Singleton
+    @Provides
+    fun provideGeneralSharedPrefs(
+        @ApplicationContext applicationContext: Context
+    ) : SharedPreferences {
+        return applicationContext.getSharedPreferences(GENERAL_PREFS, Context.MODE_PRIVATE)
+    }
+
+    @Named(CURRENCY_PREFS)
     @Singleton
     @Provides
     fun provideCurrencySharedPrefs(
         @ApplicationContext applicationContext: Context
     ) : SharedPreferences {
-        return applicationContext.getSharedPreferences(BudgetPlannerPrefsConfig.CURRENCY_PREFS, Context.MODE_PRIVATE)
+        return applicationContext.getSharedPreferences(CURRENCY_PREFS, Context.MODE_PRIVATE)
     }
 }

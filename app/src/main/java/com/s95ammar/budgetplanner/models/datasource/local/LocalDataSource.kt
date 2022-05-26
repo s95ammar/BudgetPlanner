@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSource {
 
+    fun getAndSetIsFirstLaunch(): Boolean
     fun getPeriodEditDataFlow(periodId: Int): Flow<List<CategoryOfPeriodJoinEntity>>
     fun getPeriodInsertTemplateFlow(): Flow<List<CategoryOfPeriodJoinEntity>>
     fun getAllPeriodsFlow(): Flow<List<PeriodEntity>>

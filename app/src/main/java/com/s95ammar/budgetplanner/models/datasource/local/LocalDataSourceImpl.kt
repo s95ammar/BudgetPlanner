@@ -20,9 +20,12 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetT
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.CategoryOfPeriodJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.CategoryOfPeriodSimpleJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.prefs.BudgetPlannerPrefsConfig
+import com.s95ammar.budgetplanner.models.datasource.local.prefs.BudgetPlannerPrefsConfig.CURRENCY_PREFS
+import com.s95ammar.budgetplanner.models.datasource.local.prefs.BudgetPlannerPrefsConfig.GENERAL_PREFS
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
@@ -34,8 +37,15 @@ class LocalDataSourceImpl @Inject constructor(
     private val budgetTransactionDao: BudgetTransactionDao,
     private val joinDao: JoinDao,
     private val currencyDao: CurrencyDao,
-    private val currencyPrefs: SharedPreferences
+    @Named(GENERAL_PREFS) private val generalPrefs: SharedPreferences,
+    @Named(CURRENCY_PREFS) private val currencyPrefs: SharedPreferences,
 ) : LocalDataSource {
+
+    override fun getAndSetIsFirstLaunch(): Boolean {
+        val isFirstLaunch = generalPrefs.getBoolean(BudgetPlannerPrefsConfig.KEY_IS_FIRST_LAUNCH, true)
+        generalPrefs.edit { putBoolean(BudgetPlannerPrefsConfig.KEY_IS_FIRST_LAUNCH, false) }
+        return isFirstLaunch
+    }
 
     // Period & CategoryOfPeriod
     override fun getPeriodEditDataFlow(periodId: Int): Flow<List<CategoryOfPeriodJoinEntity>> {

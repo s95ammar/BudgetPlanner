@@ -49,7 +49,7 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     private val _periodWithCategoriesOfPeriod = LoaderMutableLiveData<PeriodWithCategoriesOfPeriod> { loadEditedPeriodOrInsertTemplate() }
 
     private val _name = MediatorLiveData<String>().apply {
-        addSource(_periodWithCategoriesOfPeriod) { value = it.periodName ?: CalendarUtil.getNextMonthPeriodName(locale) }
+        addSource(_periodWithCategoriesOfPeriod) { value = it.periodName ?: CalendarUtil.getSuggestedPeriodName(locale) }
     }
     private val _categoriesOfPeriod = MediatorLiveData<List<CategoryOfPeriod>>().apply {
         addSource(_periodWithCategoriesOfPeriod) { value = it.categoriesOfPeriod }

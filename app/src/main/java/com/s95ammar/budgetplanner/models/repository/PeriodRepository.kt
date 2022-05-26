@@ -48,4 +48,7 @@ class PeriodRepository @Inject constructor(
         localDataSource.deletePeriod(id)
     }.flowOn(Dispatchers.IO)
 
+    fun getAndSetIsFirstLaunch(): Boolean {
+        return localDataSource.getAndSetIsFirstLaunch()
+    }
 }
