@@ -2,13 +2,13 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data
 
 import android.os.Parcelable
 import com.s95ammar.budgetplanner.models.BaseEntityMapper
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryJoinEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryOfPeriodEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.CategoryOfPeriodJoinEntity
 import com.s95ammar.budgetplanner.util.INVALID
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class PeriodicCategory(
+data class CategoryOfPeriod(
     val id: Int,
     val periodId: Int,
     val categoryId: Int,
@@ -18,29 +18,29 @@ data class PeriodicCategory(
     val budgetTransactionsAmountSum: Double,
     val isSelected: Boolean
 ) : Parcelable {
-    object JoinEntityMapper : BaseEntityMapper<PeriodicCategory, PeriodicCategoryJoinEntity> {
+    object JoinEntityMapper : BaseEntityMapper<CategoryOfPeriod, CategoryOfPeriodJoinEntity> {
 
-        override fun fromEntity(entity: PeriodicCategoryJoinEntity?): PeriodicCategory? {
+        override fun fromEntity(entity: CategoryOfPeriodJoinEntity?): CategoryOfPeriod? {
             return entity?.let {
-                PeriodicCategory(
-                    it.periodicCategoryId,
+                CategoryOfPeriod(
+                    it.categoryOfPeriodId,
                     it.periodId,
                     it.categoryId,
                     it.categoryName,
                     it.estimate,
                     it.currencyCode,
                     it.budgetTransactionsAmountSum,
-                    isSelected = it.periodicCategoryId != Int.INVALID
+                    isSelected = it.categoryOfPeriodId != Int.INVALID
                 )
             }
         }
     }
 
-    object EntityMapper : BaseEntityMapper<PeriodicCategory, PeriodicCategoryEntity> {
+    object EntityMapper : BaseEntityMapper<CategoryOfPeriod, CategoryOfPeriodEntity> {
 
-        override fun toEntity(domainObj: PeriodicCategory?): PeriodicCategoryEntity? {
+        override fun toEntity(domainObj: CategoryOfPeriod?): CategoryOfPeriodEntity? {
             return domainObj?.let {
-                PeriodicCategoryEntity(
+                CategoryOfPeriodEntity(
                     estimate = it.estimate,
                     categoryId = it.categoryId,
                     periodId = it.periodId,

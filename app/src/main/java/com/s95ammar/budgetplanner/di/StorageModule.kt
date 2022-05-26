@@ -38,7 +38,7 @@ object StorageModule {
 
     @Singleton
     @Provides
-    fun providePeriodicCategoryDao(db: BudgetPlannerDb) = db.periodicCategoryDao
+    fun provideCategoryOfPeriodDao(db: BudgetPlannerDb) = db.categoryOfPeriodDao
 
     @Singleton
     @Provides

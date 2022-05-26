@@ -13,9 +13,9 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
     tableName = BudgetPlannerDbConfig.TABLE_NAME_BUDGET_TRANSACTION,
     foreignKeys = [
         ForeignKey(
-            entity = PeriodicCategoryEntity::class,
+            entity = CategoryOfPeriodEntity::class,
             parentColumns = [BudgetPlannerDbConfig.COLUMN_NAME_ID],
-            childColumns = [BudgetPlannerDbConfig.COLUMN_NAME_PERIODIC_CATEGORY_ID],
+            childColumns = [BudgetPlannerDbConfig.COLUMN_NAME_CATEGORY_OF_PERIOD_ID],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
@@ -26,7 +26,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
         )
     ],
     indices = [
-        Index(value = [BudgetPlannerDbConfig.COLUMN_NAME_PERIODIC_CATEGORY_ID]),
+        Index(value = [BudgetPlannerDbConfig.COLUMN_NAME_CATEGORY_OF_PERIOD_ID]),
         Index(value = [BudgetPlannerDbConfig.COLUMN_NAME_CURRENCY_CODE])
     ]
 )
@@ -34,7 +34,7 @@ data class BudgetTransactionEntity(
     val name: String,
     val amount: Double,
     @ColumnInfo(defaultValue = "") val currencyCode: String,
-    val periodicCategoryId: Int,
+    val categoryOfPeriodId: Int,
     @Nullable @Embedded val latLng: LatLngEntity?,
     val creationUnixMs: Long = System.currentTimeMillis()
 ) {

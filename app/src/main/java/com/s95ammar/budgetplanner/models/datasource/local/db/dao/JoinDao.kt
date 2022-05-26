@@ -3,8 +3,8 @@ package com.s95ammar.budgetplanner.models.datasource.local.db.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetTransactionJoinEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryJoinEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategorySimpleJoinEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.CategoryOfPeriodJoinEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.CategoryOfPeriodSimpleJoinEntity
 import com.s95ammar.budgetplanner.util.INT_INVALID
 import kotlinx.coroutines.flow.Flow
 
@@ -15,7 +15,7 @@ interface JoinDao {
     // values, which are not yet added to the period, will have a null value
     @Query(
         """
-    SELECT IFNULL(pcOfPeriod.id, $INT_INVALID) AS periodicCategoryId,
+    SELECT IFNULL(pcOfPeriod.id, $INT_INVALID) AS categoryOfPeriodId,
            IFNULL(pcOfPeriod.periodId, $INT_INVALID) AS periodId,
            category.id AS categoryId,
            category.name AS categoryName,
@@ -24,25 +24,25 @@ interface JoinDao {
            IFNULL(btAmountSumGrouped.btAmountSum, 0.0) AS budgetTransactionsAmountSum
     FROM category
     LEFT JOIN (
-        SELECT * FROM periodicCategory
+        SELECT * FROM categoryOfPeriod
     	WHERE periodId = :periodId
     ) AS pcOfPeriod
         ON category.id = pcOfPeriod.categoryId
     LEFT JOIN (
-    	SELECT periodicCategoryId, SUM(amount) AS btAmountSum
+    	SELECT categoryOfPeriodId, SUM(amount) AS btAmountSum
     	FROM budgetTransaction
-    	GROUP BY periodicCategoryId
+    	GROUP BY categoryOfPeriodId
     ) AS btAmountSumGrouped
-        ON pcOfPeriod.id = btAmountSumGrouped.periodicCategoryId
+        ON pcOfPeriod.id = btAmountSumGrouped.categoryOfPeriodId
     """
     )
-    fun getPeriodEditData(periodId: Int, mainCurrencyCode: String): Flow<List<PeriodicCategoryJoinEntity>>
+    fun getPeriodEditData(periodId: Int, mainCurrencyCode: String): Flow<List<CategoryOfPeriodJoinEntity>>
 
     // load data from last period as a template
     // values, which were not added to the last period, will have a null value
     @Query(
         """
-    SELECT IFNULL(pcOfPeriod.id, $INT_INVALID) AS periodicCategoryId,
+    SELECT IFNULL(pcOfPeriod.id, $INT_INVALID) AS categoryOfPeriodId,
            IFNULL(pcOfPeriod.periodId, $INT_INVALID) AS periodId,
            category.id AS categoryId,
            category.name AS categoryName,
@@ -51,47 +51,47 @@ interface JoinDao {
            0.0 AS budgetTransactionsAmountSum
     FROM category
     LEFT JOIN (
-        SELECT * FROM periodicCategory
+        SELECT * FROM categoryOfPeriod
     	WHERE periodId = (SELECT MAX(id) FROM period)
     ) AS pcOfPeriod
         ON category.id = pcOfPeriod.categoryId
     """
     )
-    fun getPeriodInsertTemplateFlow(mainCurrencyCode: String): Flow<List<PeriodicCategoryJoinEntity>>
+    fun getPeriodInsertTemplateFlow(mainCurrencyCode: String): Flow<List<CategoryOfPeriodJoinEntity>>
 
     @Query(
         """
-	SELECT periodicCategory.id AS periodicCategoryId,
-	       periodicCategory.periodId AS periodId,
+	SELECT categoryOfPeriod.id AS categoryOfPeriodId,
+	       categoryOfPeriod.periodId AS periodId,
 	       category.id AS categoryId,
 	       category.name AS categoryName,
 	       btAmountSumGrouped.btAmountSum AS budgetTransactionsAmountSum,
-	       periodicCategory.estimate AS estimate,
-           periodicCategory.currencyCode AS currencyCode 
+	       categoryOfPeriod.estimate AS estimate,
+           categoryOfPeriod.currencyCode AS currencyCode 
 	FROM category
-	INNER JOIN periodicCategory ON category.id = periodicCategory.categoryId
+	INNER JOIN categoryOfPeriod ON category.id = categoryOfPeriod.categoryId
 	LEFT JOIN (
-		SELECT periodicCategoryId, SUM(amount) AS btAmountSum
+		SELECT categoryOfPeriodId, SUM(amount) AS btAmountSum
 		FROM budgetTransaction
-		GROUP BY periodicCategoryId
+		GROUP BY categoryOfPeriodId
 	) AS btAmountSumGrouped
-	ON periodicCategory.id = btAmountSumGrouped.periodicCategoryId
+	ON categoryOfPeriod.id = btAmountSumGrouped.categoryOfPeriodId
 	WHERE periodId = :periodId
         """
     )
-    fun getPeriodicCategoriesFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
+    fun getCategoriesOfPeriodFlow(periodId: Int): Flow<List<CategoryOfPeriodJoinEntity>>
 
     @Query(
         """
-	SELECT periodicCategory.id AS id,
-           periodicCategory.currencyCode AS currencyCode,
+	SELECT categoryOfPeriod.id AS id,
+           categoryOfPeriod.currencyCode AS currencyCode,
 	       category.name AS categoryName
 	FROM category
-	INNER JOIN periodicCategory ON category.id = periodicCategory.categoryId
+	INNER JOIN categoryOfPeriod ON category.id = categoryOfPeriod.categoryId
 	WHERE periodId = :periodId
         """
     )
-    fun getPeriodicCategorySimple(periodId: Int): Flow<List<PeriodicCategorySimpleJoinEntity>>
+    fun getCategoryOfPeriodSimple(periodId: Int): Flow<List<CategoryOfPeriodSimpleJoinEntity>>
 
     @Query(
         """
@@ -102,14 +102,14 @@ interface JoinDao {
 	       budgetTransaction.lat AS lat,
 	       budgetTransaction.lng AS lng,
 	       budgetTransaction.creationUnixMs AS creationUnixMs,
-	       periodicCategory.id AS periodicCategoryId,
-           periodicCategory.periodId AS periodId,
+	       categoryOfPeriod.id AS categoryOfPeriodId,
+           categoryOfPeriod.periodId AS periodId,
 	       category.name AS categoryName
 	FROM budgetTransaction
-	    INNER JOIN periodicCategory
-	        ON budgetTransaction.periodicCategoryId = periodicCategory.id
+	    INNER JOIN categoryOfPeriod
+	        ON budgetTransaction.categoryOfPeriodId = categoryOfPeriod.id
 	    INNER JOIN category
-	        ON periodicCategory.categoryId = category.id
+	        ON categoryOfPeriod.categoryId = category.id
 	WHERE periodId = :periodId
         """
     )
@@ -124,14 +124,14 @@ interface JoinDao {
 	       budgetTransaction.lat AS lat,
 	       budgetTransaction.lng AS lng,
 	       budgetTransaction.creationUnixMs AS creationUnixMs,
-	       periodicCategory.id AS periodicCategoryId,
-           periodicCategory.periodId AS periodId,
+	       categoryOfPeriod.id AS categoryOfPeriodId,
+           categoryOfPeriod.periodId AS periodId,
 	       category.name AS categoryName
 	FROM budgetTransaction
-	    INNER JOIN periodicCategory
-	        ON budgetTransaction.periodicCategoryId = periodicCategory.id
+	    INNER JOIN categoryOfPeriod
+	        ON budgetTransaction.categoryOfPeriodId = categoryOfPeriod.id
 	    INNER JOIN category
-	        ON periodicCategory.categoryId = category.id
+	        ON categoryOfPeriod.categoryId = category.id
 	WHERE budgetTransaction.id = :id
         """
     )

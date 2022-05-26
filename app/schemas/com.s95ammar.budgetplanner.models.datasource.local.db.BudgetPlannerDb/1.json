@@ -81,7 +81,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "periodicCategory",
+        "tableName": "categoryOfPeriod",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`estimate` REAL, `categoryId` INTEGER NOT NULL, `periodId` INTEGER NOT NULL, `currencyCode` TEXT NOT NULL DEFAULT '', `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`categoryId`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`periodId`) REFERENCES `period`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`currencyCode`) REFERENCES `currency`(`code`) ON UPDATE NO ACTION ON DELETE SET DEFAULT )",
         "fields": [
           {
@@ -124,28 +124,28 @@
         },
         "indices": [
           {
-            "name": "index_periodicCategory_categoryId",
+            "name": "index_categoryOfPeriod_categoryId",
             "unique": false,
             "columnNames": [
               "categoryId"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_periodicCategory_categoryId` ON `${TABLE_NAME}` (`categoryId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_categoryOfPeriod_categoryId` ON `${TABLE_NAME}` (`categoryId`)"
           },
           {
-            "name": "index_periodicCategory_periodId",
+            "name": "index_categoryOfPeriod_periodId",
             "unique": false,
             "columnNames": [
               "periodId"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_periodicCategory_periodId` ON `${TABLE_NAME}` (`periodId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_categoryOfPeriod_periodId` ON `${TABLE_NAME}` (`periodId`)"
           },
           {
-            "name": "index_periodicCategory_currencyCode",
+            "name": "index_categoryOfPeriod_currencyCode",
             "unique": false,
             "columnNames": [
               "currencyCode"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_periodicCategory_currencyCode` ON `${TABLE_NAME}` (`currencyCode`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_categoryOfPeriod_currencyCode` ON `${TABLE_NAME}` (`currencyCode`)"
           }
         ],
         "foreignKeys": [
@@ -186,7 +186,7 @@
       },
       {
         "tableName": "budgetTransaction",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `amount` REAL NOT NULL, `currencyCode` TEXT NOT NULL DEFAULT '', `periodicCategoryId` INTEGER NOT NULL, `creationUnixMs` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lat` REAL, `lng` REAL, FOREIGN KEY(`periodicCategoryId`) REFERENCES `periodicCategory`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`currencyCode`) REFERENCES `currency`(`code`) ON UPDATE NO ACTION ON DELETE SET DEFAULT )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `amount` REAL NOT NULL, `currencyCode` TEXT NOT NULL DEFAULT '', `categoryOfPeriodId` INTEGER NOT NULL, `creationUnixMs` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lat` REAL, `lng` REAL, FOREIGN KEY(`categoryOfPeriodId`) REFERENCES `categoryOfPeriod`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`currencyCode`) REFERENCES `currency`(`code`) ON UPDATE NO ACTION ON DELETE SET DEFAULT )",
         "fields": [
           {
             "fieldPath": "name",
@@ -208,8 +208,8 @@
             "defaultValue": "''"
           },
           {
-            "fieldPath": "periodicCategoryId",
-            "columnName": "periodicCategoryId",
+            "fieldPath": "categoryOfPeriodId",
+            "columnName": "categoryOfPeriodId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -246,12 +246,12 @@
         },
         "indices": [
           {
-            "name": "index_budgetTransaction_periodicCategoryId",
+            "name": "index_budgetTransaction_categoryOfPeriodId",
             "unique": false,
             "columnNames": [
-              "periodicCategoryId"
+              "categoryOfPeriodId"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_budgetTransaction_periodicCategoryId` ON `${TABLE_NAME}` (`periodicCategoryId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_budgetTransaction_categoryOfPeriodId` ON `${TABLE_NAME}` (`categoryOfPeriodId`)"
           },
           {
             "name": "index_budgetTransaction_currencyCode",
@@ -264,11 +264,11 @@
         ],
         "foreignKeys": [
           {
-            "table": "periodicCategory",
+            "table": "categoryOfPeriod",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "periodicCategoryId"
+              "categoryOfPeriodId"
             ],
             "referencedColumns": [
               "id"

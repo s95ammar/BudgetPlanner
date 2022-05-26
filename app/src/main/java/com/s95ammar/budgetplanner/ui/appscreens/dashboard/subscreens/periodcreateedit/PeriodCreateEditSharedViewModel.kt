@@ -6,12 +6,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryOfPeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import com.s95ammar.budgetplanner.models.repository.PeriodRepository
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.CategoryOfPeriod
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodWithPeriodicCategories
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodWithCategoriesOfPeriod
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation.PeriodCreateEditValidator
@@ -46,13 +46,13 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
         get() = editedPeriod?.id ?: Int.INVALID
 
     private val _mode = MutableLiveData(CreateEditMode.getById(editedPeriodId))
-    private val _periodWithPeriodicCategories = LoaderMutableLiveData<PeriodWithPeriodicCategories> { loadEditedPeriodOrInsertTemplate() }
+    private val _periodWithCategoriesOfPeriod = LoaderMutableLiveData<PeriodWithCategoriesOfPeriod> { loadEditedPeriodOrInsertTemplate() }
 
     private val _name = MediatorLiveData<String>().apply {
-        addSource(_periodWithPeriodicCategories) { value = it.periodName ?: CalendarUtil.getNextMonthPeriodName(locale) }
+        addSource(_periodWithCategoriesOfPeriod) { value = it.periodName ?: CalendarUtil.getNextMonthPeriodName(locale) }
     }
-    private val _periodicCategories = MediatorLiveData<List<PeriodicCategory>>().apply {
-        addSource(_periodWithPeriodicCategories) { value = it.periodicCategories }
+    private val _categoriesOfPeriod = MediatorLiveData<List<CategoryOfPeriod>>().apply {
+        addSource(_periodWithCategoriesOfPeriod) { value = it.categoriesOfPeriod }
     }
     private val _allowCategorySelectionForAll = MediatorLiveData<Boolean>().apply {
         addSource(_mode) { value = it == CreateEditMode.CREATE }
@@ -61,26 +61,26 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
 
     val mode = _mode.asLiveData()
     val name = _name.asLiveData()
-    val periodicCategories = _periodicCategories.asLiveData()
-    val selectedPeriodicCategories = _periodicCategories.map { list -> list.filter { it.isSelected } }
+    val categoriesOfPeriod = _categoriesOfPeriod.asLiveData()
+    val selectedCategoriesOfPeriod = _categoriesOfPeriod.map { list -> list.filter { it.isSelected } }
     val allowCategorySelectionForAll = _allowCategorySelectionForAll.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
-    fun onPeriodicCategoryCurrencyChanged(periodicCategory: PeriodicCategory, currency: Currency) {
-        _periodicCategories.value = _periodicCategories.value.orEmpty().map { listItem ->
-            if (listItem.categoryId == periodicCategory.categoryId) listItem.copy(currencyCode = currency.code) else listItem
+    fun onCategoryOfPeriodCurrencyChanged(categoryOfPeriod: CategoryOfPeriod, currency: Currency) {
+        _categoriesOfPeriod.value = _categoriesOfPeriod.value.orEmpty().map { listItem ->
+            if (listItem.categoryId == categoryOfPeriod.categoryId) listItem.copy(currencyCode = currency.code) else listItem
         }
     }
 
-    fun onPeriodicCategorySelectionStateChanged(periodicCategory: PeriodicCategory, isSelected: Boolean) {
-        _periodicCategories.value = _periodicCategories.value.orEmpty().map { listItem ->
-            if (listItem.categoryId == periodicCategory.categoryId) listItem.copy(isSelected = isSelected) else listItem
+    fun onCategoryOfPeriodSelectionStateChanged(categoryOfPeriod: CategoryOfPeriod, isSelected: Boolean) {
+        _categoriesOfPeriod.value = _categoriesOfPeriod.value.orEmpty().map { listItem ->
+            if (listItem.categoryId == categoryOfPeriod.categoryId) listItem.copy(isSelected = isSelected) else listItem
         }
     }
 
-    fun onPeriodicCategoryEstimateChanged(periodicCategory: PeriodicCategory, estimate: Double?) {
-        _periodicCategories.value = _periodicCategories.value.orEmpty().map { listItem ->
-            if (listItem.categoryId == periodicCategory.categoryId) listItem.copy(estimate = estimate) else listItem
+    fun onCategoryOfPeriodEstimateChanged(categoryOfPeriod: CategoryOfPeriod, estimate: Double?) {
+        _categoriesOfPeriod.value = _categoriesOfPeriod.value.orEmpty().map { listItem ->
+            if (listItem.categoryId == categoryOfPeriod.categoryId) listItem.copy(estimate = estimate) else listItem
         }
     }
 
@@ -113,11 +113,11 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
                 .catch { throwable ->
                     _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
-                .collect { periodicCategoryJoinEntityList ->
-                    _periodWithPeriodicCategories.value = PeriodWithPeriodicCategories(
+                .collect { categoryOfPeriodJoinEntityList ->
+                    _periodWithCategoriesOfPeriod.value = PeriodWithCategoriesOfPeriod(
                         periodId = editedPeriodId,
                         periodName = editedPeriod?.name,
-                        periodicCategories = periodicCategoryJoinEntityList.mapNotNull(PeriodicCategory.JoinEntityMapper::fromEntity)
+                        categoriesOfPeriod = categoryOfPeriodJoinEntityList.mapNotNull(CategoryOfPeriod.JoinEntityMapper::fromEntity)
                     )
                     _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
                 }
@@ -145,51 +145,51 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
             }
     }
 
-    private fun getInsertFlow(period: PeriodEntity) = repository.insertPeriodWithPeriodicCategoriesFlow(
+    private fun getInsertFlow(period: PeriodEntity) = repository.insertPeriodWithCategoriesOfPeriodFlow(
         period = period,
-        periodicCategories = _periodicCategories.value.orEmpty()
+        categoriesOfPeriod = _categoriesOfPeriod.value.orEmpty()
             .filter { it.isSelected }
-            .mapNotNull(PeriodicCategory.EntityMapper::toEntity)
+            .mapNotNull(CategoryOfPeriod.EntityMapper::toEntity)
     )
 
     private fun getUpdateFlow(period: PeriodEntity): Flow<Unit> {
-        val initialPcList = _periodWithPeriodicCategories.value?.periodicCategories.orEmpty().filter { it.isSelected }
-        val finalPcList = periodicCategories.value.orEmpty().filter { it.isSelected }
+        val initialCoPList = _periodWithCategoriesOfPeriod.value?.categoriesOfPeriod.orEmpty().filter { it.isSelected }
+        val finalCoPList = categoriesOfPeriod.value.orEmpty().filter { it.isSelected }
 
-        val initialPcCategoryIdsList = initialPcList.map { it.categoryId }
-        val finalPcCategoryIdsList = finalPcList.map { it.categoryId }
+        val initialCoPCategoryIdsList = initialCoPList.map { it.categoryId }
+        val finalCoPCategoryIdsList = finalCoPList.map { it.categoryId }
 
         val pcCategoryIdsToDelete = mutableListOf<Int>()
-        val periodicCategoriesToUpdate = mutableListOf<PeriodicCategoryEntity>()
-        val periodicCategoriesToInsert = mutableListOf<PeriodicCategoryEntity>()
-        val periodicCategoriesIdsUnion = initialPcCategoryIdsList.union(finalPcCategoryIdsList)
+        val categoriesOfPeriodToUpdate = mutableListOf<CategoryOfPeriodEntity>()
+        val categoriesOfPeriodToInsert = mutableListOf<CategoryOfPeriodEntity>()
+        val categoriesOfPeriodIdsUnion = initialCoPCategoryIdsList.union(finalCoPCategoryIdsList)
 
-        for (categoryId in periodicCategoriesIdsUnion) {
+        for (categoryId in categoriesOfPeriodIdsUnion) {
             
-            if (categoryId in initialPcCategoryIdsList && categoryId !in finalPcCategoryIdsList) {
-                pcCategoryIdsToDelete.add(initialPcList.first { it.categoryId == categoryId }.id)
+            if (categoryId in initialCoPCategoryIdsList && categoryId !in finalCoPCategoryIdsList) {
+                pcCategoryIdsToDelete.add(initialCoPList.first { it.categoryId == categoryId }.id)
                 continue
             }
 
-            if (categoryId !in initialPcCategoryIdsList && categoryId in finalPcCategoryIdsList) {
-                val pc = finalPcList.first { it.categoryId == categoryId }
-                PeriodicCategory.EntityMapper.toEntity(pc)?.let { periodicCategoriesToInsert.add(it) }
+            if (categoryId !in initialCoPCategoryIdsList && categoryId in finalCoPCategoryIdsList) {
+                val categoryOfPeriod = finalCoPList.first { it.categoryId == categoryId }
+                CategoryOfPeriod.EntityMapper.toEntity(categoryOfPeriod)?.let { categoriesOfPeriodToInsert.add(it) }
                 continue
             }
             
-            if (categoryId in initialPcCategoryIdsList && categoryId in finalPcCategoryIdsList) {
-                val pcInitial = initialPcList.first { it.categoryId == categoryId }
-                val pcFinal = finalPcList.first { it.categoryId == categoryId }
+            if (categoryId in initialCoPCategoryIdsList && categoryId in finalCoPCategoryIdsList) {
+                val pcInitial = initialCoPList.first { it.categoryId == categoryId }
+                val pcFinal = finalCoPList.first { it.categoryId == categoryId }
                 if (pcInitial != pcFinal)
-                    PeriodicCategory.EntityMapper.toEntity(pcFinal)?.let { periodicCategoriesToUpdate.add(it) }
+                    CategoryOfPeriod.EntityMapper.toEntity(pcFinal)?.let { categoriesOfPeriodToUpdate.add(it) }
             }
         }
 
-        return repository.updatePeriodWithPeriodicCategoriesFlow(
+        return repository.updatePeriodWithCategoriesOfPeriodFlow(
             period,
             pcCategoryIdsToDelete,
-            periodicCategoriesToUpdate,
-            periodicCategoriesToInsert
+            categoriesOfPeriodToUpdate,
+            categoriesOfPeriodToInsert
         )
     }
 

@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardOverviewBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.DashboardSharedViewModel
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.adapter.PeriodicCategoriesProgressAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.CategoryOfPeriod
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.adapter.CategoriesOfPeriodProgressAdapter
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
@@ -27,7 +27,7 @@ class OverviewFragment : BaseViewBinderFragment<FragmentDashboardOverviewBinding
     private val viewModel: OverviewViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
 
-    private val adapter by lazy { PeriodicCategoriesProgressAdapter() }
+    private val adapter by lazy { CategoriesOfPeriodProgressAdapter() }
 
     override fun initViewBinding(view: View): FragmentDashboardOverviewBinding {
         return FragmentDashboardOverviewBinding.bind(view)
@@ -46,16 +46,16 @@ class OverviewFragment : BaseViewBinderFragment<FragmentDashboardOverviewBinding
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.periodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
+        viewModel.categoriesOfPeriod.observe(viewLifecycleOwner) { setCategoriesOfPeriod(it) }
         sharedViewModel.selectedPeriodId.observe(viewLifecycleOwner) { viewModel.onPeriodChanged(it) }
 
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
-    private fun setPeriodicCategories(periodicCategories: List<PeriodicCategory>) {
-        adapter.submitList(periodicCategories)
-        binding.recyclerView.isGone = periodicCategories.isEmpty()
-        binding.instructionsLayout.root.isVisible = periodicCategories.isEmpty()
+    private fun setCategoriesOfPeriod(categoriesOfPeriod: List<CategoryOfPeriod>) {
+        adapter.submitList(categoriesOfPeriod)
+        binding.recyclerView.isGone = categoriesOfPeriod.isEmpty()
+        binding.instructionsLayout.root.isVisible = categoriesOfPeriod.isEmpty()
         binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_budget_screen_no_data)
     }
 

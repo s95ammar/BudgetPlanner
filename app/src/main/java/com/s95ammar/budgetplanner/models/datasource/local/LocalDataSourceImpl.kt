@@ -7,18 +7,18 @@ import com.s95ammar.budgetplanner.models.IdWrapper
 import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDb
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.BudgetTransactionDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.CategoryDao
+import com.s95ammar.budgetplanner.models.datasource.local.db.dao.CategoryOfPeriodDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.CurrencyDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.JoinDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.dao.PeriodDao
-import com.s95ammar.budgetplanner.models.datasource.local.db.dao.PeriodicCategoryDao
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryOfPeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CurrencyEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetTransactionJoinEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryJoinEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategorySimpleJoinEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.CategoryOfPeriodJoinEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.CategoryOfPeriodSimpleJoinEntity
 import com.s95ammar.budgetplanner.models.datasource.local.prefs.BudgetPlannerPrefsConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -30,19 +30,19 @@ class LocalDataSourceImpl @Inject constructor(
     private val db: BudgetPlannerDb,
     private val periodDao: PeriodDao,
     private val categoryDao: CategoryDao,
-    private val periodicCategoryDao: PeriodicCategoryDao,
+    private val categoryOfPeriodDao: CategoryOfPeriodDao,
     private val budgetTransactionDao: BudgetTransactionDao,
     private val joinDao: JoinDao,
     private val currencyDao: CurrencyDao,
     private val currencyPrefs: SharedPreferences
 ) : LocalDataSource {
 
-    // Period & PeriodicCategory
-    override fun getPeriodEditDataFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>> {
+    // Period & CategoryOfPeriod
+    override fun getPeriodEditDataFlow(periodId: Int): Flow<List<CategoryOfPeriodJoinEntity>> {
         return joinDao.getPeriodEditData(periodId, getMainCurrencyCode())
     }
 
-    override fun getPeriodInsertTemplateFlow(): Flow<List<PeriodicCategoryJoinEntity>> {
+    override fun getPeriodInsertTemplateFlow(): Flow<List<CategoryOfPeriodJoinEntity>> {
         return joinDao.getPeriodInsertTemplateFlow(getMainCurrencyCode())
     }
 
@@ -50,24 +50,24 @@ class LocalDataSourceImpl @Inject constructor(
         return periodDao.getAllPeriodsFlow()
     }
 
-    override suspend fun insertPeriodWithPeriodicCategories(period: PeriodEntity, periodicCategories: List<PeriodicCategoryEntity>) {
+    override suspend fun insertPeriodWithCategoriesOfPeriod(period: PeriodEntity, categoriesOfPeriod: List<CategoryOfPeriodEntity>) {
         db.withTransaction {
             val periodId = periodDao.insert(period)
-            periodicCategoryDao.insert(periodicCategories.map { it.copy(periodId = periodId.toInt()) })
+            categoryOfPeriodDao.insert(categoriesOfPeriod.map { it.copy(periodId = periodId.toInt()) })
         }
     }
 
-    override suspend fun updatePeriodWithPeriodicCategories(
+    override suspend fun updatePeriodWithCategoriesOfPeriod(
         period: PeriodEntity,
-        periodicCategoriesIdsToDelete: List<Int>,
-        periodicCategoriesToUpdate: List<PeriodicCategoryEntity>,
-        periodicCategoriesToInsert: List<PeriodicCategoryEntity>
+        categoriesOfPeriodIdsToDelete: List<Int>,
+        categoriesOfPeriodToUpdate: List<CategoryOfPeriodEntity>,
+        categoriesOfPeriodToInsert: List<CategoryOfPeriodEntity>
     ) {
         db.withTransaction {
             periodDao.update(period)
-            periodicCategoryDao.delete(periodicCategoriesIdsToDelete.map { IdWrapper(it) })
-            periodicCategoryDao.update(periodicCategoriesToUpdate)
-            periodicCategoryDao.insert(periodicCategoriesToInsert.map { it.copy(periodId = period.id) })
+            categoryOfPeriodDao.delete(categoriesOfPeriodIdsToDelete.map { IdWrapper(it) })
+            categoryOfPeriodDao.update(categoriesOfPeriodToUpdate)
+            categoryOfPeriodDao.insert(categoriesOfPeriodToInsert.map { it.copy(periodId = period.id) })
         }
     }
 
@@ -75,12 +75,12 @@ class LocalDataSourceImpl @Inject constructor(
         periodDao.delete(IdWrapper(id))
     }
 
-    override fun getPeriodicCategoriesFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>> {
-        return joinDao.getPeriodicCategoriesFlow(periodId)
+    override fun getCategoriesOfPeriodFlow(periodId: Int): Flow<List<CategoryOfPeriodJoinEntity>> {
+        return joinDao.getCategoriesOfPeriodFlow(periodId)
     }
 
-    override fun getPeriodicCategorySimple(periodId: Int): Flow<List<PeriodicCategorySimpleJoinEntity>> {
-        return joinDao.getPeriodicCategorySimple(periodId)
+    override fun getCategoryOfPeriodSimple(periodId: Int): Flow<List<CategoryOfPeriodSimpleJoinEntity>> {
+        return joinDao.getCategoryOfPeriodSimple(periodId)
     }
 
     // Category

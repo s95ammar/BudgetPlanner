@@ -1,7 +1,7 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data
 
-data class PeriodWithPeriodicCategories(
+data class PeriodWithCategoriesOfPeriod(
     val periodId: Int,
     val periodName: String?,
-    val periodicCategories: List<PeriodicCategory>
+    val categoriesOfPeriod: List<CategoryOfPeriod>
 )

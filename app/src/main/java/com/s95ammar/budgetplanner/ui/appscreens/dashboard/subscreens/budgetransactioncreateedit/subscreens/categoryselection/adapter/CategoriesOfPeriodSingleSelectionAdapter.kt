@@ -6,19 +6,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.s95ammar.budgetplanner.databinding.ItemCategoryBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategorySimple
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.CategoryOfPeriodSimple
 
-class PeriodicCategoriesSingleSelectionAdapter(
+class CategoriesOfPeriodSingleSelectionAdapter(
     private val onItemClick: (Int) -> Unit
-) : ListAdapter<PeriodicCategorySimple, PeriodicCategoriesSingleSelectionAdapter.CategoriesViewHolder>(DiffUtilCallback()) {
+) : ListAdapter<CategoryOfPeriodSimple, CategoriesOfPeriodSingleSelectionAdapter.CategoriesViewHolder>(DiffUtilCallback()) {
 
     companion object {
-        class DiffUtilCallback : DiffUtil.ItemCallback<PeriodicCategorySimple>() {
-            override fun areItemsTheSame(oldItem: PeriodicCategorySimple, newItem: PeriodicCategorySimple): Boolean {
+        class DiffUtilCallback : DiffUtil.ItemCallback<CategoryOfPeriodSimple>() {
+            override fun areItemsTheSame(oldItem: CategoryOfPeriodSimple, newItem: CategoryOfPeriodSimple): Boolean {
                 return (oldItem.id == newItem.id)
             }
 
-            override fun areContentsTheSame(oldItem: PeriodicCategorySimple, newItem: PeriodicCategorySimple): Boolean {
+            override fun areContentsTheSame(oldItem: CategoryOfPeriodSimple, newItem: CategoryOfPeriodSimple): Boolean {
                 return (oldItem.categoryName == newItem.categoryName)
             }
         }
@@ -44,7 +44,7 @@ class PeriodicCategoriesSingleSelectionAdapter(
             itemView.setOnClickListener { onItemClick(adapterPosition) }
         }
 
-        fun bind(item: PeriodicCategorySimple) {
+        fun bind(item: CategoryOfPeriodSimple) {
             binding.textViewTitle.text = item.categoryName
         }
 

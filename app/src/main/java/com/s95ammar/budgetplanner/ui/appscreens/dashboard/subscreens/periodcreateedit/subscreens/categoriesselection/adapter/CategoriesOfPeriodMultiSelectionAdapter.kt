@@ -7,43 +7,43 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.snackbar.Snackbar
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategorySelectionBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.PeriodicCategoriesMultiSelectionAdapter.PeriodicCategoriesSelectionViewHolder
+import com.s95ammar.budgetplanner.databinding.ItemCategoryOfPeriodSelectionBinding
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.CategoryOfPeriod
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.adapter.CategoriesOfPeriodMultiSelectionAdapter.CategoriesOfPeriodSelectionViewHolder
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import com.s95ammar.budgetplanner.util.setDrawableTint
 import com.s95ammar.budgetplanner.util.setSelectableItemBackground
 import kotlin.math.absoluteValue
 
-class PeriodicCategoriesMultiSelectionAdapter(
-    private val onSelectionStateChanged: (PeriodicCategory, Boolean) -> Unit,
-    private val onCreateEditEstimate: (PeriodicCategory) -> Unit,
-    private val onChangeCurrency: (PeriodicCategory) -> Unit
-) : BaseListAdapter<PeriodicCategory, PeriodicCategoriesSelectionViewHolder>(DiffUtilCallback()) {
+class CategoriesOfPeriodMultiSelectionAdapter(
+    private val onSelectionStateChanged: (CategoryOfPeriod, Boolean) -> Unit,
+    private val onCreateEditEstimate: (CategoryOfPeriod) -> Unit,
+    private val onChangeCurrency: (CategoryOfPeriod) -> Unit
+) : BaseListAdapter<CategoryOfPeriod, CategoriesOfPeriodSelectionViewHolder>(DiffUtilCallback()) {
 
     var allowCategorySelectionForAll = false
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodicCategoriesSelectionViewHolder {
-        return PeriodicCategoriesSelectionViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesOfPeriodSelectionViewHolder {
+        return CategoriesOfPeriodSelectionViewHolder(
             onSelectionStateChanged = onSelectionStateChanged,
             onCreateEditEstimate = onCreateEditEstimate,
             onChangeCurrency = onChangeCurrency,
-            binding = ItemPeriodicCategorySelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            binding = ItemCategoryOfPeriodSelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             alwaysAllowCategorySelection = allowCategorySelectionForAll
         )
     }
 
-    class PeriodicCategoriesSelectionViewHolder(
-        private val onSelectionStateChanged: (PeriodicCategory, Boolean) -> Unit,
-        private val onCreateEditEstimate: (PeriodicCategory) -> Unit,
-        private val onChangeCurrency: (PeriodicCategory) -> Unit,
-        private val binding: ItemPeriodicCategorySelectionBinding,
+    class CategoriesOfPeriodSelectionViewHolder(
+        private val onSelectionStateChanged: (CategoryOfPeriod, Boolean) -> Unit,
+        private val onCreateEditEstimate: (CategoryOfPeriod) -> Unit,
+        private val onChangeCurrency: (CategoryOfPeriod) -> Unit,
+        private val binding: ItemCategoryOfPeriodSelectionBinding,
         private val alwaysAllowCategorySelection: Boolean
-    ) : BaseListAdapter.BaseViewHolder<PeriodicCategory>(binding.root) {
+    ) : BaseListAdapter.BaseViewHolder<CategoryOfPeriod>(binding.root) {
 
 
-        override fun bind(item: PeriodicCategory, payloads: PayloadsHolder) {
+        override fun bind(item: CategoryOfPeriod, payloads: PayloadsHolder) {
             binding.checkBoxCategoryName.setOnCheckedChangeListener { _, isChecked -> onSelectionStateChanged(item, isChecked) }
             binding.addEstimatesTextView.setOnClickListener { onCreateEditEstimate(item) }
             binding.currencyTextView.setOnClickListener { onChangeCurrency(item) }
@@ -59,7 +59,7 @@ class PeriodicCategoriesMultiSelectionAdapter(
             binding.checkBoxCategoryName.text = categoryName
         }
 
-        private fun setCurrencyView(item: PeriodicCategory) {
+        private fun setCurrencyView(item: CategoryOfPeriod) {
             val isEnabled = item.budgetTransactionsAmountSum == 0.0
 
             binding.currencyTextView.text = getString(R.string.format_currency, item.currencyCode)
@@ -105,30 +105,30 @@ class PeriodicCategoriesMultiSelectionAdapter(
         }
     }
 
-    class DiffUtilCallback : DiffUtil.ItemCallback<PeriodicCategory>() {
-        override fun areItemsTheSame(oldItem: PeriodicCategory, newItem: PeriodicCategory): Boolean {
+    class DiffUtilCallback : DiffUtil.ItemCallback<CategoryOfPeriod>() {
+        override fun areItemsTheSame(oldItem: CategoryOfPeriod, newItem: CategoryOfPeriod): Boolean {
             return oldItem.categoryId == newItem.categoryId
         }
 
-        override fun areContentsTheSame(oldItem: PeriodicCategory, newItem: PeriodicCategory): Boolean {
+        override fun areContentsTheSame(oldItem: CategoryOfPeriod, newItem: CategoryOfPeriod): Boolean {
             return oldItem == newItem
         }
 
-        override fun getChangePayload(oldItem: PeriodicCategory, newItem: PeriodicCategory): PayloadsHolder {
+        override fun getChangePayload(oldItem: CategoryOfPeriod, newItem: CategoryOfPeriod): PayloadsHolder {
             return PayloadsHolder().apply {
-                addPayloadIfNotEqual(PayloadType.NAME, oldItem to newItem, PeriodicCategory::categoryName)
+                addPayloadIfNotEqual(PayloadType.NAME, oldItem to newItem, CategoryOfPeriod::categoryName)
                 addPayloadIfNotEqual(
                     PayloadType.CURRENCY,
                     oldItem to newItem,
-                    PeriodicCategory::currencyCode,
-                    PeriodicCategory::budgetTransactionsAmountSum
+                    CategoryOfPeriod::currencyCode,
+                    CategoryOfPeriod::budgetTransactionsAmountSum
                 )
-                addPayloadIfNotEqual(PayloadType.ESTIMATE, oldItem to newItem, PeriodicCategory::estimate)
+                addPayloadIfNotEqual(PayloadType.ESTIMATE, oldItem to newItem, CategoryOfPeriod::estimate)
                 addPayloadIfNotEqual(
                     PayloadType.SELECTION,
                     oldItem to newItem,
-                    PeriodicCategory::isSelected,
-                    PeriodicCategory::budgetTransactionsAmountSum
+                    CategoryOfPeriod::isSelected,
+                    CategoryOfPeriod::budgetTransactionsAmountSum
                 )
             }
         }

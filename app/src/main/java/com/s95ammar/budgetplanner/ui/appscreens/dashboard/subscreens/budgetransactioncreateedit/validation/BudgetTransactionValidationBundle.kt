@@ -8,6 +8,6 @@ data class BudgetTransactionValidationBundle(
     val name: String,
     val amount: String,
     val currencyCode: String?,
-    val periodicCategoryId: Int,
+    val categoryOfPeriodId: Int,
     val latLng: LatLng?
 )

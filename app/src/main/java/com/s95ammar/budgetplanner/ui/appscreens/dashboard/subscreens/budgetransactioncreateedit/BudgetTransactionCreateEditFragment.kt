@@ -10,7 +10,7 @@ import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCreateEditBinding
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.BudgetTransactionInputBundle
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategorySimple
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.CategoryOfPeriodSimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation.BudgetTransactionCreateEditValidator
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
@@ -42,7 +42,7 @@ class BudgetTransactionCreateEditFragment :
         binding.toolbar.setNavigationOnClickListener { viewModel.onBack() }
         setUpTabLayout()
         binding.currencyTextView.setOnClickListener { viewModel.onCalculateByAnotherCurrency() }
-        binding.textViewPeriodCategoryValue.setOnClickListener { viewModel.onChoosePeriodicCategory() }
+        binding.textViewPeriodCategoryValue.setOnClickListener { viewModel.onChooseCategoryOfPeriod() }
         binding.textViewLocationValue.setOnClickListener { viewModel.onChooseLocation() }
         binding.buttonApply.setOnClickListener { viewModel.onApply(getBudgetTransactionInputBundle()) }
         binding.inputLayoutName.editText?.doAfterTextChanged { viewModel.setName(it?.toString().orEmpty()) }
@@ -73,7 +73,7 @@ class BudgetTransactionCreateEditFragment :
         viewModel.amountInput.observe(viewLifecycleOwner) { setAmount(it) }
         viewModel.isCurrencyAvailable.observe(viewLifecycleOwner) { setIsCurrencyAvailable(it) }
         viewModel.currencyCode.observe(viewLifecycleOwner) { setCurrencyCode(it) }
-        viewModel.periodicCategory.observe(viewLifecycleOwner) { setSelectedPeriodicCategory(it) }
+        viewModel.categoryOfPeriod.observe(viewLifecycleOwner) { setSelectedCategoryOfPeriod(it) }
         viewModel.locationOptional.observe(viewLifecycleOwner) { setSelectedLocation(it?.value) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
@@ -117,8 +117,8 @@ class BudgetTransactionCreateEditFragment :
         binding.currencyTextView.text = currencyCode
     }
 
-    private fun setSelectedPeriodicCategory(periodicCategory: PeriodicCategorySimple) {
-        binding.textViewPeriodCategoryValue.text = periodicCategory.categoryName
+    private fun setSelectedCategoryOfPeriod(categoryOfPeriod: CategoryOfPeriodSimple) {
+        binding.textViewPeriodCategoryValue.text = categoryOfPeriod.categoryName
         binding.textViewPeriodCategoryValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
     }
 
@@ -131,7 +131,7 @@ class BudgetTransactionCreateEditFragment :
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.NavigateToCurrencyConversion -> listenAndNavigateToCurrencyConversion(uiEvent.currentCurrencyCode)
-            is UiEvent.ChoosePeriodicCategory -> listenAndNavigateToPeriodicCategorySelection(uiEvent.periodId)
+            is UiEvent.ChooseCategoryOfPeriod -> listenAndNavigateToCategoryOfPeriodSelection(uiEvent.periodId)
             is UiEvent.ChooseLocation -> listenAndNavigateToLocationSelection(uiEvent.currentLocation)
             is UiEvent.DisplayValidationResults -> handleValidationErrors(uiEvent.validationErrors)
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
@@ -163,10 +163,10 @@ class BudgetTransactionCreateEditFragment :
         )
     }
 
-    private fun listenAndNavigateToPeriodicCategorySelection(periodId: Int) {
-        setFragmentResultListener(Keys.KEY_PERIODIC_CATEGORY_REQUEST) { _, bundle ->
-            bundle.getParcelable<PeriodicCategorySimple>(Keys.KEY_PERIODIC_CATEGORY)?.let { periodicCategory ->
-                viewModel.setPeriodicCategory(periodicCategory)
+    private fun listenAndNavigateToCategoryOfPeriodSelection(periodId: Int) {
+        setFragmentResultListener(Keys.KEY_CATEGORY_OF_PERIOD_REQUEST) { _, bundle ->
+            bundle.getParcelable<CategoryOfPeriodSimple>(Keys.KEY_CATEGORY_OF_PERIOD)?.let { categoryOfPeriod ->
+                viewModel.setCategoryOfPeriod(categoryOfPeriod)
             }
         }
         navController.navigate(

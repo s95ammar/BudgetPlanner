@@ -12,6 +12,6 @@ data class BudgetTransactionJoinEntity(
     @Nullable @Embedded val latLng: LatLngEntity?,
     val creationUnixMs: Long,
     val periodId: Int,
-    val periodicCategoryId: Int,
+    val categoryOfPeriodId: Int,
     val categoryName: String
 )

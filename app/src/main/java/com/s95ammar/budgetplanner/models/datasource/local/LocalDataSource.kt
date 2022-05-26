@@ -2,25 +2,25 @@ package com.s95ammar.budgetplanner.models.datasource.local
 
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryOfPeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CurrencyEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.BudgetTransactionJoinEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategoryJoinEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.PeriodicCategorySimpleJoinEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.CategoryOfPeriodJoinEntity
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.join.CategoryOfPeriodSimpleJoinEntity
 import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSource {
 
-    fun getPeriodEditDataFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
-    fun getPeriodInsertTemplateFlow(): Flow<List<PeriodicCategoryJoinEntity>>
+    fun getPeriodEditDataFlow(periodId: Int): Flow<List<CategoryOfPeriodJoinEntity>>
+    fun getPeriodInsertTemplateFlow(): Flow<List<CategoryOfPeriodJoinEntity>>
     fun getAllPeriodsFlow(): Flow<List<PeriodEntity>>
-    suspend fun insertPeriodWithPeriodicCategories(period: PeriodEntity, periodicCategories: List<PeriodicCategoryEntity>)
-    suspend fun updatePeriodWithPeriodicCategories(
+    suspend fun insertPeriodWithCategoriesOfPeriod(period: PeriodEntity, categoriesOfPeriod: List<CategoryOfPeriodEntity>)
+    suspend fun updatePeriodWithCategoriesOfPeriod(
         period: PeriodEntity,
-        periodicCategoriesIdsToDelete: List<Int>,
-        periodicCategoriesToUpdate: List<PeriodicCategoryEntity>,
-        periodicCategoriesToInsert: List<PeriodicCategoryEntity>
+        categoriesOfPeriodIdsToDelete: List<Int>,
+        categoriesOfPeriodToUpdate: List<CategoryOfPeriodEntity>,
+        categoriesOfPeriodToInsert: List<CategoryOfPeriodEntity>
     )
     suspend fun deletePeriod(id: Int)
 
@@ -30,8 +30,8 @@ interface LocalDataSource {
     suspend fun updateCategory(category: CategoryEntity)
     suspend fun deleteCategory(id: Int)
 
-    fun getPeriodicCategoriesFlow(periodId: Int): Flow<List<PeriodicCategoryJoinEntity>>
-    fun getPeriodicCategorySimple(periodId: Int): Flow<List<PeriodicCategorySimpleJoinEntity>>
+    fun getCategoriesOfPeriodFlow(periodId: Int): Flow<List<CategoryOfPeriodJoinEntity>>
+    fun getCategoryOfPeriodSimple(periodId: Int): Flow<List<CategoryOfPeriodSimpleJoinEntity>>
 
     fun getPeriodBudgetTransactionsFlow(periodId: Int): Flow<List<BudgetTransactionJoinEntity>>
     fun getBudgetTransactionFlow(id: Int): Flow<BudgetTransactionJoinEntity>

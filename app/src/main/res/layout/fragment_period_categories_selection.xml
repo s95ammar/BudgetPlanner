@@ -40,7 +40,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="3"
-            tools:listitem="@layout/item_periodic_category_selection" />
+            tools:listitem="@layout/item_category_of_period_selection" />
 
         <include
             android:id="@+id/instructions_layout"

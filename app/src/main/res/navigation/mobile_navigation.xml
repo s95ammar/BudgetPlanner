@@ -76,8 +76,8 @@
                 android:label="fragment_period_category_estimate_create_edit"
                 tools:layout="@layout/fragment_period_category_estimate_create_edit">
                 <argument
-                    android:name="periodicCategory"
-                    app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory" />
+                    android:name="categoryOfPeriod"
+                    app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.CategoryOfPeriod" />
             </fragment>
         </navigation>
 

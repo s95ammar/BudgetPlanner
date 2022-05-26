@@ -7,13 +7,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PeriodicCategoryRepository @Inject constructor(
+class CategoryOfPeriodRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) {
 
-    fun getPeriodicCategoriesFlow(periodId: Int) = localDataSource.getPeriodicCategoriesFlow(periodId)
+    fun getCategoriesOfPeriodFlow(periodId: Int) = localDataSource.getCategoriesOfPeriodFlow(periodId)
         .flowOn(Dispatchers.IO)
 
-    fun getPeriodicCategorySimple(periodId: Int) = localDataSource.getPeriodicCategorySimple(periodId)
+    fun getCategoryOfPeriodSimple(periodId: Int) = localDataSource.getCategoryOfPeriodSimple(periodId)
         .flowOn(Dispatchers.IO)
 }

@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.s95ammar.budgetplanner.models.repository.PeriodicCategoryRepository
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
+import com.s95ammar.budgetplanner.models.repository.CategoryOfPeriodRepository
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.CategoryOfPeriod
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -20,33 +20,33 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.Budg
 
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
-    private val repository: PeriodicCategoryRepository,
+    private val repository: CategoryOfPeriodRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _periodicCategories = MutableLiveData<List<PeriodicCategory>>()
+    private val _categoriesOfPeriod = MutableLiveData<List<CategoryOfPeriod>>()
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
-    val periodicCategories = _periodicCategories.asLiveData()
+    val categoriesOfPeriod = _categoriesOfPeriod.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun onPeriodChanged(periodId: Int) {
-        loadPeriodicCategories(periodId)
+        loadCategoriesOfPeriod(periodId)
     }
 
-    private fun loadPeriodicCategories(periodId: Int) = viewModelScope.launch {
+    private fun loadCategoriesOfPeriod(periodId: Int) = viewModelScope.launch {
         if (periodId == Int.INVALID) return@launch
 
-        repository.getPeriodicCategoriesFlow(periodId)
+        repository.getCategoriesOfPeriodFlow(periodId)
             .onStart {
                 _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
             }
             .catch { throwable ->
                 _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
             }
-            .collect { periodicCategoryJoinEntityList ->
+            .collect { categoryOfPeriodJoinEntityList ->
                 _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
-                _periodicCategories.value = periodicCategoryJoinEntityList.mapNotNull(PeriodicCategory.JoinEntityMapper::fromEntity)
+                _categoriesOfPeriod.value = categoryOfPeriodJoinEntityList.mapNotNull(CategoryOfPeriod.JoinEntityMapper::fromEntity)
             }
 
     }

@@ -100,8 +100,8 @@ class CurrencySelectionFragment : BaseViewBinderFragment<FragmentCurrencySelecti
             IntCurrencySelectionType.MAIN_CURRENCY -> {
                 binding.tipTextView.setText(R.string.select_main_currency_tip)
             }
-            IntCurrencySelectionType.PERIODIC_CATEGORY_CURRENCY -> {
-                binding.tipTextView.setText(R.string.select_periodic_category_currency_tip)
+            IntCurrencySelectionType.CATEGORY_OF_PERIOD_CURRENCY -> {
+                binding.tipTextView.setText(R.string.select_category_of_period_currency_tip)
             }
             IntCurrencySelectionType.BUDGET_TRANSACTION_CURRENCY -> binding.tipTextView.isVisible = false
         }

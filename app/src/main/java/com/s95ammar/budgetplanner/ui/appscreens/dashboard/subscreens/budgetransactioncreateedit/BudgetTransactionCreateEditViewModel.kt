@@ -14,7 +14,7 @@ import com.s95ammar.budgetplanner.models.repository.CurrencyRepository
 import com.s95ammar.budgetplanner.models.repository.LocationRepository
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.BudgetTransaction
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.BudgetTransactionInputBundle
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategorySimple
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.CategoryOfPeriodSimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.locationselection.data.LocationWithAddress
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation.BudgetTransactionCreateEditValidator
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation.BudgetTransactionValidationBundle
@@ -64,14 +64,14 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     private val _amountInput = MediatorLiveData<Double>().apply {
         addSource(_editedBudgetTransaction) { value = getDisplayedAmount(it.amount) }
     }
-    private val _periodicCategory = MediatorLiveData<PeriodicCategorySimple>().apply {
-        addSource(_editedBudgetTransaction) { value = PeriodicCategorySimple(it.periodicCategoryId, it.currencyCode, it.categoryName) }
+    private val _categoryOfPeriod = MediatorLiveData<CategoryOfPeriodSimple>().apply {
+        addSource(_editedBudgetTransaction) { value = CategoryOfPeriodSimple(it.categoryOfPeriodId, it.currencyCode, it.categoryName) }
     }
     private val _isCurrencyAvailable = MediatorLiveData(false).apply {
-        addSource(_periodicCategory) { value = true }
+        addSource(_categoryOfPeriod) { value = true }
     }
     private val _currencyCode = MediatorLiveData(getMainCurrency()).apply {
-        addSource(_periodicCategory) { value = it.currencyCode }
+        addSource(_categoryOfPeriod) { value = it.currencyCode }
     }
     private val _locationOptional = MediatorLiveData<Optional<LocationWithAddress>>(Optional.empty()).apply {
         addSource(_editedBudgetTransaction) { setLocationOptionalValue(it.latLng) }
@@ -84,7 +84,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     val amountInput = _amountInput.distinctUntilChanged()
     val isCurrencyAvailable = _isCurrencyAvailable.distinctUntilChanged()
     val currencyCode = _currencyCode.distinctUntilChanged()
-    val periodicCategory = _periodicCategory.distinctUntilChanged()
+    val categoryOfPeriod = _categoryOfPeriod.distinctUntilChanged()
     val locationOptional = _locationOptional.distinctUntilChanged()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
@@ -100,16 +100,16 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
         amount.toDoubleOrNull()?.let { _amountInput.value = it }
     }
 
-    fun setPeriodicCategory(periodicCategory: PeriodicCategorySimple) {
-        _periodicCategory.value = periodicCategory
+    fun setCategoryOfPeriod(categoryOfPeriod: CategoryOfPeriodSimple) {
+        _categoryOfPeriod.value = categoryOfPeriod
     }
 
     fun setLocation(location: LocationWithAddress?) {
         _locationOptional.value = location.asOptional()
     }
 
-    fun onChoosePeriodicCategory() {
-        _performUiEvent.call(UiEvent.ChoosePeriodicCategory(periodId))
+    fun onChooseCategoryOfPeriod() {
+        _performUiEvent.call(UiEvent.ChooseCategoryOfPeriod(periodId))
     }
 
     fun onChooseLocation() {
@@ -166,7 +166,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
             name = budgetTransactionInputBundle.name,
             amount = budgetTransactionInputBundle.amount,
             currencyCode = currencyCode.value,
-            periodicCategoryId = _periodicCategory.value?.id ?: Int.INVALID,
+            categoryOfPeriodId = _categoryOfPeriod.value?.id ?: Int.INVALID,
             latLng = _locationOptional.optionalValue?.latLng
         )
 

@@ -7,7 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentPeriodCreateEditBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.CategoryOfPeriod
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.LoadingState
@@ -40,7 +40,7 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
         super.initObservers()
         sharedViewModel.mode.observe(viewLifecycleOwner) { setViewsToMode(it) }
         sharedViewModel.name.observe(viewLifecycleOwner) { setPeriodName(it) }
-        sharedViewModel.selectedPeriodicCategories.observe(viewLifecycleOwner) { setCategoriesNamesStringValue(it) }
+        sharedViewModel.selectedCategoriesOfPeriod.observe(viewLifecycleOwner) { setCategoriesNamesStringValue(it) }
 
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
         sharedViewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
@@ -66,16 +66,16 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
         }
     }
 
-    private fun setCategoriesNamesStringValue(items: List<PeriodicCategory>) {
+    private fun setCategoriesNamesStringValue(items: List<CategoryOfPeriod>) {
         val isEmpty = items.isEmpty()
 
         binding.textViewPeriodCategoriesValue.text = if (isEmpty) {
             getString(R.string.choose_categories)
         } else {
             buildString {
-                for ((i, periodicCategory) in items.withIndex()) {
+                for ((i, categoryOfPeriod) in items.withIndex()) {
                     if (i != 0) append(", ")
-                    append(periodicCategory.categoryName)
+                    append(categoryOfPeriod.categoryName)
                 }
             }
         }

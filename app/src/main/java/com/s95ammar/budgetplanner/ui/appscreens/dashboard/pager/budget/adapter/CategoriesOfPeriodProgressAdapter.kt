@@ -5,47 +5,47 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import com.s95ammar.budgetplanner.R
-import com.s95ammar.budgetplanner.databinding.ItemPeriodicCategoryBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
+import com.s95ammar.budgetplanner.databinding.ItemCategoryOfPeriodBinding
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.CategoryOfPeriod
 import com.s95ammar.budgetplanner.ui.base.BaseListAdapter
 import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
-class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, PeriodicCategoriesProgressAdapter.PeriodicCategoriesViewHolder>(DiffUtilCallback()) {
+class CategoriesOfPeriodProgressAdapter : BaseListAdapter<CategoryOfPeriod, CategoriesOfPeriodProgressAdapter.CategoriesOfPeriodViewHolder>(DiffUtilCallback()) {
 
     companion object {
-        class DiffUtilCallback : DiffUtil.ItemCallback<PeriodicCategory>() {
-            override fun areItemsTheSame(oldItem: PeriodicCategory, newItem: PeriodicCategory): Boolean {
+        class DiffUtilCallback : DiffUtil.ItemCallback<CategoryOfPeriod>() {
+            override fun areItemsTheSame(oldItem: CategoryOfPeriod, newItem: CategoryOfPeriod): Boolean {
                 return (oldItem.categoryId == newItem.categoryId)
             }
-            override fun areContentsTheSame(oldItem: PeriodicCategory, newItem: PeriodicCategory): Boolean {
+            override fun areContentsTheSame(oldItem: CategoryOfPeriod, newItem: CategoryOfPeriod): Boolean {
                 return (oldItem == newItem)
             }
 
-            override fun getChangePayload(oldItem: PeriodicCategory, newItem: PeriodicCategory) = PayloadsHolder().apply {
-                addPayloadIfNotEqual(PayloadType.CATEGORY_NAME, oldItem to newItem, PeriodicCategory::categoryName)
+            override fun getChangePayload(oldItem: CategoryOfPeriod, newItem: CategoryOfPeriod) = PayloadsHolder().apply {
+                addPayloadIfNotEqual(PayloadType.CATEGORY_NAME, oldItem to newItem, CategoryOfPeriod::categoryName)
                 addPayloadIfNotEqual(
                     PayloadType.AMOUNT_AND_ESTIMATE,
                     oldItem to newItem,
-                    PeriodicCategory::estimate,
-                    PeriodicCategory::budgetTransactionsAmountSum
+                    CategoryOfPeriod::estimate,
+                    CategoryOfPeriod::budgetTransactionsAmountSum
                 )
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodicCategoriesViewHolder {
-        return PeriodicCategoriesViewHolder(
-            ItemPeriodicCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesOfPeriodViewHolder {
+        return CategoriesOfPeriodViewHolder(
+            ItemCategoryOfPeriodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
-    class PeriodicCategoriesViewHolder(
-        private val binding: ItemPeriodicCategoryBinding
-    ) : BaseListAdapter.BaseViewHolder<PeriodicCategory>(binding.root) {
+    class CategoriesOfPeriodViewHolder(
+        private val binding: ItemCategoryOfPeriodBinding
+    ) : BaseListAdapter.BaseViewHolder<CategoryOfPeriod>(binding.root) {
 
-        override fun bind(item: PeriodicCategory, payloads: PayloadsHolder) {
+        override fun bind(item: CategoryOfPeriod, payloads: PayloadsHolder) {
             if (payloads.shouldUpdate(PayloadType.CATEGORY_NAME)) setCategoryName(item.categoryName)
             if (payloads.shouldUpdate(PayloadType.AMOUNT_AND_ESTIMATE)) setAmountAndEstimate(item)
         }
@@ -54,21 +54,21 @@ class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, Peri
             binding.textViewCategoryName.text = categoryName
         }
 
-        private fun setAmountAndEstimate(periodicCategory: PeriodicCategory) {
-            val amountSum = periodicCategory.budgetTransactionsAmountSum
-            val estimate = periodicCategory.estimate
+        private fun setAmountAndEstimate(categoryOfPeriod: CategoryOfPeriod) {
+            val amountSum = categoryOfPeriod.budgetTransactionsAmountSum
+            val estimate = categoryOfPeriod.estimate
             binding.progressBar.isGone = estimate == null
 
             if (estimate != null) {
                 binding.progressBar.progress = (amountSum * 100.0 / estimate).roundToInt()
             }
 
-            binding.textViewBudgetPeriodEntryValues.text = getAmountAndEstimateString(periodicCategory)
+            binding.textViewBudgetPeriodEntryValues.text = getAmountAndEstimateString(categoryOfPeriod)
         }
 
-        private fun getAmountAndEstimateString(periodicCategory: PeriodicCategory): String {
-            val amountSum = periodicCategory.budgetTransactionsAmountSum
-            val estimate = periodicCategory.estimate
+        private fun getAmountAndEstimateString(categoryOfPeriod: CategoryOfPeriod): String {
+            val amountSum = categoryOfPeriod.budgetTransactionsAmountSum
+            val estimate = categoryOfPeriod.estimate
 
             return if (estimate != null) {
                 val areSumAndEstimateOfDifferentSigns = amountSum * estimate < 0
@@ -79,7 +79,7 @@ class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, Peri
                 val estimateFormattedWithCurrency = getAmountStringFormatted(
                     if (areSumAndEstimateOfDifferentSigns) estimate else estimate.absoluteValue,
                     includePlusSign = areSumAndEstimateOfDifferentSigns,
-                    currencyCode = periodicCategory.currencyCode
+                    currencyCode = categoryOfPeriod.currencyCode
                 )
                 getString(
                     R.string.format_value_out_of,
@@ -90,7 +90,7 @@ class PeriodicCategoriesProgressAdapter : BaseListAdapter<PeriodicCategory, Peri
                 getAmountStringFormatted(
                     amountSum.absoluteValue,
                     includePlusSign = false,
-                    currencyCode = periodicCategory.currencyCode
+                    currencyCode = categoryOfPeriod.currencyCode
                 )
             }
         }

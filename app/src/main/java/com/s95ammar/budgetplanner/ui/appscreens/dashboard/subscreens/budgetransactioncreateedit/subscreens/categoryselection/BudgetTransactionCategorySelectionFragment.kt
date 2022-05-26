@@ -9,8 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCategorySelectionBinding
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategorySimple
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.categoryselection.adapter.PeriodicCategoriesSingleSelectionAdapter
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.CategoryOfPeriodSimple
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.categoryselection.adapter.CategoriesOfPeriodSingleSelectionAdapter
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
@@ -32,7 +32,7 @@ class BudgetTransactionCategorySelectionFragment :
 
     private val viewModel: BudgetTransactionCategorySelectionViewModel by viewModels()
 
-    private val adapter by lazy { PeriodicCategoriesSingleSelectionAdapter(viewModel::onPeriodicCategoryItemClick) }
+    private val adapter by lazy { CategoriesOfPeriodSingleSelectionAdapter(viewModel::onCategoryOfPeriodItemClick) }
 
     override fun setUpViews() {
         super.setUpViews()
@@ -44,21 +44,21 @@ class BudgetTransactionCategorySelectionFragment :
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.periodicCategories.observe(viewLifecycleOwner) { setPeriodicCategories(it) }
+        viewModel.categoriesOfPeriod.observe(viewLifecycleOwner) { setCategoriesOfPeriod(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
     }
 
-    private fun setPeriodicCategories(periodicCategories: List<PeriodicCategorySimple>) {
-        adapter.submitList(periodicCategories)
-        binding.recyclerView.isGone = periodicCategories.isEmpty()
-        binding.instructionsLayout.root.isVisible = periodicCategories.isEmpty()
-        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_budget_transaction_create_edit_screen_add_periodic_category)
+    private fun setCategoriesOfPeriod(categoriesOfPeriod: List<CategoryOfPeriodSimple>) {
+        adapter.submitList(categoriesOfPeriod)
+        binding.recyclerView.isGone = categoriesOfPeriod.isEmpty()
+        binding.instructionsLayout.root.isVisible = categoriesOfPeriod.isEmpty()
+        binding.instructionsLayout.messageTextView.text = getString(R.string.instruction_budget_transaction_create_edit_screen_add_category_of_period)
     }
 
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
-            is UiEvent.SetResult -> setResult(uiEvent.periodicCategory)
+            is UiEvent.SetResult -> setResult(uiEvent.categoryOfPeriod)
             is UiEvent.Exit -> navController.navigateUp()
         }
     }
@@ -75,8 +75,8 @@ class BudgetTransactionCategorySelectionFragment :
         }
     }
 
-    private fun setResult(periodicCategory: PeriodicCategorySimple) {
-        setFragmentResult(Keys.KEY_PERIODIC_CATEGORY_REQUEST, bundleOf(Keys.KEY_PERIODIC_CATEGORY to periodicCategory))
+    private fun setResult(categoryOfPeriod: CategoryOfPeriodSimple) {
+        setFragmentResult(Keys.KEY_CATEGORY_OF_PERIOD_REQUEST, bundleOf(Keys.KEY_CATEGORY_OF_PERIOD to categoryOfPeriod))
     }
 
 }

@@ -31,7 +31,7 @@
     <string name="instruction_category_screen_create_category">Створіть категорії, щоб організувати свої витрати та доходи!</string>
     <string name="instruction_period_create_edit_screen_create_category">Створіть категорії на вкладці категорій, щоб додати їх до цього періоду!\n
         Ви можете це зробити після створення періоду</string>
-    <string name="instruction_budget_transaction_create_edit_screen_add_periodic_category">Вам потрібно додати деякі категорії до цього періоду, перш ніж створювати витрати або дохід</string>
+    <string name="instruction_budget_transaction_create_edit_screen_add_category_of_period">Вам потрібно додати деякі категорії до цього періоду, перш ніж створювати витрати або дохід</string>
     <string name="instruction_budget_screen_no_data">Після створення категорій ви можете додати їх до цього періоду!</string>
     <string name="instruction_budget_transactions_screen_no_data">Витрат або доходів за цей період поки немає</string>
     <string name="create_period">Створити період</string>
@@ -66,7 +66,7 @@
     <string name="load_more">Завантажити ще</string>
     <string name="select_a_currency">Вибрати валюту</string>
     <string name="select_main_currency_tip">Будь ласка, виберіть валюту, яку ви будете використовувати найбільше з наведених нижче варіантів.</string>
-    <string name="select_periodic_category_currency_tip">Будь ласка, майте на увазі, що всі транзакції для цієї категорії потрібно буде\n
+    <string name="select_category_of_period_currency_tip">Будь ласка, майте на увазі, що всі транзакції для цієї категорії потрібно буде\n
         створювати у вибраній валюті протягом цього періоду.</string>
     <string name="select_budget_transaction_currency_tip">Вихідна валюта має збігатися з валютою вибраної категорії\n
         і тому не може бути змінена</string>

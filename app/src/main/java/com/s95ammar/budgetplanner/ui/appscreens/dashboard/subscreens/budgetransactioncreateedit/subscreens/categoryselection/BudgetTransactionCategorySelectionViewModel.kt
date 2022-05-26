@@ -3,8 +3,8 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetrans
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.s95ammar.budgetplanner.models.repository.PeriodicCategoryRepository
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.PeriodicCategorySimple
+import com.s95ammar.budgetplanner.models.repository.CategoryOfPeriodRepository
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.CategoryOfPeriodSimple
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
@@ -21,37 +21,37 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransa
 
 @HiltViewModel
 class BudgetTransactionCategorySelectionViewModel @Inject constructor(
-    private val repository: PeriodicCategoryRepository,
+    private val repository: CategoryOfPeriodRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val periodId = savedStateHandle.get<Int>(FragmentArgs::periodId.name) ?: Int.INVALID
 
-    private val _periodicCategories = LoaderMutableLiveData<List<PeriodicCategorySimple>> { loadPeriodicCategories() }
+    private val _categoriesOfPeriod = LoaderMutableLiveData<List<CategoryOfPeriodSimple>> { loadCategoriesOfPeriod() }
     private val _performUiEvent = EventMutableLiveData<UiEvent>()
 
-    val periodicCategories = _periodicCategories.asLiveData()
+    val categoriesOfPeriod = _categoriesOfPeriod.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
 
-    fun onPeriodicCategoryItemClick(position: Int) {
-        _periodicCategories.value?.getOrNull(position)?.let { periodicCategory ->
-            _performUiEvent.call(UiEvent.SetResult(periodicCategory))
+    fun onCategoryOfPeriodItemClick(position: Int) {
+        _categoriesOfPeriod.value?.getOrNull(position)?.let { categoryOfPeriod ->
+            _performUiEvent.call(UiEvent.SetResult(categoryOfPeriod))
             _performUiEvent.call(UiEvent.Exit)
         }
     }
 
-    private fun loadPeriodicCategories() {
+    private fun loadCategoriesOfPeriod() {
         viewModelScope.launch {
-            repository.getPeriodicCategorySimple(periodId)
+            repository.getCategoryOfPeriodSimple(periodId)
                 .onStart {
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Loading))
                 }
                 .catch {
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(it)))
                 }
-                .collect { periodicCategorySimple ->
-                    _periodicCategories.value = periodicCategorySimple.mapNotNull { entity ->
-                        PeriodicCategorySimple.Mapper.fromEntity(entity)
+                .collect { categoryOfPeriodSimple ->
+                    _categoriesOfPeriod.value = categoryOfPeriodSimple.mapNotNull { entity ->
+                        CategoryOfPeriodSimple.Mapper.fromEntity(entity)
                     }
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
                 }

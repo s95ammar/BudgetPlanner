@@ -1,7 +1,7 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection
 
 import androidx.lifecycle.ViewModel
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodicCategory
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.CategoryOfPeriod
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.data.PeriodCategoriesSelectionUiEvent as UiEvent
 
@@ -11,12 +11,12 @@ class PeriodCategoriesSelectionViewModel : ViewModel() {
 
     val performUiEvent = _performUiEvent.asEventLiveData()
 
-    fun onCreateEditEstimate(periodicCategory: PeriodicCategory) {
-        _performUiEvent.call(UiEvent.NavigateToCreateEditEstimate(periodicCategory))
+    fun onCreateEditEstimate(categoryOfPeriod: CategoryOfPeriod) {
+        _performUiEvent.call(UiEvent.NavigateToCreateEditEstimate(categoryOfPeriod))
     }
 
-    fun onChangeCurrency(periodicCategory: PeriodicCategory) {
-        _performUiEvent.call(UiEvent.NavigateToCurrencySelection(periodicCategory))
+    fun onChangeCurrency(categoryOfPeriod: CategoryOfPeriod) {
+        _performUiEvent.call(UiEvent.NavigateToCurrencySelection(categoryOfPeriod))
     }
 
     fun onBack() {

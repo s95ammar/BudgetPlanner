@@ -18,7 +18,7 @@ class BudgetTransactionCreateEditValidator(
     object Errors {
         const val EMPTY_NAME = 1
         const val EMPTY_AMOUNT = 2
-        const val PERIODIC_CATEGORY_NOT_SELECTED = 3
+        const val CATEGORY_OF_PERIOD_NOT_SELECTED = 3
     }
 
     object ViewKeys {
@@ -38,7 +38,7 @@ class BudgetTransactionCreateEditValidator(
                 name = input.name,
                 amount = amount,
                 currencyCode = currencyCode,
-                periodicCategoryId = input.periodicCategoryId,
+                categoryOfPeriodId = input.categoryOfPeriodId,
                 latLng = LatLngEntity.EntityMapper.toEntity(input.latLng)
             )
         } else {
@@ -46,7 +46,7 @@ class BudgetTransactionCreateEditValidator(
                 name = input.name,
                 amount = amount,
                 currencyCode = currencyCode,
-                periodicCategoryId = input.periodicCategoryId,
+                categoryOfPeriodId = input.categoryOfPeriodId,
                 latLng = LatLngEntity.EntityMapper.toEntity(input.latLng),
                 creationUnixMs = editedBudgetTransaction.creationUnixMs
             ).apply {
@@ -58,13 +58,13 @@ class BudgetTransactionCreateEditValidator(
     override fun provideViewValidationList(input: BudgetTransactionValidationBundle): List<ViewValidation> {
         val caseEmptyName = ViewValidation.Case(Errors.EMPTY_NAME) { input.name.isEmpty() }
         val caseEmptyAmount = ViewValidation.Case(Errors.EMPTY_AMOUNT) { input.amount.isEmpty() }
-        val casePeriodicCategoryNotSelected =
-            ViewValidation.Case(Errors.PERIODIC_CATEGORY_NOT_SELECTED) { input.periodicCategoryId == Int.INVALID }
+        val caseCategoryOfPeriodNotSelected =
+            ViewValidation.Case(Errors.CATEGORY_OF_PERIOD_NOT_SELECTED) { input.categoryOfPeriodId == Int.INVALID }
 
         return listOf(
             ViewValidation(ViewKeys.VIEW_NAME, listOf(caseEmptyName)),
             ViewValidation(ViewKeys.VIEW_AMOUNT, listOf(caseEmptyAmount)),
-            ViewValidation(ViewKeys.VIEW_CATEGORY, listOf(casePeriodicCategoryNotSelected))
+            ViewValidation(ViewKeys.VIEW_CATEGORY, listOf(caseCategoryOfPeriodNotSelected))
         )
     }
 

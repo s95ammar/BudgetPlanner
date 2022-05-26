@@ -6,7 +6,7 @@ import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 
 sealed class BudgetTransactionCreateEditUiEvent {
     class NavigateToCurrencyConversion(val currentCurrencyCode: String) : BudgetTransactionCreateEditUiEvent()
-    class ChoosePeriodicCategory(val periodId: Int): BudgetTransactionCreateEditUiEvent()
+    class ChooseCategoryOfPeriod(val periodId: Int): BudgetTransactionCreateEditUiEvent()
     class ChooseLocation(val currentLocation: LocationWithAddress?) : BudgetTransactionCreateEditUiEvent()
     class DisplayValidationResults(val validationErrors: ValidationErrors): BudgetTransactionCreateEditUiEvent()
     class DisplayLoadingState(val loadingState: LoadingState): BudgetTransactionCreateEditUiEvent()

@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConfig
 
 @Entity(
-    tableName = BudgetPlannerDbConfig.TABLE_NAME_PERIODIC_CATEGORY,
+    tableName = BudgetPlannerDbConfig.TABLE_NAME_CATEGORY_OF_PERIOD,
     foreignKeys = [
         ForeignKey(
             entity = CategoryEntity::class,
@@ -35,7 +35,7 @@ import com.s95ammar.budgetplanner.models.datasource.local.db.BudgetPlannerDbConf
         Index(value = [BudgetPlannerDbConfig.COLUMN_NAME_CURRENCY_CODE])
     ]
 )
-data class PeriodicCategoryEntity(
+data class CategoryOfPeriodEntity(
     val estimate: Double?,
     val categoryId: Int,
     val periodId: Int,

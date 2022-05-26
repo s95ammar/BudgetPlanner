@@ -15,7 +15,7 @@ data class BudgetTransaction(
     val latLng: LatLng?,
     val creationUnixMs: Long,
     val periodId: Int,
-    val periodicCategoryId: Int,
+    val categoryOfPeriodId: Int,
     val categoryName: String
 ) : Parcelable {
     object Mapper : BaseEntityMapper<BudgetTransaction, BudgetTransactionJoinEntity> {
@@ -30,7 +30,7 @@ data class BudgetTransaction(
                     it.latLng?.let { latLng -> LatLng(latLng.lat, latLng.lng) },
                     it.creationUnixMs,
                     it.periodId,
-                    it.periodicCategoryId,
+                    it.categoryOfPeriodId,
                     it.categoryName
                 )
             }

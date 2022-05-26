@@ -1,8 +1,8 @@
 package com.s95ammar.budgetplanner.models.repository
 
 import com.s95ammar.budgetplanner.models.datasource.local.LocalDataSource
+import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryOfPeriodEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
-import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodicCategoryEntity
 import com.s95ammar.budgetplanner.util.flowOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -23,24 +23,24 @@ class PeriodRepository @Inject constructor(
     fun getAllUserPeriodsFlow() = localDataSource.getAllPeriodsFlow()
         .flowOn(Dispatchers.IO)
 
-    fun insertPeriodWithPeriodicCategoriesFlow(
+    fun insertPeriodWithCategoriesOfPeriodFlow(
         period: PeriodEntity,
-        periodicCategories: List<PeriodicCategoryEntity>
+        categoriesOfPeriod: List<CategoryOfPeriodEntity>
     ) = flowOf {
-        localDataSource.insertPeriodWithPeriodicCategories(period, periodicCategories)
+        localDataSource.insertPeriodWithCategoriesOfPeriod(period, categoriesOfPeriod)
     }.flowOn(Dispatchers.IO)
 
-    fun updatePeriodWithPeriodicCategoriesFlow(
+    fun updatePeriodWithCategoriesOfPeriodFlow(
         period: PeriodEntity,
-        periodicCategoriesIdsToDelete: List<Int>,
-        periodicCategoriesToUpdate: List<PeriodicCategoryEntity>,
-        periodicCategoriesToInsert: List<PeriodicCategoryEntity>
+        categoriesOfPeriodIdsToDelete: List<Int>,
+        categoriesOfPeriodToUpdate: List<CategoryOfPeriodEntity>,
+        categoriesOfPeriodToInsert: List<CategoryOfPeriodEntity>
     ) = flowOf {
-        localDataSource.updatePeriodWithPeriodicCategories(
+        localDataSource.updatePeriodWithCategoriesOfPeriod(
             period,
-            periodicCategoriesIdsToDelete,
-            periodicCategoriesToUpdate,
-            periodicCategoriesToInsert
+            categoriesOfPeriodIdsToDelete,
+            categoriesOfPeriodToUpdate,
+            categoriesOfPeriodToInsert
         )
     }.flowOn(Dispatchers.IO)
 
