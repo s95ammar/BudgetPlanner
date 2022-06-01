@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentBudgetTransactionCategorySelectionBinding
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.CategoryOfPeriodSimple
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.subscreens.categoryselection.adapter.CategoriesOfPeriodSingleSelectionAdapter
 import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
+import com.s95ammar.budgetplanner.ui.common.simplemenu.SimpleMenuAdapter
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +32,7 @@ class BudgetTransactionCategorySelectionFragment :
 
     private val viewModel: BudgetTransactionCategorySelectionViewModel by viewModels()
 
-    private val adapter by lazy { CategoriesOfPeriodSingleSelectionAdapter(viewModel::onCategoryOfPeriodItemClick) }
+    private val adapter by lazy { SimpleMenuAdapter(viewModel::onCategoryOfPeriodItemClick, onItemLongClick = null) }
 
     override fun setUpViews() {
         super.setUpViews()

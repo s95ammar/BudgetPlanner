@@ -7,10 +7,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentCategoriesBinding
-import com.s95ammar.budgetplanner.ui.appscreens.categories.adapter.CategoriesAdapter
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.bottomsheet.EditDeleteBottomSheetDialogFragment
+import com.s95ammar.budgetplanner.ui.common.simplemenu.SimpleMenuAdapter
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +20,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.categories.data.CategoriesUiEven
 class CategoriesFragment : BaseViewBinderFragment<FragmentCategoriesBinding>(R.layout.fragment_categories) {
 
     private val viewModel: CategoriesViewModel by viewModels()
-    private val adapter by lazy { CategoriesAdapter(viewModel::onCategoryItemClick, viewModel::onCategoryItemLongClick) }
+    private val adapter by lazy { SimpleMenuAdapter(viewModel::onCategoryItemClick, viewModel::onCategoryItemLongClick) }
 
     override fun initViewBinding(view: View): FragmentCategoriesBinding {
         return FragmentCategoriesBinding.bind(view)
