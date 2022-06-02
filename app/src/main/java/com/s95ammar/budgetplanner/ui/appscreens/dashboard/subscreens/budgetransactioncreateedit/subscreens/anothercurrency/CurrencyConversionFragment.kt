@@ -53,7 +53,9 @@ class CurrencyConversionFragment : BaseViewBinderFragment<FragmentCurrencyConver
     private fun performUiEvent(uiEvent: CurrencyConversionUiEvent) {
         when (uiEvent) {
             is CurrencyConversionUiEvent.DisplayLoadingState -> activityViewModel.setMainLoadingState(uiEvent.loadingState)
-            is CurrencyConversionUiEvent.NavigateToCurrencySelection -> listenAndNavigateToCurrencySelection(uiEvent.currentCurrencyCode)
+            is CurrencyConversionUiEvent.NavigateToCurrencySelection -> {
+                listenAndNavigateToCurrencySelection(uiEvent.currentCurrencyCode, uiEvent.isBackAllowed)
+            }
             is CurrencyConversionUiEvent.SetResult -> setResult(uiEvent.amount)
             is CurrencyConversionUiEvent.Exit -> navController.navigateUp()
         }
@@ -97,7 +99,7 @@ class CurrencyConversionFragment : BaseViewBinderFragment<FragmentCurrencyConver
         )
     }
 
-    private fun listenAndNavigateToCurrencySelection(currencyCode: String?) {
+    private fun listenAndNavigateToCurrencySelection(currencyCode: String?, isBackAllowed: Boolean) {
         setFragmentResultListener(Keys.KEY_CURRENCY_REQUEST) { _, bundle ->
             bundle.getParcelable<Currency>(Keys.KEY_CURRENCY)?.let { currency ->
                 viewModel.onFromCurrencyChanged(currency.code)
@@ -105,7 +107,11 @@ class CurrencyConversionFragment : BaseViewBinderFragment<FragmentCurrencyConver
         }
         navController.navigate(
             MobileNavigationDirections
-                .actionGlobalCurrencySelectionFragment(currencyCode, IntCurrencySelectionType.BUDGET_TRANSACTION_CURRENCY)
+                .actionGlobalCurrencySelectionFragment(
+                    currentCurrencyCode = currencyCode,
+                    currencySelectionType = IntCurrencySelectionType.BUDGET_TRANSACTION_CURRENCY,
+                    isBackAllowed = isBackAllowed
+                )
         )
     }
 

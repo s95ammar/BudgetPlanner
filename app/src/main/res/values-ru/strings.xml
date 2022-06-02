@@ -77,5 +77,6 @@
     <string name="format_conversion_result">Результат (%s): %s</string>
     <string name="multiple_currencies_tip">*Примерная сумма (найдено несколько валют)</string>
     <string name="unknown_total">Неизвестная сумма</string>
-
+    <string name="settings">Настройки</string>
+    <string name="main_currency">Основная валюта</string>
 </resources>

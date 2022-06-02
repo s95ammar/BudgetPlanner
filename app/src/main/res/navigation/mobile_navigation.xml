@@ -179,6 +179,15 @@
         <argument
             android:name="currencySelectionType"
             app:argType="integer" />
+        <argument
+            android:name="isBackAllowed"
+            app:argType="boolean" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

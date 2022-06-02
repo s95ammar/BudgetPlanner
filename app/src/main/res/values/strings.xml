@@ -107,4 +107,7 @@
     <string name="format_approximate_sum" translatable="false">%s*</string>
     <string name="unknown_total">Unknown total</string>
 
+    <string name="settings">Settings</string>
+    <string name="main_currency">Main currency</string>
+
 </resources>

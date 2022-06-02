@@ -16,6 +16,7 @@ import com.s95ammar.budgetplanner.ui.main.data.Currency
 import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
+import com.s95ammar.budgetplanner.util.orFalse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -36,6 +37,9 @@ class CurrencySelectionViewModel @Inject constructor(
     private val _currencySelectionType = savedStateHandle.getLiveData<@IntCurrencySelectionType Int>(
         CurrencySelectionFragmentArgs::currencySelectionType.name
     )
+    private val _isBackAllowed = savedStateHandle.getLiveData<Boolean>(
+        CurrencySelectionFragmentArgs::isBackAllowed.name
+    )
     private val _currencies = LoaderMutableLiveData<List<Currency>> {
         loadCachedCurrencies()
     }
@@ -45,6 +49,7 @@ class CurrencySelectionViewModel @Inject constructor(
     private val isMainCurrencySelection = _currencySelectionType.value == IntCurrencySelectionType.MAIN_CURRENCY
 
     val currencySelectionType = _currencySelectionType.asLiveData()
+    val isBackAllowed = _isBackAllowed.asLiveData()
     val currenciesItems = MediatorLiveData<List<CurrencySelectionItemType>>().apply {
         fun update() {
             value = createCurrencyItems(_currencies.value, _loadMoreLoadingState.value)
@@ -109,10 +114,10 @@ class CurrencySelectionViewModel @Inject constructor(
     }
 
     fun onBack() {
-        if (isMainCurrencySelection) {
-            _performUiEvent.call(CurrencySelectionUiEvent.FinishActivity)
-        } else {
+        if (_isBackAllowed.value.orFalse()) {
             _performUiEvent.call(CurrencySelectionUiEvent.Exit)
+        } else {
+            _performUiEvent.call(CurrencySelectionUiEvent.FinishActivity)
         }
     }
 

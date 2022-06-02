@@ -61,15 +61,24 @@ class MainViewModel @Inject constructor(
         _performUiEvent.call(MainUiEvent.DisplayLoadingState(loadingState))
     }
 
+    fun onNavigateToMainCurrencySelection() {
+        _performUiEvent.call(
+            MainUiEvent.NavigateToMainCurrencySelection(
+                currentCurrencyCode = _mainCurrency.value?.code,
+                isBackAllowed = _mainCurrency.value != null
+            )
+        )
+    }
+
     private fun loadMainCurrency() {
         viewModelScope.launch {
             currencyRepository.getMainCurrencyFlow()
                 .catch { throwable ->
-                    _performUiEvent.call(MainUiEvent.NavigateToMainCurrencySelection)
+                    onNavigateToMainCurrencySelection()
                 }
                 .collect { currencyEntity ->
                     if (currencyEntity == null) {
-                        _performUiEvent.call(MainUiEvent.NavigateToMainCurrencySelection)
+                        onNavigateToMainCurrencySelection()
                     } else {
                         _mainCurrency.value = Currency.EntityMapper.fromEntity(currencyEntity)
                     }

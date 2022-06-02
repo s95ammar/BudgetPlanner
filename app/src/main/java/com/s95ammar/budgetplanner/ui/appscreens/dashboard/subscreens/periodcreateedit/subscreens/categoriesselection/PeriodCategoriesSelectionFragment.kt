@@ -61,13 +61,15 @@ class PeriodCategoriesSelectionFragment :
 
     private fun performUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
-            is UiEvent.NavigateToCurrencySelection -> listenAndNavigateToCurrencySelection(uiEvent.categoryOfPeriod)
+            is UiEvent.NavigateToCurrencySelection -> {
+                listenAndNavigateToCurrencySelection(uiEvent.categoryOfPeriod, uiEvent.isBackAllowed)
+            }
             is UiEvent.NavigateToCreateEditEstimate -> listenAndNavigateToEstimateCreateEdit(uiEvent.categoryOfPeriod)
             is UiEvent.Exit -> navController.navigateUp()
         }
     }
 
-    private fun listenAndNavigateToCurrencySelection(categoryOfPeriod: CategoryOfPeriod) {
+    private fun listenAndNavigateToCurrencySelection(categoryOfPeriod: CategoryOfPeriod, isBackAllowed: Boolean) {
         setFragmentResultListener(Keys.KEY_CURRENCY_REQUEST) { _, bundle ->
             bundle.getParcelable<Currency>(Keys.KEY_CURRENCY)?.let { currency ->
                 sharedViewModel.onCategoryOfPeriodCurrencyChanged(categoryOfPeriod, currency)
@@ -77,7 +79,8 @@ class PeriodCategoriesSelectionFragment :
             MobileNavigationDirections
                 .actionGlobalCurrencySelectionFragment(
                     currentCurrencyCode = categoryOfPeriod.currencyCode,
-                    currencySelectionType = IntCurrencySelectionType.CATEGORY_OF_PERIOD_CURRENCY
+                    currencySelectionType = IntCurrencySelectionType.CATEGORY_OF_PERIOD_CURRENCY,
+                    isBackAllowed = isBackAllowed
                 )
         )
     }

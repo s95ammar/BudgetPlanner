@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.appscreens.dashboard.subscreens.periods.PeriodsFragment">
+    tools:context=".ui.appscreens.settings.SettingsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         style="@style/BudgetPlannerAppBarLayout"
@@ -18,8 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="@string/periods"
+            app:title="@string/settings"
             app:titleTextAppearance="@style/TextTitleWhiteBold16ssp" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
@@ -31,7 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="@dimen/recycler_view_fab_bottom_padding"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_simple_menu" />
 

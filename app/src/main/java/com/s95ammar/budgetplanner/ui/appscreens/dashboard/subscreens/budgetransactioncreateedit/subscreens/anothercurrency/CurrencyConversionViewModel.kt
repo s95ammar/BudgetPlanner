@@ -64,7 +64,9 @@ class CurrencyConversionViewModel @Inject constructor(
     val performUiEvent = _performUiEvent.asEventLiveData()
 
     fun onChangeFromCurrency() {
-        _performUiEvent.call(CurrencyConversionUiEvent.NavigateToCurrencySelection(_fromCurrencyCode.value))
+        _performUiEvent.call(
+            CurrencyConversionUiEvent.NavigateToCurrencySelection(_fromCurrencyCode.value, isBackAllowed = true)
+        )
     }
 
     fun onFromCurrencyChanged(fromCode: String) {

@@ -42,8 +42,9 @@ class CurrencySelectionFragment : BaseViewBinderFragment<FragmentCurrencySelecti
     override fun initObservers() {
         super.initObservers()
         viewModel.currenciesItems.observe(viewLifecycleOwner) { setCurrenciesList(it) }
+        viewModel.currencySelectionType.observe(viewLifecycleOwner) { setUpTipPreview(it) }
+        viewModel.isBackAllowed.observe(viewLifecycleOwner) { setBackBehavior(it) }
         viewModel.performUiEvent.observeEvent(viewLifecycleOwner) { performUiEvent(it) }
-        viewModel.currencySelectionType.observe(viewLifecycleOwner) { setViewsToCurrencySelectionType(it) }
     }
 
     private fun setUpRecyclerView() {
@@ -88,13 +89,6 @@ class CurrencySelectionFragment : BaseViewBinderFragment<FragmentCurrencySelecti
         }
     }
 
-    private fun setViewsToCurrencySelectionType(@IntCurrencySelectionType currencySelectionType: Int) {
-        setUpTipPreview(currencySelectionType)
-        setUpToolbarAndBackFunctionality(
-            isBackAvailable = currencySelectionType != IntCurrencySelectionType.MAIN_CURRENCY
-        )
-    }
-
     private fun setUpTipPreview(@IntCurrencySelectionType currencySelectionType: Int) {
         when (currencySelectionType) {
             IntCurrencySelectionType.MAIN_CURRENCY -> {
@@ -103,21 +97,20 @@ class CurrencySelectionFragment : BaseViewBinderFragment<FragmentCurrencySelecti
             IntCurrencySelectionType.CATEGORY_OF_PERIOD_CURRENCY -> {
                 binding.tipTextView.setText(R.string.select_category_of_period_currency_tip)
             }
-            IntCurrencySelectionType.BUDGET_TRANSACTION_CURRENCY -> binding.tipTextView.isVisible = false
+            else -> binding.tipTextView.isVisible = false
         }
     }
 
-    private fun setUpToolbarAndBackFunctionality(isBackAvailable: Boolean) {
-        if (isBackAvailable) {
+    private fun setBackBehavior(isBackAllowed: Boolean) {
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() { viewModel.onBack() }
+        })
+
+        if (isBackAllowed) {
             binding.toolbar.navigationIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_back)
             binding.toolbar.setNavigationOnClickListener { viewModel.onBack() }
         } else {
             binding.toolbar.navigationIcon = null
-            requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    viewModel.onBack()
-                }
-            })
         }
     }
 }

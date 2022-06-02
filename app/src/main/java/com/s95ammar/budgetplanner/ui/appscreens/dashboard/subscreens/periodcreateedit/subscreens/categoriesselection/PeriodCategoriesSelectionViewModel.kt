@@ -16,7 +16,7 @@ class PeriodCategoriesSelectionViewModel : ViewModel() {
     }
 
     fun onChangeCurrency(categoryOfPeriod: CategoryOfPeriod) {
-        _performUiEvent.call(UiEvent.NavigateToCurrencySelection(categoryOfPeriod))
+        _performUiEvent.call(UiEvent.NavigateToCurrencySelection(categoryOfPeriod, isBackAllowed = true))
     }
 
     fun onBack() {

@@ -13,6 +13,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_8sdp"
         android:textAppearance="@style/TextDescBlack14ssp"
-        tools:text="Menu item" />
+        tools:text="Simple menu item" />
 
 </LinearLayout>

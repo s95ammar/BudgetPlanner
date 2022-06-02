@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
 
     private val bottomNavItems = listOf(
         R.id.navigation_dashboard,
-        R.id.navigation_categories
+        R.id.navigation_categories,
+        R.id.navigation_settings
     )
 
     private val navController: NavController by lazy {
@@ -50,7 +51,9 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
 
     private fun performUiEvent(uiEvent: MainUiEvent) {
         when (uiEvent) {
-            is MainUiEvent.NavigateToMainCurrencySelection -> navigateToMainCurrencySelection()
+            is MainUiEvent.NavigateToMainCurrencySelection -> {
+                navigateToMainCurrencySelection(uiEvent.currentCurrencyCode, uiEvent.isBackAllowed)
+            }
             is MainUiEvent.FinishActivity -> finish()
             is MainUiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
         }
@@ -68,11 +71,15 @@ class MainActivity : AppCompatActivity(), KeyboardManager, LoadingManager {
         }
     }
 
-    private fun navigateToMainCurrencySelection() {
+    private fun navigateToMainCurrencySelection(
+        currentCurrencyCode: String?,
+        isBackAllowed: Boolean
+    ) {
         navController.navigate(
             MobileNavigationDirections.actionGlobalCurrencySelectionFragment(
-                currentCurrencyCode = null,
-                currencySelectionType = IntCurrencySelectionType.MAIN_CURRENCY
+                currentCurrencyCode = currentCurrencyCode,
+                currencySelectionType = IntCurrencySelectionType.MAIN_CURRENCY,
+                isBackAllowed
             )
         )
     }
