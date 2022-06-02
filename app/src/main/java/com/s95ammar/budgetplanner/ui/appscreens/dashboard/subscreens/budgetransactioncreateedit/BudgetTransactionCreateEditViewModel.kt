@@ -32,6 +32,7 @@ import com.s95ammar.budgetplanner.util.optionalValue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -186,7 +187,8 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
                 .catch { throwable ->
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
-                .collect { budgetTransaction ->
+                .first()
+                .let { budgetTransaction ->
                     _editedBudgetTransaction.value = BudgetTransaction.Mapper.fromEntity(budgetTransaction)
                     _performUiEvent.call(UiEvent.DisplayLoadingState(LoadingState.Success))
                 }

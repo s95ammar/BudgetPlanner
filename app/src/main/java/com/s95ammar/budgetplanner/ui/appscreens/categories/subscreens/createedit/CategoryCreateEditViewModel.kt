@@ -1,6 +1,10 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
 import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
@@ -17,6 +21,7 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -65,7 +70,8 @@ class CategoryCreateEditViewModel @Inject constructor(
                 .catch { throwable ->
                     _displayLoadingState.call(LoadingState.Error(throwable))
                 }
-                .collect { categoryEntity ->
+                .first()
+                .let { categoryEntity ->
                     Category.Mapper.fromEntity(categoryEntity)?.let { category ->
                         _editedCategory.value = category
                         _displayLoadingState.call(LoadingState.Success)

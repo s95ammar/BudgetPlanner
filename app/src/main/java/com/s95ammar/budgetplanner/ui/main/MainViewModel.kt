@@ -18,6 +18,7 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -76,7 +77,8 @@ class MainViewModel @Inject constructor(
                 .catch { throwable ->
                     onNavigateToMainCurrencySelection()
                 }
-                .collect { currencyEntity ->
+                .first()
+                .let { currencyEntity ->
                     if (currencyEntity == null) {
                         onNavigateToMainCurrencySelection()
                     } else {

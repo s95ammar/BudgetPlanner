@@ -28,6 +28,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -113,7 +114,8 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
                 .catch { throwable ->
                     _performUiEvent.call(PeriodCreateEditUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
-                .collect { categoryOfPeriodJoinEntityList ->
+                .first()
+                .let { categoryOfPeriodJoinEntityList ->
                     _periodWithCategoriesOfPeriod.value = PeriodWithCategoriesOfPeriod(
                         periodId = editedPeriodId,
                         periodName = editedPeriod?.name,

@@ -139,14 +139,14 @@ class LocalDataSourceImpl @Inject constructor(
     override fun getMainCurrencyFlow(): Flow<CurrencyEntity?> {
         val mainCurrencyCode = getMainCurrencyCode()
         return if (mainCurrencyCode.isNotEmpty()) {
-            currencyDao.getCurrency(mainCurrencyCode)
+            currencyDao.getCurrencyFlow(mainCurrencyCode)
         } else {
             flowOf(null)
         }
     }
 
     override fun getAllCurrenciesFlow(): Flow<List<CurrencyEntity>> {
-        return currencyDao.getAllCurrencies()
+        return currencyDao.getAllCurrenciesFlow()
     }
 
     override suspend fun insertCurrencyIfDoesNotExist(currencyEntity: CurrencyEntity) {
