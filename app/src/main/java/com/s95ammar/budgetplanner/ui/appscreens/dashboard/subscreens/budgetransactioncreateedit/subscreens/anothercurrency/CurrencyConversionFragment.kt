@@ -19,13 +19,19 @@ import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.orZero
 import com.s95ammar.budgetplanner.util.text
+import com.s95ammar.budgetplanner.util.toDoubleOrNull
 import com.s95ammar.budgetplanner.util.updateTextIfNotEquals
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CurrencyConversionFragment : BaseViewBinderFragment<FragmentCurrencyConversionBinding>(R.layout.fragment_currency_conversion) {
 
     private val viewModel: CurrencyConversionViewModel by viewModels()
+
+    @Inject
+    lateinit var locale: Locale
 
     override fun initViewBinding(view: View): FragmentCurrencyConversionBinding {
         return FragmentCurrencyConversionBinding.bind(view)
@@ -34,8 +40,12 @@ class CurrencyConversionFragment : BaseViewBinderFragment<FragmentCurrencyConver
     override fun setUpViews() {
         super.setUpViews()
         binding.toolbar.setNavigationOnClickListener { viewModel.onBack() }
-        binding.fromCurrencyInputLayout.editText?.doAfterTextChanged { viewModel.onFromAmountChanged(it.toString().toDoubleOrNull().orZero()) }
-        binding.conversionRateInputLayout.editText?.doAfterTextChanged { viewModel.onConversionRateChanged(it.toString().toDoubleOrNull().orZero()) }
+        binding.fromCurrencyInputLayout.editText?.doAfterTextChanged {
+            viewModel.onFromAmountChanged(it.toString().toDoubleOrNull(locale).orZero())
+        }
+        binding.conversionRateInputLayout.editText?.doAfterTextChanged {
+            viewModel.onConversionRateChanged(it.toString().toDoubleOrNull(locale).orZero())
+        }
         binding.fromCurrencyTextView.setOnClickListener { viewModel.onChangeFromCurrency() }
         binding.buttonApply.setOnClickListener { viewModel.onApply() }
     }
@@ -71,7 +81,7 @@ class CurrencyConversionFragment : BaseViewBinderFragment<FragmentCurrencyConver
     }
 
     private fun setFromAmount(from: Double) {
-        if (from != binding.fromCurrencyInputLayout.text?.toDoubleOrNull()) {
+        if (from != binding.fromCurrencyInputLayout.text?.toDoubleOrNull(locale)) {
             binding.fromCurrencyInputLayout.updateTextIfNotEquals(
                 from.takeIf { it != 0.0 }?.let { amount ->
                     getAmountStringFormatted(amount, isForEditText = true)
@@ -81,7 +91,7 @@ class CurrencyConversionFragment : BaseViewBinderFragment<FragmentCurrencyConver
     }
 
     private fun setConversionRate(rate: Double) {
-        if (rate != binding.conversionRateInputLayout.text?.toDoubleOrNull()) {
+        if (rate != binding.conversionRateInputLayout.text?.toDoubleOrNull(locale)) {
             binding.conversionRateInputLayout.updateTextIfNotEquals(
                 rate.takeIf { it != 0.0 }?.let { amount ->
                     getString(R.string.format_conversion_rate, amount)

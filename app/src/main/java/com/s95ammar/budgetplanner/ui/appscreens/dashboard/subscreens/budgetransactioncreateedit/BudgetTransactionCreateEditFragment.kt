@@ -23,8 +23,11 @@ import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.setDrawableTint
 import com.s95ammar.budgetplanner.util.text
+import com.s95ammar.budgetplanner.util.toDoubleOrNull
 import com.s95ammar.budgetplanner.util.updateTextIfNotEquals
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
+import javax.inject.Inject
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.data.BudgetTransactionCreateEditUiEvent as UiEvent
 
 @AndroidEntryPoint
@@ -32,6 +35,9 @@ class BudgetTransactionCreateEditFragment :
     BaseViewBinderFragment<FragmentBudgetTransactionCreateEditBinding>(R.layout.fragment_budget_transaction_create_edit) {
 
     private val viewModel: BudgetTransactionCreateEditViewModel by viewModels()
+
+    @Inject
+    lateinit var locale: Locale
 
     override fun initViewBinding(view: View): FragmentBudgetTransactionCreateEditBinding {
         return FragmentBudgetTransactionCreateEditBinding.bind(view)
@@ -102,7 +108,7 @@ class BudgetTransactionCreateEditFragment :
     }
 
     private fun setAmount(amount: Double) {
-        if (amount != binding.inputLayoutAmount.text?.toDoubleOrNull()) {
+        if (amount != binding.inputLayoutAmount.text?.toDoubleOrNull(locale)) {
             binding.inputLayoutAmount.updateTextIfNotEquals(
                 getAmountStringFormatted(amount, isForEditText = true)
             )

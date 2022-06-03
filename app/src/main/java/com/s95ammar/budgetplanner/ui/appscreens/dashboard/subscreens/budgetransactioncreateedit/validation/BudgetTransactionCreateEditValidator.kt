@@ -9,9 +9,12 @@ import com.s95ammar.budgetplanner.ui.common.validation.Validator
 import com.s95ammar.budgetplanner.ui.common.validation.ViewValidation
 import com.s95ammar.budgetplanner.util.INVALID
 import com.s95ammar.budgetplanner.util.roundToTwoDecimals
+import com.s95ammar.budgetplanner.util.toDoubleOrNull
+import java.util.Locale
 
 class BudgetTransactionCreateEditValidator(
     private val editedBudgetTransaction: BudgetTransaction?,
+    private val locale: Locale,
     input: BudgetTransactionValidationBundle
 ) : Validator<BudgetTransactionValidationBundle, BudgetTransactionEntity>(input) {
 
@@ -70,7 +73,7 @@ class BudgetTransactionCreateEditValidator(
 
     private fun getActualAmountFromInput(input: BudgetTransactionValidationBundle): Double {
         return input.amount
-            .toDoubleOrNull()
+            .toDoubleOrNull(locale)
             ?.let { if (input.type == IntBudgetTransactionType.EXPENSE) -it else it }
             ?.roundToTwoDecimals()
             ?: throw UnhandledValidationException(

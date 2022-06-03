@@ -16,8 +16,11 @@ import com.s95ammar.budgetplanner.util.doOnTabSelected
 import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.text
+import com.s95ammar.budgetplanner.util.toDoubleOrNull
 import com.s95ammar.budgetplanner.util.updateTextIfNotEquals
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PeriodCategoryEstimateCreateEditFragment
@@ -26,6 +29,9 @@ class PeriodCategoryEstimateCreateEditFragment
 ) {
 
     private val viewModel: PeriodCategoryEstimateCreateEditViewModel by viewModels()
+
+    @Inject
+    lateinit var locale: Locale
 
     override fun initViewBinding(view: View): FragmentPeriodCategoryEstimateCreateEditBinding {
         return FragmentPeriodCategoryEstimateCreateEditBinding.bind(view)
@@ -68,7 +74,7 @@ class PeriodCategoryEstimateCreateEditFragment
 
     private fun setEstimate(estimateOptional: Optional<Double>) {
         estimateOptional.value?.takeIf { it != 0.0 }?.let { estimate ->
-            if (estimate != binding.estimateInputLayout.text?.toDoubleOrNull()) {
+            if (estimate != binding.estimateInputLayout.text?.toDoubleOrNull(locale)) {
                 binding.estimateInputLayout.updateTextIfNotEquals(
                     getAmountStringFormatted(estimate, isForEditText = true)
                 )

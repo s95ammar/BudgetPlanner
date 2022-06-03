@@ -14,14 +14,17 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.MediatorLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import com.s95ammar.budgetplanner.util.optionalValue
 import com.s95ammar.budgetplanner.util.orZero
+import com.s95ammar.budgetplanner.util.toDoubleOrNull
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.absoluteValue
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.subscreens.PeriodCategoryEstimateCreateEditFragmentArgs as FragmentArgs
 
 @HiltViewModel
 class PeriodCategoryEstimateCreateEditViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val locale: Locale
 ) : ViewModel() {
 
     private val _categoryOfPeriod = savedStateHandle.getLiveData<CategoryOfPeriod>(FragmentArgs::categoryOfPeriod.name)
@@ -49,7 +52,7 @@ class PeriodCategoryEstimateCreateEditViewModel @Inject constructor(
     }
 
     fun setEstimate(estimate: String) {
-        _estimateInput.value = estimate.toDoubleOrNull().asOptional()
+        _estimateInput.value = estimate.toDoubleOrNull(locale).asOptional()
     }
 
     fun onApply() {

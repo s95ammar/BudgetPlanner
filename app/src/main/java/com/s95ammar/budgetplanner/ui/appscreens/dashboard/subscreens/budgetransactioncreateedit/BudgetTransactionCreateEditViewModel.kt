@@ -29,12 +29,14 @@ import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.MediatorLiveData
 import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
 import com.s95ammar.budgetplanner.util.optionalValue
+import com.s95ammar.budgetplanner.util.toDoubleOrNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.absoluteValue
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.BudgetTransactionCreateEditFragmentArgs as FragmentArgs
@@ -45,6 +47,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     private val budgetTransactionRepository: BudgetTransactionRepository,
     private val currencyRepository: CurrencyRepository,
     private val locationRepository: LocationRepository,
+    private val locale: Locale,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -98,7 +101,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
     }
 
     fun setAmount(amount: String) {
-        amount.toDoubleOrNull()?.let { _amountInput.value = it }
+        amount.toDoubleOrNull(locale)?.let { _amountInput.value = it }
     }
 
     fun setCategoryOfPeriod(categoryOfPeriod: CategoryOfPeriodSimple) {
@@ -171,7 +174,7 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
             latLng = _locationOptional.optionalValue?.latLng
         )
 
-        return BudgetTransactionCreateEditValidator(_editedBudgetTransaction.value, validationBundle)
+        return BudgetTransactionCreateEditValidator(_editedBudgetTransaction.value, locale, validationBundle)
     }
 
     private fun displayValidationResults(validationErrors: ValidationErrors) {
