@@ -87,12 +87,12 @@ class PeriodCategoriesSelectionFragment :
 
     private fun listenAndNavigateToEstimateCreateEdit(categoryOfPeriod: CategoryOfPeriod) {
         setFragmentResultListener(Keys.KEY_ESTIMATE_REQUEST) { _, bundle ->
-            val estimateOrNull = bundle.getDouble(Keys.KEY_ESTIMATE, 0.0)
+            val estimateOrNull = bundle.getDouble(Keys.KEY_ESTIMATE, 0.0).takeUnless { it == 0.0 }
             sharedViewModel.onCategoryOfPeriodEstimateChanged(categoryOfPeriod, estimateOrNull)
         }
         navController.navigate(
-            PeriodCategoriesSelectionFragmentDirections
-                .actionPeriodCategoriesSelectionFragmentToPeriodCategoryEstimateCreateEditFragment(categoryOfPeriod)
+            MobileNavigationDirections
+                .actionGlobalPeriodCategoryEstimateCreateEditFragment(categoryOfPeriod)
         )
     }
 

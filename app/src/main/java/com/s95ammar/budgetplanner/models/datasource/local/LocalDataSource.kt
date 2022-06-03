@@ -32,6 +32,7 @@ interface LocalDataSource {
 
     fun getCategoriesOfPeriodFlow(periodId: Int): Flow<List<CategoryOfPeriodJoinEntity>>
     fun getCategoryOfPeriodSimple(periodId: Int): Flow<List<CategoryOfPeriodSimpleJoinEntity>>
+    suspend fun updateCategoryOfPeriodEstimate(categoryOfPeriod: CategoryOfPeriodEntity)
 
     fun getPeriodBudgetTransactionsFlow(periodId: Int): Flow<List<BudgetTransactionJoinEntity>>
     fun getBudgetTransactionFlow(id: Int): Flow<BudgetTransactionJoinEntity>

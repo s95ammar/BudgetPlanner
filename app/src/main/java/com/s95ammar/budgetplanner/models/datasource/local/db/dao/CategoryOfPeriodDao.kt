@@ -17,6 +17,9 @@ interface CategoryOfPeriodDao {
     @Update
     suspend fun update(categoryOfPeriod: List<CategoryOfPeriodEntity>)
 
+    @Update
+    suspend fun update(categoryOfPeriod: CategoryOfPeriodEntity)
+
     @Delete(entity = CategoryOfPeriodEntity::class)
     suspend fun delete(ids: List<IdWrapper>)
 

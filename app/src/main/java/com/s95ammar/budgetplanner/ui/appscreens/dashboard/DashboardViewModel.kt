@@ -86,10 +86,6 @@ class DashboardViewModel @Inject constructor(
         _performUiEvent.call(UiEvent.NavigateToCreatePeriod)
     }
 
-    fun refresh() {
-        loadAllPeriods()
-    }
-
     fun onEditSelectedPeriod() {
         _currentPeriodBundle.value?.period?.let { period ->
             _performUiEvent.call(UiEvent.NavigateToEditPeriod(period))

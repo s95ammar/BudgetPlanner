@@ -4,12 +4,15 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import com.s95ammar.budgetplanner.MobileNavigationDirections
 import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.databinding.FragmentDashboardBinding
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.CategoryOfPeriod
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.PeriodSimple
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.CurrentPeriodHeaderBundle
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.DashboardFabState
@@ -17,6 +20,7 @@ import com.s95ammar.budgetplanner.ui.appscreens.dashboard.data.IntDashboardFabTy
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.IntDashboardTab
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.OverviewFragment
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budgettransactions.BudgetTransactionsFragment
+import com.s95ammar.budgetplanner.ui.common.Keys
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.ViewPagerFragmentAdapter
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
@@ -146,6 +150,7 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
             is UiEvent.NavigateToEditPeriod -> navigateToEditPeriod(uiEvent.period)
             is UiEvent.NavigateToBudgetTransactionsMap -> navigateToBudgetTransactionsMap(uiEvent.periodId)
             is UiEvent.DisplayLoadingState -> handleLoadingState(uiEvent.loadingState)
+            is UiEvent.NavigateToCreateEditEstimate -> listenAndNavigateToEstimateCreateEdit(uiEvent.categoryOfPeriod)
         }
     }
 
@@ -196,6 +201,17 @@ class DashboardFragment : BaseViewBinderFragment<FragmentDashboardBinding>(R.lay
     private fun navigateToBudgetTransactionsMap(periodId: Int) {
         navController.navigate(
             DashboardFragmentDirections.actionNavigationDashboardToBudgetTransactionsMapFragment(periodId)
+        )
+    }
+
+    private fun listenAndNavigateToEstimateCreateEdit(categoryOfPeriod: CategoryOfPeriod) {
+        setFragmentResultListener(Keys.KEY_ESTIMATE_REQUEST) { _, bundle ->
+            val estimateOrNull = bundle.getDouble(Keys.KEY_ESTIMATE, 0.0).takeUnless { it == 0.0 }
+            sharedViewModel.onCategoryOfPeriodEstimateChanged(categoryOfPeriod, estimateOrNull)
+        }
+        navController.navigate(
+            MobileNavigationDirections
+                .actionGlobalPeriodCategoryEstimateCreateEditFragment(categoryOfPeriod)
         )
     }
 }

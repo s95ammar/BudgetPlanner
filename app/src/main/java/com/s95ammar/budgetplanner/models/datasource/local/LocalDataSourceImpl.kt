@@ -83,6 +83,10 @@ class LocalDataSourceImpl @Inject constructor(
         return joinDao.getCategoryOfPeriodSimple(periodId)
     }
 
+    override suspend fun updateCategoryOfPeriodEstimate(categoryOfPeriod: CategoryOfPeriodEntity) {
+        categoryOfPeriodDao.update(categoryOfPeriod)
+    }
+
     // Category
     override fun getAllCategoriesFlow(): Flow<List<CategoryEntity>> {
         return categoryDao.getAllCategoriesFlow()

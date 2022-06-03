@@ -12,7 +12,9 @@ import com.s95ammar.budgetplanner.util.getAmountStringFormatted
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
-class CategoriesOfPeriodProgressAdapter : BaseListAdapter<CategoryOfPeriod, CategoriesOfPeriodProgressAdapter.CategoriesOfPeriodViewHolder>(DiffUtilCallback()) {
+class CategoriesOfPeriodProgressAdapter(
+    private val onCategoryOfPeriodClick: (CategoryOfPeriod) -> Unit
+) : BaseListAdapter<CategoryOfPeriod, CategoriesOfPeriodProgressAdapter.CategoriesOfPeriodViewHolder>(DiffUtilCallback()) {
 
     companion object {
         class DiffUtilCallback : DiffUtil.ItemCallback<CategoryOfPeriod>() {
@@ -37,15 +39,18 @@ class CategoriesOfPeriodProgressAdapter : BaseListAdapter<CategoryOfPeriod, Cate
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesOfPeriodViewHolder {
         return CategoriesOfPeriodViewHolder(
-            ItemCategoryOfPeriodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            binding = ItemCategoryOfPeriodBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            onCategoryOfPeriodClick = onCategoryOfPeriodClick
         )
     }
 
     class CategoriesOfPeriodViewHolder(
-        private val binding: ItemCategoryOfPeriodBinding
+        private val binding: ItemCategoryOfPeriodBinding,
+        private val onCategoryOfPeriodClick: (CategoryOfPeriod) -> Unit
     ) : BaseListAdapter.BaseViewHolder<CategoryOfPeriod>(binding.root) {
 
         override fun bind(item: CategoryOfPeriod, payloads: PayloadsHolder) {
+            binding.root.setOnClickListener { onCategoryOfPeriodClick(item) }
             if (payloads.shouldUpdate(PayloadType.CATEGORY_NAME)) setCategoryName(item.categoryName)
             if (payloads.shouldUpdate(PayloadType.AMOUNT_AND_ESTIMATE)) setAmountAndEstimate(item)
         }

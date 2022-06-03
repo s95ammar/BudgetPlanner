@@ -15,7 +15,7 @@ import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
-import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.BudgetUiEvent as UiEvent
+import com.s95ammar.budgetplanner.ui.appscreens.dashboard.pager.budget.data.OverviewUiEvent as UiEvent
 
 @AndroidEntryPoint
 class OverviewFragment : BaseViewBinderFragment<FragmentDashboardOverviewBinding>(R.layout.fragment_dashboard_overview) {
@@ -27,7 +27,7 @@ class OverviewFragment : BaseViewBinderFragment<FragmentDashboardOverviewBinding
     private val viewModel: OverviewViewModel by viewModels()
     private val sharedViewModel: DashboardSharedViewModel by hiltNavGraphViewModels(R.id.nested_navigation_dashboard)
 
-    private val adapter by lazy { CategoriesOfPeriodProgressAdapter() }
+    private val adapter by lazy { CategoriesOfPeriodProgressAdapter(sharedViewModel::onCreateEditEstimate) }
 
     override fun initViewBinding(view: View): FragmentDashboardOverviewBinding {
         return FragmentDashboardOverviewBinding.bind(view)

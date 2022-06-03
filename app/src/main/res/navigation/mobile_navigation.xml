@@ -66,18 +66,6 @@
                 android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.PeriodCategoriesSelectionFragment"
                 android:label="period_categories_selection_fragment"
                 tools:layout="@layout/fragment_period_categories_selection">
-                <action
-                    android:id="@+id/action_periodCategoriesSelectionFragment_to_periodCategoryEstimateCreateEditFragment"
-                    app:destination="@id/periodCategoryEstimateCreateEditFragment" />
-            </fragment>
-            <fragment
-                android:id="@+id/periodCategoryEstimateCreateEditFragment"
-                android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.subscreens.PeriodCategoryEstimateCreateEditFragment"
-                android:label="fragment_period_category_estimate_create_edit"
-                tools:layout="@layout/fragment_period_category_estimate_create_edit">
-                <argument
-                    android:name="categoryOfPeriod"
-                    app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.CategoryOfPeriod" />
             </fragment>
         </navigation>
 
@@ -162,6 +150,14 @@
             app:argType="integer" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <!-- Global -->
+
     <action
         android:id="@+id/action_global_CurrencySelectionFragment"
         app:destination="@id/CurrencySelectionFragment" />
@@ -184,10 +180,18 @@
             app:argType="boolean" />
     </fragment>
 
+    <action
+        android:id="@+id/action_global_PeriodCategoryEstimateCreateEditFragment"
+        app:destination="@id/periodCategoryEstimateCreateEditFragment" />
+
     <fragment
-        android:id="@+id/navigation_settings"
-        android:name="com.s95ammar.budgetplanner.ui.appscreens.settings.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:id="@+id/periodCategoryEstimateCreateEditFragment"
+        android:name="com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.subscreens.categoriesselection.subscreens.PeriodCategoryEstimateCreateEditFragment"
+        android:label="fragment_period_category_estimate_create_edit"
+        tools:layout="@layout/fragment_period_category_estimate_create_edit">
+        <argument
+            android:name="categoryOfPeriod"
+            app:argType="com.s95ammar.budgetplanner.ui.appscreens.dashboard.common.data.CategoryOfPeriod" />
+    </fragment>
 
 </navigation>
