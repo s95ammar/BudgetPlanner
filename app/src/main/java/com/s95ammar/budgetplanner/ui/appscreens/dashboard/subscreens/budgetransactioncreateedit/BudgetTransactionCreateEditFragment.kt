@@ -129,7 +129,7 @@ class BudgetTransactionCreateEditFragment :
     }
 
     private fun setSelectedLocation(location: LocationWithAddress?) {
-        binding.textViewLocationValue.text = location?.address ?: getString(R.string.choose_a_location)
+        binding.textViewLocationValue.text = location?.address ?: getString(R.string.choose_location_optional)
         val textColorRes = if (location == null) R.color.colorDarkGray else R.color.colorBlack
         binding.textViewLocationValue.setTextColor(ContextCompat.getColor(requireContext(), textColorRes))
     }

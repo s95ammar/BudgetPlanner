@@ -147,7 +147,7 @@
                 android:focusable="true"
                 android:paddingHorizontal="@dimen/_16sdp"
                 android:paddingVertical="@dimen/_8sdp"
-                android:text="@string/choose_a_location"
+                android:text="@string/choose_location_optional"
                 android:textAppearance="@style/TextDarkGray12ssp"
                 app:drawableTint="@color/colorDarkGray"
                 app:layout_constraintEnd_toEndOf="parent"
