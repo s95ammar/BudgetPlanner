@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:titleTextAppearance="@style/TextTitleWhiteBold16ssp"
+            app:titleTextAppearance="@style/TextTitleWhite16ssp"
             tools:title="@string/create_budget_transaction" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
@@ -162,7 +162,7 @@
                 android:layout_marginHorizontal="@dimen/_16sdp"
                 android:layout_marginVertical="@dimen/_8sdp"
                 android:textAllCaps="true"
-                android:textAppearance="@style/TextTitleWhiteBold14ssp"
+                android:textAppearance="@style/TextTitleWhite14ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -21,7 +21,7 @@
             app:title="@string/choose_categories"
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:titleTextAppearance="@style/TextTitleWhiteBold16ssp" />
+            app:titleTextAppearance="@style/TextTitleWhite16ssp" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
 

@@ -20,7 +20,7 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:title="@string/category_estimate"
-            app:titleTextAppearance="@style/TextTitleWhiteBold16ssp" />
+            app:titleTextAppearance="@style/TextTitleWhite16ssp" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
 
@@ -120,7 +120,7 @@
                 android:layout_marginVertical="@dimen/_8sdp"
                 android:text="@string/save"
                 android:textAllCaps="true"
-                android:textAppearance="@style/TextTitleWhiteBold14ssp"
+                android:textAppearance="@style/TextTitleWhite14ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

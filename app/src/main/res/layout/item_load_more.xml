@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_16sdp"
         android:text="@string/load_more"
-        android:textAppearance="@style/TextTitleWhiteBold14ssp" />
+        android:textAppearance="@style/TextTitleWhite14ssp" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

@@ -19,18 +19,10 @@
         <item name="titleTextColor">@color/colorWhite</item>
     </style>
 
-    <style name="TextTitleWhiteBold16ssp">
+    <style name="TextTitleWhite16ssp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/_16ssp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextTitleWhiteBold14ssp">
-        <item name="android:fontFamily">@font/cairo</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/_14ssp</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextTitleWhite14ssp">

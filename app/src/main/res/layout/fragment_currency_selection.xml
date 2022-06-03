@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
             app:title="@string/select_a_currency"
-            app:titleTextAppearance="@style/TextTitleWhiteBold16ssp" />
+            app:titleTextAppearance="@style/TextTitleWhite16ssp" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
 

@@ -20,7 +20,7 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:title="@string/periods"
-            app:titleTextAppearance="@style/TextTitleWhiteBold16ssp" />
+            app:titleTextAppearance="@style/TextTitleWhite16ssp" />
 
         <include layout="@layout/layout_view_toolbar_shadow" />
 
