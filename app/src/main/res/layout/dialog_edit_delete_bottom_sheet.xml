@@ -12,10 +12,15 @@
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/_8sdp"
         android:padding="@dimen/_8sdp"
-        android:textAppearance="@style/TextTitleBlackBold16ssp"
+        android:textAppearance="@style/TextTitleBlack16ssp"
         app:drawableTint="@color/colorPrimary"
         tools:drawableStart="@drawable/ic_category"
         tools:text="Item Title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/colorDivider" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/edit_text_view"

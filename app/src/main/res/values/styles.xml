@@ -31,11 +31,10 @@
         <item name="android:textSize">@dimen/_14ssp</item>
     </style>
 
-    <style name="TextTitleBlackBold16ssp">
+    <style name="TextTitleBlack16ssp">
         <item name="android:fontFamily">@font/cairo</item>
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textSize">@dimen/_16ssp</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextDescBlack14ssp">
