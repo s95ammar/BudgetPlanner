@@ -4,6 +4,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryOfPeriodEntity
@@ -61,11 +62,15 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
     private val _performUiEvent = EventMutableLiveData<PeriodCreateEditUiEvent>()
 
     val mode = _mode.asLiveData()
-    val name = _name.asLiveData()
+    val name = _name.distinctUntilChanged()
     val categoriesOfPeriod = _categoriesOfPeriod.asLiveData()
     val selectedCategoriesOfPeriod = _categoriesOfPeriod.map { list -> list.filter { it.isSelected } }
     val allowCategorySelectionForAll = _allowCategorySelectionForAll.asLiveData()
     val performUiEvent = _performUiEvent.asEventLiveData()
+
+    fun setName(name: String) {
+        _name.value = name
+    }
 
     fun onCategoryOfPeriodCurrencyChanged(categoryOfPeriod: CategoryOfPeriod, currency: Currency) {
         _categoriesOfPeriod.value = _categoriesOfPeriod.value.orEmpty().map { listItem ->

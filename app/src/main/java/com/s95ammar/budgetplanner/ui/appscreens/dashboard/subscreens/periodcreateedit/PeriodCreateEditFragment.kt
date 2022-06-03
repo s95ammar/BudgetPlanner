@@ -3,6 +3,7 @@ package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcrea
 import android.database.sqlite.SQLiteConstraintException
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.s95ammar.budgetplanner.R
@@ -15,6 +16,7 @@ import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.text
+import com.s95ammar.budgetplanner.util.updateTextIfNotEquals
 import dagger.hilt.android.AndroidEntryPoint
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodCreateEditUiEvent as UiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation.PeriodCreateEditValidator as Validator
@@ -34,6 +36,7 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
         binding.toolbar.setNavigationOnClickListener { viewModel.onBack() }
         binding.textViewPeriodCategoriesValue.setOnClickListener { viewModel.onChooseCategories() }
         binding.buttonApply.setOnClickListener { sharedViewModel.onApply(createPeriodInputBundle()) }
+        binding.inputLayoutName.editText?.doAfterTextChanged { sharedViewModel.setName(it?.toString().orEmpty()) }
     }
 
     override fun initObservers() {
@@ -60,9 +63,9 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
     }
 
     private fun setPeriodName(name: String) {
-        binding.inputLayoutName.editText?.apply {
-            setText(name)
-            setSelection(name.length)
+        binding.inputLayoutName.apply {
+            updateTextIfNotEquals(name)
+            editText?.setSelection(name.length)
         }
     }
 
