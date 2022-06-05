@@ -63,10 +63,7 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
     }
 
     private fun setPeriodName(name: String) {
-        binding.inputLayoutName.apply {
-            updateTextIfNotEquals(name)
-            editText?.setSelection(name.length)
-        }
+        binding.inputLayoutName.updateTextIfNotEquals(name)
     }
 
     private fun setCategoriesNamesStringValue(items: List<CategoryOfPeriod>) {
