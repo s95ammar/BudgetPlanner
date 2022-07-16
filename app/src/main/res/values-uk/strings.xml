@@ -49,12 +49,12 @@
     <string name="amount">сума</string>
     <string name="choose_location">Виберіть локацію</string>
     <string name="no_location_selected">Локація не вибрана</string>
-    <string name="choose_location_instruction">Натисніть та тримайте на карті, щоб вибрати локацію</string>
+    <string name="choose_location_instruction">Натисніть та тримайте на мапі, щоб вибрати локацію</string>
     <string name="unknown_location">Невідома локація</string>
     <string name="permission_required_title">Потрібен дозвіл</string>
     <string name="cancel">Скасувати</string>
     <string name="ok">добре</string>
-    <string name="view_on_map">Переглянути на карті</string>
+    <string name="view_on_map">Переглянути на мапі</string>
     <string name="transactions_map">Карта транзакцій</string>
     <string name="total_expenses">Всього витрат</string>
     <string name="total_income">Всього дохідів</string>
