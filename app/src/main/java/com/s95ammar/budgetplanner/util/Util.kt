@@ -1,6 +1,10 @@
 package com.s95ammar.budgetplanner.util
 
 import android.content.Context
+import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.fragment.app.Fragment
 import java.util.Locale
 
 fun Boolean?.orFalse() = this ?: false
@@ -17,6 +21,13 @@ val Context.currentLocale: Locale
     } else {
         resources.configuration.locale
     }
+
+@Composable
+fun stringResourceOrEmpty(@StringRes id: Int) = LocalContext.current.getStringOrEmpty(id)
+
+fun Context.getStringOrEmpty(@StringRes resId: Int) = try { getString(resId) } catch (e: Exception) { "" }
+
+fun Fragment.getStringOrEmpty(@StringRes resId: Int) = requireContext().getStringOrEmpty(resId)
 
 const val WARNING_DEPRECATION = "DEPRECATION"
 const val WARNING_UNNECESSARY_SAFE_CALL = "UNNECESSARY_SAFE_CALL"

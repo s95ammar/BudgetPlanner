@@ -31,7 +31,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion "${depVersions.compose}"
+        kotlinCompilerExtensionVersion "1.2.0"
     }
 
     flavorDimensions "mocking"
@@ -58,7 +58,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        useIR = true
     }
 }
 
@@ -72,7 +71,6 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:${depVersions.fragment_version}"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     testImplementation "junit:junit:${depVersions.junit}"
     androidTestImplementation "androidx.test.ext:junit:1.1.2"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
@@ -89,8 +87,10 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:${depVersions.navigation}"
 
     // lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:${depVersions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${depVersions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${depVersions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${depVersions.lifecycle}"
 
     // ViewPager2
     implementation "androidx.viewpager2:viewpager2:${depVersions.viewPager2}"
@@ -122,6 +122,8 @@ dependencies {
     implementation "androidx.compose.material:material:${depVersions.compose}"
     implementation "androidx.compose.runtime:runtime-livedata:${depVersions.compose}"
     implementation "androidx.compose.ui:ui-tooling:${depVersions.compose}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${depVersions.lifecycle}"
     implementation "com.google.android.material:compose-theme-adapter:${depVersions.compose}"
 
+    androidTestImplementation "androidx.test.ext:junit:1.1.3"
 }
