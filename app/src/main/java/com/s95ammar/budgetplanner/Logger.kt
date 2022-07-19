@@ -4,6 +4,10 @@ import android.util.Log
 
 private const val LOG_TAG = "Budget_Planner"
 
+fun log(message: String) {
+    Any().logFromHere(message)
+}
+
 fun<T: Any> T.logFromHere(message: String) {
     Log.d(LOG_TAG, "${this::class.java.simpleName}: $message")
 }

@@ -20,7 +20,7 @@ import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.doOnTabSelected
 import com.s95ammar.budgetplanner.util.getAmountStringFormatted
-import com.s95ammar.budgetplanner.util.getStringOrEmpty
+import com.s95ammar.budgetplanner.util.getStringOrNull
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.setDrawableTint
 import com.s95ammar.budgetplanner.util.text
@@ -201,8 +201,8 @@ class BudgetTransactionCreateEditFragment :
 
     private fun displayError(viewKey: Int, errorId: Int) {
         when (viewKey) {
-            BudgetTransactionCreateEditValidator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getStringOrEmpty(errorId)
-            BudgetTransactionCreateEditValidator.ViewKeys.VIEW_AMOUNT -> binding.inputLayoutAmount.error = getStringOrEmpty(errorId)
+            BudgetTransactionCreateEditValidator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getStringOrNull(errorId)
+            BudgetTransactionCreateEditValidator.ViewKeys.VIEW_AMOUNT -> binding.inputLayoutAmount.error = getStringOrNull(errorId)
             BudgetTransactionCreateEditValidator.ViewKeys.VIEW_CATEGORY -> {
                 val colorText = ContextCompat.getColor(
                     requireContext(),

@@ -6,6 +6,8 @@ data class ValidationErrors(val viewsErrors: List<ViewErrors>) : Throwable() {
         const val ERROR_NONE = 0
     }
 
+    fun hasErrors() = viewsErrors.any { it.hasErrors() }
+
     fun merge(otherValidationErrors: ValidationErrors?) : ValidationErrors {
         if (otherValidationErrors == null || otherValidationErrors.viewsErrors.isEmpty()) return this
         if (viewsErrors.isEmpty()) return otherValidationErrors
@@ -35,6 +37,8 @@ data class ValidationErrors(val viewsErrors: List<ViewErrors>) : Throwable() {
 
         val highestPriorityOrNone: Int
             get() = errorsIds.filterNot { it == ERROR_NONE }.minOrNull() ?: ERROR_NONE
+
+        fun hasErrors() = errorsIds.find { it != ERROR_NONE } != null
 
         fun merge(otherViewErrors: ViewErrors): ViewErrors {
             if (otherViewErrors.viewKey != viewKey) return otherViewErrors

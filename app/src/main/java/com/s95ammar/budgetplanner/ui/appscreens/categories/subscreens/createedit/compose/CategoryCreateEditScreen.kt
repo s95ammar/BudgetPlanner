@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,8 +28,8 @@ import com.s95ammar.budgetplanner.ui.compose.ApplyButton
 import com.s95ammar.budgetplanner.ui.compose.values.AppTheme
 import com.s95ammar.budgetplanner.ui.compose.values.InputTextField
 import com.s95ammar.budgetplanner.ui.main.MainViewModel
-import com.s95ammar.budgetplanner.util.orZero
-import com.s95ammar.budgetplanner.util.stringResourceOrEmpty
+import com.s95ammar.budgetplanner.util.collectAsStateSafe
+import com.s95ammar.budgetplanner.util.stringResourceOrNull
 import kotlinx.coroutines.flow.collect
 
 @Composable
@@ -39,9 +38,9 @@ fun CategoryCreateEditScreen(
     activityViewModel: MainViewModel,
     viewModel: CategoryCreateEditViewModel = viewModel()
 ) {
-    val mode by viewModel.mode.collectAsState()
-    val name by viewModel.name.collectAsState()
-    val validationErrors by viewModel.validationErrors.collectAsState()
+    val mode by viewModel.mode.collectAsStateSafe()
+    val name by viewModel.name.collectAsStateSafe()
+    val validationErrors by viewModel.validationErrors.collectAsStateSafe()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.uiEvent.collect {
@@ -93,7 +92,7 @@ fun CategoryCreateEditContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 10.dp),
-                    error = stringResourceOrEmpty(id = getNameErrorResIdOrZero(validationErrors)),
+                    error = stringResourceOrNull(getNameErrorResIdOrZero(validationErrors)),
                     hint = stringResource(id = R.string.name),
                     value = name,
                     onValueChange = onNameChange
@@ -123,12 +122,11 @@ private fun getApplyButtonStringResId(mode: CreateEditMode) = when (mode) {
 }
 
 @StringRes
-private fun getNameErrorResIdOrZero(validationErrors: ValidationErrors?): Int {
+private fun getNameErrorResIdOrZero(validationErrors: ValidationErrors?): Int? {
     return validationErrors
         ?.viewsErrors
         ?.find { it.viewKey == CategoryCreateEditValidator.ViewKeys.VIEW_NAME }
         ?.highestPriorityOrNone
-        .orZero()
 }
 
 private fun handleUiEvent(

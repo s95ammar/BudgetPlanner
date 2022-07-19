@@ -23,11 +23,11 @@ val Context.currentLocale: Locale
     }
 
 @Composable
-fun stringResourceOrEmpty(@StringRes id: Int) = LocalContext.current.getStringOrEmpty(id)
+fun stringResourceOrNull(@StringRes id: Int?) = LocalContext.current.getStringOrNull(id)
 
-fun Context.getStringOrEmpty(@StringRes resId: Int) = try { getString(resId) } catch (e: Exception) { "" }
+fun Context.getStringOrNull(@StringRes resId: Int?) = try { getString(requireNotNull(resId)) } catch (e: Exception) { null }
 
-fun Fragment.getStringOrEmpty(@StringRes resId: Int) = requireContext().getStringOrEmpty(resId)
+fun Fragment.getStringOrNull(@StringRes resId: Int?) = requireContext().getStringOrNull(resId)
 
 const val WARNING_DEPRECATION = "DEPRECATION"
 const val WARNING_UNNECESSARY_SAFE_CALL = "UNNECESSARY_SAFE_CALL"
