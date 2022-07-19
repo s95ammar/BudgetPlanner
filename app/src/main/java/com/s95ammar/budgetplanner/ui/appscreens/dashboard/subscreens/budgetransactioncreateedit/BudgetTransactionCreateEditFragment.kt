@@ -20,6 +20,7 @@ import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
 import com.s95ammar.budgetplanner.util.doOnTabSelected
 import com.s95ammar.budgetplanner.util.getAmountStringFormatted
+import com.s95ammar.budgetplanner.util.getStringOrEmpty
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.setDrawableTint
 import com.s95ammar.budgetplanner.util.text
@@ -200,8 +201,8 @@ class BudgetTransactionCreateEditFragment :
 
     private fun displayError(viewKey: Int, errorId: Int) {
         when (viewKey) {
-            BudgetTransactionCreateEditValidator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getErrorStringById(errorId)
-            BudgetTransactionCreateEditValidator.ViewKeys.VIEW_AMOUNT -> binding.inputLayoutAmount.error = getErrorStringById(errorId)
+            BudgetTransactionCreateEditValidator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getStringOrEmpty(errorId)
+            BudgetTransactionCreateEditValidator.ViewKeys.VIEW_AMOUNT -> binding.inputLayoutAmount.error = getStringOrEmpty(errorId)
             BudgetTransactionCreateEditValidator.ViewKeys.VIEW_CATEGORY -> {
                 val colorText = ContextCompat.getColor(
                     requireContext(),
@@ -215,12 +216,6 @@ class BudgetTransactionCreateEditFragment :
                 binding.textViewPeriodCategoryValue.setDrawableTint(colorDrawable)
             }
         }
-    }
-
-    private fun getErrorStringById(errorId: Int) = when (errorId) {
-        BudgetTransactionCreateEditValidator.Errors.EMPTY_NAME,
-        BudgetTransactionCreateEditValidator.Errors.EMPTY_AMOUNT -> getString(R.string.error_empty_field)
-        else -> null
     }
 
     private fun getBudgetTransactionInputBundle() = BudgetTransactionInputBundle(

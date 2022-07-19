@@ -1,5 +1,6 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.budgetransactioncreateedit.validation
 
+import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.models.IntBudgetTransactionType
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.BudgetTransactionEntity
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.LatLngEntity
@@ -19,9 +20,8 @@ class BudgetTransactionCreateEditValidator(
 ) : Validator<BudgetTransactionValidationBundle, BudgetTransactionEntity>(input) {
 
     object Errors {
-        const val EMPTY_NAME = 1
-        const val EMPTY_AMOUNT = 2
-        const val CATEGORY_OF_PERIOD_NOT_SELECTED = 3
+        const val EMPTY_FIELD = R.string.error_empty_field
+        const val CATEGORY_OF_PERIOD_NOT_SELECTED = 1
     }
 
     object ViewKeys {
@@ -59,8 +59,8 @@ class BudgetTransactionCreateEditValidator(
     }
 
     override fun provideViewValidationList(input: BudgetTransactionValidationBundle): List<ViewValidation> {
-        val caseEmptyName = ViewValidation.Case(Errors.EMPTY_NAME) { input.name.isEmpty() }
-        val caseEmptyAmount = ViewValidation.Case(Errors.EMPTY_AMOUNT) { input.amount.isEmpty() }
+        val caseEmptyName = ViewValidation.Case(Errors.EMPTY_FIELD) { input.name.isEmpty() }
+        val caseEmptyAmount = ViewValidation.Case(Errors.EMPTY_FIELD) { input.amount.isEmpty() }
         val caseCategoryOfPeriodNotSelected =
             ViewValidation.Case(Errors.CATEGORY_OF_PERIOD_NOT_SELECTED) { input.categoryOfPeriodId == Int.INVALID }
 

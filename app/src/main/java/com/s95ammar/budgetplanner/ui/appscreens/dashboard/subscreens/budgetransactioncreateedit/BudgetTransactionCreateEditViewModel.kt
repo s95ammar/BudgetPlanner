@@ -122,11 +122,12 @@ class BudgetTransactionCreateEditViewModel @Inject constructor(
 
     fun onApply(budgetTransactionInputBundle: BudgetTransactionInputBundle) {
         val validator = createValidator(budgetTransactionInputBundle)
-        _performUiEvent.call(UiEvent.DisplayValidationResults(validator.getValidationErrors(allBlank = true)))
+        _performUiEvent.call(UiEvent.DisplayValidationResults(validator.getBlankValidationErrors()))
 
-        validator.getValidationResult()
-            .onSuccess { insertOrUpdateBudgetTransaction(it) }
-            .onError { displayValidationResults(it) }
+        validator.getValidationResult().handle(
+            onSuccess = { insertOrUpdateBudgetTransaction(it) },
+            onError = { displayValidationResults(it) }
+        )
     }
 
     fun onCalculateByAnotherCurrency() {

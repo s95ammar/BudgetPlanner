@@ -1,5 +1,6 @@
 package com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.validation
 
+import com.s95ammar.budgetplanner.R
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.PeriodEntity
 import com.s95ammar.budgetplanner.ui.appscreens.dashboard.subscreens.periodcreateedit.data.PeriodInputBundle
 import com.s95ammar.budgetplanner.ui.common.validation.Validator
@@ -12,8 +13,8 @@ class PeriodCreateEditValidator(
 ) : Validator<PeriodInputBundle, PeriodEntity>(periodInputBundle) {
 
     object Errors {
-        const val EMPTY_NAME = 1
-        const val NAME_TAKEN = 2
+        const val EMPTY_NAME = R.string.error_period_name_taken
+        const val NAME_TAKEN = R.string.error_empty_field
     }
 
     object ViewKeys {

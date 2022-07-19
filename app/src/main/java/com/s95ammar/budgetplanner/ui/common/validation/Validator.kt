@@ -8,7 +8,9 @@ abstract class Validator<Input, Output>(private val input: Input) {
         return viewsValidation.all { singleViewValidation -> singleViewValidation.validationCases.all { it.isValid } }
     }
 
-    fun getValidationErrors(allBlank: Boolean = false): ValidationErrors {
+    fun getBlankValidationErrors() = getValidationErrors(allBlank = true)
+
+    private fun getValidationErrors(allBlank: Boolean = false): ValidationErrors {
         return ValidationErrors(
             viewsValidation.map { singleViewValidation ->
                 ValidationErrors.ViewErrors(
@@ -17,6 +19,16 @@ abstract class Validator<Input, Output>(private val input: Input) {
                 )
             }
         )
+    }
+
+    fun handleValidationResult(
+        onSuccess: (Output) -> Unit,
+        onError: (ValidationErrors) -> Unit
+    ) {
+        if (isAllValid())
+            onSuccess(provideOutput(input))
+        else
+            onError(getValidationErrors())
     }
 
     fun getValidationResult(): ValidationResult<Output> {

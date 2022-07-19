@@ -14,6 +14,7 @@ import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.ui.common.viewbinding.BaseViewBinderFragment
+import com.s95ammar.budgetplanner.util.getStringOrEmpty
 import com.s95ammar.budgetplanner.util.lifecycleutil.observeEvent
 import com.s95ammar.budgetplanner.util.text
 import com.s95ammar.budgetplanner.util.updateTextIfNotEquals
@@ -121,14 +122,8 @@ class PeriodCreateEditFragment : BaseViewBinderFragment<FragmentPeriodCreateEdit
 
     private fun displayError(viewKey: Int, errorId: Int) {
         when (viewKey) {
-            Validator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getErrorStringById(errorId)
+            Validator.ViewKeys.VIEW_NAME -> binding.inputLayoutName.error = getStringOrEmpty(errorId)
         }
-    }
-
-    private fun getErrorStringById(errorId: Int) = when (errorId) {
-        Validator.Errors.NAME_TAKEN -> getString(R.string.error_period_name_taken)
-        Validator.Errors.EMPTY_NAME -> getString(R.string.error_empty_field)
-        else -> null
     }
 
     private fun navigateToCategoriesSelection() {

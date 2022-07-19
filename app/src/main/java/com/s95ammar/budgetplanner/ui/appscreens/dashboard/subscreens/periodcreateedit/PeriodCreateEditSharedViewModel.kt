@@ -92,11 +92,12 @@ class PeriodCreateEditSharedViewModel @Inject constructor(
 
     fun onApply(periodInputBundle: PeriodInputBundle) {
         val validator = createValidator(periodInputBundle)
-        _performUiEvent.call(PeriodCreateEditUiEvent.DisplayValidationResults(validator.getValidationErrors(allBlank = true)))
+        _performUiEvent.call(PeriodCreateEditUiEvent.DisplayValidationResults(validator.getBlankValidationErrors()))
 
-        validator.getValidationResult()
-            .onSuccess { insertOrUpdatePeriod(it) }
-            .onError { displayValidationResults(it) }
+        validator.getValidationResult().handle(
+            onSuccess = { insertOrUpdatePeriod(it) },
+            onError = { displayValidationResults(it) }
+        )
     }
 
     private fun createValidator(periodInputBundle: PeriodInputBundle): PeriodCreateEditValidator {
