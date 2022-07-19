@@ -1,24 +1,27 @@
 package com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
+import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.s95ammar.budgetplanner.models.datasource.local.db.entity.CategoryEntity
 import com.s95ammar.budgetplanner.models.repository.CategoriesRepository
 import com.s95ammar.budgetplanner.ui.appscreens.categories.common.data.Category
+import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryCreateEditUiEvent
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.data.CategoryInputBundle
 import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.validation.CategoryCreateEditValidator
+import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.validation.CategoryCreateEditValidator.Errors
+import com.s95ammar.budgetplanner.ui.appscreens.categories.subscreens.createedit.validation.CategoryCreateEditValidator.ViewKeys
 import com.s95ammar.budgetplanner.ui.common.CreateEditMode
 import com.s95ammar.budgetplanner.ui.common.LoadingState
 import com.s95ammar.budgetplanner.ui.common.validation.ValidationErrors
 import com.s95ammar.budgetplanner.util.INVALID
-import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveData
-import com.s95ammar.budgetplanner.util.lifecycleutil.EventMutableLiveDataVoid
-import com.s95ammar.budgetplanner.util.lifecycleutil.LoaderMutableLiveData
-import com.s95ammar.budgetplanner.util.lifecycleutil.asLiveData
+import com.s95ammar.budgetplanner.util.addSource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -35,46 +38,58 @@ class CategoryCreateEditViewModel @Inject constructor(
 
     private val editedCategoryId = savedStateHandle.get<Int>(FragmentArgs::categoryId.name) ?: Int.INVALID
 
-    private val _mode = MutableLiveData(CreateEditMode.getById(editedCategoryId))
-    private val _editedCategory = LoaderMutableLiveData<Category> { if (_mode.value == CreateEditMode.EDIT) loadEditedCategory() }
-    private val _name = MediatorLiveData<String>().apply {
-        addSource(_editedCategory) { value = it.name }
+    private val _mode = MutableStateFlow(CreateEditMode.getById(editedCategoryId))
+    private val _editedCategory = MutableStateFlow<Category?>(null)
+    private val _name = MutableStateFlow("")
+        .addSource(_editedCategory, viewModelScope) { value = it?.name.orEmpty() }
+    private val _validationErrors = MutableStateFlow<ValidationErrors?>(null)
+    private val _uiEvent = MutableSharedFlow<CategoryCreateEditUiEvent>()
+
+    val mode = _mode.asStateFlow()
+    val name = _name.asStateFlow()
+    val validationErrors = _validationErrors.asStateFlow()
+    val uiEvent = _uiEvent.asSharedFlow()
+
+    init {
+        if (_mode.value == CreateEditMode.EDIT) loadEditedCategory()
     }
-    // TODO: move events to a sealed class
-    private val _displayLoadingState = EventMutableLiveData<LoadingState>(LoadingState.Cold)
-    private val _displayValidationResults = EventMutableLiveData<ValidationErrors>()
-    private val _exit = EventMutableLiveDataVoid()
 
-    val mode = _mode.asLiveData()
-    val name = _name.asLiveData()
-    val displayLoadingState = _displayLoadingState.asEventLiveData()
-    val displayValidationResults = _displayValidationResults.asEventLiveData()
-    val exit = _exit.asEventLiveData()
+    fun onNameChanged(name: String) {
+        _name.value = name
+    }
 
-    fun onApply(categoryInputBundle: CategoryInputBundle) {
-        val validator = CategoryCreateEditValidator(editedCategoryId, categoryInputBundle)
-        _displayValidationResults.call(validator.getValidationErrors(allBlank = true))
+    fun onApply() {
+        viewModelScope.launch {
+            val validator = CategoryCreateEditValidator(editedCategoryId, CategoryInputBundle(_name.value.trim()))
+            _validationErrors.value = validator.getBlankValidationErrors()
 
-        validator.getValidationResult()
-            .onSuccess { insertOrUpdateCategory(it) }
-            .onError { displayValidationResults(it) }
+            validator.getValidationResult().handle(
+                onSuccess = { insertOrUpdateCategory(it) },
+                onError = { _validationErrors.value = it }
+            )
+        }
+    }
 
+    fun onBack() {
+        viewModelScope.launch {
+            _uiEvent.emit(CategoryCreateEditUiEvent.Exit)
+        }
     }
 
     private fun loadEditedCategory() {
         viewModelScope.launch {
             repository.getCategoryFlow(editedCategoryId)
                 .onStart {
-                    _displayLoadingState.call(LoadingState.Loading)
+                    _uiEvent.emit(CategoryCreateEditUiEvent.DisplayLoadingState(LoadingState.Loading))
                 }
                 .catch { throwable ->
-                    _displayLoadingState.call(LoadingState.Error(throwable))
+                    _uiEvent.emit(CategoryCreateEditUiEvent.DisplayLoadingState(LoadingState.Error(throwable)))
                 }
                 .first()
                 .let { categoryEntity ->
                     Category.Mapper.fromEntity(categoryEntity)?.let { category ->
                         _editedCategory.value = category
-                        _displayLoadingState.call(LoadingState.Success)
+                        _uiEvent.emit(CategoryCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
                     }
                 }
         }
@@ -82,29 +97,34 @@ class CategoryCreateEditViewModel @Inject constructor(
     }
 
     private fun insertOrUpdateCategory(category: CategoryEntity) = viewModelScope.launch {
-        val mode = _mode.value ?: return@launch
 
-        val flowRequest = when (mode) {
+        val flowRequest = when (_mode.value) {
             CreateEditMode.CREATE -> repository.insertCategoryFlow(category)
             CreateEditMode.EDIT -> repository.updateCategoryFlow(category)
         }
 
         flowRequest
             .onStart {
-                _displayLoadingState.call(LoadingState.Loading)
+                _uiEvent.emit(CategoryCreateEditUiEvent.DisplayLoadingState(LoadingState.Loading))
             }
             .catch { throwable ->
-                _displayLoadingState.call(LoadingState.Error(throwable))
+                val isNameConstraintError = throwable is SQLiteConstraintException
+                if (isNameConstraintError) {
+                    val currentValidationErrors = _validationErrors.value
+                    val nameConstraintError = ValidationErrors.ViewErrors(ViewKeys.VIEW_NAME, listOf(Errors.NAME_TAKEN))
+                    _validationErrors.emit(
+                        ValidationErrors(listOf(nameConstraintError)).merge(currentValidationErrors)
+                    )
+                }
+                _uiEvent.emit(
+                    CategoryCreateEditUiEvent.DisplayLoadingState(LoadingState.Error(throwable))
+                )
+
             }
             .collect {
-                _displayLoadingState.call(LoadingState.Success)
-                _exit.call()
+                _uiEvent.emit(CategoryCreateEditUiEvent.DisplayLoadingState(LoadingState.Success))
+                _uiEvent.emit(CategoryCreateEditUiEvent.Exit)
             }
     }
-
-    private fun displayValidationResults(validationErrors: ValidationErrors) {
-        _displayValidationResults.call(validationErrors)
-    }
-
 
 }
